@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -9,6 +10,7 @@ const headers = {
 exports.handler = async (event) => {
     console.log('Function triggered:', event.httpMethod);
 
+    // Handle preflight request
     if (event.httpMethod === 'OPTIONS') {
         return {
             statusCode: 200,
@@ -17,6 +19,7 @@ exports.handler = async (event) => {
         };
     }
 
+    // Reject unsupported HTTP methods
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
@@ -26,17 +29,21 @@ exports.handler = async (event) => {
     }
 
     try {
-        console.log('Raw body:', event.body);
+        console.log('Raw request body:', event.body);
+
         const { name, email, message, subject } = JSON.parse(event.body);
 
+        // Validate required fields
         if (!name || !email || !message || !subject) {
+            console.warn('Missing required form fields');
             return {
                 statusCode: 400,
                 headers,
-                body: 'Invalid form data',
+                body: JSON.stringify({ error: 'Invalid form data. All fields are required.' }),
             };
         }
 
+        // Set up Nodemailer transporter
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -45,6 +52,8 @@ exports.handler = async (event) => {
             },
         });
 
+        console.log('Using email account:', process.env.EMAIL_USER);
+
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
@@ -52,20 +61,27 @@ exports.handler = async (event) => {
             text: `You have been contacted by: ${name}\n\nE-mail: ${email}\n\nSubject: ${subject}\n\nMessage:\n${message}`,
         };
 
-        await transporter.sendMail(mailOptions);
+        // Send the email
+        const info = await transporter.sendMail(mailOptions);
+
+        console.log('Email sent successfully:', info.messageId);
 
         return {
             statusCode: 200,
             headers,
-            body: JSON.stringify({ message: "Email sent successfully!" }),
+            body: JSON.stringify({ message: 'Email sent successfully!' }),
         };
 
     } catch (error) {
-        console.error('Failed to send mail:', error);
+        console.error('Error while sending email:', error);
+
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ error: "Failed to send email." }),
+            body: JSON.stringify({
+                error: 'Failed to send email.',
+                details: error.message, // helpful for debugging
+            }),
         };
     }
 };
