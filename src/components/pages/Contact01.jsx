@@ -1,85 +1,67 @@
 import React, { Component } from 'react';
-import { Header, TopBar , Footer,  Loader } from '../layouts/general';
+import { Header, TopBar, Footer, Loader } from '../layouts/general';
 import { Link } from "react-router-dom";
 
 class Contact01 extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            headers: [
-                {
-                    id: 1,
-                    names: 'Blog',
-                }
-            ],
-            titleheading: [
-                {
-                    id: '1',
-                    title: 'Contact'
-                }
-            ],
-            breadcrumbs: [
-                {
-                    id: 1,
-                    title: 'Home',
-                    classicon: 'fa fa-angle-right',
-                    aria: 'true'
-                },
-                {
-                    id: 2,
-                    title: 'Contact',
-                    classicon: '',
-                    aria: ''
-                }
-            ],
-            contactinfo: [
-                {
-                    id: '1',
-                    title: 'Address',
-                    info:'900 S Thacker Ave, Kissimmee, FL 34741'
-                },
-                {
-                    id: '2',
-                    title: 'Phone number',
-                    info:'Call us: 190 140 2468'
-                },
-                {
-                    id: '3',
-                    title: 'E-mail address',
-                    info:'support@fhbck.com'
-                }
-            ]
-        }
+            name: '',
+            email: '',
+            subject: '',
+            message: '',
+            feedback: '',
+        };
     }
+
+    handleInputChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
+
+    handleSubmit = async (e) => {
+        e.preventDefault();
+        const { name, email, subject, message } = this.state;
+
+        try {
+            const response = await fetch('/.netlify/functions/contact', { // Updated URL for Netlify
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email, subject, message }),
+            });
+
+            if (response.ok) {
+                this.setState({ feedback: 'Email sent successfully!' });
+            } else {
+                const errorText = await response.text();
+                this.setState({ feedback: `Error: ${errorText}` });
+            }
+        } catch (error) {
+            this.setState({ feedback: 'Failed to send email. Please try again later.' });
+        }
+    };
+
     render() {
+        const { name, email, subject, message, feedback } = this.state;
+
         return (
             <div className="bg-body">
                 <div className="boxed">
-                <Loader />
+                    <Loader />
                     <TopBar />
-                    {
-                        this.state.headers.map(data => (
-                            <Header data={data} key={data.id}/>
-                        ))
-                    }
+                    <Header data={{ id: 1, names: 'Blog' }} />
 
                     <div className="page-title">
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="page-title-heading">
-                                        {
-                                            this.state.titleheading.map(data =>(
-                                                <h1 key={data.id} className="h1-title">{data.title}</h1>
-                                            ))
-                                        }       
+                                        <h1 className="h1-title">Contact</h1>
                                     </div>
                                     <ul className="breadcrumbs">
-                                        {
-                                            this.state.breadcrumbs.map(data =>(
-                                                <li key={data.id} ><Link to="#" title="">{data.title}<i className={data.classicon} aria-hidden={data.aria}></i></Link></li>
-                                            ))
-                                        }
+                                        <li><Link to="#">Home<i className="fa fa-angle-right" aria-hidden="true"></i></Link></li>
+                                        <li><Link to="#">Contact</Link></li>
                                     </ul>
                                     <div className="clearfix"></div>
                                 </div>
@@ -87,49 +69,66 @@ class Contact01 extends Component {
                         </div>
                     </div>
 
-
                     <section className="flat-row pd-contact-v1">
                         <div className="container">
                             <div className="row">
-                                <div className="col-md-4">
-                                    <div className="contact-info">
-                                        {
-                                            this.state.contactinfo.map(data =>(
-                                                <div className="info info-address" key={data.id} >
-                                                    <div className="title">{data.title}</div>
-                                                    <p>{data.info}</p>
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                </div> 
-
                                 <div className="col-md-8">
                                     <div className="flat-form-info">
-                                        <form id="contactform"  method="post" action="/contact/contact-process.php" noValidate="novalidate" className="form-info">
+                                        <form onSubmit={this.handleSubmit} className="form-info">
                                             <div className="one-half v3">
-                                                <p className="input-info"><input type="text" name="name" id="name"  placeholder="Name" required="required" /></p>
-                                                <p className="input-info"><input type="email" name="email" id="email"  placeholder="Email" required="required" /></p>
-                                                <p className="input-info"><input type="text" name="subject" id="subject"  placeholder="Subject" required="required" /></p>
-                                                <p className="input-info"><button type="submit" className="submit">Send Message</button></p>
+                                                <p className="input-info">
+                                                    <input
+                                                        type="text"
+                                                        name="name"
+                                                        placeholder="Name"
+                                                        value={name}
+                                                        onChange={this.handleInputChange}
+                                                        required
+                                                    />
+                                                </p>
+                                                <p className="input-info">
+                                                    <input
+                                                        type="email"
+                                                        name="email"
+                                                        placeholder="Email"
+                                                        value={email}
+                                                        onChange={this.handleInputChange}
+                                                        required
+                                                    />
+                                                </p>
+                                                <p className="input-info">
+                                                    <input
+                                                        type="text"
+                                                        name="subject"
+                                                        placeholder="Subject"
+                                                        value={subject}
+                                                        onChange={this.handleInputChange}
+                                                        required
+                                                    />
+                                                </p>
+                                                <p className="input-info">
+                                                    <button type="submit" className="submit">Send Message</button>
+                                                </p>
                                             </div>
                                             <div className="one-half v4">
-                                                <p className="input-info"><textarea id="message-contact" name="message" placeholder="Message" required="required"></textarea></p>
+                                                <p className="input-info">
+                                                    <textarea
+                                                        name="message"
+                                                        placeholder="Message"
+                                                        value={message}
+                                                        onChange={this.handleInputChange}
+                                                        required
+                                                    ></textarea>
+                                                </p>
                                             </div>
                                         </form>
+                                        {feedback && <p className="feedback">{feedback}</p>}
                                     </div>
-                                </div> 
-
+                                </div>
                             </div>
                         </div>
-			        </section>
+                    </section>
 
-	        <section className="flat-row pdmap">
-				<div className="flat-maps" data-address="Thành phố New York, Tiểu bang New York" data-height="454" data-images="images/map/map-1.png" data-name="Themesflat Map"></div>
-	            <div className="gm-map">	            
-	                <div className="map"></div>                        
-	            </div>
-	        </section>
                     <Footer />
                 </div>
             </div>
