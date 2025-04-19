@@ -23,13 +23,18 @@ class Contact01 extends Component {
         const { name, email, subject, message } = this.state;
 
         try {
-            const response = await fetch('/.netlify/functions/contact', { // Updated URL for Netlify
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, subject, message }),
-            });
+            const response = await fetch(
+                process.env.NODE_ENV === 'development'
+                    ? 'http://localhost:8888/.netlify/functions/contact'
+                    : '/.netlify/functions/contact',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, subject, message }),
+                }
+            );
 
             if (response.ok) {
                 this.setState({ feedback: 'Email sent successfully!' });
