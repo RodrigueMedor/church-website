@@ -106,7 +106,7 @@ class Contact01 extends Component {
 
                                 <div className="col-md-8">
                                     <div className="flat-form-info">
-                                        <form id="contactform"  method="post" action="http://localhost:8081/contact/contact-process.php" noValidate="novalidate" className="form-info">
+                                        <form id="contactform"  method="post" action="/contact/contact-process.php" noValidate="novalidate" className="form-info">
                                             <div className="one-half v3">
                                                 <p className="input-info"><input type="text" name="name" id="name"  placeholder="Name" required="required" /></p>
                                                 <p className="input-info"><input type="email" name="email" id="email"  placeholder="Email" required="required" /></p>
