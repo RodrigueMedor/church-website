@@ -25,6 +25,7 @@ exports.handler = async (event) => {
             pass: process.env.EMAIL_PASS,
         },
     });
+    console.log('Email user:', process.env.EMAIL_USER);
 
     const mailOptions = {
         from: process.env.EMAIL_USER,
@@ -50,6 +51,7 @@ exports.handler = async (event) => {
         };
     } catch (error) {
         console.error('Failed to send mail:', error);
+        console.log('Failed to send mail:', error);
         return {
             statusCode: 500,
             body: 'Failed to send email',
