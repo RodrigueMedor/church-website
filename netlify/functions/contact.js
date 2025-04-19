@@ -55,8 +55,8 @@ exports.handler = async (event) => {
         console.log('Using email account:', process.env.EMAIL_USER);
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
+            from: email,
+            to: process.env.EMAIL_USER,
             subject: `You've been contacted by ${name} — ${subject}`,
             text: `You have been contacted by: ${name}\n\nE-mail: ${email}\n\nSubject: ${subject}\n\nMessage:\n${message}`,
         };
