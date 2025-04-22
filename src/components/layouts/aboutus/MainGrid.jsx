@@ -1,113 +1,80 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 class MainGrid extends Component {
 	constructor(props) {
-        super(props);
-        this.state = {
-            titlegird: [
-                {
-                    id: 1,
-					title: 'Church profile - Our Members',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor<br />incididunt ut labore et dolore magna aliqua.',
+		super(props);
+		this.state = {
+			schedule: [
+				{
+					id: 1,
+					time: 'Sunday 9:00 AM',
+					title: 'Morning Worship Service',
+					description: 'Join us for a time of worship, prayer, and a message from the Word of God.',
+				},
+				{
+					id: 2,
+					time: 'Sunday 11:00 AM',
+					title: 'Second Worship Service',
+					description: 'A second opportunity to worship and hear the message.',
+				},
+				{
+					id: 3,
+					time: 'Wednesday 7:00 PM',
+					title: 'Midweek Bible Study',
+					description: 'A time for in-depth Bible study and fellowship.',
 				},
 			],
-			boxgrid: [
-				{
-					id: '1',
-					srcimg: 'images/about/t01.jpg',
-					subtitle: 'Founder &amp; CEO',
-					title: 'STEVEN MONROE',
-					listsocial: [
-						{
-							id: '1',
-							datatitle:'Facebook',
-							classtitle: 'facebook',
-							classicon: 'fa fa-facebook'
-						},
-						{
-							id: '2',
-							datatitle:'LinkedIn',
-							classtitle: 'linkedin',
-							classicon: 'fa fa-linkedin'
-						},{
-							id: '3',
-							datatitle:'Google Plus',
-							classtitle: 'google-plus',
-							classicon: 'fa fa-google-plus'
-						}
-					]
-				},
-				{
-					id: '2',
-					srcimg: 'images/about/t02.jpg',
-					subtitle: 'Founder &amp; CEO',
-					title: 'STEVEN MONROE'
-				},
-				{
-					id: '3',
-					srcimg: 'images/about/t03.jpg',
-					subtitle: 'Finance & Commerce',
-					title: 'MICHAEL KING'
-				},
-				{
-					id: '4',
-					srcimg: 'images/about/t04.jpg',
-					subtitle: 'Company Director',
-					title: 'ROMEO ALVAREZ'
-				}
-			],
-			
-        }
-    }
-    render() {
-        return (
-			<section className="flat-row pd-about-team">
-				<div className="container">
-					<div className="row">
-						<div className="col-md-12">
-								{
-									this.state.titlegird.map(data =>(
-										<div className="title-section center s1" key={data.id} >
-											<h2>{data.title}</h2>
-											<p className="sub-title-section">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor<br />incididunt ut labore et dolore magna aliqua.</p>
-										</div>		
-									))
-								}
-							<div className="dividers dividers-about-team"></div>
+		};
+	}
+
+	render() {
+		return (
+			<section className="flat-row pd-services-post">
+				<div className="banner" style={{ backgroundImage: 'url(/images/banner/Church.jpg)' }}>
+					<div className="banner-content">
+
+						<h1 className="banner-title">Service Schedule</h1>
+						<p className="banner-subtitle">Join us for worship, fellowship, and spiritual growth.</p>
+					</div>
+				</div>
+
+				<div className="box-container">
+					<div className="container">
+						<div className="row">
+							<div className="col-md-6">
+								<div className="dividers dividers-imagebox"></div>
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-md-6">
+								<div className="schedule-list">
+									<h2 className="schedule-title-link">Sunday Mornings</h2>
+									{this.state.schedule.map((service) => (
+										<div className="schedule-item" key={service.id}>
+											<h3 className="schedule-time">{service.time}</h3>
+											<h4 className="schedule-title">{service.title}</h4>
+											<p className="schedule-description">{service.description}</p>
+										</div>
+									))}
+								</div>
+							</div>
+							<div className="col-md-6">
+
+								<img
+									src="/images/imagebox/5A6A4439.jpg"
+									alt="Sunday Mornings"
+									className="img-fluid"
+								/>
+							</div>
 						</div>
 					</div>
-
-					<div className="row">
-						{
-							this.state.boxgrid.map(data =>(
-								<div className="col-md-3" key={data.id} >
-									<div className="flat-team team-grid has-image">			
-										<div className="team-image">
-											<img src={data.srcimg} alt="img" />
-										</div>										
-										<div className="team-info">	
-											<div className="team-subtitle">{data.subtitle}</div>
-											<div className="team-name">{data.title}</div>			
-											<div className="team-desc"></div>
-											<div className="social-links">
-												<Link to="#" data-title="Facebook" className="facebook"><i className="fa fa-facebook"></i></Link> 
-												<Link to="#" data-title="LinkedIn" className="linkedin"><i className="fa fa-linkedin"></i></Link> 
-												<Link to="#" data-title="Google Plus" className="google-plus"><i className="fa fa-google-plus"></i></Link>
-											</div>
-										</div>
-									</div> 
-								</div> 
-
-						
-							))
-						}
-					</div>				
 				</div>
+
+
 			</section>
-            //   flat-row-iconbox
-        );
-    }
+		);
+	}
 }
 
 export default MainGrid;

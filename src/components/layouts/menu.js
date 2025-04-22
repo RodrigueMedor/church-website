@@ -45,23 +45,17 @@ const menus = [
     {
         id: 2,
         name: 'About',
-        linkmenu: '/about-v1',
+        linkmenu: '/about-v2',
         namesub: [
             {
                 id: 1,
-                sub: 'Our Team',
-                links: '/about-v1',
-                submenu: undefined
-            },
-            {
-                id: 2,
-                sub: 'Our Story',
+                sub: 'Church History',
                 links: '/about-v2',
                 submenu: undefined
             },
             {
-                id: 3,
-                sub: 'Our Mission',
+                id: 2,
+                sub: 'Our Belief',
                 links: '/about-v3',
                 submenu: undefined
             },
@@ -71,12 +65,12 @@ const menus = [
             //     links: '/about-v3',
             //     submenu: undefined
             // },
-            {
-                id: 3,
-                sub: 'Ministry team',
-                links: '/about-v3',
-                submenu: undefined
-            }
+            // {
+            //     id: 3,
+            //     sub: 'Ministry team',
+            //     links: '/about-v4',
+            //     submenu: undefined
+            // }
         ],
     },
     {
@@ -86,7 +80,7 @@ const menus = [
         namesub:  [
             {
                 id: 1,
-                sub: 'Music && Worship',
+                sub: 'Worship Together',
                 links: '/services-v1',
                 submenu: undefined
             }
@@ -130,7 +124,57 @@ const menus = [
     //     ],
     // },
     {
+        id: 4,
+        name: 'Ministries',
+        linkmenu: '/all-ministries',
+        namesub: [
+            {
+                id: 1,
+                sub: 'All Ministries',
+                links: '/all-ministries',
+                submenu: undefined
+            },
+            {
+                id: 2,
+                sub: 'Men Ministry',
+                links: '/men-ministry',
+                submenu: undefined
+            },
+            {
+                id: 3,
+                sub: 'Women Ministry',
+                links: '/women-ministry',
+                submenu: undefined
+            },
+            {
+                id: 4,
+                sub: 'Youth Ministry',
+                links: '/youth-ministry',
+                submenu: undefined
+            }
+        ]
+    },
+    {
         id: 5,
+        name: 'Leadership',
+        linkmenu: '/staff',
+        namesub: [
+            {
+                id: 1,
+                sub: 'Staff Member',
+                links: '/staff',
+                submenu: undefined
+            },
+            {
+                id: 2,
+                sub: 'Leadership',
+                links: '/leadership',
+                submenu: undefined
+            },
+        ]
+    },
+    {
+        id: 6,
         name: 'Events',
         linkmenu: '/blog',
         namesub: [
@@ -140,24 +184,10 @@ const menus = [
                 links: '/blog',
                 submenu: undefined
             }
-            // {
-            //     id: 2,
-            //     sub: 'Blog Grid',
-            //     links: '/blog-grid',
-            //     submenu: undefined
-            // },
-            // {
-            //     id: 3,
-            //     sub: 'Blog Single',
-            //     links: '/blog-single',
-            //     submenu: undefined
-            // },
-            //
-
-        ],
+        ]
     },
     {
-        id: 6,
+        id: 7,
         name: 'Contact',
         linkmenu: '/contact-v1',
         namesub: [
@@ -166,16 +196,8 @@ const menus = [
                 sub: 'Contact',
                 links: '/contact-v1',
                 submenu: undefined
-            },
-            // {
-            //     id: 2,
-            //     sub: 'Contact 02',
-            //     links: '/contact-v2',
-            //     submenu: undefined
-            // },
-            //
-
-        ],
+            }
+        ]
     }
 ]
 

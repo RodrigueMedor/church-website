@@ -40,7 +40,7 @@ class AboutUs extends Component {
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="page-title-heading">
-                                        <h1 className="h1-title">Our Team</h1>
+                                        <h1 className="h1-title">Our Team /about-v1</h1>
                                     </div>
                                     <ul className="breadcrumbs">
                                         <li><Link to="#" title="">Our Family<i className="fa fa-angle-right" aria-hidden="true"></i></Link></li>

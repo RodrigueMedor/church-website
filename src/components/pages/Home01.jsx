@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter} from 'react-router-dom'
-import { Footer,Header,Slider,  Loader,  TopBar } from '../layouts/general';
+import { Footer,Slider,  Loader,  TopBar, Header } from '../layouts/general';
 // import { Footer,Header,Slider,  Loader,CarouselClient,  TopBar } from '../layouts/general';
 import { Featured } from '../layouts/general/featured';
 import { Services } from '../layouts/general/services';

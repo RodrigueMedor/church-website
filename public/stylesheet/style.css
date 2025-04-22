@@ -3657,3 +3657,35 @@ ul.list em {
 .main-single input[type="submit"]:hover {
 	background: #3a526c;
 }
+
+.history-gallery {
+	margin-top: 30px;
+	text-align: center;
+}
+
+.gallery-title {
+	font-size: 1.8rem;
+	font-weight: bold;
+	margin-bottom: 20px;
+	color: #333;
+}
+
+.gallery-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 15px;
+	justify-items: center;
+}
+
+.gallery-image {
+	width: 100%;
+	max-width: 300px;
+	height: auto;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s ease;
+}
+
+.gallery-image:hover {
+	transform: scale(1.05);
+}

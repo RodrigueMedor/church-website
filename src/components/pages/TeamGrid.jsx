@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
-import { Header, TopBar , Footer, Loader } from '../layouts/general';
-import { MainGrid } from "../layouts/aboutus";
+// import { Link } from "react-router-dom";
+import { Header, TopBar, Footer, Loader } from '../layouts/general';
+// import { MainGrid } from "../layouts/aboutus";
+// import {MainServices} from "../layouts/general/services";
+import ChurchHistory from './ChurchHistory';
+
 class TeamGrid extends Component {
     constructor(props) {
         super(props);
@@ -38,8 +41,9 @@ class TeamGrid extends Component {
                     aria: ''
                 }
             ]
-        }
+        };
     }
+
     render() {
         return (
             <div className="bg-body3">
@@ -48,35 +52,37 @@ class TeamGrid extends Component {
                     <TopBar />
                     {
                         this.state.headers.map(data => (
-                            <Header data={data} key={data.id}/>
+                            <Header data={data} key={data.id} />
                         ))
                     }
 
-                <div className="page-title">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="page-title-heading">
-                                        {
-                                            this.state.titleheading.map(data =>(
-                                                <h1 key={data.id} className="h1-title">{data.title}</h1>
-                                            ))
-                                        }       
-                                    </div>
-                                    <ul className="breadcrumbs">
-                                        {
-                                            this.state.breadcrumbs.map(data =>(
-                                                <li key={data.id} ><Link to="#" title="">{data.title}<i className={data.classicon} aria-hidden={data.aria}></i></Link></li>
-                                            ))
-                                        }
-                                    </ul>
-                                    <div className="clearfix"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {/* Page Title Section */}
+                    {/*<div className="page-title">*/}
+                    {/*    <div className="container">*/}
+                    {/*        <div className="row">*/}
+                    {/*            <div className="col-md-12">*/}
+                    {/*                <div className="page-title-heading">*/}
+                    {/*                    {*/}
+                    {/*                        this.state.titleheading.map(data => (*/}
+                    {/*                            <h1 key={data.id} className="h1-title">{data.title} ttttttttt</h1>*/}
+                    {/*                        ))*/}
+                    {/*                    }*/}
+                    {/*                </div>*/}
+                    {/*                <ul className="breadcrumbs">*/}
+                    {/*                    {*/}
+                    {/*                        this.state.breadcrumbs.map(data => (*/}
+                    {/*                            <li key={data.id}><Link to="#" title="">{data.title}<i className={data.classicon} aria-hidden={data.aria}></i></Link></li>*/}
+                    {/*                        ))*/}
+                    {/*                    }*/}
+                    {/*                </ul>*/}
+                    {/*                <div className="clearfix"></div>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
-                    <MainGrid />                    
+                    {/*<MainGrid />*/}
+                    <ChurchHistory />
 
                     <Footer />
                 </div>

@@ -18,7 +18,7 @@ class Header extends Component {
 					<div className="header-wrap">
 						<div className="col-md-2">
 							<div id="logo" className="logo">
-                                <Link to="/" onClick={() => {window.location.href=this.state.linklogo}}><img src="images/logo.png" alt="financialssss" width={157} height={29}
+                                <Link to="/" onClick={() => {window.location.href=this.state.linklogo}}><img src="images/logo.png" alt="Church logo" width={157} height={29}
                                     data-retina="images/logo.png" data-width={157} data-height={29} /></Link>
 							</div>
                             {/* logo*/}

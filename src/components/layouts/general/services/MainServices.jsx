@@ -30,7 +30,7 @@ class MainServices extends Component {
   render() {
     return (
       <section className="flat-row pd-services-post">
-        <div className="banner" style={{ backgroundImage: 'url(/images/banner/Church.jpg)' }}>
+        <div className="banner" style={{ backgroundImage: 'url(/images/imagebox/5A6A4439.jpg)' }}>
           <div className="banner-content">
 
             <h1 className="banner-title">Service Schedule</h1>
@@ -61,7 +61,7 @@ class MainServices extends Component {
               <div className="col-md-6">
 
                 <img
-                    src="/images/imagebox/5A6A4439.jpg"
+                    src="/images/banner/banner-01.png"
                     alt="Sunday Mornings"
                     className="img-fluid"
                     // className="img-fluid"
@@ -95,7 +95,7 @@ class MainServices extends Component {
               <div className="col-md-6">
 
                 <img
-                    src="/images/imagebox/5A6A4439.jpg"
+                    src="/images/imagebox/05.jpg"
                     alt="Sunday Mornings"
                     className="img-fluid"
                     // className="img-fluid"
@@ -129,7 +129,7 @@ class MainServices extends Component {
               <div className="col-md-6">
 
                 <img
-                    src="/images/imagebox/5A6A4439.jpg"
+                    src="/images/imagebox/05.jpg"
                     alt="Sunday Mornings"
                     className="img-fluid"
                     // className="img-fluid"
