@@ -59,7 +59,7 @@ class Ministries extends Component {
                 <div className="boxed">
                     {/* Header Section */}
                     <section className="flat-row pd-services-post">
-                        <div className="banner" style={{ backgroundImage: 'url(/images/banner/banner-01.png)' }}>
+                        <div className="banner" style={{ backgroundImage: 'url(/images/banner/banner-01.png)', height: '690px' }}>
                             <div className="banner-content">
                                 <h1 className="banner-title"
                                     style={{

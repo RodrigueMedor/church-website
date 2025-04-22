@@ -30,7 +30,7 @@ class MainServices extends Component {
   render() {
     return (
       <section className="flat-row pd-services-post">
-        <div className="banner" style={{ backgroundImage: 'url(/images/imagebox/5A6A4439.jpg)' }}>
+        <div className="banner" style={{ backgroundImage: 'url(/images/imagebox/5A6A4439.jpg)', height: '690px' }}>
           <div className="banner-content">
 
             <h1 className="banner-title">Service Schedule</h1>
