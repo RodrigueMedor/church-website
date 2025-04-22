@@ -6,7 +6,7 @@ const contentData = {
     banner: {
         title: "Children Ministry",
         subtitle: "Nurturing the next generation with love, faith, and fun.",
-        backgroundImage: "/images/banner/Church.jpg"
+        backgroundImage: "/images/banner/children-01.png"
         // backgroundImage: "/images/banner/children-ministry.jpg"
     },
     about: {
@@ -73,7 +73,7 @@ class ChildrenMinitry extends Component {
                     }
                     {/* Banner Section */}
                     <section className="flat-row pd-services-post">
-                        <div className="banner" style={{ backgroundImage: `url(${contentData.banner.backgroundImage})` }}>
+                        <div className="banner" style={{ backgroundImage: `url(${contentData.banner.backgroundImage})`, height: '900px' }}>
                             <div className="banner-content">
                                 <h1
                                     className="banner-title"
