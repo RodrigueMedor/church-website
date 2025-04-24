@@ -40,7 +40,13 @@ class Slider extends Component {
                                 data-paddingbottom="[0,0,0,0"
                                 data-paddingleft="[0,0,0,0]"
 
-                                >Welcome to First Haitian Baptist <br /> Church of Kissimmee!
+                                 style={{
+                                     fontSize: '3rem',
+                                     fontWeight: 'bold',
+                                     color: '#fff',
+                                     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
+                                     marginBottom: '10px'
+                                 }}>Welcome to First Haitian Baptist <br /> Church of Kissimmee!
                                 </div>
 
                             {/* <!-- LAYER NR. 13 --> */}
@@ -65,6 +71,13 @@ class Slider extends Component {
                                 data-paddingbottom="[0,0,0,0]"
                                 data-paddingleft="[0,0,0,0]"
 
+                                 style={{
+                                     fontSize: '1.5rem',
+                                     color: '#ddd',
+                                     textShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)',
+                                     maxWidth: '800px',
+                                     margin: '0 auto'
+                                 }}
                                 >We are a Christ-centered community committed to worship, fellowship, <br /> and service. Whether you are joining us for the first time or are a longtime member, <br /> we invite you to grow in faith and experience God’s love with us.
                             </div>
 
@@ -122,6 +135,13 @@ class Slider extends Component {
                                 data-paddingbottom="[0,0,0,0"
                                 data-paddingleft="[0,0,0,0]"
 
+                                 style={{
+                                     fontSize: '3rem',
+                                     fontWeight: 'bold',
+                                     color: '#fff',
+                                     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
+                                     marginBottom: '10px'
+                                 }}
                                 >
                                 Worship Teams in Action.
                             </div>
@@ -148,6 +168,13 @@ class Slider extends Component {
                                 data-paddingbottom="[0,0,0,0]"
                                 data-paddingleft="[0,0,0,0]"
 
+                                 style={{
+                                     fontSize: '1.5rem',
+                                     color: '#ddd',
+                                     textShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)',
+                                     maxWidth: '800px',
+                                     margin: '0 auto'
+                                 }}
                                 >
                                 Let the word of Christ dwell in you richly, teaching and admonishing <br /> one another in all wisdom, singing psalms and hymns and spiritual songs, <br />with thankfulness in your hearts to God." – Colossians 3:16
                             </div>

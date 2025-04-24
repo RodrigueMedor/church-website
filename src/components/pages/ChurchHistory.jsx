@@ -36,8 +36,22 @@ class ChurchHistory extends Component {
                         <div className="banner" style={{ backgroundImage: 'url(/images/banner/Church.jpg)' }}>
                             <div className="banner-content">
 
-                            <h1 className="banner-title" style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>Our Church History</h1>
-                            <p className="banner-subtitle" style={{ fontSize: '1.2rem', color: '#555' }}>Discover our journey and mission to serve the community.</p>
+                            <h1 className="banner-title" style={{
+                                fontSize: '3rem',
+                                fontWeight: 'bold',
+                                color: '#fff',
+                                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
+                                marginBottom: '10px'
+                            }}>Our Church History</h1>
+                            <p className="banner-subtitle"
+                               style={{
+                                   fontSize: '1.5rem',
+                                   color: '#ddd',
+                                   textShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)',
+                                   maxWidth: '800px',
+                                   margin: '0 auto'
+                               }}
+                            >Discover our journey and mission to serve the community.</p>
                             </div>
                         </div>
                     </section>

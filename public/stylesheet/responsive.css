@@ -738,7 +738,23 @@
 	color: #fff;
 	/*height: auto;*/
 	height: 500px;
-	margin-top: -60px; /* Adjust this value as needed */
+	margin-top: -60px; /* Adjust this value as needed *!*/
+}
+
+.banner-service {
+	background-size: cover;
+	background-position: center;
+	padding: 100px 20px;
+	text-align: center;
+	color: #fff;
+	/*height: auto;*/
+	height: 500px;
+	/*margin-top: -60px; !* Adjust this value as needed *!*!*/
+}
+
+.position-top{
+	position: absolute;
+	margin-top: auto;
 }
 
 .banner-content {
@@ -777,4 +793,20 @@
 	margin-right: -60px; /* Adjust the value as needed */
 	/*width: 700px; !* Set the desired width *!*/
 	/*height: 450px; !* Set the desired height *!*/
+}
+
+
+/* Custom CSS */
+.main-services .banner {
+	text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.main-services .table-hover tbody tr:hover {
+	background-color: #f1f1f1;
+}
+
+.main-services .cta-section a:hover {
+	background-color: #fff;
+	color: #28a745;
+	text-decoration: none;
 }
