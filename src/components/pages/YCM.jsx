@@ -6,12 +6,12 @@ const contentData = {
     banner: {
         title: "Young Couples' Ministry",
         subtitle: "Building strong relationships through faith, love, and community.",
-        backgroundImage: "/images/banner/Church.jpg"
+        backgroundImage: "/images/ministries/ycm2.png"
     },
     about: {
         heading: "About Young Couples' Ministry",
         description: "Our Young Couples' Ministry is dedicated to nurturing relationships, fostering spiritual growth, and creating a supportive community for couples to thrive together.",
-        image: "/images/ministries/music-ministry.png"
+        image: "/images/ministries/couple.png"
     },
     verse: {
         reference: "Ephesians 4:2-3",
@@ -23,13 +23,13 @@ const contentData = {
             id: 1,
             title: "Couples' Retreat",
             description: "A weekend getaway to strengthen your bond and grow spiritually.",
-            image: "/images/ministries/music-ministry.png"
+            image: "/images/ministries/ycm1.png"
         },
         {
             id: 2,
             title: "Marriage Workshops",
             description: "Interactive sessions to build communication and understanding.",
-            image: "/images/ministries/music-ministry.png"
+            image: "/images/ministries/couples2.png"
         }
     ]
 };
@@ -60,7 +60,15 @@ class YCM extends Component {
                     }
                     {/* Banner Section */}
                     <section className="flat-row pd-services-post">
-                        <div className="banner" style={{ backgroundImage: `url(${contentData.banner.backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center', padding: '100px 0' }}>
+                        <div
+                            className="banner"
+                            style={{
+                                backgroundImage: `url(${contentData.banner.backgroundImage})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center -550px', // Moves the image 50px up
+                                padding: '100px 0'
+                            }}
+                        >
                             <div className="banner-content" style={{ textAlign: 'center', color: '#fff' }}>
                                 <h1
                                     className="banner-title"

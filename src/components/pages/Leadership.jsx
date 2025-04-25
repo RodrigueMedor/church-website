@@ -8,7 +8,7 @@ const contentData = {
         backgroundImage: "/images/banner/pastor-sermon.png"
     },
     leadershipTeam: [
-        { id: 1, name: 'Rev. Fritzner JB Brouard', role: 'Pastor', photo: '/images/staff/staff.png', bio: 'Rev. Fritzner JB Brouard leads with a heart for ministry and a vision for spiritual growth.' }
+        { id: 1, name: 'Rev. Fritzner JB Brouard', role: 'Pastor', photo: '/images/banner/pastor22.png', bio: 'Rev. Fritzner JB Brouard leads with a heart for ministry and a vision for spiritual growth.' }
     ],
     trustees: [
         { id: 1, name: 'Sully Moreau', photo: '/images/staff/staff.png' },
@@ -89,13 +89,13 @@ class Leadership extends Component {
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
                                 {contentData.leadershipTeam.map((leader) => (
-                                    <div key={leader.id} style={{ backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', textAlign: 'center', padding: '20px' }}>
+                                    <div key={leader.id} style={{ backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', textAlign: 'center', padding: '100px' }}>
                                         <img
                                             src={leader.photo}
                                             alt={leader.name}
                                             style={{
                                                 width: '100%',
-                                                maxWidth: '200px',
+                                                maxWidth: '500px',
                                                 borderRadius: '50%',
                                                 marginBottom: '15px'
                                             }}
@@ -121,7 +121,7 @@ class Leadership extends Component {
                                             alt={trustee.name}
                                             style={{
                                                 width: '100%',
-                                                maxWidth: '200px',
+                                                maxWidth: '300px',
                                                 borderRadius: '50%',
                                                 marginBottom: '15px'
                                             }}
@@ -143,7 +143,7 @@ class Leadership extends Component {
                                     alt={contentData.registeredAgent.name}
                                     style={{
                                         width: '100%',
-                                        maxWidth: '200px',
+                                        maxWidth: '300px',
                                         borderRadius: '50%',
                                         marginBottom: '15px'
                                     }}

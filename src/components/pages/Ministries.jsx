@@ -46,7 +46,7 @@ class Ministries extends Component {
                     id: 6,
                     title: 'Young Couples Ministry(YCM)',
                     content: 'Strengthening relationships and fostering spiritual growth for young couples.',
-                    image: '/images/ministries/young-couples-ministry.png',
+                    image: '/images/ministries/couples2.png',
                     link: '/young-couples',
                 },
             ]
