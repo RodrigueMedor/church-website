@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ServicesBox1 from './ServicesBox1'
-import ServicesBox2 from './ServicesBox2'
+// import ServicesBox2 from './ServicesBox2'
 class Services extends Component {
 	constructor(props) {
         super(props);
@@ -40,7 +40,7 @@ class Services extends Component {
 							<div className="height80"></div>
 						</div>
 					</div>
-					<ServicesBox2 />
+					{/*<ServicesBox2 />*/}
 				</div>
         	</section>
         // <!-- /.flat-row-iconbox -->

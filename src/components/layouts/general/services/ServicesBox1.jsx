@@ -9,21 +9,19 @@ class ServicesBoxs1 extends Component {
                     id: 1,
                     classicon: 'icon-rounded clipboard',
                     title: 'Mission Statement',
-                    description: 'Our mission is to share God\'s love, inspire faith, and serve our community by fostering spiritual growth and compassion.',
+                    description: 'First Haitian Baptist Church of Kissimmee (FHBCK) would typically have a mission statement focused on fostering spiritual growth, serving the local community, and promoting Haitian culture and heritage.',
                 },
                 {
                     id: 2,
                     classicon: 'icon-rounded line-chart',
                     title: 'Vision Statement',
-                    description: 'We envision a world where everyone feels loved, valued, and supported through the teachings of Jesus Christ.',
+                    description: 'FHBCK’s mission is to equip members with a deep understanding of God’s Word and a personal relationship with Jesus Christ, empowering them to grow spiritually and serve both the church and the wider community in alignment with Gospel teachings.',
                 },
                 {
                     id: 3,
                     classicon: 'icon-rounded clock',
                     title: 'Highlight Core Beliefs or Values',
-                    description: 'Faith: Trusting in God\'s word as a foundation for life.\n' +
-                        'Community: Building meaningful connections with one another.\n' +
-                        'Service: Reaching out to those in need with compassion.',
+                    description: `FHBCK is grounded in the authority of God’s Word, promoting a personal relationship with Jesus Christ, strong and resilient faith, and a life of service. The church is committed to Gospel-centered teaching, inclusive evangelism, continuous spiritual growth, and building a supportive, faith-driven community.`,
                 },
             ]
         }

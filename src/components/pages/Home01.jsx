@@ -6,7 +6,7 @@ import { Featured } from '../layouts/general/featured';
 import { Services } from '../layouts/general/services';
 // import { Project } from '../layouts/general/projects';
 // import { Callback } from '../layouts/general/callback';
-import { Blog } from '../layouts/general/blog';
+// import { Blog } from '../layouts/general/blog';
 
 class Home01 extends Component {
     constructor(props) {
@@ -38,7 +38,7 @@ class Home01 extends Component {
                     {/*<Project />*/}
                     {/*<Callback />*/}
 
-                    <Blog />
+                    {/*<Blog />*/}
 
                     {/*<CarouselClient />*/}
 

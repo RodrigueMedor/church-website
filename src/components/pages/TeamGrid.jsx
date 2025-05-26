@@ -55,33 +55,6 @@ class TeamGrid extends Component {
                             <Header data={data} key={data.id} />
                         ))
                     }
-
-                    {/* Page Title Section */}
-                    {/*<div className="page-title">*/}
-                    {/*    <div className="container">*/}
-                    {/*        <div className="row">*/}
-                    {/*            <div className="col-md-12">*/}
-                    {/*                <div className="page-title-heading">*/}
-                    {/*                    {*/}
-                    {/*                        this.state.titleheading.map(data => (*/}
-                    {/*                            <h1 key={data.id} className="h1-title">{data.title} ttttttttt</h1>*/}
-                    {/*                        ))*/}
-                    {/*                    }*/}
-                    {/*                </div>*/}
-                    {/*                <ul className="breadcrumbs">*/}
-                    {/*                    {*/}
-                    {/*                        this.state.breadcrumbs.map(data => (*/}
-                    {/*                            <li key={data.id}><Link to="#" title="">{data.title}<i className={data.classicon} aria-hidden={data.aria}></i></Link></li>*/}
-                    {/*                        ))*/}
-                    {/*                    }*/}
-                    {/*                </ul>*/}
-                    {/*                <div className="clearfix"></div>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-
-                    {/*<MainGrid />*/}
                     <ChurchHistory />
 
                     <Footer />

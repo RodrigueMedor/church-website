@@ -26,6 +26,7 @@ import YCM from "./YCM";
 import MusicMinistry from "./MusicMinistry";
 import StaffMembers from "./StaffMembers";
 import Leadership from "./Leadership";
+import WatchOnlineComponent from "./WatchOnlineComponent";
 
 const routes = [
     { path: '/', component: Home01},
@@ -55,6 +56,7 @@ const routes = [
     {path: '/young-couples', component: YCM},
     {path: '/music', component: MusicMinistry},
     {path: '/leadership', component: Leadership},
+    {path: '/watch-online', component: WatchOnlineComponent},
     
 ]
 

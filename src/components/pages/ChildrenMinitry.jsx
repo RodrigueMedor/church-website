@@ -12,7 +12,7 @@ const contentData = {
     about: {
         heading: "About Children Ministry",
         description: "Our Children Ministry is dedicated to providing a safe, fun, and engaging environment where children can learn about God, build friendships, and grow in their faith.",
-        image: "/images/ministries/music-ministry.png"
+        image: "/images/ministries/children.png"
         // image: "/images/ministries/children-ministry-about.png"
     },
     activities: [
@@ -20,7 +20,7 @@ const contentData = {
             id: 1,
             title: "Sunday School",
             description: "Interactive lessons and activities to teach children about the Bible.",
-            image: "/images/ministries/music-ministry.png"
+            image: "/images/ministries/kids2.jpg"
             // image: "/images/ministries/children-sunday-school.png"
         },
         {
@@ -34,7 +34,7 @@ const contentData = {
             id: 3,
             title: "Kids Choir",
             description: "Encouraging children to worship through music and singing.",
-            image: "/images/ministries/music-ministry.png"
+            image: "/images/ministries/kids2.jpg"
             // image: "/images/ministries/children-choir.png"
         },
         {

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Header, TopBar, Loader, Footer } from '../layouts/general';
+import './Leadership.css';
 
 const contentData = {
     banner: {
         title: "Leadership & Staff",
         subtitle: "Meet the leaders guiding our church with faith and vision.",
-        backgroundImage: "/images/banner/pastor-sermon.png"
+        backgroundImage: "/images/banner/pastor-sermon_1.JPG"
     },
     leadershipTeam: [
         { id: 1, name: 'Rev. Fritzner JB Brouard', role: 'Pastor', photo: '/images/banner/pastor22.png', bio: 'Rev. Fritzner JB Brouard leads with a heart for ministry and a vision for spiritual growth.' }
@@ -38,43 +39,14 @@ class Leadership extends Component {
                         <div
                             className="banner"
                             style={{
-                                backgroundImage: `url(${contentData.banner.backgroundImage})`,
-                                height: '650px',
-                                backgroundSize: 'cover',
-                                color: '#fff',
-                                paddingTop: '200px', // Increased padding to move the banner down
-                                clipPath: 'inset(0px 0px 50px 0px)', // Cuts the bottom of the banner
-                                minHeight: '60vh',
-                                backgroundPosition: 'top',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                textAlign: 'center',
+                                backgroundImage: `url(${contentData.banner.backgroundImage})`
                             }}
                         >
                             <div className="banner-content">
-                                <h1
-                                    className="banner-title"
-                                    style={{
-                                        fontSize: '3rem',
-                                        fontWeight: 'bold',
-                                        color: '#fff',
-                                        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
-                                        marginBottom: '10px'
-                                    }}
-                                >
+                                <h1 className="banner-title">
                                     {contentData.banner.title}
                                 </h1>
-                                <p
-                                    className="banner-subtitle"
-                                    style={{
-                                        fontSize: '1.5rem',
-                                        color: '#ddd',
-                                        textShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)',
-                                        maxWidth: '800px',
-                                        margin: '0 auto'
-                                    }}
-                                >
+                                <p className="banner-subtitle">
                                     {contentData.banner.subtitle}
                                 </p>
                             </div>
@@ -82,27 +54,22 @@ class Leadership extends Component {
                     </section>
 
                     {/* Leadership Team Section */}
-                    <section className="leadership-section" style={{ padding: '60px 20px', backgroundColor: '#f9f9f9' }}>
-                        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                                <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#333' }}>Meet Our Leadership Team</h2>
+                    <section className="leadership-section">
+                        <div className="leadership-container">
+                            <div className="leadership-title">
+                                Meet Our Leadership Team
                             </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+                            <div className="leadership-grid">
                                 {contentData.leadershipTeam.map((leader) => (
-                                    <div key={leader.id} style={{ backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', textAlign: 'center', padding: '100px' }}>
+                                    <div key={leader.id} className="leader-card">
                                         <img
                                             src={leader.photo}
                                             alt={leader.name}
-                                            style={{
-                                                width: '100%',
-                                                maxWidth: '500px',
-                                                borderRadius: '50%',
-                                                marginBottom: '15px'
-                                            }}
+                                            className="leader-photo"
                                         />
-                                        <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>{leader.name}</h3>
-                                        <p style={{ fontSize: '1.1rem', color: '#ff6f61', marginBottom: '10px' }}>{leader.role}</p>
-                                        <p style={{ fontSize: '1rem', color: '#555', lineHeight: '1.6' }}>{leader.bio}</p>
+                                        <h3 className="leader-name">{leader.name}</h3>
+                                        <p className="leader-role">{leader.role}</p>
+                                        <p className="leader-bio">{leader.bio}</p>
                                     </div>
                                 ))}
                             </div>
@@ -110,23 +77,18 @@ class Leadership extends Component {
                     </section>
 
                     {/* Trustees Section */}
-                    <section className="trustees-section" style={{ padding: '40px 20px', backgroundColor: '#fff' }}>
-                        <div className="container" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-                            <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '20px' }}>Trustees</h2>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '20px' }}>
+                    <section className="trustees-section">
+                        <div className="trustees-container">
+                            <h2 className="trustees-title">Trustees</h2>
+                            <div className="trustees-list">
                                 {contentData.trustees.map((trustee) => (
-                                    <div key={trustee.id} style={{ textAlign: 'center', flex: '1' }}>
+                                    <div key={trustee.id} className="trustee-card">
                                         <img
                                             src={trustee.photo}
                                             alt={trustee.name}
-                                            style={{
-                                                width: '100%',
-                                                maxWidth: '300px',
-                                                borderRadius: '50%',
-                                                marginBottom: '15px'
-                                            }}
+                                            className="trustee-photo"
                                         />
-                                        <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>{trustee.name}</h3>
+                                        <h3 className="trustee-name">{trustee.name}</h3>
                                     </div>
                                 ))}
                             </div>
@@ -134,21 +96,16 @@ class Leadership extends Component {
                     </section>
 
                     {/* Registered Agent Section */}
-                    <section className="registered-agent-section" style={{ padding: '40px 20px', backgroundColor: '#f9f9f9' }}>
-                        <div className="container" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-                            <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '20px' }}>Registered Agent</h2>
-                            <div style={{ textAlign: 'center' }}>
+                    <section className="registered-agent-section">
+                        <div className="registered-agent-container">
+                            <h2 className="registered-agent-title">Registered Agent</h2>
+                            <div>
                                 <img
                                     src={contentData.registeredAgent.photo}
                                     alt={contentData.registeredAgent.name}
-                                    style={{
-                                        width: '100%',
-                                        maxWidth: '300px',
-                                        borderRadius: '50%',
-                                        marginBottom: '15px'
-                                    }}
+                                    className="registered-agent-photo"
                                 />
-                                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>
+                                <h3 className="registered-agent-name">
                                     {contentData.registeredAgent.name}
                                 </h3>
                             </div>

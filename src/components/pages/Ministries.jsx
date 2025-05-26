@@ -11,7 +11,7 @@ class Ministries extends Component {
                     id: 1,
                     title: 'Youth Ministry',
                     content: 'Empowering the next generation through faith, fellowship, and service.',
-                    image: '/images/ministries/music-ministry.png',
+                    image: '/images/ministries/young.png',
                     link: '/youth-ministry',
                 },
                 {
@@ -39,7 +39,7 @@ class Ministries extends Component {
                     id: 5,
                     title: 'Children\'s Ministry',
                     content: 'Teaching children about God\'s love in a fun and engaging way.',
-                    image: '/images/ministries/childrens-ministry.png',
+                    image: '/images/ministries/children.png',
                     link: '/children',
                 },
                 {
