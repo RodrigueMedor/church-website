@@ -1,266 +1,204 @@
-# church-website
-It looks like you're running the `gcloud` command as `rodriguemedor1@gmail.com`, but you want to configure access for `rodriguemedor@gmail.com`. You need to ensure that:
+# Church Website with Back Office
 
-1. You are using the correct Google Cloud account (`rodriguemedor@gmail.com`).
-2. Your account has the necessary permissions to enable services and modify IAM policies in the project.
+## Overview
+This is the official website for [Church Name] with a comprehensive back office for content management.
 
----
+## Getting Started
 
-### **Step 1: Switch to the Correct Account**
-Check which account is currently active:
+### Prerequisites
+- Node.js (v14 or later)
+- npm (v6 or later) or yarn
+- MongoDB (for the back office)
 
-```sh
-gcloud auth list
-```
+### Installation
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file based on `.env.example`
+4. Start the development server:
+   ```bash
+   npm start
+   ```
 
-If the output shows `rodriguemedor1@gmail.com` as the active account, switch to the correct one:
+## Back Office Implementation Plan
 
-```sh
-gcloud auth login rodriguemedor@gmail.com
-```
+### 1. Backend Setup
+- Set up Node.js/Express.js server
+- Configure MongoDB/Mongoose
+- Implement JWT authentication
+- Set up role-based access control
 
-Then, set it as the active account:
+### 2. Database Schema
+- Users (admin, editors)
+- Pages (home, about, etc.)
+- Events
+- Sermons
+- Blog/News
+- Media Library
+- Navigation/Menus
+- Site Settings
 
-```sh
-gcloud config set account rodriguemedor@gmail.com
-```
+### 3. Admin Panel Features
+- **Authentication**
+  - Secure login/logout
+  - Password reset
+  - User management
 
-Confirm the change by running:
+- **Content Management**
+  - WYSIWYG page editor
+  - Media uploader
+  - Menu/navigation management
+  - Form builder
 
-```sh
-gcloud auth list
-```
+- **Event Management**
+  - CRUD operations
+  - Categories
+  - Registration management
 
----
+- **Sermon Management**
+  - Audio/video uploads
+  - Sermon details
+  - Series organization
 
-### **Step 2: Verify Your IAM Permissions**
-Your account needs to have **Project Owner** or **Editor** permissions to enable services and update IAM policies. Check your current IAM roles:
+- **Blog/News Management**
+  - Post creation/editing
+  - Categories and tags
+  - Featured content
 
-```sh
-gcloud projects get-iam-policy spartan-phoenix-449003-j6
-```
+- **Media Library**
+  - File management
+  - Image optimization
+  - Categorization
 
-Look for a section that grants `rodriguemedor@gmail.com` **Owner** (`roles/owner`) or **Editor** (`roles/editor`). If it's missing, you may need an administrator to grant you the required permissions:
+### 4. API Development
+- RESTful endpoints
+- File upload handling
+- Authentication middleware
 
-```sh
-gcloud projects add-iam-policy-binding spartan-phoenix-449003-j6 \
-    --member="user:rodriguemedor@gmail.com" --role="roles/owner"
-```
+### 5. Security Measures
+- CSRF protection
+- Input validation
+- Rate limiting
+- Secure file handling
 
-If you do not have permission to run this command, ask someone with **Owner** access to do it for you.
+### 6. Integration
+- Frontend API integration
+- Real-time updates
+- Cache management
 
----
+### 7. Backup & Recovery
+- Automated backups
+- Content versioning
+- Rollback capabilities
 
-### **Step 3: Retry Enabling IAP**
-Once you have verified your permissions and switched to the correct account, enable IAP again:
+### 8. Documentation
+- Admin guides
+- API documentation
+- Troubleshooting
 
-```sh
-gcloud services enable iap.googleapis.com --project=spartan-phoenix-449003-j6
-```
-
-Then, proceed with restricting access using the previous steps.
-
----
-
-### **Troubleshooting**
-- If you still get permission errors, check if your account is listed under **IAM & Admin** → **IAM** in the Google Cloud Console (`https://console.cloud.google.com/iam-admin/iam?project=spartan-phoenix-449003-j6`).
-- If your account does not have sufficient permissions, you may need to ask a project administrator to grant you `roles/editor` or `roles/owner`.
-
-Let me know if you need more help! 🚀
-
-
-### GCE
-
-gcloud projects add-iam-policy-binding stoked-door-451819-s9 \
---member=user:rodriguemedor@yahoo.fr \
---role=roles/compute.osLogin
-
-
-gcloud projects add-iam-policy-binding stoked-door-451819-s9 \
---member=user:rodriguemedor@yahoo.fr \
---role=roles/compute.osAdminLogin
-
-### The error message suggests that your user does not have the necessary **IAM permissions** to modify the instance metadata and establish an SSH connection. Here’s how to fix it:
-
----
-
-### **1. Assign the Required IAM Roles**
-Ensure your user has the following roles:
-
-#### **(a) Compute OS Login Access**
-Run:
-```sh
-gcloud projects add-iam-policy-binding stoked-door-451819-s9 \
-    --member=user:wilbert.volcy@gmail.com \
-    --role=roles/compute.osLogin
-```
-If administrative privileges (sudo access) are required, grant:
-```sh
-gcloud projects add-iam-policy-binding stoked-door-451819-s9 \
-    --member=user:wilbert.volcy@gmail.com \
-    --role=roles/compute.osAdminLogin
-```
-
-```aiexclude
-gcloud projects add-iam-policy-binding stoked-door-451819-s9 \
-    --member=user:rodriguemedor@yahoo.fr \
-    --role=roles/compute.instanceAdmin.v1
-
-```
-
-```aiexclude
-gcloud compute instances add-iam-policy-binding instance-20250223-215754 \
-    --member=user:rodriguemedor@yahoo.fr \
-    --role=roles/compute.instanceAdmin.v1 \
-    --zone=us-central1-a
-
-gcloud projects add-iam-policy-binding stoked-door-451819-s9 \
-    --member=user:rodriguemedor@yahoo.fr \
-    --role=roles/iap.tunnelResourceAccessor
-    
-    gcloud projects add-iam-policy-binding stoked-door-451819-s9 \
-    --member=user:rodriguemedor@yahoo.fr \
-    --role=roles/compute.osLogin
-
-
-```
----
-
-#### **(b) Compute Instance Metadata Permissions**
-If you need permission to modify metadata, grant:
-```sh
-gcloud projects add-iam-policy-binding stoked-door-451819-s9 \
-    --member=user:YOUR_EMAIL \
-    --role=roles/compute.instanceAdmin.v1
-```
-or for specific instance-level access:
-```sh
-gcloud compute instances add-iam-policy-binding instance-20250223-215754 \
-    --member=user:YOUR_EMAIL \
-    --role=roles/compute.instanceAdmin.v1 \
-    --zone=us-central1-a
-```
----
-
-### **2. Enable OS Login (Recommended)**
-If **OS Login** is not enabled, set the metadata for your project:
-```sh
-gcloud compute project-info add-metadata \
-    --metadata enable-oslogin=TRUE
-```
-Alternatively, enable OS Login at the instance level:
-```sh
-gcloud compute instances add-metadata instance-20250223-215754 \
-    --metadata enable-oslogin=TRUE \
-    --zone=us-central1-a
-```
-This ensures SSH access is granted based on IAM permissions rather than instance metadata.
+### 9. Testing
+- Unit tests
+- Integration tests
+- User acceptance testing
 
 ---
 
-### **3. Try Connecting Again**
-Once roles are updated, try connecting again:
-```sh
-gcloud compute ssh instance-20250223-215754 --tunnel-through-iap --zone="us-central1-a"
-```
+## Original Create React App Documentation
 
-If the error persists, run:
-```sh
-gcloud auth list
-```
-Make sure you're authenticated as the correct user.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
----
+### Available Scripts
 
-Would you like me to check any other configurations? 🚀
+In the project directory, you can run:
 
-To **revoke** access for **wilbert.volcy@gmail.com** from the GCP project **`stoked-door-451819-s9`**, you need to **remove** the IAM policy binding.
+#### `npm start`
+Runs the app in development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
----
+#### `npm test`
+Launches the test runner in interactive watch mode.
 
-### ✅ **Remove IAM Role Assignment**
-Run the following command to **remove** `roles/compute.osLogin` from `wilbert.volcy@gmail.com`:
+#### `npm run build`
+Builds the app for production to the `build` folder.
 
-```sh
-gcloud projects remove-iam-policy-binding stoked-door-451819-s9 \
-    --member=user:wilbert.volcy@gmail.com \
-    --role=roles/compute.osLogin
-```
-```sh
-gcloud projects remove-iam-policy-binding stoked-door-451819-s9 \
-    --member=user:wilbert.volcy@gmail.com \
-    --role=roles/compute.osAdminLogin
-```
+#### `npm run eject`
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
+## Learn More
 
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-```aiexclude
-gcloud projects remove-iam-policy-binding stoked-door-451819-s9 \
-    --member=user:rodriguemedor@yahoo.fr \
-    --role=roles/compute.instanceAdmin.v1
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-```
+### Deployment
 
-```aiexclude
-gcloud compute instances remove-iam-policy-binding instance-20250223-215754 \
-    --member=user:rodriguemedor@yahoo.fr \
-    --role=roles/compute.instanceAdmin.v1 \
-    --zone=us-central1-a
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-gcloud projects remove-iam-policy-binding stoked-door-451819-s9 \
-    --member=user:rodriguemedor@yahoo.fr \
-    --role=roles/iap.tunnelResourceAccessor
-    
-    gcloud projects remove-iam-policy-binding stoked-door-451819-s9 \
-    --member=user:rodriguemedor@yahoo.fr \
-    --role=roles/compute.osLogin
----
+## Available Scripts
 
-### 🔍 **Verify That the Role Was Removed**
-Run the following command to check if the user **still has any roles** assigned:
+In the project directory, you can run:
 
-```sh
-gcloud projects get-iam-policy stoked-door-451819-s9 --format=json | jq '.bindings[] | select(.members[]? | contains("wilbert.volcy@gmail.com"))'
-```
-If the output is empty, it means the user **no longer has access**.
+### `npm start`
 
----
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-### 🚀 **Expected Outcome**
-✅ **wilbert.volcy@gmail.com** **loses** `roles/compute.osLogin` access.  
-✅ If this was the only role assigned, the user **can no longer access Compute Engine instances**.  
-✅ If they had other roles, you may need to remove them using the same `remove-iam-policy-binding` command.
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-Let me know if you need further assistance! 🚀
+### `npm test`
 
-The error **"Repository 'my-docker-repo' not found"** means that the **Artifact Registry repository** you are trying to push the image to does not exist. You need to create it first.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### **Fix: Create the Artifact Registry Repository**
-Run the following command to create the repository:
-```sh
-gcloud artifacts repositories create my-docker-repo \
-    --location=us-central1 \
-    --repository-format=Docker
-```
-This will create a **Docker** repository named `my-docker-repo` in **`us-central1`**.
+### `npm run build`
 
----
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### **Verify the Repository Exists**
-To confirm the repository is created, run:
-```sh
-gcloud artifacts repositories list --location=us-central1
-```
-You should see `my-docker-repo` in the output.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
----
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### **Re-run the Cloud Build**
-After creating the repository, re-run:
-```sh
-gcloud builds submit --config=cloudbuild.yaml
-```
+### `npm run eject`
 
-This should now work and push the image successfully. 🚀
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

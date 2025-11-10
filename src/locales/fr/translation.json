@@ -1,0 +1,113 @@
+{
+  "header": {
+    "home": "Accueil",
+    "about": "À Propos",
+    "ministries": "Ministères",
+    "sermons": "Prédications",
+    "events": "Événements",
+    "give": "Faire un Don",
+    "contact": "Contactez-Nous"
+  },
+  "home": {
+    "latestSermon": {
+      "title": "La Foi en Action",
+      "preacher": "Pasteur Jean Dupont",
+      "scripture": "Jacques 2:14-26",
+      "description": "Dans ce message, nous explorons comment la foi véritable se manifeste à travers nos actions et comment nous pouvons vivre une foi authentique dans notre vie quotidienne.",
+      "bibleText": "Texte biblique"
+    },
+    "welcome": "Bienvenue à",
+    "welcomeSubtitle": "Un Lieu de Culte, de Communion et de Service",
+    "joinUs": "Rejoignez-Nous Ce Dimanche",
+    "watchLive": "Regarder en Direct",
+    "ourCommunity": "Notre Communauté",
+    "communityDescription": "Une église accueillante où chacun peut grandir dans la foi et construire des relations significatives.",
+    "learnMoreAboutChurch": "En savoir plus sur notre église",
+    "ministriesAndEvents": "Nos Ministères & Événements",
+    "latestNews": "Dernières Nouvelles",
+    "latestSermonTitle": "Dernier Message",
+    "communityLife": {
+      "title": "Vie en Communauté",
+      "description": "Partagez des moments de fraternité à travers nos groupes de maison, sorties et événements communautaires qui renforcent les liens entre les membres."
+    },
+    "serviceAndSupport": {
+      "title": "Service et Entraide",
+      "description": "Notre ministère de service et d'entraide s'engage à soutenir les membres de notre communauté dans leurs besoins quotidiens et spirituels.",
+      "volunteerPrograms": "Découvrez nos programmes d'entraide et de bénévolat pour servir notre communauté locale et faire une différence concrète dans la vie des autres."
+    },
+    "spiritualGrowth": {
+      "title": "Croissance Spirituelle",
+      "description": "Approfondissez votre foi à travers nos études bibliques, séminaires et formations pour grandir spirituellement à chaque étape de votre vie."
+    },
+    "sundayService": "Culte du Dimanche",
+    "bibleStudy": "Étude Biblique",
+    "communityPrayer": "Prière Communautaire",
+    "serviceTimes": {
+      "sundayService": "Dimanche, 10:00 - 12:00",
+      "bibleStudy": "Mercredi, 19:00 - 20:30",
+      "communityPrayer": "Vendredi, 18:30 - 20:00"
+    },
+    "upcomingEvents": "Événements à Venir",
+    "upcomingEventsSubtitle": "Rejoignez-nous pour nos prochains rassemblements et activités",
+    "serviceDescriptions": {
+      "sundayService": "Rejoignez-nous pour un temps d'adoration et d'enseignement biblique.",
+      "bibleStudy": "Étude approfondie de la Parole de Dieu en petit groupe.",
+      "communityPrayer": "Un temps de prière pour l'église et la communauté."
+    },
+    "locations": {
+      "mainHall": "Salle Principale",
+      "meetingRoom": "Salle de Réunion",
+      "prayerRoom": "Salle de Prière"
+    },
+    "serviceTimesLabel": "Heures des Services"
+  },
+  "about": {
+    "welcome": "Bienvenue à",
+    "welcomeSubtitle": "Un Lieu de Culte, de Communion et de Service",
+    "ourHistory": "Notre Histoire",
+    "mission": "La mission de la Première Église Baptiste Haïtienne de Kissimmee est de glorifier Dieu en faisant des disciples de Jésus-Christ à travers l'enseignement biblique, l'adoration authentique, la communion fraternelle et le service dans notre communauté locale et au-delà.",
+    "vision": "Notre vision est d'être une communauté multiculturelle et dynamique où chaque personne peut grandir spirituellement, développer des relations significatives et s'engager dans un ministère transformateur, reflétant ainsi l'amour et la grâce de Jésus-Christ.",
+    "values": {
+      "biblicalFoundation": {
+        "title": "Fondement Biblique",
+        "description": "Nous croyons en l'autorité suprême de la Bible comme Parole de Dieu, guide infaillible pour notre foi et notre conduite."
+      },
+      "passionateWorship": {
+        "title": "Adoration Passionnée",
+        "description": "Nous nous engageons dans une adoration authentique qui honore Dieu et construit la foi, reflétant la richesse de notre héritage haïtien."
+      },
+      "unitedCommunity": {
+        "title": "Communauté Unie",
+        "description": "Nous cultivons des relations authentiques où chacun trouve sa place, son identité en Christ et son appel à servir."
+      },
+      "integralMission": {
+        "title": "Mission Intégrale",
+        "description": "Nous répondons à l'appel de Christ en servant notre communauté locale et en soutenant l'œuvre missionnaire à travers le monde."
+      }
+    },
+    "ourServices": "Nos Services",
+    "contactUs": "Nous Contacter",
+    "learnMore": "En Savoir Plus",
+    "ourTeam": "Notre Équipe",
+    "readMore": "Lire Plus"
+  },
+  "common": {
+    "worship": "Culte",
+    "study": "Étude",
+    "prayer": "Prière",
+    "readMore": "Lire la suite",
+    "viewAll": "Voir tout",
+    "loadMore": "Charger plus",
+    "noEvents": "Aucun événement à venir",
+    "allEvents": "Tous les événements",
+    "watch on youtube": "Regarder sur YouTube",
+    "all messages": "Tous les messages",
+    "back": "Retour",
+    "backToHome": "Retour à l'accueil"
+  },
+  "event": {
+    "notFound": "Événement introuvable",
+    "registerNow": "S'inscrire maintenant",
+    "learnMore": "En savoir plus"
+  }
+}
