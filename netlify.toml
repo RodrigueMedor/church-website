@@ -1,13 +1,20 @@
 [build]
-command = "npm install && (cd netlify/functions && npm install) && npm run build"
-publish = "build"
-functions = "netlify/functions"
+  command = "npm install && (cd netlify/functions && npm install) && npm run build"
+  publish = "build"
+  functions = "netlify/functions"
 
 [build.environment]
   CI = "false"
   DISABLE_ESLINT_PLUGIN = "true"
   NODE_OPTIONS = "--openssl-legacy-provider"
 
+# Handle client-side routing - return index.html for all routes
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# API routes
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
