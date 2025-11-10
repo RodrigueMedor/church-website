@@ -1,0 +1,112 @@
+{
+  "header": {
+    "home": "Home",
+    "about": "About Us",
+    "ministries": "Ministries",
+    "sermons": "Sermons",
+    "events": "Events",
+    "give": "Give",
+    "contact": "Contact Us"
+  },
+  "home": {
+    "latestSermon": {
+      "title": "Faith in Action",
+      "preacher": "Pastor John Smith",
+      "scripture": "James 2:14-26",
+      "description": "In this message, we explore how true faith is demonstrated through our actions and how we can live out an authentic faith in our daily lives.",
+      "bibleText": "Bible Text"
+    },
+    "welcome": "Welcome to",
+    "welcomeSubtitle": "A Place of Worship, Fellowship, and Service",
+    "joinUs": "Join Us This Sunday",
+    "watchLive": "Watch Live",
+    "ourCommunity": "Our Community",
+    "communityDescription": "A welcoming church where everyone can grow in faith and build meaningful relationships.",
+    "learnMoreAboutChurch": "Learn more about our church",
+    "ministriesAndEvents": "Ministries & Events",
+    "latestNews": "Latest News",
+    "latestSermonTitle": "Latest Message",
+    "communityLife": {
+      "title": "Community Life",
+      "description": "Share moments of fellowship through our home groups, outings, and community events that strengthen bonds between members."
+    },
+    "serviceAndSupport": {
+      "title": "Service and Support",
+      "description": "Discover our support and volunteer programs to serve our local community and make a concrete difference in the lives of others.",
+      "volunteerPrograms": "Join our volunteer programs to serve the local community and make a difference."
+    },
+    "spiritualGrowth": {
+      "title": "Spiritual Growth",
+      "description": "Deepen your faith through our Bible studies, seminars, and training to grow spiritually at every stage of your life."
+    },
+    "serviceTimes": {
+      "sundayService": "Sunday, 10:00 AM - 12:00 PM",
+      "bibleStudy": "Wednesday, 7:00 PM - 8:30 PM",
+      "communityPrayer": "Friday, 6:30 PM - 8:00 PM"
+    },
+    "sundayService": "Sunday Service",
+    "bibleStudy": "Bible Study",
+    "communityPrayer": "Community Prayer",
+    "upcomingEvents": "Upcoming Events",
+    "upcomingEventsSubtitle": "Join us for our upcoming gatherings and activities",
+    "serviceDescriptions": {
+      "sundayService": "Join us for a time of worship and biblical teaching.",
+      "bibleStudy": "In-depth study of God's Word in a small group setting.",
+      "communityPrayer": "A time of prayer for the church and community."
+    },
+    "locations": {
+      "mainHall": "Main Hall",
+      "meetingRoom": "Meeting Room",
+      "prayerRoom": "Prayer Room"
+    }
+  },
+  "about": {
+    "welcome": "Welcome to",
+    "welcomeSubtitle": "A Place of Worship, Fellowship, and Service",
+    "ourHistory": "Our History",
+    "mission": "The mission of First Haitian Baptist Church of Kissimmee is to glorify God by making disciples of Jesus Christ through biblical teaching, authentic worship, fellowship, and service in our local community and beyond.",
+    "vision": "Our vision is to be a multicultural and dynamic community where every person can grow spiritually, develop meaningful relationships, and engage in transformative ministry, reflecting the love and grace of Jesus Christ.",
+    "values": {
+      "biblicalFoundation": {
+        "title": "Biblical Foundation",
+        "description": "We believe in the supreme authority of the Bible as God's Word, an infallible guide for our faith and conduct."
+      },
+      "passionateWorship": {
+        "title": "Passionate Worship",
+        "description": "We are committed to authentic worship that honors God and builds faith, reflecting the richness of our Haitian heritage."
+      },
+      "unitedCommunity": {
+        "title": "United Community",
+        "description": "We cultivate authentic relationships where everyone finds their place, their identity in Christ, and their call to serve."
+      },
+      "integralMission": {
+        "title": "Integral Mission",
+        "description": "We respond to Christ's call by serving our local community and supporting missionary work around the world."
+      }
+    },
+    "ourServices": "Our Services",
+    "contactUs": "Contact Us",
+    "learnMore": "Learn More",
+    "ourTeam": "Our Team",
+    "readMore": "Read More"
+  },
+  "common": {
+    "worship": "Worship",
+    "study": "Study",
+    "prayer": "Prayer",
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "loadMore": "Load More",
+    "noEvents": "No upcoming events",
+    "allEvents": "All Events",
+    "watch on youtube": "Watch on YouTube",
+    "all messages": "All Messages",
+    "back": "Back",
+    "backToHome": "Back to Home"
+  },
+  "event": {
+    "notFound": "Event not found",
+    "registerNow": "Register Now",
+    "learnMore": "Learn More"
+  }
+}

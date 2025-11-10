@@ -1,0 +1,11 @@
+{
+  "bindings": [
+    {
+      "role": "roles/appengine.appViewer",
+      "members": [
+        "user:rodriguemedor@gmail.com"
+      ]
+    }
+  ]
+}
+
