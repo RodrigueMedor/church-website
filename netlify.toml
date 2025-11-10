@@ -3,6 +3,11 @@
   publish = "build"
   functions = "netlify/functions"
 
+[build.environment]
+  CI = "false"
+  DISABLE_ESLINT_PLUGIN = "true"
+  NODE_OPTIONS = "--openssl-legacy-provider"
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
