@@ -269,7 +269,7 @@ const ProfessionalEventsPage = () => {
       time: '6:30 PM',
       location: 'Prayer Room',
       category: 'prayer',
-      image: '/images/banner/church-event.jpg',
+      image: '/images/easter/DSC_2261_proper.jpg',
       attendees: '20+',
       features: ['Corporate Prayer', 'Testimonies', 'Worship', 'Fellowship'],
       color: '#F44336'
