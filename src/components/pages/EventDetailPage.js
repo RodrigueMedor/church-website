@@ -11,7 +11,7 @@ const EventDetailPage = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    // Mock event data - in a real app, this would come from an API
+    // Mock event data inspired by FBC Kissimmee - in a real app, this would come from an API
     const event = {
         1: {
             title: t('home.sundayService'),
@@ -21,27 +21,31 @@ const EventDetailPage = () => {
             fullDescription: t('home.serviceDescriptions.sundayService') + ' ' + 
                 'Join us for our weekly Sunday service where we gather as a community to worship, pray, and study God\'s word together. All are welcome!',
             image: 'https://source.unsplash.com/random/1200x600?worship',
-            category: t('common.worship')
+            category: t('common.worship'),
+            registrationUrl: null, // No registration needed for regular services
+            registrationStatus: 'open'
         },
         2: {
-            title: t('home.bibleStudy'),
-            date: t('home.serviceTimes.bibleStudy'),
+            title: 'Spring Care Groups',
+            date: 'Wednesdays 6:30 PM',
             location: t('home.locations.meetingRoom'),
-            description: t('home.serviceDescriptions.bibleStudy'),
-            fullDescription: t('home.serviceDescriptions.bibleStudy') + ' ' +
-                'Our Bible study sessions provide an opportunity to dive deeper into Scripture, ask questions, and grow in your understanding of God\'s word in a small group setting.',
-            image: 'https://source.unsplash.com/random/1200x600?bible',
-            category: t('common.study')
+            description: 'Join our small group ministry for fellowship, prayer, and biblical community. These groups meet weekly to support one another in faith and life.',
+            fullDescription: 'Our Care Groups are the heart of our church community. These small groups meet weekly in homes or at the church to build meaningful relationships, study Scripture together, pray for one another, and support each other through life\'s challenges. Whether you\'re new to the faith or have been walking with Christ for years, there\'s a group for you.',
+            image: 'https://source.unsplash.com/random/1200x600?community',
+            category: 'Care Groups',
+            registrationUrl: 'https://onrealm.org/fbckissimmee/PublicRegistrations/Event?linkString=N2Y4NmNiNzctOTVlMC00MjE3LWFjOGEtYjNjYTAxNWU2MGRl',
+            registrationStatus: 'open'
         },
         3: {
-            title: t('home.communityPrayer'),
-            date: t('home.serviceTimes.communityPrayer'),
-            location: t('home.locations.prayerRoom'),
-            description: t('home.serviceDescriptions.communityPrayer'),
-            fullDescription: t('home.serviceDescriptions.communityPrayer') + ' ' +
-                'Join us for a special time of prayer where we lift up our church, community, and personal needs to God. Everyone is welcome to participate or simply be present.',
-            image: 'https://source.unsplash.com/random/1200x600?prayer',
-            category: t('common.prayer')
+            title: 'EQUIP Course: Biblical Foundations',
+            date: 'Starting April 1, 7:00 PM',
+            location: 'Room 201',
+            description: 'Deepen your understanding of Scripture in this comprehensive EQUIP course.',
+            fullDescription: 'This 8-week EQUIP course covers the foundations of Christian faith, including biblical interpretation, Old and New Testament overview, and practical application of Scripture in daily life. Perfect for new believers and those wanting to strengthen their biblical knowledge.',
+            image: 'https://source.unsplash.com/random/1200x600?bible',
+            category: 'EQUIP Courses',
+            registrationUrl: 'https://onrealm.org/fbckissimmee/PublicRegistrations/Event?linkString=ODkyZjg4MjEtYzZkYy00ZDQyLTg3NjctYjNhZjAxNWYxM2Zk',
+            registrationStatus: 'open'
         }
     }[id];
 
@@ -144,27 +148,74 @@ const EventDetailPage = () => {
                         {event.fullDescription}
                     </Typography>
 
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        component="a"
-                        href="/contact"
-                        sx={{
-                            px: 4,
-                            py: 1.5,
-                            borderRadius: '30px',
-                            textTransform: 'none',
-                            fontWeight: 600,
-                            '&:hover': {
-                                transform: 'translateY(-2px)',
-                                boxShadow: 3
-                            },
-                            transition: 'all 0.2s ease-in-out'
-                        }}
-                    >
-                        {t('event.registerNow')}
-                    </Button>
+                    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                        {event.registrationUrl ? (
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                size="large"
+                                href={event.registrationUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                sx={{
+                                    px: 4,
+                                    py: 1.5,
+                                    borderRadius: '30px',
+                                    textTransform: 'none',
+                                    fontWeight: 600,
+                                    '&:hover': {
+                                        transform: 'translateY(-2px)',
+                                        boxShadow: 3
+                                    },
+                                    transition: 'all 0.2s ease-in-out'
+                                }}
+                            >
+                                {t('event.registerNow')}
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                size="large"
+                                sx={{
+                                    px: 4,
+                                    py: 1.5,
+                                    borderRadius: '30px',
+                                    textTransform: 'none',
+                                    fontWeight: 600,
+                                    '&:hover': {
+                                        transform: 'translateY(-2px)',
+                                        boxShadow: 3
+                                    },
+                                    transition: 'all 0.2s ease-in-out'
+                                }}
+                            >
+                                {t('event.noRegistrationRequired')}
+                            </Button>
+                        )}
+                        
+                        <Button
+                            variant="text"
+                            color="primary"
+                            size="large"
+                            component={RouterLink}
+                            to="/contact"
+                            sx={{
+                                px: 4,
+                                py: 1.5,
+                                borderRadius: '30px',
+                                textTransform: 'none',
+                                fontWeight: 600,
+                                '&:hover': {
+                                    backgroundColor: 'primary.light',
+                                    color: 'white'
+                                },
+                                transition: 'all 0.2s ease-in-out'
+                            }}
+                        >
+                            {t('event.askQuestion')}
+                        </Button>
+                    </Box>
                 </Box>
             </Paper>
         </Container>

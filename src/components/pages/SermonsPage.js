@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { 
   Box, 
@@ -17,7 +18,8 @@ import {
   Tabs,
   Tab,
   Modal,
-  IconButton
+  IconButton,
+  Grid
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Search, PlayArrow } from '@mui/icons-material';
@@ -27,17 +29,97 @@ const YOUTUBE_API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY || 'YOUR_YOUTUBE_A
 const CHANNEL_ID = process.env.REACT_APP_YOUTUBE_CHANNEL_ID || 'YOUR_YOUTUBE_CHANNEL_ID';
 const MAX_RESULTS = 12;
 
+// Fallback mock data for when API fails
+const FALLBACK_SERMONS = [
+  {
+    id: 'fallback1',
+    title: 'Welcome to Our Church Services',
+    speaker: 'Church Ministry',
+    date: new Date().toISOString(),
+    duration: 'PT45M30S',
+    image: '/images/hero-bg.jpg',
+    video: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    description: 'Join us for our weekly church service and spiritual guidance.'
+  },
+  {
+    id: 'fallback2',
+    title: 'Sunday Morning Worship',
+    speaker: 'Pastor John',
+    date: new Date(Date.now() - 86400000).toISOString(),
+    duration: 'PT1H15M00S',
+    image: '/images/hero-bg.jpg',
+    video: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    description: 'A powerful Sunday morning worship service with inspiring messages.'
+  },
+  {
+    id: 'fallback3',
+    title: 'Finding Peace in Troubled Times',
+    speaker: 'Pastor Sarah',
+    date: new Date(Date.now() - (30 * 24 * 60 * 60 * 1000)).toISOString(), // 30 days ago
+    duration: 'PT55M20S',
+    image: '/images/hero-bg.jpg',
+    video: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    description: 'A message about finding inner peace through faith and prayer during difficult times.'
+  },
+  {
+    id: 'fallback4',
+    title: 'The Power of Community',
+    speaker: 'Pastor Michael',
+    date: new Date(Date.now() - (60 * 24 * 60 * 60 * 1000)).toISOString(), // 60 days ago
+    duration: 'PT1H05M00S',
+    image: '/images/hero-bg.jpg',
+    video: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    description: 'Exploring the importance of Christian community and fellowship in our spiritual journey.'
+  },
+  {
+    id: 'fallback5',
+    title: 'Easter Sunday Celebration',
+    speaker: 'Church Ministry',
+    date: new Date(Date.now() - (90 * 24 * 60 * 60 * 1000)).toISOString(), // 90 days ago
+    duration: 'PT1H30M00S',
+    image: '/images/hero-bg.jpg',
+    video: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    description: 'A special Easter service celebrating the resurrection and hope found in Christ.'
+  }
+];
+
 // Function to fetch YouTube videos with duration
 const fetchYouTubeVideos = async () => {
+  // Check if API key is configured
+  if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'YOUR_YOUTUBE_API_KEY') {
+    console.warn('YouTube API key not configured, using fallback data');
+    return FALLBACK_SERMONS;
+  }
+
+  // Check if channel ID is configured
+  if (!CHANNEL_ID || CHANNEL_ID === 'YOUR_YOUTUBE_CHANNEL_ID') {
+    console.warn('YouTube channel ID not configured, using fallback data');
+    return FALLBACK_SERMONS;
+  }
+
   try {
     // First, get the list of videos
     const searchResponse = await fetch(
       `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}&type=video`
     );
+    
+    // Check if response is OK
+    if (!searchResponse.ok) {
+      if (searchResponse.status === 403) {
+        console.error('YouTube API 403 Forbidden: Check API key permissions and quota');
+        throw new Error('API_ACCESS_DENIED');
+      } else if (searchResponse.status === 404) {
+        console.error('YouTube API 404: Check channel ID');
+        throw new Error('CHANNEL_NOT_FOUND');
+      }
+      throw new Error(`HTTP ${searchResponse.status}: ${searchResponse.statusText}`);
+    }
+    
     const searchData = await searchResponse.json();
 
-    if (!searchData.items) {
-      throw new Error('No videos found');
+    if (!searchData.items || searchData.items.length === 0) {
+      console.warn('No videos found in YouTube channel, using fallback data');
+      return FALLBACK_SERMONS;
     }
 
     // Get video IDs for duration lookup
@@ -47,13 +129,31 @@ const fetchYouTubeVideos = async () => {
     const detailsResponse = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&id=${videoIds}&part=contentDetails,snippet`
     );
+    
+    if (!detailsResponse.ok) {
+      console.warn('Failed to fetch video details, using basic data');
+      // Return basic data without duration
+      return searchData.items.map((item) => ({
+        id: item.id.videoId,
+        title: item.snippet.title,
+        speaker: item.snippet.channelTitle,
+        date: item.snippet.publishedAt,
+        duration: 'N/A',
+        image: item.snippet.thumbnails.high.url,
+        video: `https://www.youtube.com/embed/${item.id.videoId}`,
+        description: item.snippet.description,
+      }));
+    }
+    
     const detailsData = await detailsResponse.json();
 
     // Create a map of video ID to duration
     const durationMap = {};
-    detailsData.items.forEach(video => {
-      durationMap[video.id] = video.contentDetails.duration;
-    });
+    if (detailsData.items) {
+      detailsData.items.forEach(video => {
+        durationMap[video.id] = video.contentDetails.duration;
+      });
+    }
 
     // Combine the data
     return searchData.items.map((item) => {
@@ -71,6 +171,13 @@ const fetchYouTubeVideos = async () => {
     });
   } catch (error) {
     console.error('Error fetching YouTube videos:', error);
+    
+    // Return fallback data for API errors
+    if (error.message === 'API_ACCESS_DENIED' || error.message === 'CHANNEL_NOT_FOUND') {
+      console.warn('Using fallback data due to API error');
+      return FALLBACK_SERMONS;
+    }
+    
     throw error;
   }
 };
@@ -195,13 +302,21 @@ const SearchBar = styled(Box)(({ theme }) => ({
 
 
 const HeroSection = styled(Box)(({ theme }) => ({
-  background: 'linear-gradient(135deg, #1a2980 0%, #26d0ce 100%)',
+  background: 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url("/images/banner/banner-sermont.jpg")',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center 35%',
+  backgroundRepeat: 'no-repeat',
+  backgroundAttachment: 'fixed',
   color: 'white',
   padding: theme.spacing(16, 0, 14),
   marginBottom: theme.spacing(6),
   textAlign: 'center',
   position: 'relative',
   overflow: 'hidden',
+  minHeight: '400px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   '&::before': {
     content: '""',
     position: 'absolute',
@@ -218,43 +333,83 @@ const HeroSection = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.down('md')]: {
     padding: theme.spacing(12, 0, 10),
+    minHeight: '350px',
   },
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(10, 0, 8),
+    minHeight: '300px',
   },
 }));
 
 const HeroTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 700,
+  fontWeight: 800,
   marginBottom: theme.spacing(2),
-  textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+  textShadow: '0 4px 12px rgba(0,0,0,0.5)',
+  fontSize: { xs: '2.5rem', md: '3.5rem' },
+  lineHeight: 1.1,
+  letterSpacing: '-0.02em',
+  background: 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
+  filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
   [theme.breakpoints.down('md')]: {
-    fontSize: '2.2rem',
+    fontSize: '2.5rem',
   },
 }));
 
 const HeroSubtitle = styled(Typography)(({ theme }) => ({
-  maxWidth: '700px',
+  maxWidth: '600px',
   margin: '0 auto',
   marginBottom: theme.spacing(4),
-  fontSize: '1.2rem',
-  lineHeight: 1.6,
-  opacity: 0.95,
-  textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+  fontSize: { xs: '1.1rem', md: '1.3rem' },
+  lineHeight: 1.7,
+  fontWeight: 400,
+  opacity: 1,
+  textShadow: '0 2px 8px rgba(0,0,0,0.4)',
+  letterSpacing: '0.02em',
+  color: 'rgba(255,255,255,0.95)',
+  fontStyle: 'italic',
 }));
 
 const HeroButton = styled(Button)(({ theme }) => ({
-  padding: theme.spacing(1.5, 4),
-  fontSize: '1rem',
+  padding: theme.spacing(1.5, 5),
+  fontSize: '1.1rem',
   fontWeight: 600,
   textTransform: 'none',
   borderRadius: '50px',
-  boxShadow: theme.shadows[4],
-  transition: 'all 0.3s ease',
-  '&:hover': {
-    transform: 'translateY(-2px)',
-    boxShadow: theme.shadows[8],
+  boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  background: 'rgba(255,255,255,0.15)',
+  backdropFilter: 'blur(20px)',
+  border: '2px solid rgba(255,255,255,0.3)',
+  color: 'white',
+  letterSpacing: '0.02em',
+  textShadow: '0 2px 8px rgba(0,0,0,0.4)',
+  position: 'relative',
+  overflow: 'hidden',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: '-100%',
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+    transition: 'left 0.6s ease-in-out'
   },
+  '&:hover': {
+    background: 'rgba(255,255,255,0.25)',
+    borderColor: 'rgba(255,255,255,0.5)',
+    transform: 'translateY(-3px) scale(1.02)',
+    boxShadow: '0 12px 40px rgba(0,0,0,0.4)',
+    '&::before': {
+      left: '100%'
+    }
+  },
+  '&:active': {
+    transform: 'translateY(-1px) scale(0.98)'
+  }
 }));
 
 const RootContainer = styled(Container)(({ theme }) => ({
@@ -281,6 +436,7 @@ const formatDuration = (duration) => {
 };
 
 const SermonsPage = () => {
+  const { t } = useTranslation();
   // State declarations at the top of the component
   const [searchQuery, setSearchQuery] = useState('');
   const [sermons, setSermons] = useState([]);
@@ -298,11 +454,8 @@ const SermonsPage = () => {
   
   // Define tab menu items
   const menuItems = [
-    { id: 'recent', label: 'Recent Sermons' },
-    { id: 'older', label: 'Older Sermons' },
-    { id: 'series', label: 'Sermon Series' },
-    { id: 'speakers', label: 'Speakers' },
-    { id: 'topics', label: 'Topics' }
+    { id: 'recent', labelKey: 'sermons.tabs.recent' },
+    { id: 'older', labelKey: 'sermons.tabs.older' }
   ];
   
   // Function to check if a video is recent (published within last 2 weeks)
@@ -359,10 +512,6 @@ const SermonsPage = () => {
         return recentVideos;
       case 'older':
         return olderVideos;
-      case 'series':
-      case 'speakers':
-      case 'topics':
-        return []; // These would be filtered based on the selected tab in a real implementation
       default:
         return filteredSermons;
     }
@@ -375,18 +524,31 @@ const SermonsPage = () => {
   // Fetch YouTube videos on component mount
   useEffect(() => {
     const loadVideos = async () => {
+      console.log('Starting to load videos...');
       try {
         const videos = await fetchYouTubeVideos();
+        console.log('Videos fetched:', videos);
         setSermons(videos);
         setFilteredSermons(videos);
         if (videos.length > 0) {
           setSelectedVideo(videos[0]);
         }
+        // Clear any previous error if videos loaded successfully
+        setError(null);
       } catch (err) {
-        setError('Failed to load videos. Please try again later.');
         console.error('Error loading videos:', err);
+        // Use fallback data when API fails completely
+        console.warn('Using fallback data due to complete API failure');
+        console.log('Fallback sermons:', FALLBACK_SERMONS);
+        setSermons(FALLBACK_SERMONS);
+        setFilteredSermons(FALLBACK_SERMONS);
+        if (FALLBACK_SERMONS.length > 0) {
+          setSelectedVideo(FALLBACK_SERMONS[0]);
+        }
+        setError(null); // Don't show error since we have fallback data
       } finally {
         setIsLoading(false);
+        console.log('Video loading completed');
       }
     };
 
@@ -409,10 +571,10 @@ const SermonsPage = () => {
 
   // Set document title and meta description
   useEffect(() => {
-    document.title = `Sermons | ${process.env.REACT_APP_CHURCH_NAME || 'Church Name'}`;
+    document.title = `${t('sermons.page.title')} | ${process.env.REACT_APP_CHURCH_NAME || 'Church Name'}`;
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Watch or listen to our latest sermons and teachings.');
+      metaDescription.setAttribute('content', t('sermons.page.subtitle'));
     }
   }, []);
 
@@ -452,6 +614,7 @@ const SermonsPage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setPreviewVideo(null);
+    window.location.reload();
   }; 
 
   // Handle click outside modal to close
@@ -493,7 +656,7 @@ const SermonsPage = () => {
           onClick={() => window.location.reload()}
           sx={{ mt: 2 }}
         >
-          Try Again
+          {t('sermons.page.tryAgain')}
         </Button>
       </Box>
     );
@@ -507,11 +670,45 @@ const SermonsPage = () => {
     }}>
       <HeroSection>
         <Container maxWidth="lg">
-          <Typography variant="h2" component="h1" gutterBottom align="center" sx={{ fontWeight: 700 }}>
-            Sermons & Teachings
+          <Typography 
+            variant="h1" 
+            component="h1" 
+            gutterBottom 
+            align="center" 
+            sx={{ 
+              fontWeight: 800,
+              fontSize: { xs: '2.8rem', md: '4rem' },
+              lineHeight: 1.1,
+              letterSpacing: '-0.02em',
+              textShadow: '0 4px 20px rgba(0,0,0,0.6)',
+              mb: 3,
+              background: 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.6))'
+            }}
+          >
+            {t('sermons.page.title')}
           </Typography>
-          <Typography variant="h6" align="center" sx={{ maxWidth: 700, margin: '0 auto', opacity: 0.9 }}>
-            Watch and listen to our latest sermons and biblical teachings to grow in your faith journey.
+          <Typography 
+            variant="h5" 
+            component="p"
+            align="center" 
+            sx={{ 
+              maxWidth: 800, 
+              margin: '0 auto', 
+              fontSize: { xs: '1.2rem', md: '1.5rem' },
+              lineHeight: 1.7,
+              fontWeight: 500,
+              letterSpacing: '0.02em',
+              textShadow: '0 2px 12px rgba(0,0,0,0.5)',
+              color: 'rgba(255,255,255,0.95)',
+              fontStyle: 'italic',
+              mb: 4
+            }}
+          >
+            {t('sermons.page.subtitle')}
           </Typography>
         </Container>
       </HeroSection>
@@ -547,7 +744,7 @@ const SermonsPage = () => {
               <Tab 
                 key={item.id} 
                 value={item.id} 
-                label={item.label} 
+                label={t(item.labelKey)} 
                 iconPosition="start"
               />
             ))}
@@ -561,7 +758,7 @@ const SermonsPage = () => {
           <TextField
             fullWidth
             variant="outlined"
-            placeholder="Search sermons by title, speaker, or description..."
+            placeholder={t('sermons.page.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             InputProps={{
@@ -578,10 +775,10 @@ const SermonsPage = () => {
         {activeTab === 'recent' && recentVideos.length > 0 && (
           <Box mb={6} id="recent-sermons">
             <Typography variant="h4" component="h2" gutterBottom>
-              Recent Sermons
+              {t('sermons.page.recentSermons')}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-              Latest messages from the past two weeks
+              {t('sermons.page.recentSermonsSubtitle')}
             </Typography>
             <VideoListContainer>
               {recentVideos.map((video) => (
@@ -617,7 +814,7 @@ const SermonsPage = () => {
                       color="primary"
                       onClick={(e) => handleVideoSelect(video, e)}
                     >
-                      Watch Now
+                      {t('sermons.page.watchNow')}
                     </ViewButton>
                   </VideoInfo>
                 </StyledCard>
@@ -630,7 +827,7 @@ const SermonsPage = () => {
         {activeTab === 'older' && olderVideosByMonth && olderVideosByMonth.length > 0 && (
           <Box>
             <Typography variant="h4" component="h2" gutterBottom>
-              {recentVideos.length > 0 ? 'Older Sermons' : 'All Sermons'}
+              {recentVideos.length > 0 ? t('sermons.page.olderSermons') : t('sermons.page.allSermons')}
             </Typography>
             
             {olderVideosByMonth.map(({ monthYear, videos }) => (
@@ -684,7 +881,7 @@ const SermonsPage = () => {
                           color="primary"
                           onClick={(e) => handleVideoSelect(video, e)}
                         >
-                          Watch Now
+                          {t('sermons.page.watchNow')}
                         </ViewButton>
                       </VideoInfo>
                     </StyledCard>
@@ -695,23 +892,11 @@ const SermonsPage = () => {
           </Box>
         )}
 
-        {/* Empty State for Other Tabs */}
-        {['series', 'speakers', 'topics'].includes(activeTab) && (
-          <Box textAlign="center" py={8}>
-            <Typography variant="h5" gutterBottom>
-              {menuItems.find(item => item.id === activeTab)?.label}
-            </Typography>
-            <Typography variant="body1" color="textSecondary" sx={{ mb: 3 }}>
-              {`This section will show ${activeTab.toLowerCase()} when available.`}
-            </Typography>
-          </Box>
-        )}
-
         {/* No Results */}
-        {currentVideos.length === 0 && filteredSermons.length > 0 && activeTab !== 'series' && activeTab !== 'speakers' && activeTab !== 'topics' && (
+        {currentVideos.length === 0 && filteredSermons.length > 0 && (
           <Box textAlign="center" py={8}>
             <Typography variant="h6" color="textSecondary">
-              No {activeTab === 'recent' ? 'recent' : 'older'} sermons found.
+              {t(activeTab === 'recent' ? 'sermons.page.noRecentSermons' : 'sermons.page.noOlderSermons')}
             </Typography>
           </Box>
         )}
@@ -719,7 +904,7 @@ const SermonsPage = () => {
         {filteredSermons.length === 0 && !isLoading && (
           <Box textAlign="center" py={4}>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              No sermons found matching your search.
+              {t('sermons.page.noSermonsFound')}
             </Typography>
             <Button
               variant="text"
@@ -727,7 +912,7 @@ const SermonsPage = () => {
               onClick={() => setSearchQuery('')}
               sx={{ mt: 2 }}
             >
-              Clear Search
+              {t('sermons.page.clearSearch')}
             </Button>
           </Box>
         )}

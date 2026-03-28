@@ -13,6 +13,7 @@ import {
   styled
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const NewsCard = styled(Card)(({ theme }) => ({
@@ -27,38 +28,49 @@ const NewsCard = styled(Card)(({ theme }) => ({
 }));
 
 const NewsSection = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  
+  // Current church-themed image paths with fallbacks
+  const churchImages = [
+    { primary: '/images/easter/worship-team.jpg', fallback: '/images/banner/pastor-sermon_1.JPG' },
+    { primary: '/images/easter/pastor-bible-study.jpg', fallback: '/images/church-event.jpg' },
+    { primary: '/images/easter/bridge-photo.jpg', fallback: '/images/contact-image.jpg' }
+  ];
   
   // Static news data
   const [news] = useState([
     {
       id: '1',
-      title: 'Welcome to Our New Website',
-      description: 'We are excited to launch our new church website with updated information and resources.',
-      body: 'Our new website features a fresh design, easy navigation, and all the latest information about our church community, events, and ministries. Stay connected with us online!',
+      title: t('news.weeklyService.title', 'Sunday Worship Services'),
+      description: t('news.weeklyService.description', 'Join us for inspiring worship, biblical teaching, and warm fellowship every Sunday.'),
+      body: t('news.weeklyService.body', 'Experience the presence of God through uplifting worship, prayer, and relevant biblical teaching. Our services provide an opportunity to connect with God and our church family. We offer both English and Haitian Creole services to serve our diverse community.'),
       isActive: true,
-      imageUrl: '/images/church-event.jpg',
+      imageUrl: churchImages[0].primary,
+      fallbackImage: churchImages[0].fallback,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     },
     {
       id: '2',
-      title: 'Upcoming Community Service',
-      description: 'Join us for our annual community service event this weekend.',
-      body: 'We invite everyone to participate in our annual community service day. Together we can make a difference in our neighborhood.',
+      title: t('news.bibleStudy.title', 'Weekly Bible Study & Prayer'),
+      description: t('news.bibleStudy.description', 'Grow in your faith through our mid-week Bible study and prayer meetings.'),
+      body: t('news.bibleStudy.body', 'Deepen your understanding of Scripture and strengthen your prayer life in our weekly Bible study groups. We explore the Bible together, share insights, and pray for one another and our community. Join us for spiritual growth and meaningful fellowship.'),
       isActive: true,
-      imageUrl: '/images/church-event.jpg',
+      imageUrl: churchImages[1].primary,
+      fallbackImage: churchImages[1].fallback,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     },
     {
       id: '3',
-      title: 'Sunday Worship Services',
-      description: 'Join us every Sunday for worship and fellowship.',
-      body: 'Our Sunday services are a time of worship, prayer, and teaching from God\'s Word. We have services at 9:00 AM and 11:00 AM.',
+      title: t('news.communityOutreach.title', 'Community Outreach & Service'),
+      description: t('news.communityOutreach.description', 'Serving our community through various outreach programs and volunteer opportunities.'),
+      body: t('news.communityOutreach.body', 'We are committed to being the hands and feet of Christ in our community. Through food drives, youth programs, and partnership with local organizations, we make a positive impact. Discover how you can get involved and serve others with us.'),
       isActive: true,
-      imageUrl: '/images/church-event.jpg',
+      imageUrl: churchImages[2].primary,
+      fallbackImage: churchImages[2].fallback,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     }
@@ -76,9 +88,9 @@ const NewsSection = () => {
   };
 
   return (
-    <Box sx={{ py: 8, bgcolor: 'background.paper' }}>
+    <Box sx={{ pt: 0, pb: 2, bgcolor: 'background.paper' }}>
       <Container maxWidth="lg">
-        <Box textAlign="center" mb={6}>
+        <Box textAlign="center" mb={2}>
           <Typography
             variant="h4"
             component="h2"
@@ -109,7 +121,7 @@ const NewsSection = () => {
             maxWidth="700px"
             mx="auto"
           >
-            Stay updated with the latest news and announcements from our church community.
+            Stay updated with our latest church activities, events, and opportunities for spiritual growth and community service.
           </Typography>
         </Box>
 
@@ -127,9 +139,18 @@ const NewsSection = () => {
                   {item.imageUrl && (
                     <CardMedia
                       component="img"
-                      height="200"
+                      height="300"
                       image={item.imageUrl}
                       alt={item.title}
+                      sx={{
+                        objectPosition: 'center 20%'
+                      }}
+                      onError={(e) => {
+                        // Fallback to backup image if primary image fails to load
+                        if (item.fallbackImage && e.target.src !== item.fallbackImage) {
+                          e.target.src = item.fallbackImage;
+                        }
+                      }}
                     />
                   )}
                   <CardContent sx={{ flexGrow: 1, p: 3 }}>

@@ -38,31 +38,34 @@ const EventBoxes = () => {
     const events = [
         {
             id: 1,
-            title: t('home.sundayService'),
-            date: t('home.serviceTimes.sundayService'),
-            location: t('home.locations.mainHall'),
-            description: t('home.serviceDescriptions.sundayService'),
-            image: 'https://source.unsplash.com/random/400x300?worship',
-            category: t('common.worship')
+            title: t('events.multimedia.title', 'Multimedia Ministry'),
+            date: t('events.multimedia.date', 'Sunday, 10:00 AM - 12:00 PM'),
+            location: t('events.multimedia.location', 'Main Sanctuary'),
+            description: t('events.multimedia.description', 'The Multimedia Ministry is dedicated to using technology and creativity to support and enhance worship experience. Through sound, visuals, and digital media, we help communicate the message of the Gospel clearly and effectively to both in-person and online audiences. "Go into all the world and preach the gospel to all creation." — Mark 16:15'),
+            image: '/images/easter/multimedia-photo.jpg',
+            category: t('events.multimedia.category', 'Technology & Worship'),
+            registrationUrl: null // No registration needed for regular services
         },
         {
             id: 2,
-            title: t('home.bibleStudy'),
-            date: t('home.serviceTimes.bibleStudy'),
-            location: t('home.locations.meetingRoom'),
-            description: t('home.serviceDescriptions.bibleStudy'),
-            image: 'https://source.unsplash.com/random/400x300?bible',
-            category: t('common.study')
+            title: t('events.fellowship.title', 'Community Fellowship Gathering'),
+            date: t('events.fellowship.date', 'Wednesdays 6:30 PM'),
+            location: t('events.fellowship.location', 'Fellowship Hall'),
+            description: t('events.fellowship.description', 'Connect with our church family through meaningful fellowship, prayer, and building lasting relationships in Christ.'),
+            image: '/images/easter/worship-photo.jpg',
+            category: t('events.fellowship.category', 'Fellowship'),
+            registrationUrl: 'https://onrealm.org/fbckissimmee/PublicRegistrations/Event?linkString=N2Y4NmNiNzctOTVlMC00MjE3LWFjOGEtYjNjYTAxNWU2MGRl'
         },
         {
             id: 3,
-            title: t('home.communityPrayer'),
-            date: t('home.serviceTimes.communityPrayer'),
-            location: t('home.locations.prayerRoom'),
-            description: t('home.serviceDescriptions.communityPrayer'),
-            image: 'https://source.unsplash.com/random/400x300?prayer',
-            category: t('common.prayer')
-        }
+            title: t('events.bridge.title', 'Bridge Ministry'),
+            date: t('events.bridge.date', 'Starting April 1'),
+            location: t('events.bridge.location', 'Education Wing'),
+            description: t('events.bridge.description', 'Connecting youth to God, the church, and one another. We serve as a welcoming pathway for new visitors and the surrounding community by building meaningful relationships and providing support where needed most. "Therefore welcome one another as Christ has welcomed you, for the glory of God." — Romans 15:7'),
+            image: '/images/easter/bridge-ministry-photo.jpg',
+            category: t('events.bridge.category', 'Youth & Community'),
+            registrationUrl: 'https://onrealm.org/fbckissimmee/PublicRegistrations/Event?linkString=N2Y4NmNiNzctOTVlMC00MjE3LWFjOGEtYjNjYTAxNWU2MGRl'
+        },
     ];
 
     return (
@@ -92,10 +95,11 @@ const EventBoxes = () => {
                 >
                     <Box 
                         sx={{
-                            height: '160px',
+                            height: '250px',
                             backgroundImage: `url(${event.image})`,
                             backgroundSize: 'cover',
-                            backgroundPosition: 'center',
+                            backgroundPosition: 'center top',
+                            backgroundRepeat: 'no-repeat',
                             position: 'relative',
                             '&:before': {
                                 content: '""',
@@ -145,34 +149,29 @@ const EventBoxes = () => {
                             {event.description}
                         </Typography>
                         
-                        <Button
-                            onClick={() => handleOpen(event)}
-                            variant="outlined"
-                            size="small"
-                            endIcon={<ArrowForwardIcon />}
-                            sx={{
-                                alignSelf: 'flex-start',
-                                mt: 'auto',
-                                textTransform: 'none',
-                                borderRadius: '20px',
-                                px: 2,
-                                py: 0.8,
-                                fontSize: '0.8125rem',
-                                '&:hover': {
-                                    backgroundColor: 'primary.main',
-                                    color: 'white',
-                                    borderColor: 'primary.main',
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
-                                },
-                                transition: 'all 0.2s ease-in-out',
-                                minWidth: '120px',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}
-                        >
-                            {t('about.learnMore')}
-                        </Button>
+                        <Box sx={{ display: 'flex', gap: 1, mt: 'auto', justifyContent: 'center' }}>
+                            <Button
+                                onClick={() => handleOpen(event)}
+                                variant="outlined"
+                                size="small"
+                                sx={{
+                                    textTransform: 'none',
+                                    borderRadius: '20px',
+                                    px: 2,
+                                    py: 0.8,
+                                    fontSize: '0.8125rem',
+                                    '&:hover': {
+                                        backgroundColor: 'primary.light',
+                                        color: 'white',
+                                        borderColor: 'primary.light',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+                                    },
+                                    transition: 'all 0.2s ease-in-out'
+                                }}
+                            >
+                                {t('about.learnMore')}
+                            </Button>
+                        </Box>
                     </CardContent>
                 </Card>
             ))}

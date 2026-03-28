@@ -3,6 +3,11 @@
     "home": "Home",
     "about": "About Us",
     "ministries": "Ministries",
+    "youth": "Youth Ministry",
+    "women": "Women's Ministry",
+    "men": "Men's Ministry",
+    "children": "Children's Ministry",
+    "youngCouples": "Young Couples",
     "sermons": "Sermons",
     "events": "Events",
     "give": "Give",
@@ -60,12 +65,64 @@
       "prayerRoom": "Prayer Room"
     }
   },
+  "professionalAbout": {
+    "title": "About Us",
+    "subtitle": "First Haitian Baptist Church of Kissimmee",
+    "tagline": "Serving God, Serving People, Building Community",
+    "welcomeTitle": "Welcome to Our Church Family",
+    "welcomeDescription": "Since 1985, First Haitian Baptist Church of Kissimmee has been a beacon of hope and faith in our community. We are a diverse family of believers committed to worshiping God, growing together in faith, and serving others with love.",
+    "missionStatement": "Our Mission: To Know Christ and Make Him Known",
+    "ourMission": "Our Mission",
+    "ourVision": "Our Vision",
+    "missionDescription": "To glorify God by making disciples of all nations, baptizing them in the name of the Father, Son, and Holy Spirit, and teaching them to obey everything Jesus commanded.",
+    "visionDescription": "To be a vibrant, Christ-centered community that transforms lives through authentic worship, meaningful relationships, and compassionate service to our world.",
+    "coreValues": "Our Core Values",
+    "meetOurTeam": "Meet Our Pastoral Team",
+    "joinOurFamily": "Join Our Church Family!",
+    "joinDescription": "We'd love to have you join us for worship and become part of our growing family. Come experience God's love and find your place in our community.",
+    "stats": {
+      "founded": "Founded",
+      "members": "Members",
+      "ministries": "Ministries",
+      "services": "Services"
+    },
+    "coreValuesList": {
+      "biblicalFoundation": {
+        "title": "Biblical Foundation",
+        "description": "We are built upon the unchanging truth of God's Word, which guides everything we do.",
+        "features": ["Scripture-Based", "Sound Doctrine", "Biblical Teaching"]
+      },
+      "passionateWorship": {
+        "title": "Passionate Worship",
+        "description": "We worship God with all our hearts, creating authentic encounters with His presence.",
+        "features": ["Authentic Worship", "Spirit-Led Services", "Musical Excellence"]
+      },
+      "unitedCommunity": {
+        "title": "United Community",
+        "description": "We are a family that loves and supports one another through life's journey.",
+        "features": ["Family Atmosphere", "Mutual Support", "Inclusive Community"]
+      },
+      "missionDriven": {
+        "title": "Mission-Driven",
+        "description": "We are called to serve our community and share the love of Christ with everyone.",
+        "features": ["Community Service", "Outreach Programs", "Global Missions"]
+      }
+    }
+  },
   "about": {
     "welcome": "Welcome to",
     "welcomeSubtitle": "A Place of Worship, Fellowship, and Service",
     "ourHistory": "Our History",
+    "ourHistoryTagline": "A House of Prayer for All Nations",
+    "ourHistoryDescription": "Founded in 2005, First Haitian Baptist Church of Kissimmee was born from the vision of several Haitian families who desired to create a spiritual home where Christian faith and cultural heritage intertwine harmoniously. Over the years, our church has grown to become a vibrant and welcoming community, committed to serving the Haitian population in the Orlando area while being a light to all nations. Guided by God's Word and animated by the Holy Spirit, we continue to move forward with faith, hope, and love, seeking to transform lives through the Gospel of Jesus Christ.",
+    "historyYear": "2005",
+    "historyTitle": "Our Story",
     "mission": "The mission of First Haitian Baptist Church of Kissimmee is to glorify God by making disciples of Jesus Christ through biblical teaching, authentic worship, fellowship, and service in our local community and beyond.",
+    "ourMission": "Our Mission",
     "vision": "Our vision is to be a multicultural and dynamic community where every person can grow spiritually, develop meaningful relationships, and engage in transformative ministry, reflecting the love and grace of Jesus Christ.",
+    "ourVision": "Our Vision",
+    "coreValues": "Our Core Values",
+    "coreValuesSubtitle": "These principles guide everything we do as a church community",
     "values": {
       "biblicalFoundation": {
         "title": "Biblical Foundation",
@@ -84,11 +141,41 @@
         "description": "We respond to Christ's call by serving our local community and supporting missionary work around the world."
       }
     },
+    "ourTeamLabel": "Our Team",
+    "meetOurPastors": "Meet Our Pastors",
+    "meetOurPastorsSubtitle": "Discover the devoted leaders who guide our community spiritually with wisdom and compassion.",
+    "viewFullTeam": "View Full Team",
+    "learnMore": "Learn More",
+    "visitUs": "Visit Us",
+    "readMore": "Read More",
+    "aboutOurMinisters": "About Our Ministers",
+    "staff": {
+      "pastor": {
+        "name": "Pastor Fritzner JB Brouard",
+        "role": "Senior Pastor",
+        "bio": "Pastor Brouard brings over 25 years of experience in pastoral ministry. A graduate of the Evangelical Theological Seminary of Haiti, he is passionate about biblical teaching and the spiritual development of the community.",
+        "fullBio": "Fritzner JB Brouard was born in Haiti on March 25, 1957 to father Fritz JB Brouard and mother Noëlzina M Dumas. After his secondary studies, he studied civil engineering and human sciences. Some time later, he moved to the United States where he married his first love Orlande Bastien and God blessed them with three beautiful children (Jeff-Carl, Rebecca and Naomi). He pursued his career in management to take care of his family. To better serve his Redeemer Jesus Christ, he studied theology at several levels and in the nineties, he became one of the famous preachers of the Gospel. He has written several articles, brochures, magazines etc. He has published twenty-one works. Now, he is the Pastor of the First Haitian Baptist Church of Kissimmee (Florida, for nine years) and he is counted among the best teachers, conference speakers, orators, poets, writers in the Haitian evangelical world."
+      },
+      "deacon": {
+        "name": "Deacon Samuel Pierre",
+        "role": "Worship Leader",
+        "bio": "Deacon Pierre leads our praise and worship ministry with deep commitment to worship that unites tradition and modernity, reflecting the richness of our Haitian Christian heritage."
+      },
+      "deaconess": {
+        "name": "Deaconess Marie L. Joseph",
+        "role": "Women's Ministry",
+        "bio": "Deaconess Joseph coordinates activities of the women's ministry, encouraging spiritual growth and mutual support among the women of our assembly."
+      }
+    },
     "ourServices": "Our Services",
     "contactUs": "Contact Us",
-    "learnMore": "Learn More",
     "ourTeam": "Our Team",
-    "readMore": "Read More"
+    "sendEmail": "Send Email",
+    "callUs": "Call Us",
+    "readyToJoinUs": "Ready to Join Us?",
+    "readyToJoinUsSubtitle": "We would be delighted to welcome you to a service or answer any questions you have about our church and activities.",
+    "viewEvents": "View Events",
+    "copyRight": "© {{year}} First Haitian Baptist Church of Kissimmee. All rights reserved."
   },
   "common": {
     "worship": "Worship",
@@ -102,11 +189,503 @@
     "watch on youtube": "Watch on YouTube",
     "all messages": "All Messages",
     "back": "Back",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "close": "Close"
   },
   "event": {
     "notFound": "Event not found",
     "registerNow": "Register Now",
-    "learnMore": "Learn More"
+    "learnMore": "Learn More",
+    "page": {
+      "title": "Church Events",
+      "subtitle": "Join us for worship, fellowship, and spiritual growth through our church events and activities.",
+      "browseByMinistry": "Browse by Ministry",
+      "upcomingEvents": "Upcoming Events",
+      "upcomingEventsSubtitle": "Explore our upcoming events and join us in worship, fellowship, and service.",
+      "noEventsFound": "No events found",
+      "noEventsDescription": "There are currently no events scheduled for this category.",
+      "viewAllEvents": "View All Events",
+      "viewDetails": "View Details",
+      "addToCalendar": "Add to Calendar",
+      "viewOnMap": "View on Map",
+      "shareThisEvent": "Share This Event",
+      "eventDetails": "Event Details",
+      "additionalInformation": "Additional Information",
+      "dateTime": "Date & Time",
+      "location": "Location",
+      "questionsContact": "Questions? Contact us at",
+      "noRegistrationRequired": "No registration required",
+      "joinUsDirectly": "Join us directly"
+    },
+    "categories": {
+      "worship": "Worship",
+      "bibleStudy": "Bible Study",
+      "fellowship": "Fellowship",
+      "youth": "Youth",
+      "children": "Children",
+      "outreach": "Outreach",
+      "harvest": "Harvest",
+      "service": "Service"
+    },
+    "stats": {
+      "yearsOfMinistry": "Years of Ministry",
+      "familiesServed": "Families Served",
+      "weeklyServices": "Weekly Services"
+    },
+    "groups": {
+      "all": "All Groups",
+      "youth": "Youth",
+      "adults": "Adults",
+      "children": "Children",
+      "worship": "Worship",
+      "connection": "Connection",
+      "serve": "Serve"
+    },
+    "sampleEvents": {
+      "sundayWorship": "Sunday Worship Service",
+      "easterWorship": "Easter Worship Week",
+      "harvestEvent": "La Moisson (Harvest Event)",
+      "youthGroup": "Youth Group Night",
+      "communityOutreach": "Community Outreach Day",
+      "mensBibleStudy": "Men's Bible Study",
+      "womensFellowship": "Women's Fellowship",
+      "childrensSundaySchool": "Children's Sunday School",
+      "equipCourse": "Bible Study - Every Monday 7:30-9:00PM EST",
+      "childrensEvent": "Children's Easter Celebration",
+      "meetAndGreet": "Meet & Greet - New Visitor Welcome",
+      "serveTeam": "Serve Team Training"
+    },
+    "descriptions": {
+      "sundayWorship": "Join us for our weekly worship service featuring inspiring music, prayer, and a powerful message from our pastor. All are welcome to experience God's presence and connect with our church family.",
+      "easterWorship": "Celebrate the resurrection of Jesus Christ with special services throughout Holy Week including Palm Sunday Service, Holy Week Prayer Services, Good Friday Service, Easter Vigil, Easter Sunday Celebration with Special Worship & Resurrection Message, and Family Gathering & Fellowship.",
+      "harvestEvent": "A spiritual gathering focused on evangelism, growth, and community outreach with worship, guest speakers, and fellowship.",
+      "youthGroup": "A dynamic evening for teens (13-18) with games, worship, and relevant Bible teaching. Connect with peers and grow in your faith journey.",
+      "communityOutreach": "Be the hands and feet of Jesus as we serve our local community. Various service opportunities available for all ages and abilities.",
+      "mensBibleStudy": "Join other men as we study God's Word and encourage one another in our walk with Christ. Coffee and snacks provided.",
+      "womensFellowship": "A time of worship, prayer, and Bible study designed specifically for women of all ages and stages of life.",
+      "childrensSundaySchool": "Engaging Bible lessons and activities for children ages 3-12. Help your kids build a strong foundation of faith in a fun, safe environment.",
+      "equipCourse": "Join us every Monday evening for in-depth Bible study from 7:30PM to 9:00PM EST. We explore Scripture together, discuss practical applications for daily life, and grow in our understanding of God's Word. Perfect for anyone seeking to deepen their biblical knowledge and strengthen their faith foundation.",
+      "childrensEvent": "A special Easter celebration for children with games, crafts, and the Easter story. Ages 4-11 welcome.",
+      "meetAndGreet": "New visitors are invited to a short Meet & Greet immediately after service. Meet pastors, elders, and staff members to get connected.",
+      "serveTeam": "Learn how you can get involved and make a real impact. We'll help you find the right spot for your gifts and passions."
+    },
+    "additionalInfo": {
+      "description": "Join us for an inspiring time of worship and teaching. This event is open to all age groups and includes:",
+      "worshipMusic": "Inspiring worship music",
+      "biblicalTeaching": "Engaging biblical teaching",
+      "fellowship": "Fellowship with other believers"
+    },
+    "locations": {
+      "mainSanctuary": "Main Sanctuary",
+      "youthCenter": "Youth Center",
+      "localPark": "Local Park",
+      "fellowshipHall": "Fellowship Hall",
+      "room201": "Room 201",
+      "childrensWing": "Children's Wing"
+    }
+  },
+  "sermons": {
+    "page": {
+      "title": "Sermons & Teachings",
+      "subtitle": "Watch and listen to our latest sermons and biblical teachings to grow in your faith journey.",
+      "searchPlaceholder": "Search sermons by title, speaker, or description...",
+      "recentSermons": "Recent Sermons",
+      "recentSermonsSubtitle": "Latest messages from the past two weeks",
+      "olderSermons": "Older Sermons",
+      "allSermons": "All Sermons",
+      "sermonSeries": "Sermon Series",
+      "speakers": "Speakers",
+      "topics": "Topics",
+      "noRecentSermons": "No recent sermons found.",
+      "noOlderSermons": "No older sermons found.",
+      "noSermonsFound": "No sermons found matching your search.",
+      "clearSearch": "Clear Search",
+      "tryAgain": "Try Again",
+      "watchNow": "Watch Now",
+      "comingSoon": "This section will show {{tab}} when available."
+    },
+    "tabs": {
+      "recent": "Recent Sermons",
+      "older": "Older Sermons",
+      "series": "Sermon Series",
+      "speakers": "Speakers",
+      "topics": "Topics"
+    }
+  },
+  "contact": {
+    "page": {
+      "title": "We'd Love to Hear From You",
+      "subtitle": "Whether you have questions, need prayer, or want to get involved, our team is here to help.",
+      "formTitle": "Send Us a Message",
+      "yourName": "Your Name",
+      "emailAddress": "Email Address",
+      "purpose": "Purpose",
+      "yourMessage": "Your Message",
+      "sending": "Sending...",
+      "sendMessage": "Send Message"
+    },
+    "form": {
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email is invalid",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Phone number is invalid",
+      "messageRequired": "Message is required",
+      "sendFailed": "Failed to send message. Please try again later.",
+      "sendSuccess": "Message sent successfully! We'll get back to you soon.",
+      "responseTime": "We'll respond within 24 hours"
+    },
+    "info": {
+      "ourLocation": "Our Location",
+      "phoneNumber": "Phone Number",
+      "emailUs": "Email Us",
+      "serviceTimes": "Service Times",
+      "getDirections": "Get Directions",
+      "callUs": "Call Us",
+      "sendEmail": "Send Email",
+      "viewFullSchedule": "View Full Schedule",
+      "getInTouch": "Get in Touch",
+      "hereToHelp": "We're here to help and answer any questions you may have. Our team is dedicated to providing you with the best support."
+    },
+    "map": {
+      "title": "Direction to our church",
+      "getDirections": "Get Directions"
+    },
+    "quickLinks": {
+      "title": "Quick Links",
+      "prayerRequest": {
+        "title": "Prayer Request",
+        "description": "Submit your prayer needs"
+      },
+      "newHere": {
+        "title": "New Here?",
+        "description": "Start your journey with us"
+      },
+      "bibleReadingPlan": {
+        "title": "Bible Reading Plan",
+        "description": "Daily scripture guide"
+      },
+      "volunteer": {
+        "title": "Volunteer",
+        "description": "Serve in our community"
+      },
+      "giving": {
+        "title": "Giving",
+        "description": "Support our mission"
+      },
+      "events": {
+        "title": "Events",
+        "description": "Upcoming events and activities"
+      }
+    }
+  },
+  "youth": {
+    "title": "Youth Ministry",
+    "subtitle": "Growing in faith, building friendships, making a difference",
+    "welcome": "Welcome to Our Youth Family",
+    "welcomeDescription": "Our Youth Ministry is all about helping young people grow in their relationship with Jesus while having fun and building real friendships. Led by Brother Vlad and Brother Wisly, we create a space where teens can be themselves, ask honest questions, and learn what it means to follow Christ in their everyday lives.",
+    "mission": "Our Mission",
+    "missionDescription1": "We meet regularly for Bible discussions, hangouts, worship, and special events. Whether we're diving into the Word, going on a trip, playing games, or serving the community, everything we do is focused on helping our youth grow stronger in faith and closer to each other.",
+    "missionDescription2": "We believe our youth aren't just the future of the church; they're a vital part of it right now. We want to encourage and equip them to live boldly for Christ, love others well, and make a difference wherever they go.",
+    "everyoneWelcome": "Everyone is welcome to join us!",
+    "whatWeDo": "What We Do",
+    "bibleDiscussions": {
+      "title": "Bible Discussions",
+      "description": "Dive deep into God's Word and discover how it applies to your everyday life."
+    },
+    "fellowshipFun": {
+      "title": "Fellowship & Fun",
+      "description": "Build real friendships through games, hangouts, and shared experiences."
+    },
+    "worship": {
+      "title": "Worship",
+      "description": "Experience powerful worship and grow closer to God through music and prayer."
+    },
+    "communityService": {
+      "title": "Community Service",
+      "description": "Make a difference by serving others and showing Christ's love in practical ways."
+    },
+    "whenWeMeet": "When We Meet",
+    "saturday": {
+      "day": "Saturday",
+      "time": "6:00 PM - 8:00 PM",
+      "activity": "Bible Study and Connections",
+      "description": "Weekly youth fellowship with Bible discussion and hangout time"
+    },
+    "sunday": {
+      "day": "3rd & 4th Sunday",
+      "time": "11:00 AM - 12:30 PM",
+      "activity": "Youth Service",
+      "description": "Separate youth service with worship, teaching, and fellowship"
+    },
+    "ourLeaders": "Our Youth Leaders",
+    "brotherVlad": {
+      "name": "Brother Vlad",
+      "role": "Youth Leader",
+      "description": "Passionate about helping teens grow in their faith and discover their purpose in Christ."
+    },
+    "brotherWisly": {
+      "name": "Brother Wisly",
+      "role": "Youth Leader", 
+      "description": "Dedicated to mentoring young people and creating a welcoming environment for spiritual growth."
+    },
+    "readyToJoin": "Ready to Join Us?",
+    "readyToJoinDescription": "Come hang out with us! No need to sign up - just show up and be yourself.",
+    "getConnected": "Get Connected"
+  },
+  "women": {
+    "title": "Women's Ministry",
+    "subtitle": "Growing together in faith, love, and service",
+    "welcome": "Welcome to Our Women's Fellowship",
+    "welcomeDescription": "Our Women's Ministry is dedicated to creating a nurturing environment where women can grow in their relationship with God, build meaningful friendships, and serve together in love. We believe in the power of women supporting women through every season of life.",
+    "mission": "Our Mission",
+    "missionDescription1": "We exist to empower women to discover their God-given purpose, deepen their faith, and use their unique gifts to make a difference in their families, church, and community.",
+    "missionDescription2": "Through Bible studies, fellowship events, and service opportunities, we create spaces where women can be authentic, find encouragement, and experience God's love in tangible ways.",
+    "everyoneWelcome": "All women are welcome to join us!",
+    "whatWeDo": "What We Do",
+    "bibleStudy": {
+      "title": "Bible Study",
+      "description": "Deepen your understanding of Scripture and grow in your faith through interactive Bible studies and discussions."
+    },
+    "fellowship": {
+      "title": "Fellowship Events",
+      "description": "Build lasting friendships and create meaningful connections through fun gatherings and shared experiences."
+    },
+    "outreach": {
+      "title": "Community Outreach",
+      "description": "Make a difference in our community through service projects and outreach initiatives that show Christ's love."
+    },
+    "worship": {
+      "title": "Prayer & Worship",
+      "description": "Experience God's presence through powerful times of prayer, worship, and spiritual renewal."
+    },
+    "whenWeMeet": "When We Meet",
+    "tuesday": {
+      "day": "Tuesday",
+      "time": "7:00 PM - 8:30 PM",
+      "activity": "Women's Bible Study",
+      "description": "Weekly Bible study with fellowship and prayer time"
+    },
+    "saturday": {
+      "day": "Second Saturday",
+      "time": "10:00 AM - 12:00 PM",
+      "activity": "Women's Fellowship",
+      "description": "Monthly fellowship gathering with brunch, sharing, and special activities"
+    },
+    "ourLeaders": "Our Women's Ministry Leaders",
+    "leader1": {
+      "name": "Sister Marie",
+      "role": "Women's Ministry Director",
+      "description": "Passionate about helping women grow in their faith and discover their calling in God's kingdom."
+    },
+    "leader2": {
+      "name": "Sister Elizabeth",
+      "role": "Fellowship Coordinator", 
+      "description": "Dedicated to creating welcoming spaces where women can connect, share, and grow together."
+    },
+    "readyToJoin": "Ready to Join Us?",
+    "readyToJoinDescription": "Come and experience the joy of growing together with other women of faith. No need to register - just come as you are!",
+    "getConnected": "Get Connected"
+  },
+  "men": {
+    "title": "Men's Ministry",
+    "subtitle": "Building strong men of faith, character, and service",
+    "welcome": "Welcome to Our Men's Fellowship",
+    "welcomeDescription": "Our Men's Ministry is dedicated to helping men grow in their relationship with God, develop strong character, and build authentic brotherhood. We believe in the power of men standing together in faith and supporting one another through life's challenges.",
+    "mission": "Our Mission",
+    "missionDescription1": "We exist to equip men to be spiritual leaders in their homes, church, and community. Through biblical teaching, practical discipleship, and genuine fellowship, we help men become the men God created them to be.",
+    "missionDescription2": "We provide opportunities for men to grow in their faith, develop godly character, and use their gifts to serve others. Our goal is to build a community of men who love God, love their families, and serve with excellence.",
+    "everyoneWelcome": "All men are welcome to join us!",
+    "whatWeDo": "What We Do",
+    "bibleStudy": {
+      "title": "Bible Study",
+      "description": "Grow in your understanding of God's Word and apply biblical principles to your daily life through interactive studies."
+    },
+    "fellowship": {
+      "title": "Brotherhood Events",
+      "description": "Build strong friendships and accountability through men's gatherings, activities, and shared experiences."
+    },
+    "service": {
+      "title": "Service Projects",
+      "description": "Use your skills and strength to serve others in practical ways that demonstrate Christ's love."
+    },
+    "recreation": {
+      "title": "Sports & Recreation",
+      "description": "Connect with other men through sports, outdoor activities, and recreational events that build camaraderie."
+    },
+    "whenWeMeet": "When We Meet",
+    "wednesday": {
+      "day": "Wednesday",
+      "time": "7:00 PM - 8:30 PM",
+      "activity": "Men's Bible Study",
+      "description": "Weekly Bible study with fellowship and prayer time"
+    },
+    "saturday": {
+      "day": "Third Saturday",
+      "time": "9:00 AM - 11:00 AM",
+      "activity": "Men's Fellowship Breakfast",
+      "description": "Monthly fellowship breakfast with discussion and activities"
+    },
+    "ourLeaders": "Our Men's Ministry Leaders",
+    "leader1": {
+      "name": "Brother James",
+      "role": "Men's Ministry Director",
+      "description": "Passionate about helping men grow in their faith and become spiritual leaders in their families and community."
+    },
+    "leader2": {
+      "name": "Brother Michael",
+      "role": "Fellowship Coordinator", 
+      "description": "Dedicated to creating authentic brotherhood where men can connect, grow, and serve together."
+    },
+    "readyToJoin": "Ready to Join Us?",
+    "readyToJoinDescription": "Come and experience the strength and encouragement of walking with other men of faith. No need to register - just come as you are!",
+    "getConnected": "Get Connected"
+  },
+  "children": {
+    "title": "Children's Ministry",
+    "subtitle": "Nurturing young hearts to know and love Jesus",
+    "welcome": "Welcome to Our Children's Ministry",
+    "welcomeDescription": "Our Children's Ministry is dedicated to creating a safe, loving environment where children can grow in their relationship with God, learn biblical truths, and build lasting friendships. We believe in nurturing each child's faith journey through age-appropriate teaching and fun activities.",
+    "mission": "Our Mission",
+    "missionDescription1": "We exist to help children discover God's love, learn foundational Bible stories, and develop a personal relationship with Jesus Christ. Our goal is to build a strong spiritual foundation that will last a lifetime.",
+    "missionDescription2": "Through engaging lessons, creative activities, and caring relationships, we create spaces where children can experience God's love, ask questions, and grow in their understanding of faith.",
+    "everyoneWelcome": "All children are welcome to join us!",
+    "whatWeDo": "What We Do",
+    "sundaySchool": {
+      "title": "Sunday School",
+      "description": "Age-appropriate Bible lessons, crafts, and activities that help children learn about God's love and biblical truths."
+    },
+    "nursery": {
+      "title": "Nursery Care",
+      "description": "Safe and nurturing environment for infants and toddlers where they experience God's love through gentle care and attention."
+    },
+    "vbs": {
+      "title": "Vacation Bible School",
+      "description": "Exciting summer program with Bible stories, games, crafts, and music that make learning about Jesus fun."
+    },
+    "bibleClub": {
+      "title": "Kids' Bible Club",
+      "description": "Weekly club where children dive deeper into Bible stories, memorize verses, and build friendships."
+    },
+    "whenWeMeet": "When We Meet",
+    "sunday": {
+      "day": "Sunday",
+      "time": "10:00 AM - 11:30 AM",
+      "activity": "Sunday School Classes",
+      "description": "Age-specific classes with Bible lessons, activities, and fellowship"
+    },
+    "wednesday": {
+      "day": "Wednesday",
+      "time": "6:30 PM - 8:00 PM",
+      "activity": "Kids' Bible Club",
+      "description": "Midweek program with Bible study, games, and dinner"
+    },
+    "ourLeaders": "Our Children's Ministry Leaders",
+    "leader1": {
+      "name": "Sister Sarah",
+      "role": "Children's Ministry Director",
+      "description": "Passionate about helping children discover God's love and build a strong foundation of faith."
+    },
+    "leader2": {
+      "name": "Sister Rachel",
+      "role": "Sunday School Coordinator", 
+      "description": "Dedicated to creating engaging lessons and activities that help children grow in their relationship with Jesus."
+    },
+    "readyToJoin": "Ready to Join Us?",
+    "readyToJoinDescription": "Bring your children to experience the joy of learning about God's love in a safe, fun environment. All are welcome!",
+    "getConnected": "Get Connected"
+  },
+  "youngCouples": {
+    "title": "Young Couples' Ministry",
+    "subtitle": "Building strong marriages rooted in Christ",
+    "verse": "Ephesians 4:2-3 - \"Be completely humble and gentle; be patient, bearing with one another in love. Make every effort to keep the unity of the Spirit through the bond of peace.\"",
+    "welcome": "Welcome to Our Young Couples' Fellowship",
+    "welcomeDescription": "Our Young Couples' Ministry is dedicated to helping married couples build a strong foundation in their relationship with Christ and with each other. We create a supportive community where couples can grow together in faith and love, strengthen their marriages through biblical principles, and build lasting friendships with other couples who share similar values and life experiences.",
+    "mission": "Our Mission",
+    "missionDescription": "We exist to equip young married couples to develop a deeper relationship with Christ, proclaim his gospel, maintain worship of God, encourage uplifting relationships with other Christians, and empower life-changing relationships with non-believers. Through biblical teaching, fellowship events, and practical support, we help couples navigate the challenges of marriage while growing together spiritually and emotionally.",
+    "whatWeDo": "What We Do",
+    "bibleStudy": {
+      "title": "Couples' Bible Study",
+      "description": "Explore biblical principles for marriage, strengthen your relationship with God and each other, and grow together in God's Word through interactive studies and practical application."
+    },
+    "fellowship": {
+      "title": "Couples' Fellowship",
+      "description": "Build meaningful friendships with other couples through social events, shared experiences, and create a supportive network where marriages can thrive and couples can encourage one another."
+    },
+    "outreach": {
+      "title": "Marriage Outreach",
+      "description": "Serve together as couples and demonstrate God's love through marriage-focused community service, mentoring younger couples, and sharing the hope of Christ with other married couples in your community."
+    },
+    "worship": {
+      "title": "Couples' Worship",
+      "description": "Grow together spiritually through worship services designed for couples, prayer gatherings, and celebrating God's faithfulness in marriage."
+    },
+    "whenWeMeet": "When We Meet",
+    "friday": {
+      "day": "Friday",
+      "time": "7:00 PM - 9:00 PM",
+      "activity": "Couples' Bible Study",
+      "description": "Weekly Bible study with fellowship and discussion time"
+    },
+    "saturday": {
+      "day": "Second Saturday",
+      "time": "6:00 PM - 9:00 PM",
+      "activity": "Couples' Fellowship Night",
+      "description": "Monthly fellowship gathering with dinner and activities"
+    },
+    "ourLeaders": "Our Young Couples' Ministry Leaders",
+    "leader1": {
+      "name": "Brother David",
+      "role": "Young Couples' Ministry Director",
+      "description": "Passionate about helping couples build strong, Christ-centered marriages."
+    },
+    "leader2": {
+      "name": "Sister Rebecca",
+      "role": "Fellowship Coordinator", 
+      "description": "Dedicated to creating welcoming spaces where couples can connect, grow, and support each other."
+    },
+    "readyToJoin": "Ready to Join Us?",
+    "readyToJoinDescription": "Come and experience the joy of growing together with other young couples in faith. All couples are welcome!",
+    "getConnected": "Get Connected"
+  },
+  "events": {
+    "multimedia": {
+      "title": "Multimedia Ministry",
+      "date": "Sunday, 10:00 AM - 12:00 PM",
+      "location": "Main Sanctuary",
+      "description": "The Multimedia Ministry is dedicated to using technology and creativity to support and enhance worship experience. Through sound, visuals, and digital media, we help communicate the message of the Gospel clearly and effectively to both in-person and online audiences. \"Go into all the world and preach the gospel to all creation.\" — Mark 16:15",
+      "category": "Technology & Worship"
+    },
+    "fellowship": {
+      "title": "Community Fellowship Gathering",
+      "date": "Wednesdays 6:30 PM",
+      "location": "Fellowship Hall",
+      "description": "Connect with our church family through meaningful fellowship, prayer, and building lasting relationships in Christ.",
+      "category": "Fellowship"
+    },
+    "bridge": {
+      "title": "Bridge Ministry",
+      "date": "Starting April 1",
+      "location": "Education Wing",
+      "description": "Connecting youth to God, the church, and one another. We serve as a welcoming pathway for new visitors and the surrounding community by building meaningful relationships and providing support where needed most. \"Therefore welcome one another as Christ has welcomed you, for the glory of God.\" — Romans 15:7",
+      "category": "Youth & Community"
+    }
+  },
+  "news": {
+    "weeklyService": {
+      "title": "Sunday Worship Services",
+      "description": "Join our worship team and congregation for inspiring praise, worship, and biblical teaching every Sunday.",
+      "body": "Experience the presence of God through uplifting worship with our talented worship team, prayer, and relevant biblical teaching. Our services provide an opportunity to connect with God and our church family. We offer both English and Haitian Creole services to serve our diverse community."
+    },
+    "bibleStudy": {
+      "title": "Weekly Bible Study & Prayer",
+      "description": "Grow in your faith through our mid-week Bible study and prayer meetings with multimedia support.",
+      "body": "Deepen your understanding of Scripture and strengthen your prayer life in our weekly Bible study groups. We explore the Bible together with multimedia presentations, share insights, and pray for one another and our community. Join us for spiritual growth and meaningful fellowship."
+    },
+    "communityOutreach": {
+      "title": "Community Outreach & Service",
+      "description": "Connecting youth and community through our Bridge Ministry outreach programs and volunteer opportunities.",
+      "body": "We are committed to being the hands and feet of Christ in our community through our Bridge Ministry. We connect youth to God, the church, and one another, serving as a welcoming pathway for new visitors. Through youth programs, community partnerships, and volunteer opportunities, we make a positive impact."
+    }
   }
 }

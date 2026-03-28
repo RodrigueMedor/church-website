@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Container, Typography, Button, useTheme, useMediaQuery } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
@@ -19,12 +19,11 @@ const HeroSection = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   textAlign: 'center',
   color: theme.palette.common.white,
-  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('${process.env.PUBLIC_URL}/images/banner/pastor-sermon_1.JPG')`,
+  backgroundColor: '#000',
   backgroundSize: 'cover',
   backgroundPosition: 'center 20%',
   backgroundRepeat: 'no-repeat',
   backgroundAttachment: 'fixed',
-  backgroundBlendMode: 'lighten',
   padding: theme.spacing(4),
   '&::before': {
     content: '""',
@@ -43,9 +42,9 @@ const HeroSection = styled(Box)(({ theme }) => ({
 }));
 
 const Section = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(8, 0),
+  padding: theme.spacing(2, 0),
   [theme.breakpoints.up('md')]: {
-    padding: theme.spacing(12, 0),
+    padding: theme.spacing(2, 0),
   },
 }));
 
@@ -53,6 +52,13 @@ const HomePage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const heroBannerImages = [
+    `${process.env.PUBLIC_URL}/images/banner/pastor-sermon_1.JPG`,
+    `${process.env.PUBLIC_URL}/images/banner/DSC_2131.jpg`,
+    `${process.env.PUBLIC_URL}/images/banner/DSC_2088.jpg`,
+  ];
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
 
   // Add scroll effect for header
   useEffect(() => {
@@ -71,11 +77,41 @@ const HomePage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (heroBannerImages.length <= 1) return undefined;
+
+    const intervalId = window.setInterval(() => {
+      setCurrentBannerIndex((prev) => (prev + 1) % heroBannerImages.length);
+    }, 5000);
+
+    return () => window.clearInterval(intervalId);
+  }, [heroBannerImages.length]);
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Box component="main" sx={{ flex: 1 }}>
         {/* Hero Section */}
         <HeroSection>
+          {heroBannerImages.map((image, index) => (
+            <Box
+              key={image}
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundImage: `url('${image}')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center 20%',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: isMobile ? 'scroll' : 'fixed',
+                opacity: index === currentBannerIndex ? 1 : 0,
+                transition: 'opacity 1.2s ease-in-out',
+                zIndex: 0,
+              }}
+            />
+          ))}
           <Container maxWidth="md">
             <Typography
               variant={isMobile ? 'h3' : 'h2'}
@@ -196,11 +232,150 @@ const HomePage = () => {
           </Container>
         </HeroSection>
 
-        {/* About Section */}
-        <Section sx={{ bgcolor: 'background.paper', py: 8 }}>
+        {/* Upcoming Events */}
+        <Section sx={{ bgcolor: 'background.paper', pt: 1, pb: 0, position: 'relative' }}>
           <Container maxWidth="lg">
-            <Box textAlign="center" mb={8}>
-              <Typography 
+            <Box textAlign="center" mb={1}>
+              <Typography
+                variant="h3"
+                component="h2"
+                gutterBottom
+                sx={{
+                  position: 'relative',
+                  display: 'inline-block',
+                  '&:after': {
+                    content: '""',
+                    position: 'absolute',
+                    bottom: -10,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '80px',
+                    height: '4px',
+                    background: 'linear-gradient(90deg, #4a6fa5, #6b8cce)',
+                    borderRadius: '2px'
+                  }
+                }}
+              >
+                {t('home.upcomingEvents')}
+              </Typography>
+              <Typography
+                variant="h6"
+                color="text.secondary"
+                maxWidth="800px"
+                mx="auto"
+                mt={1}
+                mb={1}
+              >
+                {t('home.upcomingEventsSubtitle')}
+              </Typography>
+            </Box>
+
+            <EventBoxes />
+
+            <Box textAlign="center" mt={1}>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                component={RouterLink}
+                to="/events"
+                endIcon={<ArrowForwardIcon />}
+                sx={{
+                  px: 4,
+                  py: 1.5,
+                  borderRadius: '30px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  '&:hover': {
+                    backgroundColor: 'primary.main',
+                    color: 'primary.contrastText',
+                  }
+                }}
+              >
+                Voir tous les événements
+              </Button>
+            </Box>
+          </Container>
+        </Section>
+
+        {/* Latest News */}
+        <Box sx={{ bgcolor: 'background.paper', py: 0, position: 'relative' }}>
+          <Container maxWidth="lg">
+            <Box textAlign="center">
+              <NewsSection />
+            </Box>
+          </Container>
+        </Box>
+
+        {/* Ministries & Events Section */}
+        <Section sx={{
+          backgroundImage: `
+            linear-gradient(
+              rgba(255, 255, 255, 0.9),
+              rgba(255, 255, 255, 0.9)
+            ),
+            url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4 1.79-4 4 1.79 4 4 4zm29-22c2.76 0 5-2.24 5-5s-2.24-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2 .895-2 2 .895 2 2 2z' fill='%23e0e0e0' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E")
+          `,
+          backgroundAttachment: 'fixed',
+          pt: 1,
+          pb: 2,
+          position: 'relative',
+          '&:before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '10px',
+            background: 'linear-gradient(90deg, #4a6fa5, #6b8cce, #4a6fa5)',
+            opacity: 0.8
+          },
+          '&:after': {
+            content: '""',
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '10px',
+            background: 'linear-gradient(90deg, #4a6fa5, #6b8cce, #4a6fa5)',
+            opacity: 0.8
+          }
+        }}>
+          <Container maxWidth="lg">
+            <Box textAlign="center" mb={2}>
+              <Typography
+                variant="h3" 
+                component="h2" 
+                gutterBottom
+                sx={{
+                  color: 'primary.main',
+                  position: 'relative',
+                  display: 'inline-block',
+                  '&:after': {
+                    content: '""',
+                    position: 'absolute',
+                    bottom: -10,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '80px',
+                    height: '4px',
+                    background: 'linear-gradient(90deg, #4a6fa5, #6b8cce)',
+                    borderRadius: '2px'
+                  }
+                }}
+              >
+                {t('home.ministriesAndEvents')}
+              </Typography>
+              <EventBoxes />
+            </Box>
+          </Container>
+        </Section>
+
+        {/* About Section */}
+        <Section sx={{ bgcolor: 'background.paper', py: 1 }}>
+          <Container maxWidth="lg">
+            <Box textAlign="center" mb={1}>
+              <Typography
                 variant="h3" 
                 component="h2" 
                 gutterBottom
@@ -222,7 +397,7 @@ const HomePage = () => {
               >
                 {t('home.ourCommunity')}
               </Typography>
-              <Typography variant="h6" color="text.secondary" maxWidth="800px" mx="auto" mb={6}>
+              <Typography variant="h6" color="text.secondary" maxWidth="800px" mx="auto" mb={1}>
                 {t('home.communityDescription')}
               </Typography>
               
@@ -230,7 +405,7 @@ const HomePage = () => {
                 display: 'grid',
                 gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
                 gap: { xs: 3, md: 4 },
-                mt: 6
+                mt: 2
               }}>
                 {[
                   {
@@ -411,7 +586,7 @@ const HomePage = () => {
               </Box>
               
               <Box sx={{ 
-                mt: 8, 
+                mt: 2,
                 textAlign: 'center',
                 position: 'relative',
                 '&::before': {
@@ -503,171 +678,11 @@ const HomePage = () => {
           </Container>
         </Section>
 
-        {/* Ministries & Events Section */}
-        <Section sx={{
-          backgroundImage: `
-            linear-gradient(
-              rgba(255, 255, 255, 0.9),
-              rgba(255, 255, 255, 0.9)
-            ),
-            url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29-22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23e0e0e0' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E"
-          `,
-          backgroundAttachment: 'fixed',
-          py: 8,
-          position: 'relative',
-          '&:before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '10px',
-            background: 'linear-gradient(90deg, #4a6fa5, #6b8cce, #4a6fa5)',
-            opacity: 0.8
-          },
-          '&:after': {
-            content: '""',
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '10px',
-            background: 'linear-gradient(90deg, #4a6fa5, #6b8cce, #4a6fa5)',
-            opacity: 0.8
-          }
-        }}>
-          <Container maxWidth="lg">
-            <Box textAlign="center" mb={6}>
-              <Typography 
-                variant="h3" 
-                component="h2" 
-                gutterBottom
-                sx={{
-                  color: 'primary.main',
-                  position: 'relative',
-                  display: 'inline-block',
-                  '&:after': {
-                    content: '""',
-                    position: 'absolute',
-                    bottom: -10,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '80px',
-                    height: '4px',
-                    background: 'linear-gradient(90deg, #4a6fa5, #6b8cce)',
-                    borderRadius: '2px'
-                  }
-                }}
-              >
-                {t('home.ministriesAndEvents')}
-              </Typography>
-              <EventBoxes />
-            </Box>
-          </Container>
-        </Section>
-
-        {/* Latest News */}
-        <Section sx={{ bgcolor: 'background.paper', py: 8, position: 'relative' }}>
-          <Container maxWidth="lg">
-            <Box textAlign="center" mb={6}>
-              <Typography 
-                variant="h3" 
-                component="h2" 
-                gutterBottom
-                sx={{
-                  position: 'relative',
-                  display: 'inline-block',
-                  '&:after': {
-                    content: '""',
-                    position: 'absolute',
-                    bottom: -10,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '80px',
-                    height: '4px',
-                    background: 'linear-gradient(90deg, #4a6fa5, #6b8cce)',
-                    borderRadius: '2px'
-                  }
-                }}
-              >
-                {t('home.latestNews')}
-              </Typography>
-              <NewsSection />
-            </Box>
-          </Container>
-        </Section>
-
-        {/* Upcoming Events */}
-        <Section sx={{ bgcolor: 'background.paper', py: 8, position: 'relative' }}>
-          <Container maxWidth="lg">
-            <Box textAlign="center" mb={6}>
-              <Typography 
-                variant="h3" 
-                component="h2" 
-                gutterBottom
-                sx={{
-                  position: 'relative',
-                  display: 'inline-block',
-                  '&:after': {
-                    content: '""',
-                    position: 'absolute',
-                    bottom: -10,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '80px',
-                    height: '4px',
-                    background: 'linear-gradient(90deg, #4a6fa5, #6b8cce)',
-                    borderRadius: '2px'
-                  }
-                }}
-              >
-                {t('home.upcomingEvents')}
-              </Typography>
-              <Typography 
-                variant="h6" 
-                color="text.secondary" 
-                maxWidth="800px" 
-                mx="auto" 
-                mt={3}
-                mb={1}
-              >
-                {t('home.upcomingEventsSubtitle')}
-              </Typography>
-            </Box>
-            
-            <EventBoxes />
-            
-            <Box textAlign="center" mt={6}>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="large"
-                component={RouterLink}
-                to="/events"
-                endIcon={<ArrowForwardIcon />}
-                sx={{
-                  px: 4,
-                  py: 1.5,
-                  borderRadius: '30px',
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  '&:hover': {
-                    backgroundColor: 'primary.main',
-                    color: 'primary.contrastText',
-                  }
-                }}
-              >
-                Voir tous les événements
-              </Button>
-            </Box>
-          </Container>
-        </Section>
-
         {/* Latest Sermon Section */}
-        <Section sx={{ bgcolor: 'background.paper', py: 4 }}>
+        <Section sx={{ bgcolor: 'background.paper', py: 1 }}>
           <Container maxWidth="lg">
-            <Box textAlign="center" mb={4}>
-              <Typography 
+            <Box textAlign="center" mb={1}>
+              <Typography
                 variant="h4" 
                 component="h2" 
                 gutterBottom

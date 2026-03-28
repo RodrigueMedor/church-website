@@ -3,6 +3,11 @@
     "home": "Accueil",
     "about": "À Propos",
     "ministries": "Ministères",
+    "youth": "Ministère Jeunesse",
+    "women": "Ministère Femmes",
+    "men": "Ministère Hommes",
+    "children": "Ministère Enfants",
+    "youngCouples": "Jeunes Couples",
     "sermons": "Prédications",
     "events": "Événements",
     "give": "Faire un Don",
@@ -61,12 +66,64 @@
     },
     "serviceTimesLabel": "Heures des Services"
   },
+  "professionalAbout": {
+    "title": "À Propos de Nous",
+    "subtitle": "Première Église Baptiste Haïtienne de Kissimmee",
+    "tagline": "Servir Dieu, Servir les Gens, Bâtir la Communauté",
+    "welcomeTitle": "Bienvenue à Notre Famille Église",
+    "welcomeDescription": "Depuis 1985, la Première Église Baptiste Haïtienne de Kissimmee a été un phare d'espoir et de foi dans notre communauté. Nous sommes une famille diverse de croyants engagés à adorer Dieu, grandir ensemble dans la foi et servir les autres avec amour.",
+    "missionStatement": "Notre Mission : Connaître Christ et Le Faire Connaître",
+    "ourMission": "Notre Mission",
+    "ourVision": "Notre Vision",
+    "missionDescription": "Glorifier Dieu en faisant des disciples de toutes les nations, les baptisant au nom du Père, du Fils et du Saint-Esprit, et leur enseignant à obéir à tout ce que Jésus a commandé.",
+    "visionDescription": "Être une communauté dynamique centrée sur Christ qui transforme des vies par un culte authentique, des relations significatives et un service compatissant à notre monde.",
+    "coreValues": "Nos Valeurs Fondamentales",
+    "meetOurTeam": "Rencontrez Notre Équipe Pastorale",
+    "joinOurFamily": "Rejoignez Notre Famille Église!",
+    "joinDescription": "Nous serions ravis de vous accueillir pour le culte et de vous faire devenir partie de notre famille grandissante. Venez expérimenter l'amour de Dieu et trouvez votre place dans notre communauté.",
+    "stats": {
+      "founded": "Fondée",
+      "members": "Membres",
+      "ministries": "Ministères",
+      "services": "Services"
+    },
+    "coreValuesList": {
+      "biblicalFoundation": {
+        "title": "Fondement Biblique",
+        "description": "Nous sommes bâtis sur la vérité immuable de la Parole de Dieu, qui guide tout ce que nous faisons.",
+        "features": ["Basé sur l'Écriture", "Doctrine Saine", "Enseignement Biblique"]
+      },
+      "passionateWorship": {
+        "title": "Culte Passionné",
+        "description": "Nous adorons Dieu de tout notre cœur, créant des rencontres authentiques avec Sa présence.",
+        "features": ["Culte Authentique", "Services Conduits par l'Esprit", "Excellence Musicale"]
+      },
+      "unitedCommunity": {
+        "title": "Communauté Unie",
+        "description": "Nous sommes une famille qui s'aime et se soutient mutuellement tout au long du voyage de la vie.",
+        "features": ["Atmosphère Familiale", "Soutien Mutuel", "Communauté Inclusive"]
+      },
+      "missionDriven": {
+        "title": "Axé sur la Mission",
+        "description": "Nous sommes appelés à servir notre communauté et à partager l'amour du Christ avec tout le monde.",
+        "features": ["Service Communautaire", "Programmes d'Évangélisation", "Missions Mondiales"]
+      }
+    }
+  },
   "about": {
     "welcome": "Bienvenue à",
     "welcomeSubtitle": "Un Lieu de Culte, de Communion et de Service",
     "ourHistory": "Notre Histoire",
+    "ourHistoryTagline": "« Une maison de prière pour toutes les nations »",
+    "ourHistoryDescription": "Fondée en 2005, la Première Église Baptiste Haïtienne de Kissimmee est née de la vision de quelques familles haïtiennes désireuses de créer un foyer spirituel où la foi chrétienne et l'héritage culturel s'entrelacent harmonieusement. Au fil des années, notre église a grandi pour devenir une communauté vibrante et accueillante, engagée à servir la population haïtienne de la région d'Orlando tout en étant une lumière pour toutes les nations. Guidés par la Parole de Dieu et animés par l'Esprit Saint, nous continuons à avancer avec foi, espoir et amour, cherchant à transformer des vies à travers l'Évangile de Jésus-Christ.",
+    "historyYear": "2005",
+    "historyTitle": "Notre Histoire",
     "mission": "La mission de la Première Église Baptiste Haïtienne de Kissimmee est de glorifier Dieu en faisant des disciples de Jésus-Christ à travers l'enseignement biblique, l'adoration authentique, la communion fraternelle et le service dans notre communauté locale et au-delà.",
+    "ourMission": "Notre Mission",
     "vision": "Notre vision est d'être une communauté multiculturelle et dynamique où chaque personne peut grandir spirituellement, développer des relations significatives et s'engager dans un ministère transformateur, reflétant ainsi l'amour et la grâce de Jésus-Christ.",
+    "ourVision": "Notre Vision",
+    "coreValues": "Nos Valeurs Fondamentales",
+    "coreValuesSubtitle": "Ces principes guident tout ce que nous faisons en tant que communauté d'église",
     "values": {
       "biblicalFoundation": {
         "title": "Fondement Biblique",
@@ -85,11 +142,41 @@
         "description": "Nous répondons à l'appel de Christ en servant notre communauté locale et en soutenant l'œuvre missionnaire à travers le monde."
       }
     },
+    "ourTeamLabel": "Notre Équipe",
+    "meetOurPastors": "Rencontrez Nos Pasteurs",
+    "meetOurPastorsSubtitle": "Découvrez les dirigeants dévoués qui guident spirituellement notre communauté avec sagesse et compassion.",
+    "viewFullTeam": "Voir toute l'équipe",
+    "learnMore": "En Savoir Plus",
+    "visitUs": "Nous Rendre Visite",
+    "readMore": "Lire Plus",
+    "aboutOurMinisters": "À Propos de Nos Ministres",
+    "staff": {
+      "pastor": {
+        "name": "Pasteur Fritzner JB Brouard",
+        "role": "Pasteur Principal",
+        "bio": "Le Pasteur Brouard apporte plus de 25 ans d'expérience dans le ministère pastoral. Diplômé du Séminaire de Théologie Évangélique d'Haïti, il est passionné par l'enseignement biblique et le développement spirituel de la communauté.",
+        "fullBio": "Fritzner JB Brouard est né en Haïti le 25 Mars 1957 du père Fritz JB Brouard et de mère Noëlzina M Dumas. Après ses études secondaires, il a étudié le génie civil et les sciences humaines. Quelques temps après, il s'est rendu aux États-Unis où il a épousé son premier amour Orlande Bastien et Dieu les a bénis de trois beaux enfants (Jeff-Carl, Rebecca et Naomi). Il a poursuivi sa carrière dans la gestion pour prendre soin de sa famille. Pour mieux servir son Rédempteur Jésus-Christ, il a étudié la théologie à plusieurs échelons et dans les années quatre-vingt-dix, il était devenu l'un des fameux prédicateurs de l'Évangile. Il a écrit plusieurs articles, brochures, magazines etc. Il a publié vingt et un ouvrages. Maintenant, il est le Pasteur de la première église baptiste haïtienne de Kissimmee (Florida, depuis neuf années) et il est compté parmi les meilleurs professeurs, conférenciers, orateurs, poètes, écrivains du monde évangélique haïtien."
+      },
+      "deacon": {
+        "name": "Diacre Samuel Pierre",
+        "role": "Responsable du Culte",
+        "bio": "Le Diacre Pierre dirige notre ministère de louange avec un engagement profond pour une adoration qui unit tradition et modernité, reflétant la richesse de notre héritage chrétien haïtien."
+      },
+      "deaconess": {
+        "name": "Diaconesse Marie L. Joseph",
+        "role": "Ministère des Femmes",
+        "bio": "La Diaconesse Joseph coordonne les activités du ministère des femmes, encourageant la croissance spirituelle et le soutien mutuel parmi les femmes de notre assemblée."
+      }
+    },
     "ourServices": "Nos Services",
     "contactUs": "Nous Contacter",
-    "learnMore": "En Savoir Plus",
     "ourTeam": "Notre Équipe",
-    "readMore": "Lire Plus"
+    "sendEmail": "Envoyer un email",
+    "callUs": "Nous Appeler",
+    "readyToJoinUs": "Prêt à Nous Rejoindre ?",
+    "readyToJoinUsSubtitle": "Nous serions ravis de vous accueillir pour un culte ou de répondre à toutes vos questions sur notre église et nos activités.",
+    "viewEvents": "Voir les Événements",
+    "copyRight": "© {{year}} Première Église Baptiste Haïtienne de Kissimmee. Tous droits réservés."
   },
   "common": {
     "worship": "Culte",
@@ -103,11 +190,495 @@
     "watch on youtube": "Regarder sur YouTube",
     "all messages": "Tous les messages",
     "back": "Retour",
-    "backToHome": "Retour à l'accueil"
+    "backToHome": "Retour à l'accueil",
+    "close": "Fermer"
   },
   "event": {
     "notFound": "Événement introuvable",
     "registerNow": "S'inscrire maintenant",
-    "learnMore": "En savoir plus"
+    "learnMore": "En savoir plus",
+    "page": {
+      "title": "Événements de l'Église",
+      "subtitle": "Rejoignez-nous pour le culte, la communion et la croissance spirituelle à travers nos événements et activités d'église.",
+      "browseByMinistry": "Parcourir par Ministère",
+      "upcomingEvents": "Événements à Venir",
+      "upcomingEventsSubtitle": "Explorez nos événements à venir et rejoignez-nous pour le culte, la communion et le service.",
+      "noEventsFound": "Aucun événement trouvé",
+      "noEventsDescription": "Il n'y a actuellement aucun événement prévu pour cette catégorie.",
+      "viewAllEvents": "Voir Tous les Événements",
+      "viewDetails": "Voir les Détails",
+      "addToCalendar": "Ajouter au Calendrier",
+      "viewOnMap": "Voir sur la Carte",
+      "shareThisEvent": "Partager cet Événement",
+      "eventDetails": "Détails de l'Événement",
+      "additionalInformation": "Informations Supplémentaires",
+      "dateTime": "Date & Heure",
+      "location": "Lieu",
+      "questionsContact": "Questions ? Contactez-nous à",
+      "noRegistrationRequired": "Aucune inscription requise",
+      "joinUsDirectly": "Rejoignez-nous directement"
+    },
+    "categories": {
+      "all": "Tous",
+      "worship": "Culte",
+      "bibleStudy": "Étude Biblique",
+      "fellowship": "Communion",
+      "outreach": "Action Sociale",
+      "youth": "Jeunesse",
+      "children": "Enfants",
+      "harvest": "Moisson"
+    },
+    "stats": {
+      "yearsOfMinistry": "Années de Ministère",
+      "familiesServed": "Familles Servies",
+      "weeklyServices": "Services Hebdomadaires"
+    },
+    "groups": {
+      "all": "Tous les Groupes",
+      "youth": "Jeunesse",
+      "adults": "Adultes",
+      "children": "Enfants",
+      "worship": "Culte",
+      "connection": "Communion",
+      "serve": "Service"
+    },
+    "sampleEvents": {
+      "sundayWorship": "Culte du Dimanche",
+      "easterWorship": "Semaine de Pâques",
+      "harvestEvent": "La Moisson (Événement de Récolte)",
+      "youthGroup": "Soirée Jeunesse",
+      "communityOutreach": "Journée d'Action Communautaire",
+      "equipCourse": "Étude Biblique - Tous les Lundi 19h30-21h00 HE",
+      "womensFellowship": "Communion des Femmes",
+      "childrensSundaySchool": "École du Dimanche pour Enfants"
+    },
+    "descriptions": {
+      "sundayWorship": "Rejoignez-nous pour notre culte hebdomadaire avec une musique inspirante, la prière et un message puissant de notre pasteur. Tout le monde est le bienvenu pour expérimenter la présence de Dieu et se connecter avec notre famille d'église.",
+      "easterWorship": "Célébrez la résurrection de Jésus-Christ avec des services spéciaux tout au long de la Semaine Sainte incluant le Service des Rameaux, les Services de Prière de la Semaine Sainte, le Service du Vendredi Saint, la Vigile de Pâques, la Célébration du Dimanche de Pâques avec un Culte Spécial et Message de Résurrection, et le Rassemblement et Communion Familiale.",
+      "harvestEvent": "Un rassemblement spirituel axé sur l'évangélisation, la croissance et l'action communautaire avec le culte, des conférenciers invités et la communion.",
+      "youthGroup": "Une soirée dynamique pour les adolescents (13-18 ans) avec des jeux, le culte et un enseignement biblique pertinent. Connectez-vous avec vos pairs et grandissez dans votre parcours de foi.",
+      "communityOutreach": "Soyez les mains et les pieds de Jésus en servant notre communauté locale. Diverses opportunités de service disponibles pour tous les âges et capacités.",
+      "mensBibleStudy": "Rejoignez d'autres hommes alors que nous étudions la Parole de Dieu et nous encourageons mutuellement dans notre marche avec le Christ. Café et collations fournies.",
+      "equipCourse": "Rejoignez-nous chaque lundi soir pour une étude biblique approfondie de 19h30 à 21h00 HE. Nous explorons les Écritures ensemble, discutons des applications pratiques pour la vie quotidienne et grandissons dans notre compréhension de la Parole de Dieu. Parfait pour tous ceux qui cherchent à approfondir leur connaissance biblique et à renforcer leur fondement de foi.",
+      "childrensSundaySchool": "Leçons bibliques engageantes et activités pour les enfants de 3 à 12 ans. Aidez vos enfants à construire une fondation solide de foi dans un environnement amusant et sécurisé."
+    },
+    "additionalInfo": {
+      "description": "Rejoignez-nous pour un temps inspirant de culte et d'enseignement. Cet événement est ouvert à tous les groupes d'âge et comprend :",
+      "worshipMusic": "Musique de culte inspirante",
+      "biblicalTeaching": "Enseignement biblique engageant",
+      "fellowship": "Communion avec d'autres croyants"
+    },
+    "locations": {
+      "mainSanctuary": "Sanctuaire Principal",
+      "youthCenter": "Centre Jeunesse",
+      "localPark": "Parc Local",
+      "fellowshipHall": "Salle de Communion",
+      "room201": "Salle 201",
+      "childrensWing": "Aile des Enfants"
+    }
+  },
+  "sermons": {
+    "page": {
+      "title": "Prédications & Enseignements",
+      "subtitle": "Regardez et écoutez nos dernières prédications et enseignements bibliques pour grandir dans votre parcours de foi.",
+      "searchPlaceholder": "Rechercher des prédications par titre, orateur ou description...",
+      "recentSermons": "Prédications Récentes",
+      "recentSermonsSubtitle": "Derniers messages des deux dernières semaines",
+      "olderSermons": "Prédications Plus Anciennes",
+      "allSermons": "Toutes les Prédications",
+      "sermonSeries": "Séries de Prédications",
+      "speakers": "Orateurs",
+      "topics": "Sujets",
+      "noRecentSermons": "Aucune prédication récente trouvée.",
+      "noOlderSermons": "Aucune prédication plus ancienne trouvée.",
+      "noSermonsFound": "Aucune prédication trouvée correspondant à votre recherche.",
+      "clearSearch": "Effacer la Recherche",
+      "tryAgain": "Réessayer",
+      "watchNow": "Regarder Maintenant",
+      "comingSoon": "Cette section affichera {{tab}} lorsqu'elle sera disponible."
+    },
+    "tabs": {
+      "recent": "Prédications Récentes",
+      "older": "Prédications Plus Anciennes",
+      "series": "Séries de Prédications",
+      "speakers": "Orateurs",
+      "topics": "Sujets"
+    }
+  },
+  "contact": {
+    "page": {
+      "title": "Nous Aimons Entendre de Vous",
+      "subtitle": "Que vous ayez des questions, besoin de prière, ou souhaitiez vous impliquer, notre équipe est là pour vous aider.",
+      "formTitle": "Envoyez-nous un Message",
+      "yourName": "Votre Nom",
+      "emailAddress": "Adresse Email",
+      "purpose": "But",
+      "yourMessage": "Votre Message",
+      "sending": "Envoi en cours...",
+      "sendMessage": "Envoyer le Message"
+    },
+    "form": {
+      "nameRequired": "Le nom est requis",
+      "emailRequired": "L'email est requis",
+      "emailInvalid": "L'email est invalide",
+      "phoneRequired": "Le numéro de téléphone est requis",
+      "phoneInvalid": "Le numéro de téléphone est invalide",
+      "messageRequired": "Le message est requis",
+      "sendFailed": "Échec de l'envoi du message. Veuillez réessayer plus tard.",
+      "sendSuccess": "Message envoyé avec succès! Nous reviendrons vers vous bientôt.",
+      "responseTime": "Nous répondrons dans les 24 heures"
+    },
+    "info": {
+      "ourLocation": "Notre Emplacement",
+      "phoneNumber": "Numéro de Téléphone",
+      "emailUs": "Envoyez-nous un Email",
+      "serviceTimes": "Heures de Culte",
+      "getDirections": "Obtenir des Directions",
+      "callUs": "Appelez-nous",
+      "sendEmail": "Envoyer un Email",
+      "viewFullSchedule": "Voir l'Horaire Complet",
+      "getInTouch": "Entrer en Contact",
+      "hereToHelp": "Nous sommes là pour vous aider et répondre à toutes les questions que vous pourriez avoir. Notre équipe est dédiée à vous fournir le meilleur soutien."
+    },
+    "map": {
+      "title": "Direction vers notre église",
+      "getDirections": "Obtenir des Directions"
+    },
+    "quickLinks": {
+      "title": "Liens Rapides",
+      "prayerRequest": {
+        "title": "Demande de Prière",
+        "description": "Soumettez vos besoins de prière"
+      },
+      "newHere": {
+        "title": "Nouveau Ici ?",
+        "description": "Commencez votre parcours avec nous"
+      },
+      "bibleReadingPlan": {
+        "title": "Plan de Lecture Biblique",
+        "description": "Guide des écritures quotidiennes"
+      },
+      "volunteer": {
+        "title": "Bénévolat",
+        "description": "Servez dans notre communauté"
+      },
+      "giving": {
+        "title": "Dons",
+        "description": "Soutenez notre mission"
+      },
+      "events": {
+        "title": "Événements",
+        "description": "Événements à venir et activités"
+      }
+    }
+  },
+  "youth": {
+    "title": "Ministère des Jeunes",
+    "subtitle": "Grandir dans la foi, construire des amitiés, faire une différence",
+    "welcome": "Bienvenue dans notre famille de jeunes",
+    "welcomeDescription": "Notre ministère des jeunes vise à aider les jeunes à grandir dans leur relation avec Jésus tout en s'amusant et en construisant de vraies amitiés. Dirigé par Frère Vlad et Frère Wisly, nous créons un espace où les adolescents peuvent être eux-mêmes, poser des questions honnêtes et apprendre ce que signifie suivre Christ dans leur vie quotidienne.",
+    "mission": "Notre Mission",
+    "missionDescription1": "Nous nous réunissons régulièrement pour des discussions bibliques, des rencontres, des temps de louange et des événements spéciaux. Que nous plongions dans la Parole, partions en voyage, jouions à des jeux ou servions la communauté, tout ce que nous faisons vise à aider nos jeunes à grandir plus forts dans la foi et à se rapprocher les uns des autres.",
+    "missionDescription2": "Nous croyons que nos jeunes ne sont pas seulement l'avenir de l'église ; ils en sont une partie vitale dès maintenant. Nous voulons les encourager et les équiper pour vivre audacieusement pour Christ, aimer les autres bien et faire une différence où qu'ils aillent.",
+    "everyoneWelcome": "Tout le monde est le bienvenu pour nous rejoindre !",
+    "whatWeDo": "Ce que nous faisons",
+    "bibleDiscussions": {
+      "title": "Discussions Bibliques",
+      "description": "Plongez profondément dans la Parole de Dieu et découvrez comment elle s'applique à votre vie quotidienne."
+    },
+    "fellowshipFun": {
+      "title": "Communion et Plaisir",
+      "description": "Construisez de vraies amitiés à travers des jeux, des rencontres et des expériences partagées."
+    },
+    "worship": {
+      "title": "Louange",
+      "description": "Expérimentez une louange puissante et rapprochez-vous de Dieu à travers la musique et la prière."
+    },
+    "communityService": {
+      "title": "Service Communautaire",
+      "description": "Faites une différence en servant les autres et en montrant l'amour du Christ de manière pratique."
+    },
+    "whenWeMeet": "Quand nous nous réunissons",
+    "saturday": {
+      "day": "Samedi",
+      "time": "18h00 - 20h00",
+      "activity": "Étude Biblique et Connexions",
+      "description": "Rencontre hebdomadaire des jeunes avec discussion biblique et temps de détente"
+    },
+    "sunday": {
+      "day": "3ème et 4ème Dimanche",
+      "time": "11h00 - 12h30",
+      "activity": "Service des Jeunes",
+      "description": "Service séparé des jeunes avec louange, enseignement et communion"
+    },
+    "ourLeaders": "Nos Leaders de Jeunes",
+    "brotherVlad": {
+      "name": "Frère Vlad",
+      "role": "Leader des Jeunes",
+      "description": "Passionné par aider les adolescents à grandir dans leur foi et à découvrir leur but en Christ."
+    },
+    "brotherWisly": {
+      "name": "Frère Wisly",
+      "role": "Leader des Jeunes", 
+      "description": "Dédié au mentorat des jeunes et à la création d'un environnement accueillant pour la croissance spirituelle."
+    },
+    "readyToJoin": "Prêt à nous rejoindre ?",
+    "readyToJoinDescription": "Venez passer du temps avec nous ! Pas besoin de s'inscrire - venez simplement et soyez vous-même.",
+    "getConnected": "Se Connecter"
+  },
+  "women": {
+    "title": "Ministère des Femmes",
+    "subtitle": "Grandir ensemble dans la foi, l'amour et le service",
+    "welcome": "Bienvenue dans notre Communauté Féminine",
+    "welcomeDescription": "Notre ministère des femmes est dédié à créer un environnement bienveillant où les femmes peuvent grandir dans leur relation avec Dieu, construire des amitiés significatives et servir ensemble dans l'amour. Nous croyons au pouvoir des femmes qui soutiennent les femmes à travers chaque saison de la vie.",
+    "mission": "Notre Mission",
+    "missionDescription1": "Nous existons pour autonomiser les femmes à découvrir leur objectif donné par Dieu, approfondir leur foi et utiliser leurs dons uniques pour faire une différence dans leurs familles, leur église et leur communauté.",
+    "missionDescription2": "À travers des études bibliques, des événements de communion et des opportunités de service, nous créons des espaces où les femmes peuvent être authentiques, trouver de l'encouragement et expérimenter l'amour de Dieu de manière tangible.",
+    "everyoneWelcome": "Toutes les femmes sont les bienvenues pour nous rejoindre !",
+    "whatWeDo": "Ce que nous faisons",
+    "bibleStudy": {
+      "title": "Étude Biblique",
+      "description": "Approfondissez votre compréhension des Écritures et grandissez dans votre foi à travers des études bibliques interactives et des discussions."
+    },
+    "fellowship": {
+      "title": "Événements de Communion",
+      "description": "Construisez des amitiés durables et créez des connexions significatives à travers des rassemblements amusants et des expériences partagées."
+    },
+    "outreach": {
+      "title": "Action Communautaire",
+      "description": "Faites une différence dans notre communauté à travers des projets de service et des initiatives d'action qui montrent l'amour du Christ."
+    },
+    "worship": {
+      "title": "Prière et Louange",
+      "description": "Expérimentez la présence de Dieu à travers des moments puissants de prière, de louange et de renouveau spirituel."
+    },
+    "whenWeMeet": "Quand nous nous réunissons",
+    "tuesday": {
+      "day": "Mardi",
+      "time": "19h00 - 20h30",
+      "activity": "Étude Biblique des Femmes",
+      "description": "Étude biblique hebdomadaire avec temps de communion et de prière"
+    },
+    "saturday": {
+      "day": "Deuxième Samedi",
+      "time": "10h00 - 12h00",
+      "activity": "Communion des Femmes",
+      "description": "Rassemblement mensuel de communion avec brunch, partage et activités spéciales"
+    },
+    "ourLeaders": "Nos Leaders du Ministère des Femmes",
+    "leader1": {
+      "name": "Sœur Marie",
+      "role": "Directrice du Ministère des Femmes",
+      "description": "Passionnée par aider les femmes à grandir dans leur foi et à découvrir leur appel dans le royaume de Dieu."
+    },
+    "leader2": {
+      "name": "Sœur Elizabeth",
+      "role": "Coordonnatrice de la Communion", 
+      "description": "Dédiée à créer des espaces accueillants où les femmes peuvent se connecter, partager et grandir ensemble."
+    },
+    "readyToJoin": "Prête à nous rejoindre ?",
+    "readyToJoinDescription": "Venez et expérimentez la joie de grandir ensemble avec d'autres femmes de foi. Pas besoin de s'inscrire - venez simplement telle que vous êtes !",
+    "getConnected": "Se Connecter"
+  },
+  "men": {
+    "title": "Ministère des Hommes",
+    "subtitle": "Construire des hommes forts de foi, de caractère et de service",
+    "welcome": "Bienvenue dans notre Communauté Masculine",
+    "welcomeDescription": "Notre ministère des hommes est dédié à aider les hommes à grandir dans leur relation avec Dieu, à développer un caractère fort et à construire une fraternité authentique. Nous croyons au pouvoir des hommes qui se tiennent ensemble dans la foi et se soutiennent mutuellement à travers les défis de la vie.",
+    "mission": "Notre Mission",
+    "missionDescription1": "Nous existons pour équiper les hommes à être des leaders spirituels dans leurs foyers, leur église et leur communauté. À travers l'enseignement biblique, le disciple pratique et la communion authentique, nous aidons les hommes à devenir les hommes que Dieu les a créés pour être.",
+    "missionDescription2": "Nous fournissons des opportunités pour les hommes de grandir dans leur foi, de développer un caractère pieux et d'utiliser leurs dons pour servir les autres. Notre objectif est de construire une communauté d'hommes qui aiment Dieu, aiment leurs familles et servent avec excellence.",
+    "everyoneWelcome": "Tous les hommes sont les bienvenus pour nous rejoindre !",
+    "whatWeDo": "Ce que nous faisons",
+    "bibleStudy": {
+      "title": "Étude Biblique",
+      "description": "Grandissez dans votre compréhension de la Parole de Dieu et appliquez les principes bibliques à votre vie quotidienne à travers des études interactives."
+    },
+    "fellowship": {
+      "title": "Événements de Fraternité",
+      "description": "Construisez des amitiés solides et de la responsabilité à travers des rassemblements d'hommes, des activités et des expériences partagées."
+    },
+    "service": {
+      "title": "Projets de Service",
+      "description": "Utilisez vos compétences et votre force pour servir les autres de manières pratiques qui démontrent l'amour du Christ."
+    },
+    "recreation": {
+      "title": "Sports et Loisirs",
+      "description": "Connectez-vous avec d'autres hommes à travers des sports, des activités de plein air et des événements récréatifs qui construisent la camaraderie."
+    },
+    "whenWeMeet": "Quand nous nous réunissons",
+    "wednesday": {
+      "day": "Mercredi",
+      "time": "19h00 - 20h30",
+      "activity": "Étude Biblique des Hommes",
+      "description": "Étude biblique hebdomadaire avec temps de communion et de prière"
+    },
+    "saturday": {
+      "day": "Troisième Samedi",
+      "time": "9h00 - 11h00",
+      "activity": "Petit-déjeuner de Fraternité des Hommes",
+      "description": "Petit-déjeuner mensuel de fraternité avec discussion et activités"
+    },
+    "ourLeaders": "Nos Leaders du Ministère des Hommes",
+    "leader1": {
+      "name": "Frère Jacques",
+      "role": "Directeur du Ministère des Hommes",
+      "description": "Passionné par aider les hommes à grandir dans leur foi et à devenir des leaders spirituels dans leurs familles et leur communauté."
+    },
+    "leader2": {
+      "name": "Frère Michel",
+      "role": "Coordonnateur de la Fraternité", 
+      "description": "Dédié à créer une fraternité authentique où les hommes peuvent se connecter, grandir et servir ensemble."
+    },
+    "readyToJoin": "Prêt à nous rejoindre ?",
+    "readyToJoinDescription": "Venez et expérimentez la force et l'encouragement de marcher avec d'autres hommes de foi. Pas besoin de s'inscrire - venez simplement tel que vous êtes !",
+    "getConnected": "Se Connecter"
+  },
+  "children": {
+    "title": "Ministère des Enfants",
+    "subtitle": "Nourrir les jeunes cœurs à connaître et aimer Jésus",
+    "welcome": "Bienvenue dans notre Ministère des Enfants",
+    "welcomeDescription": "Notre ministère des enfants est dédié à créer un environnement sûr et aimant où les enfants peuvent grandir dans leur relation avec Dieu, apprendre les vérités bibliques et construire des amitiés durables. Nous croyons à nourrir le parcours de foi de chaque enfant à travers un enseignement approprié à l'âge et des activités amusantes.",
+    "mission": "Notre Mission",
+    "missionDescription1": "Nous existons pour aider les enfants à découvrir l'amour de Dieu, apprendre les histoires bibliques fondamentales et développer une relation personnelle avec Jésus-Christ. Notre objectif est de construire une fondation spirituelle forte qui durera toute une vie.",
+    "missionDescription2": "À travers des leçons engageantes, des activités créatives et des relations attentionnées, nous créons des espaces où les enfants peuvent expérimenter l'amour de Dieu, poser des questions et grandir dans leur compréhension de la foi.",
+    "everyoneWelcome": "Tous les enfants sont les bienvenus pour nous rejoindre !",
+    "whatWeDo": "Ce que nous faisons",
+    "sundaySchool": {
+      "title": "École du Dimanche",
+      "description": "Leçons bibliques appropriées à l'âge, artisanats et activités qui aident les enfants à apprendre sur l'amour de Dieu et les vérités bibliques."
+    },
+    "nursery": {
+      "title": "Soin à la Pouponnière",
+      "description": "Environnement sûr et nourrissant pour les nourrissons et tout-petits où ils expérimentent l'amour de Dieu à travers des soins doux et une attention particulière."
+    },
+    "vbs": {
+      "title": "École Biblique de Vacances",
+      "description": "Programme d'été passionnant avec des histoires bibliques, des jeux, des artisanats et de la musique qui rendent l'apprentissage sur Jésus amusant."
+    },
+    "bibleClub": {
+      "title": "Club Biblique des Enfants",
+      "description": "Club hebdomadaire où les enfants approfondissent les histoires bibliques, mémorisent des versets et construisent des amitiés."
+    },
+    "whenWeMeet": "Quand nous nous réunissons",
+    "sunday": {
+      "day": "Dimanche",
+      "time": "10h00 - 11h30",
+      "activity": "Classes d'École du Dimanche",
+      "description": "Classes spécifiques à l'âge avec leçons bibliques, activités et communion"
+    },
+    "wednesday": {
+      "day": "Mercredi",
+      "time": "18h30 - 20h00",
+      "activity": "Club Biblique des Enfants",
+      "description": "Programme de milieu de semaine avec étude biblique, jeux et dîner"
+    },
+    "ourLeaders": "Nos Leaders du Ministère des Enfants",
+    "leader1": {
+      "name": "Sœur Sarah",
+      "role": "Directrice du Ministère des Enfants",
+      "description": "Passionnée par aider les enfants à découvrir l'amour de Dieu et à construire une fondation solide de foi."
+    },
+    "leader2": {
+      "name": "Sœur Rachel",
+      "role": "Coordonnatrice de l'École du Dimanche", 
+      "description": "Dédiée à créer des leçons engageantes et des activités qui aident les enfants à grandir dans leur relation avec Jésus."
+    },
+    "readyToJoin": "Prêt à nous rejoindre ?",
+    "readyToJoinDescription": "Apportez vos enfants pour expérimenter la joie d'apprendre sur l'amour de Dieu dans un environnement sûr et amusant. Tous sont les bienvenus !",
+    "getConnected": "Se Connecter"
+  },
+  "youngCouples": {
+    "title": "Ministère des Jeunes Couples",
+    "subtitle": "Construire des mariages forts enracinés en Christ",
+    "verse": "Éphésiens 4:2-3 - « Soyez complètement humbles et doux ; soyez patients, vous supportant les uns les autres dans l'amour. Faites tout effort pour garder l'unité de l'Esprit à travers le lien de la paix. »",
+    "welcome": "Bienvenue dans notre Communauté des Jeunes Couples",
+    "welcomeDescription": "Notre ministère des jeunes couples est dédié à aider les couples mariés à construire une fondation solide dans leur relation avec Christ et les uns avec les autres. Nous créons une communauté supportive où les couples peuvent grandir ensemble dans la foi et l'amour, renforcer leurs mariages à travers des principes bibliques, et construire des amitiés durables avec d'autres couples qui partagent des valeurs et expériences de vie similaires.",
+    "mission": "Notre Mission",
+    "missionDescription": "Nous existons pour équiper les jeunes couples mariés à développer une relation plus profonde avec Christ, proclamer son évangile, maintenir le culte de Dieu, encourager des relations édifiantes avec d'autres chrétiens, et autonomiser des relations qui changent la vie avec les non-croyants. À travers l'enseignement biblique, les événements de communion et le soutien pratique, nous aidons les couples à naviguer les défis du mariage tout en grandissant ensemble spirituellement et émotionnellement.",
+    "whatWeDo": "Ce que nous faisons",
+    "bibleStudy": {
+      "title": "Étude Biblique des Couples",
+      "description": "Explorez les principes bibliques pour le mariage, renforcez votre relation avec Dieu et les uns les autres, et grandissez ensemble dans la Parole de Dieu à travers des études interactives et l'application pratique."
+    },
+    "fellowship": {
+      "title": "Communion des Couples",
+      "description": "Construisez des amitiés significatives avec d'autres couples à travers des événements sociaux, des expériences partagées, et créez un réseau supportif où les mariages peuvent s'épanouir et les couples peuvent s'encourager mutuellement."
+    },
+    "outreach": {
+      "title": "Action Sociale des Mariages",
+      "description": "Servez ensemble comme couples et démontrez l'amour de Dieu à travers un service communautaire axé sur le mariage, le mentorat de jeunes couples, et le partage de l'espérance du Christ avec d'autres couples mariés dans votre communauté."
+    },
+    "worship": {
+      "title": "Culte des Couples",
+      "description": "Grandissez ensemble spirituellement à travers des services de culte conçus pour les couples, des rassemblements de prière, et la célébration de la fidélité de Dieu dans le mariage."
+    },
+    "whenWeMeet": "Quand nous nous réunissons",
+    "friday": {
+      "day": "Vendredi",
+      "time": "19h00 - 21h00",
+      "activity": "Étude Biblique des Couples",
+      "description": "Étude biblique hebdomadaire avec temps de communion et de discussion"
+    },
+    "saturday": {
+      "day": "Deuxième Samedi",
+      "time": "18h00 - 21h00",
+      "activity": "Soirée de Communion des Couples",
+      "description": "Rassemblement mensuel de communion avec dîner et activités"
+    },
+    "ourLeaders": "Nos Leaders du Ministère des Jeunes Couples",
+    "leader1": {
+      "name": "Frère David",
+      "role": "Directeur du Ministère des Jeunes Couples",
+      "description": "Passionné par aider les couples à construire des mariages forts et centrés sur Christ."
+    },
+    "leader2": {
+      "name": "Sœur Rebecca",
+      "role": "Coordonnatrice de la Communion", 
+      "description": "Dédiée à créer des espaces accueillants où les couples peuvent se connecter, grandir et se soutenir mutuellement."
+    },
+    "readyToJoin": "Prêt à nous rejoindre ?",
+    "readyToJoinDescription": "Venez et expérimentez la joie de grandir ensemble avec d'autres jeunes couples dans la foi. Tous les couples sont les bienvenus !",
+    "getConnected": "Se Connecter"
+  },
+  "events": {
+    "multimedia": {
+      "title": "Ministère Multimédia",
+      "date": "Dimanche, 10:00 - 12:00",
+      "location": "Sanctuaire Principal",
+      "description": "Le Ministère Multimédia est dédié à l'utilisation de la technologie et de la créativité pour soutenir et améliorer l'expérience de culte. À travers le son, les visuels et les médias numériques, nous aidons à communiquer le message de l'Évangile clairement et efficacement aux publics présents et en ligne. \"Allez dans tout le monde et prêchez la bonne nouvelle à toute la création.\" — Marc 16:15",
+      "category": "Technologie & Culte"
+    },
+    "fellowship": {
+      "title": "Rassemblement de Communauté",
+      "date": "Mercredis 18h30",
+      "location": "Salle de Communion",
+      "description": "Connectez-vous avec notre famille d'église à travers une communion significative, la prière, et la construction de relations durables dans le Christ.",
+      "category": "Communauté"
+    },
+    "bridge": {
+      "title": "Ministère Pont",
+      "date": "Début 1er Avril",
+      "location": "Aile Éducation",
+      "description": "Connecter les jeunes à Dieu, à l'église et les uns aux autres. Nous servons comme une voie d'accueil pour les nouveaux visiteurs et la communauté environnante en construisant des relations significatives et fournissant un soutien là où c'est le plus nécessaire. \"Accueillez-vous donc les uns les autres, comme Christ vous a accueillis, à la gloire de Dieu.\" — Romains 15:7",
+      "category": "Jeunesse & Communauté"
+    }
+  },
+  "news": {
+    "weeklyService": {
+      "title": "Cultes du Dimanche",
+      "description": "Rejoignez notre équipe de culte et l'assemblée pour une louange inspirée, une adoration et un enseignement biblique chaque dimanche.",
+      "body": "Expérimentez la présence de Dieu à travers une adoration édifiante avec notre équipe de culte talentueuse, la prière et un enseignement biblique pertinent. Nos services offrent une opportunité de se connecter avec Dieu et notre famille d'église. Nous offrons des services en anglais et en créole haïtien pour servir notre communauté diverse."
+    },
+    "bibleStudy": {
+      "title": "Étude Biblique & Prière Hebdomadaire",
+      "description": "Grandissez dans votre foi à travers nos réunions d'étude biblique et de prière en milieu de semaine avec support multimédia.",
+      "body": "Approfondissez votre compréhension des Écritures et renforcez votre vie de prière dans nos groupes d'étude biblique hebdomadaires. Nous explorons la Bible ensemble avec des présentations multimédias, partageons des idées et prions les uns pour les autres et pour notre communauté. Rejoignez-nous pour une croissance spirituelle et une communion significative."
+    },
+    "communityOutreach": {
+      "title": "Action Communautaire & Service",
+      "description": "Connecter les jeunes et la communauté à travers notre ministère Pont et programmes d'action sociale.",
+      "body": "Nous sommes engagés à être les mains et les pieds du Christ dans notre communauté à travers notre Ministère Pont. Nous connectons les jeunes à Dieu, à l'église et les uns aux autres, servant comme une voie d'accueil pour les nouveaux visiteurs. À travers des programmes pour les jeunes, des partenariats communautaires et des opportunités de bénévolat, nous avons un impact positif."
+    }
   }
 }

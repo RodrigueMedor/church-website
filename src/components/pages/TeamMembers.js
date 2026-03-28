@@ -31,7 +31,7 @@ const teamMembers = [
     bio: 'Le Pasteur Brouard apporte plus de 25 ans d\'expérience dans le ministère pastoral. Diplômé du Séminaire de Théologie Évangélique d\'Haïti, il est passionné par l\'enseignement biblique et le développement spirituel de la communauté.',
     email: 'pasteur@fhbck.org',
     phone: '(407) 123-4567',
-    photo: '/images/staff/pastor-charles.jpg'
+    photo: '/images/staff/pastor-fritzner-brouard.jpg'
   },
   {
     name: 'Pasteur Marie-Claire Laurent',

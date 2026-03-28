@@ -28,7 +28,11 @@ import {
   Event as EventIcon,
   ArrowForward as ArrowForwardIcon,
   Menu as MenuIcon,
-  Church as ChurchIcon
+  Church as ChurchIcon,
+  Handyman as HandymanIcon,
+  Favorite as FavoriteIcon,
+  FamilyRestroom as FamilyRestroomIcon,
+  ChildCare as ChildCareIcon
 } from '@mui/icons-material';
 
 // Styled Components
@@ -85,55 +89,51 @@ const ministries = [
     id: 1,
     title: "Children's Ministry",
     description: 'A safe, engaging environment where children learn about God\'s love through Bible-based teaching, worship, and fun activities designed just for them.',
-    icon: <SchoolIcon fontSize="large" />,
-    image: '/images/children-ministry.jpg',
-    meetingTime: 'Sundays at 9:30 AM',
+    icon: <ChildCareIcon fontSize="large" />,
+    image: '/images/banner/children-banner.JPG',
+    meetingTime: 'Sundays at 9:30 AM & Wednesdays at 7:00 PM',
+    link: '/children-ministry',
     color: '#4CAF50' // Green
   },
   {
     id: 2,
-    title: 'Youth Group',
+    title: 'Youth Ministry',
     description: 'A dynamic community for teenagers to grow in their faith, build meaningful relationships, and discover their purpose in Christ.',
     icon: <GroupIcon fontSize="large" />,
-    image: '/images/youth-group.jpg',
-    meetingTime: 'Fridays at 7:00 PM',
+    image: '/images/banner/youth-banner.jpg',
+    meetingTime: 'Saturdays at 5:00 PM & Sundays at 11:30 AM',
+    link: '/youth-ministry',
     color: '#2196F3' // Blue
   },
   {
     id: 3,
-    title: 'Worship Team',
-    description: 'Leading the congregation in authentic worship through music and creative expressions of praise to glorify God.',
-    icon: <MusicIcon fontSize="large" />,
-    image: '/images/worship.jpg',
-    meetingTime: 'Thursdays at 6:30 PM',
-    color: '#9C27B0' // Purple
-  },
-  {
-    id: 4,
-    title: 'Bible Study',
-    description: 'In-depth exploration of Scripture in a welcoming small group environment where questions are encouraged and faith grows.',
-    icon: <BibleIcon fontSize="large" />,
-    image: '/images/bible-study.jpg',
-    meetingTime: 'Wednesdays at 7:00 PM',
+    title: "Men's Ministry",
+    description: 'Building strong men of faith through fellowship, Bible study, service opportunities, and recreational activities.',
+    icon: <HandymanIcon fontSize="large" />,
+    image: '/images/banner/men-banner.JPG',
+    meetingTime: 'Wednesdays at 7:00 PM & Saturdays at 10:00 AM',
+    link: '/men-ministry',
     color: '#FF9800' // Orange
   },
   {
-    id: 5,
-    title: 'Outreach Ministry',
-    description: 'Extending Christ\'s love to our community through service projects, missions, and acts of kindness that make a real difference.',
-    icon: <VolunteerIcon fontSize="large" />,
-    image: '/images/outreach.jpg',
-    meetingTime: 'Monthly events',
-    color: '#F44336' // Red
+    id: 4,
+    title: "Women's Ministry",
+    description: 'A supportive community for women to grow in faith, build lasting friendships, and serve together in Christ\'s love.',
+    icon: <FavoriteIcon fontSize="large" />,
+    image: '/images/banner/women-banner.jpg',
+    meetingTime: 'Tuesdays at 7:00 PM & Saturdays at 10:00 AM',
+    link: '/women-ministry',
+    color: '#9C27B0' // Purple
   },
   {
-    id: 6,
-    title: 'Sports Ministry',
-    description: 'Building Christ-centered relationships through sports, fitness, and recreational activities for all ages and skill levels.',
-    icon: <SportsIcon fontSize="large" />,
-    image: '/images/sports.jpg',
-    meetingTime: 'Saturdays at 10:00 AM',
-    color: '#00BCD4' // Cyan
+    id: 5,
+    title: 'Young Couples Ministry',
+    description: 'Strengthening marriages and building Christ-centered relationships through fellowship, Bible study, and shared experiences.',
+    icon: <FamilyRestroomIcon fontSize="large" />,
+    image: '/images/banner/ycm-banner.jpg',
+    meetingTime: 'Fridays at 7:30 PM & Saturdays at 6:00 PM',
+    link: '/young-couples-ministry',
+    color: '#F44336' // Red
   }
 ];
 
@@ -411,6 +411,8 @@ const MinistryCard = ({ ministry }) => {
           <Button 
             size="small" 
             color="primary" 
+            component={RouterLink}
+            to={ministry.link}
             endIcon={<ArrowForwardIcon />}
             sx={{ 
               ml: 'auto',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { 
   Box, 
@@ -7,20 +7,14 @@ import {
   Grid, 
   Button, 
   Paper, 
-  Avatar, 
-  Card, 
-  CardContent, 
-  CardMedia,
+  Card,
   useTheme,
   useMediaQuery,
   Divider,
   Chip,
   IconButton,
   Dialog,
-  DialogTitle,
   DialogContent,
-  DialogActions,
-  DialogContentText,
   useMediaQuery as useMuiMediaQuery
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -50,20 +44,6 @@ const Section = styled(Box)(({ theme }) => ({
   },
 }));
 
-const StyledCard = styled(Card)(({ theme }) => ({
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  borderRadius: 16,
-  overflow: 'hidden',
-  boxShadow: '0 10px 30px -5px rgba(0,0,0,0.1)',
-  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-  '&:hover': {
-    transform: 'translateY(-8px)',
-    boxShadow: '0 15px 35px -5px rgba(0,0,0,0.15)',
-  },
-}));
-
 const ValueCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4, 3),
   height: '100%',
@@ -80,72 +60,7 @@ const ValueCard = styled(Paper)(({ theme }) => ({
   },
 }));
 
-// FHBCK Content
-const aboutContent = {
-  mission: "La mission de la Première Église Baptiste Haïtienne de Kissimmee est de glorifier Dieu en faisant des disciples de Jésus-Christ à travers l'enseignement biblique, l'adoration authentique, la communion fraternelle et le service dans notre communauté locale et au-delà.",
-  
-  vision: "Notre vision est d'être une communauté multiculturelle et dynamique où chaque personne peut grandir spirituellement, développer des relations significatives et s'engager dans un ministère transformateur, reflétant ainsi l'amour et la grâce de Jésus-Christ.",
-  
-  values: [
-    {
-      title: 'Fondement Biblique',
-      description: 'Nous croyons en l\'autorité suprême de la Bible comme Parole de Dieu, guide infaillible pour notre foi et notre conduite.',
-      icon: <BookIcon fontSize="large" color="primary" />,
-      color: '#1a4b8c',
-    },
-    {
-      title: 'Adoration Passionnée',
-      description: 'Nous nous engageons dans une adoration authentique qui honore Dieu et construit la foi, reflétant la richesse de notre héritage haïtien.',
-      icon: <MusicIcon fontSize="large" color="primary" />,
-      color: '#d32f2f',
-    },
-    {
-      title: 'Communauté Unie',
-      description: 'Nous cultivons des relations authentiques où chacun trouve sa place, son identité en Christ et son appel à servir.',
-      icon: <GroupIcon fontSize="large" color="primary" />,
-      color: '#2e7d32',
-    },
-    {
-      title: 'Mission Intégrale',
-      description: 'Nous répondons à l\'appel de Christ en servant notre communauté locale et en soutenant l\'œuvre missionnaire à travers le monde.',
-      icon: <HeartIcon fontSize="large" color="primary" />,
-      color: '#ed6c02',
-    },
-  ],
-  
-  staff: [
-    {
-      name: 'Pasteur Fritzner JB Brouard',
-      role: 'Pasteur Principal',
-      bio: 'Le Pasteur Brouard apporte plus de 25 ans d\'expérience dans le ministère pastoral. Diplômé du Séminaire de Théologie Évangélique d\'Haïti, il est passionné par l\'enseignement biblique et le développement spirituel de la communauté.',
-      email: 'pasteur@fhbck.org',
-      phone: '(407) 123-4567',
-      photo: '/images/staff/pastor-charles.jpg'
-    },
-    {
-      name: 'Diacre Samuel Pierre',
-      role: 'Responsable du Culte',
-      bio: 'Le Diacre Pierre dirige notre ministère de louange avec un engagement profond pour une adoration qui unit tradition et modernité, reflétant la richesse de notre héritage chrétien haïtien.',
-      email: 'culte@fhbck.org',
-      phone: '(407) 123-4568',
-      photo: '/images/staff/deacon-pierre.jpg'
-    },
-    {
-      name: 'Diaconesse Marie L. Joseph',
-      role: 'Ministère des Femmes',
-      bio: 'La Diaconesse Joseph coordonne les activités du ministère des femmes, encourageant la croissance spirituelle et le soutien mutuel parmi les femmes de notre assemblée.',
-      email: 'femmes@fhbck.org',
-      phone: '(407) 123-4569',
-      photo: '/images/staff/deaconess-joseph.jpg'
-    },
-  ],
-  
-  history: {
-    year: '2005',
-    title: 'Notre Histoire',
-    description: 'Fondée en 2005, la Première Église Baptiste Haïtienne de Kissimmee est née de la vision de quelques familles haïtiennes désireuses de créer un foyer spirituel où la foi chrétienne et l\'héritage culturel s\'entrelacent harmonieusement. Au fil des années, notre église a grandi pour devenir une communauté vibrante et accueillante, engagée à servir la population haïtienne de la région d\'Orlando tout en étant une lumière pour toutes les nations. Guidés par la Parole de Dieu et animés par l\'Esprit Saint, nous continuons à avancer avec foi, espoir et amour, cherchant à transformer des vies à travers l\'Évangile de Jésus-Christ.'
-  }
-};
+// Component will use translations from i18n instead of hardcoded content
 
 const AboutPage = () => {
   const { t } = useTranslation();
@@ -154,6 +69,70 @@ const AboutPage = () => {
   const fullScreen = useMuiMediaQuery(theme.breakpoints.down('md'));
   const [selectedMember, setSelectedMember] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+
+  // Build staff and values arrays from translations
+  const [staffData, setStaffData] = useState([]);
+  const [valuesData, setValuesData] = useState([]);
+
+  useEffect(() => {
+    // Build staff data from translations
+    const staff = [
+      {
+        name: t('about.staff.pastor.name'),
+        role: t('about.staff.pastor.role'),
+        bio: t('about.staff.pastor.bio'),
+        email: 'pasteur@fhbck.org',
+        phone: '(407) 123-4567',
+        photo: `${process.env.PUBLIC_URL}/images/staff/pastor-fritzner-brouard.jpg`
+      },
+      {
+        name: t('about.staff.deacon.name'),
+        role: t('about.staff.deacon.role'),
+        bio: t('about.staff.deacon.bio'),
+        email: 'culte@fhbck.org',
+        phone: '(407) 123-4568',
+        photo: `${process.env.PUBLIC_URL}/images/staff/deacon-pierre.jpg`
+      },
+      {
+        name: t('about.staff.deaconess.name'),
+        role: t('about.staff.deaconess.role'),
+        bio: t('about.staff.deaconess.bio'),
+        email: 'femmes@fhbck.org',
+        phone: '(407) 123-4569',
+        photo: `${process.env.PUBLIC_URL}/images/staff/deaconess-joseph.jpg`
+      },
+    ];
+    setStaffData(staff);
+
+    // Build values data from translations
+    const values = [
+      {
+        title: t('about.values.biblicalFoundation.title'),
+        description: t('about.values.biblicalFoundation.description'),
+        icon: <BookIcon fontSize="large" color="primary" />,
+        color: '#1a4b8c',
+      },
+      {
+        title: t('about.values.passionateWorship.title'),
+        description: t('about.values.passionateWorship.description'),
+        icon: <MusicIcon fontSize="large" color="primary" />,
+        color: '#d32f2f',
+      },
+      {
+        title: t('about.values.unitedCommunity.title'),
+        description: t('about.values.unitedCommunity.description'),
+        icon: <GroupIcon fontSize="large" color="primary" />,
+        color: '#2e7d32',
+      },
+      {
+        title: t('about.values.integralMission.title'),
+        description: t('about.values.integralMission.description'),
+        icon: <HeartIcon fontSize="large" color="primary" />,
+        color: '#ed6c02',
+      },
+    ];
+    setValuesData(values);
+  }, [t]);
 
   const handleOpenModal = (member) => {
     setSelectedMember(member);
@@ -204,8 +183,8 @@ const AboutPage = () => {
       >
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2, py: 12, textAlign: 'center' }}>
           <Chip 
-            label="Bienvenue à First Haitian Baptist Church of Kissimmee" 
-            color="primary" 
+            label={t('about.ourHistoryTagline')}
+            color="primary"
             sx={{ 
               mb: 3, 
               px: 2, 
@@ -269,7 +248,7 @@ const AboutPage = () => {
               lineHeight: 1.4
             }}
           >
-            « Une maison de prière pour toutes les nations »
+            {t('about.ourHistoryTagline')}
           </Typography>
           <Divider sx={{ 
             width: '100px', 
@@ -291,8 +270,7 @@ const AboutPage = () => {
               mb: 4
             }}
           >
-            Une communauté de foi engagée à vivre et partager l'Évangile de Jésus-Christ, 
-            tout en honorant notre riche héritage culturel haïtien.
+            {t('about.ourHistoryDescription')}
           </Typography>
           <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Button 
@@ -324,7 +302,7 @@ const AboutPage = () => {
               }}
             >
               <Box sx={{ transform: 'translateY(-2px)' }}>
-                Nos Services
+                {t('about.ourServices')}
               </Box>
             </Button>
               <Button 
@@ -361,7 +339,18 @@ const AboutPage = () => {
 
       {/* History Section */}
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2, mt: -8, mb: 8 }}>
-        <StyledCard>
+        <Card
+          sx={{
+            borderRadius: 2,
+            overflow: 'hidden',
+            boxShadow: '0 10px 30px -5px rgba(0,0,0,0.1)',
+            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: '0 15px 35px -5px rgba(0,0,0,0.15)',
+            },
+          }}
+        >
           <Grid container>
             <Grid item xs={12} md={4} sx={{ 
               bgcolor: 'primary.main', 
@@ -380,14 +369,14 @@ const AboutPage = () => {
                 lineHeight: 1,
                 textAlign: { xs: 'center', md: 'left' }
               }}>
-                {aboutContent.history.year}
+                {t('about.historyYear')}
               </Typography>
               <Typography variant="h4" sx={{ 
                 mt: 2, 
                 fontWeight: 600,
                 textAlign: { xs: 'center', md: 'left' }
               }}>
-                {aboutContent.history.title}
+                {t('about.historyTitle')}
               </Typography>
               <Box sx={{ mt: 3, display: 'flex', justifyContent: { xs: 'center', md: 'flex-start' } }}>
                 <ChurchIcon sx={{ fontSize: 60, opacity: 0.2 }} />
@@ -406,7 +395,7 @@ const AboutPage = () => {
                 color: 'primary.main',
                 fontSize: { xs: '1.75rem', md: '2rem' }
               }}>
-                Notre Histoire
+                {t('about.ourHistory')}
               </Typography>
               <Typography variant="body1" sx={{ 
                 fontSize: '1.1rem', 
@@ -414,7 +403,7 @@ const AboutPage = () => {
                 mb: 4,
                 color: 'text.secondary'
               }}>
-                {aboutContent.history.description}
+                {t('about.ourHistoryDescription')}
               </Typography>
               <Box>
                 <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
@@ -442,7 +431,7 @@ const AboutPage = () => {
                       border: 'none'
                     }}
                   >
-                    Nous Rendre Visite
+                    {t('about.visitUs')}
                   </Button>
                   <Button 
                     variant="outlined"
@@ -464,13 +453,13 @@ const AboutPage = () => {
                       }
                     }}
                   >
-                    Nos Ministères
+                    {t('about.ourServices')}
                   </Button>
                 </Box>
               </Box>
             </Grid>
           </Grid>
-        </StyledCard>
+        </Card>
 
         {/* Mission & Vision */}
         <Section>
@@ -492,11 +481,11 @@ const AboutPage = () => {
                     <MissionIcon color="primary" sx={{ fontSize: 32 }} />
                   </Box>
                   <Typography variant="h4" component="h2" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                    Notre Mission
+                    {t('about.ourMission')}
                   </Typography>
                 </Box>
                 <Typography variant="body1" sx={{ lineHeight: 1.8, fontSize: '1.1rem', color: 'text.secondary' }}>
-                  {aboutContent.mission}
+                  {t('about.mission')}
                 </Typography>
               </ValueCard>
             </Grid>
@@ -517,11 +506,11 @@ const AboutPage = () => {
                     <VisionIcon color="primary" sx={{ fontSize: 32 }} />
                   </Box>
                   <Typography variant="h4" component="h2" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                    Notre Vision
+                    {t('about.ourVision')}
                   </Typography>
                 </Box>
                 <Typography variant="body1" sx={{ lineHeight: 1.8, fontSize: '1.1rem', color: 'text.secondary' }}>
-                  {aboutContent.vision}
+                  {t('about.vision')}
                 </Typography>
               </ValueCard>
             </Grid>
@@ -552,15 +541,15 @@ const AboutPage = () => {
                 }
               }}
             >
-              Nos Valeurs Fondamentales
+              {t('about.coreValues')}
             </Typography>
             <Typography variant="h6" color="textSecondary" sx={{ maxWidth: '700px', mx: 'auto', mt: 2 }}>
-              Ces principes guident tout ce que nous faisons en tant que communauté d'église
+              {t('about.coreValuesSubtitle')}
             </Typography>
           </Box>
 
           <Grid container spacing={4}>
-            {aboutContent.values.map((value, index) => (
+            {valuesData.map((value, index) => (
               <Grid item xs={12} sm={6} lg={3} key={index}>
                 <Box
                   sx={{
@@ -632,8 +621,8 @@ const AboutPage = () => {
           <Container maxWidth="lg">
             <Box textAlign="center" mb={8} position="relative" zIndex={1}>
               <Chip 
-                label="Notre Équipe" 
-                color="primary" 
+                label={t('about.ourTeamLabel')}
+                color="primary"
                 size="medium"
                 sx={{ 
                   mb: 2, 
@@ -660,7 +649,7 @@ const AboutPage = () => {
                   display: 'inline-block'
                 }}
               >
-                Rencontrez Nos Pasteurs
+                {t('about.meetOurPastors')}
               </Typography>
               <Typography 
                 variant="h6" 
@@ -673,7 +662,7 @@ const AboutPage = () => {
                   lineHeight: 1.7
                 }}
               >
-                Découvrez les dirigeants dévoués qui guident spirituellement notre communauté avec sagesse et compassion.
+                {t('about.meetOurPastorsSubtitle')}
               </Typography>
             </Box>
 
@@ -712,7 +701,7 @@ const AboutPage = () => {
                   }
                 }}
               >
-                {aboutContent.staff.map((member, index) => (
+                {staffData.map((member, index) => (
                   <Box key={index} sx={{ px: 2, outline: 'none' }}>
                     <Box 
                       sx={{
@@ -836,7 +825,7 @@ const AboutPage = () => {
                               }
                             }}
                           >
-                            En savoir plus
+                            {t('about.learnMore')}
                           </Button>
                         </Box>
                       </Box>
@@ -870,7 +859,7 @@ const AboutPage = () => {
                   transition: 'all 0.3s ease',
                 }}
               >
-                Voir toute l'équipe
+                {t('about.viewFullTeam')}
               </Button>
             </Box>
           </Container>
@@ -921,7 +910,7 @@ const AboutPage = () => {
                   }
                 }}
               >
-                Prêt à Nous Rejoindre ?
+                {t('about.readyToJoinUs')}
               </Typography>
               <Typography 
                 variant="h6" 
@@ -934,7 +923,7 @@ const AboutPage = () => {
                   fontSize: { xs: '1.1rem', md: '1.25rem' }
                 }}
               >
-                Nous serions ravis de vous accueillir pour un culte ou de répondre à toutes vos questions sur notre église et nos activités.
+                {t('about.readyToJoinUsSubtitle')}
               </Typography>
               <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
                 <Button 
@@ -986,7 +975,7 @@ const AboutPage = () => {
                     minWidth: '200px'
                   }}
                 >
-                  Voir les Événements
+                  {t('about.viewEvents')}
                 </Button>
               </Box>
             </Container>
@@ -1011,7 +1000,7 @@ const AboutPage = () => {
             color="text.secondary"
             align="center"
           >
-            © {new Date().getFullYear()} Première Église Baptiste haïtienne de Kissimmee. Tous droits réservés.
+            {t('about.copyRight', { year: new Date().getFullYear() })}
           </Typography>
         </Container>
       </Box>
