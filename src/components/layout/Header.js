@@ -7,7 +7,6 @@ import {
   Event,
   VolumeUp,
   ContactMail,
-  VolunteerActivism,
   Menu as MenuIcon,
   Close as CloseIcon,
   KeyboardArrowDown,

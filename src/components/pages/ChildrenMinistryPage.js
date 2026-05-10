@@ -5,7 +5,6 @@ import {
   Typography, 
   Grid, 
   Card, 
-  CardContent, 
   Button,
   Paper,
   Avatar,
@@ -13,18 +12,9 @@ import {
   alpha
 } from '@mui/material';
 import { 
-  Groups, 
-  Church, 
-  CalendarToday, 
+  CalendarToday,
   AccessTime,
-  LocationOn,
-  Person,
-  Star,
-  Favorite,
-  Lightbulb,
   Book,
-  People,
-  VolunteerActivism,
   ChildCare,
   School,
   EmojiEvents

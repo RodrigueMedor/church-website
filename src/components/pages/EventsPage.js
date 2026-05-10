@@ -4,21 +4,15 @@ import {
   Box,
   Button,
   Card,
-  CardActionArea,
   CardContent,
   CardMedia,
   Chip,
   Container,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
   Grid,
   IconButton,
-  Paper,
-  Tab,
-  Tabs,
   Typography,
   useMediaQuery,
   useTheme,
@@ -55,44 +49,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 // Styled components
-const HeroBanner = styled(Box)(({ theme }) => ({
-  background: 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6))',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  color: theme.palette.common.white,
-  padding: theme.spacing(15, 0),
-  textAlign: 'center',
-}));
-
-const EventCard = styled(Card)(({ theme }) => ({
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'transform 0.3s ease-in-out',
-  '&:hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: theme.shadows[8],
-  },
-}));
-
-const StyledCardMedia = styled(CardMedia)({
-  height: 200,
-  transition: 'transform 0.5s ease',
-  '&:hover': {
-    transform: 'scale(1.05)'
-  }
-});
-
-const StyledChip = styled(Chip)(({ theme }) => ({
-  margin: theme.spacing(0.5),
-}));
-
-const ModalImage = styled('img')(({ theme }) => ({
-  width: '100%',
-  maxHeight: 300,
-  objectFit: 'cover',
-  marginBottom: theme.spacing(2),
-}));
 
 const Section = styled(Box)(({ theme }) => ({
   padding: theme.spacing(6, 0),
@@ -688,7 +644,7 @@ const EventsPage = () => {
                         variant="h6" 
                         component="h3" 
                         sx={{ 
-                          fontWeight: 600, 
+                          fontWeight: 600,
                           mb: 1.5,
                           minHeight: '2.8em',
                           display: '-webkit-box',

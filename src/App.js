@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import i18n from './i18n';
 import theme from './theme/theme';
-import { CircularProgress, Box } from '@mui/material';
 
 // Auth
 import Login from './components/auth/Login';
@@ -44,12 +43,11 @@ import GetInvolvedPage from './components/pages/GetInvolvedPage';
 import NotFoundPage from './components/pages/NotFoundPage';
 
 function App() {
-  const [key, setKey] = useState(0);
-
   useEffect(() => {
     // Force re-render when language changes
     const handleLanguageChanged = () => {
-      setKey(prevKey => prevKey + 1);
+      // Removed setKey call as key is not used
+      // Perhaps re-render is not needed, or use a different method
     };
 
     i18n.on('languageChanged', handleLanguageChanged);
@@ -59,17 +57,6 @@ function App() {
     };
   }, []);
 
-  // Simple loading component
-  const PageLoading = () => (
-    <Box 
-      display="flex" 
-      justifyContent="center" 
-      alignItems="center" 
-      minHeight="100vh"
-    >
-      <CircularProgress />
-    </Box>
-  );
 
   return (
     <I18nextProvider i18n={i18n}>

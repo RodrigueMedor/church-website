@@ -8,8 +8,6 @@ import {
   CardMedia, 
   Container,
   Button,
-  useTheme,
-  useMediaQuery,
   styled
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
@@ -29,9 +27,7 @@ const NewsCard = styled(Card)(({ theme }) => ({
 
 const NewsSection = () => {
   const { t } = useTranslation();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  
+
   // Current church-themed image paths with fallbacks
   const churchImages = [
     { primary: '/images/easter/worship-team.jpg', fallback: '/images/banner/pastor-sermon_1.JPG' },

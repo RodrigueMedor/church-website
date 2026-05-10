@@ -6,25 +6,18 @@ import {
     Card, 
     CardContent, 
     Button, 
-    useTheme, 
-    useMediaQuery, 
     Modal,
     IconButton,
     styled
 } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
 import EventIcon from '@mui/icons-material/Event';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CloseIcon from '@mui/icons-material/Close';
 
 const EventBoxes = () => {
     const { t } = useTranslation();
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [open, setOpen] = useState(false);
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const handleOpen = (event) => {
         setSelectedEvent(event);
