@@ -199,11 +199,11 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
 
 // ─── Nav Data ──────────────────────────────────────────────────────────────────
 const ministrySubItems = [
-  { text: 'header.youth',    path: '/youth-ministry',    icon: <EscalatorWarning fontSize="small" /> },
-  { text: 'header.women',    path: '/women-ministry',    icon: <FamilyRestroom fontSize="small" /> },
-  { text: 'header.men',      path: '/men-ministry',      icon: <ManOutlined fontSize="small" /> },
-  { text: 'header.children', path: '/children-ministry', icon: <ChurchOutlined fontSize="small" /> },
-  { text: 'header.youngCouples', path: '/young-couples-ministry', icon: <Favorite fontSize="small" /> },
+  { text: 'header.children', path: '/children-ministry', icon: <ChurchOutlined fontSize="small" />, color: '#4CAF50' },
+  { text: 'header.youth',    path: '/youth-ministry',    icon: <EscalatorWarning fontSize="small" />, color: '#2196F3' },
+  { text: 'header.men',      path: '/men-ministry',      icon: <ManOutlined fontSize="small" />, color: '#FF9800' },
+  { text: 'header.women',    path: '/women-ministry',    icon: <FamilyRestroom fontSize="small" />, color: '#9C27B0' },
+  { text: 'header.youngCouples', path: '/young-couples-ministry', icon: <Favorite fontSize="small" />, color: '#F44336' },
 ];
 
 const navItems = [
@@ -289,6 +289,11 @@ const Header = () => {
           </NavButton>
           <Fade in={open}>
             <DropdownPaper ref={dropdownRef} elevation={0}>
+              <Box sx={{ px: 2, py: 1.5, borderBottom: '1px solid', borderColor: 'divider' }}>
+                <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', letterSpacing: '0.5px', textTransform: 'uppercase', fontSize: '0.7rem' }}>
+                  {t('header.ministries')}
+                </Typography>
+              </Box>
               {item.subItems.map((sub) => (
                 <DropdownItem
                   key={sub.text}
@@ -296,13 +301,17 @@ const Header = () => {
                   to={sub.path}
                   onClick={() => setDropdownOpen(null)}
                   startIcon={
-                    <Box sx={{ color: isActive(sub.path) ? 'primary.main' : 'text.secondary' }}>
+                    <Box sx={{ color: sub.color || (isActive(sub.path) ? 'primary.main' : 'text.secondary') }}>
                       {sub.icon}
                     </Box>
                   }
                   sx={{
                     fontWeight: isActive(sub.path) ? 700 : 500,
-                    color: isActive(sub.path) ? 'primary.main' : 'text.primary',
+                    color: isActive(sub.path) ? (sub.color || 'primary.main') : 'text.primary',
+                    '&:hover': sub.color ? {
+                      color: sub.color,
+                      backgroundColor: `rgba(${parseInt(sub.color.slice(1,3), 16)}, ${parseInt(sub.color.slice(3,5), 16)}, ${parseInt(sub.color.slice(5,7), 16)}, 0.08)`,
+                    } : {},
                   }}
                 >
                   {t(sub.text)}
@@ -396,7 +405,7 @@ const Header = () => {
                   '&:hover': { backgroundColor: alpha(theme.palette.primary.main, 0.06) },
                 }}
               >
-                <ListItemIcon sx={{ minWidth: 30, color: isActive(sub.path) ? 'primary.main' : 'text.disabled' }}>
+                <ListItemIcon sx={{ minWidth: 30, color: sub.color || (isActive(sub.path) ? 'primary.main' : 'text.disabled') }}>
                   {sub.icon}
                 </ListItemIcon>
                 <ListItemText
@@ -404,7 +413,7 @@ const Header = () => {
                   primaryTypographyProps={{
                     fontSize: '0.87rem',
                     fontWeight: isActive(sub.path) ? 700 : 400,
-                    color: isActive(sub.path) ? 'primary.main' : 'text.secondary',
+                    color: isActive(sub.path) ? (sub.color || 'primary.main') : 'text.secondary',
                   }}
                 />
               </ListItemButton>
