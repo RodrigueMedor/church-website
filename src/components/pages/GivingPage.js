@@ -302,7 +302,7 @@ const GivingPage = () => {
                 <Typography 
                   variant="h5" 
                   sx={{ 
-                    mb: 5, 
+                    mb: 3, 
                     maxWidth: '800px',
                     margin: '0 auto',
                     fontWeight: 300,
@@ -388,12 +388,12 @@ const GivingPage = () => {
             </Box>
 
             {/* Community Photos Section */}
-            <Box sx={{ mt: 8, mb: 8 }}>
+            <Box sx={{ mt: 5, mb: 8 }}>
               <Container maxWidth="lg">
                 <Typography variant="h4" sx={{ mb: 4, fontWeight: 600, textAlign: 'center' }}>
                   Our Community in Action
                 </Typography>
-                <Grid container spacing={4}>
+                <Grid container spacing={3}>
                   <Grid item xs={12} md={6}>
                     <Box sx={{ 
                       position: 'relative',
@@ -484,7 +484,7 @@ const GivingPage = () => {
               },
             }}>
               {/* Main Content */}
-              <Grid container spacing={4} alignItems="center">
+              <Grid container spacing={3} alignItems="center">
                 <Grid item xs={12} md={6}>
                   <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
                     <Box sx={{ 
@@ -654,7 +654,7 @@ const GivingPage = () => {
             </Typography>
           </Box>
           
-          <Grid container spacing={4}>
+          <Grid container spacing={3}>
             {testimonials.map((testimonial, index) => (
               <Grid item xs={12} md={4} key={index}>
                 <Slide direction="up" in timeout={2000 + index * 200}>
@@ -857,7 +857,7 @@ const GivingPage = () => {
             <Typography 
               variant="body1" 
               sx={{ 
-                mb: 5, 
+                mb: 3, 
                 maxWidth: '700px', 
                 mx: 'auto', 
                 color: 'rgba(255, 255, 255, 0.9)',

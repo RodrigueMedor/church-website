@@ -58,6 +58,7 @@ import {
   Groups
 } from '@mui/icons-material';
 import { styled, keyframes } from '@mui/material/styles';
+import { usePageContent } from '../../cms';
 
 // Animations
 const floatAnimation = keyframes`
@@ -260,8 +261,15 @@ const ProfessionalSermonsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedSermon, setSelectedSermon] = useState(null);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const content = usePageContent('sermons');
   const [visibleSections, setVisibleSections] = useState(new Set());
   const sectionRefs = useRef([]);
+  const iconMap = {
+    Book: <Book />,
+    Visibility: <Visibility />,
+    Category: <Category />,
+    Schedule: <Schedule />,
+  };
 
   useEffect(() => {
     const observers = sectionRefs.current.map((ref, index) => {
@@ -329,12 +337,18 @@ const ProfessionalSermonsPage = () => {
     { id: 'faith', name: 'Faith', icon: <Lightbulb /> }
   ];
 
-  const stats = [
-    { number: '50+', label: 'Sermons Available', icon: <Book /> },
-    { number: '10K+', label: 'Total Views', icon: <Visibility /> },
-    { number: '7', label: 'Categories', icon: <Category /> },
-    { number: '24/7', label: 'On-Demand', icon: <Schedule /> }
-  ];
+  const stats = content.stats?.length > 0
+    ? content.stats.map((stat, i) => ({
+        number: stat.number,
+        label: stat.label,
+        icon: iconMap[stat.icon] || [<Book />, <Visibility />, <Category />, <Schedule />][i] || <Book />,
+      }))
+    : [
+        { number: '50+', label: 'Sermons Available', icon: <Book /> },
+        { number: '10K+', label: 'Total Views', icon: <Visibility /> },
+        { number: '7', label: 'Categories', icon: <Category /> },
+        { number: '24/7', label: 'On-Demand', icon: <Schedule /> },
+      ];
 
   const formatDuration = (duration) => {
     const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
@@ -393,7 +407,7 @@ const ProfessionalSermonsPage = () => {
                   lineHeight: 1.1,
                 }}
               >
-                Sermons
+                {content.hero?.title || 'Sermons'}
               </Typography>
               <Typography
                 variant="h4"
@@ -406,17 +420,17 @@ const ProfessionalSermonsPage = () => {
                   lineHeight: 1.6,
                 }}
               >
-                "Faith comes from hearing the message, and the message is heard through the word about Christ."
+                {content.hero?.subtitle || '"Faith comes from hearing the message, and the message is heard through the word about Christ."'}
               </Typography>
               <Typography
                 variant="h6"
-                sx={{ fontStyle: 'italic', opacity: 0.85, mb: 6 }}
+                sx={{ fontStyle: 'italic', opacity: 0.85, mb: 4 }}
               >
                 Romans 10:17
               </Typography>
               
               {/* Quick Stats */}
-              <Grid container spacing={3} sx={{ mb: 6 }}>
+              <Grid container spacing={3} sx={{ mb: 4 }}>
                 {stats.map((stat, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <StatsCard elevation={0}>
@@ -498,7 +512,7 @@ const ProfessionalSermonsPage = () => {
                 component="h2"
                 sx={{
                   fontWeight: 700,
-                  mb: 5,
+                  mb: 3,
                   textAlign: 'center',
                   color: '#1565C0',
                   fontSize: { xs: '2rem', md: '2.5rem' },
@@ -508,17 +522,17 @@ const ProfessionalSermonsPage = () => {
               </Typography>
               
               {loading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', py: 5 }}>
                   <CircularProgress sx={{ color: '#1565C0' }} />
                 </Box>
               ) : filteredSermons.length === 0 ? (
-                <Box sx={{ textAlign: 'center', py: 8 }}>
+                <Box sx={{ textAlign: 'center', py: 5 }}>
                   <Typography variant="h6" color="text.secondary">
                     No sermons found matching your criteria.
                   </Typography>
                 </Box>
               ) : (
-                <Grid container spacing={4}>
+                <Grid container spacing={3}>
                   {filteredSermons.map((sermon, index) => (
                     <Grid item xs={12} sm={6} md={4} key={sermon.id}>
                       <SermonCard index={index} elevation={6}>
@@ -677,7 +691,7 @@ const ProfessionalSermonsPage = () => {
         <Box
           ref={(el) => (sectionRefs.current[2] = el)}
           sx={{
-            py: 8,
+            py: 5,
             background: 'linear-gradient(135deg, #1565C0 0%, #0D47A1 100%)',
             color: 'white',
             position: 'relative',
@@ -713,7 +727,7 @@ const ProfessionalSermonsPage = () => {
                 <Typography
                   variant="h6"
                   sx={{
-                    mb: 6,
+                    mb: 4,
                     maxWidth: '600px',
                     mx: 'auto',
                     lineHeight: 1.6,

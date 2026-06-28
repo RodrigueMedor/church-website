@@ -201,7 +201,7 @@ const Header = () => {
               </Button>
               <Button 
                 component={RouterLink} 
-                to="/give" 
+                to="/giving" 
                 startIcon={<GiveIcon />}
                 sx={{ textTransform: 'none', fontWeight: 500 }}
               >
@@ -529,8 +529,8 @@ const Footer = () => {
               </IconButton>
             </Box>
             <Typography variant="body2" color="text.secondary">
-              <Link href="mailto:info@churchname.com" color="inherit" underline="hover">
-                info@churchname.com
+              <Link href="mailto:info@fhbck.org" color="inherit" underline="hover">
+                info@fhbck.org
               </Link>
             </Typography>
           </Grid>
@@ -552,7 +552,7 @@ const Footer = () => {
               <Link component={RouterLink} to="/events" color="text.secondary" underline="hover">
                 Events
               </Link>
-              <Link component={RouterLink} to="/give" color="text.secondary" underline="hover">
+              <Link component={RouterLink} to="/giving" color="text.secondary" underline="hover">
                 Give
               </Link>
               <Link component={RouterLink} to="/contact" color="text.secondary" underline="hover">
@@ -569,14 +569,14 @@ const Footer = () => {
               <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                 <LocationOnIcon color="primary" sx={{ mr: 1, mt: '2px' }} />
                 <Typography variant="body2" color="text.secondary">
-                  123 Faith Avenue<br />
-                  Brooklyn, NY 11201
+                  900 S Thacker Ave<br />
+                  Kissimmee, FL 34741
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <PhoneIcon color="primary" sx={{ mr: 1 }} />
-                <Link href="tel:+15551234567" color="text.secondary" underline="hover">
-                  (555) 123-4567
+                <Link href="tel:(407)218-0827" color="text.secondary" underline="hover">
+                  (407) 218-0827
                 </Link>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -603,10 +603,10 @@ const Footer = () => {
             © {new Date().getFullYear()} Faith Hope Baptist Church. All rights reserved.
           </Typography>
           <Box sx={{ display: 'flex', gap: 2 }}>
-            <Link href="/privacy" variant="body2" color="text.secondary" underline="hover">
+            <Link component={RouterLink} to="/privacy" variant="body2" color="text.secondary" underline="hover">
               Privacy Policy
             </Link>
-            <Link href="/terms" variant="body2" color="text.secondary" underline="hover">
+            <Link component={RouterLink} to="/terms" variant="body2" color="text.secondary" underline="hover">
               Terms of Service
             </Link>
           </Box>

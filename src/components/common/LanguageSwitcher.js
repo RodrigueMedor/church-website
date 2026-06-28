@@ -32,14 +32,9 @@ const LanguageSwitcher = () => {
     localStorage.setItem('i18nextLng', langCode);
     
     // Change the language
-    i18n.changeLanguage(langCode)
-      .then(() => {
-        // Force a hard reload to ensure all translations are applied
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error('Error changing language:', error);
-      });
+    i18n.changeLanguage(langCode).catch((error) => {
+      console.error('Error changing language:', error);
+    });
   };
   
   // Add CheckIcon component for the selected language

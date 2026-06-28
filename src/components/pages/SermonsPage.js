@@ -521,37 +521,35 @@ const SermonsPage = () => {
   
   // No need for useStyles hook anymore
 
+  const loadVideos = async () => {
+    console.log('Starting to load videos...');
+    setIsLoading(true);
+    try {
+      const videos = await fetchYouTubeVideos();
+      console.log('Videos fetched:', videos);
+      setSermons(videos);
+      setFilteredSermons(videos);
+      if (videos.length > 0) {
+        setSelectedVideo(videos[0]);
+      }
+      setError(null);
+    } catch (err) {
+      console.error('Error loading videos:', err);
+      console.warn('Using fallback data due to complete API failure');
+      setSermons(FALLBACK_SERMONS);
+      setFilteredSermons(FALLBACK_SERMONS);
+      if (FALLBACK_SERMONS.length > 0) {
+        setSelectedVideo(FALLBACK_SERMONS[0]);
+      }
+      setError(null);
+    } finally {
+      setIsLoading(false);
+      console.log('Video loading completed');
+    }
+  };
+
   // Fetch YouTube videos on component mount
   useEffect(() => {
-    const loadVideos = async () => {
-      console.log('Starting to load videos...');
-      try {
-        const videos = await fetchYouTubeVideos();
-        console.log('Videos fetched:', videos);
-        setSermons(videos);
-        setFilteredSermons(videos);
-        if (videos.length > 0) {
-          setSelectedVideo(videos[0]);
-        }
-        // Clear any previous error if videos loaded successfully
-        setError(null);
-      } catch (err) {
-        console.error('Error loading videos:', err);
-        // Use fallback data when API fails completely
-        console.warn('Using fallback data due to complete API failure');
-        console.log('Fallback sermons:', FALLBACK_SERMONS);
-        setSermons(FALLBACK_SERMONS);
-        setFilteredSermons(FALLBACK_SERMONS);
-        if (FALLBACK_SERMONS.length > 0) {
-          setSelectedVideo(FALLBACK_SERMONS[0]);
-        }
-        setError(null); // Don't show error since we have fallback data
-      } finally {
-        setIsLoading(false);
-        console.log('Video loading completed');
-      }
-    };
-
     loadVideos();
   }, []);
 
@@ -614,7 +612,6 @@ const SermonsPage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setPreviewVideo(null);
-    window.location.reload();
   }; 
 
   // Handle click outside modal to close
@@ -653,7 +650,7 @@ const SermonsPage = () => {
         <Button 
           variant="contained" 
           color="primary" 
-          onClick={() => window.location.reload()}
+          onClick={loadVideos}
           sx={{ mt: 2 }}
         >
           {t('sermons.page.tryAgain')}

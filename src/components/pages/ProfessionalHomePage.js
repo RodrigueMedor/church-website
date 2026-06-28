@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Box, Container, Typography, Button, useTheme, useMediaQuery, Paper, Grid, Card, CardContent, Avatar, alpha, Fade, Slide, Zoom, Stack, Divider, Dialog, DialogContent, DialogActions, DialogTitle, IconButton } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Container, Typography, Button, useTheme, useMediaQuery, Grid, Card, Avatar, alpha, Fade, Slide, Stack, Divider, Dialog, DialogContent, DialogActions, DialogTitle, IconButton, Chip } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { styled, keyframes } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
@@ -17,11 +17,14 @@ import {
   TrendingUp,
   People,
   Schedule,
-  PlayArrow
+  PlayArrow,
+  Schedule as ScheduleIcon
 } from '@mui/icons-material';
 import EventBoxes from '../common/EventBoxes';
 import LatestSermon from '../common/LatestSermon';
 import NewsSection from '../common/NewsSection';
+import ScrollReveal from '../common/ScrollReveal';
+import { usePageContent } from '../../cms';
 
 // Animations
 const floatAnimation = keyframes`
@@ -60,8 +63,19 @@ const HeroSection = styled(Box)(({ theme }) => ({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    background: 'linear-gradient(135deg, rgba(15, 36, 64, 0.85) 0%, rgba(26, 54, 93, 0.65) 50%, rgba(15, 36, 64, 0.85) 100%)',
     zIndex: 1,
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '100px',
+    background: 'linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 100%)',
+    zIndex: 1,
+    pointerEvents: 'none',
   },
   '& > *': {
     position: 'relative',
@@ -70,9 +84,9 @@ const HeroSection = styled(Box)(({ theme }) => ({
 }));
 
 const Section = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(8, 0),
+  padding: theme.spacing(5, 0),
   [theme.breakpoints.up('md')]: {
-    padding: theme.spacing(10, 0),
+    padding: theme.spacing(6, 0),
   },
 }));
 
@@ -112,13 +126,17 @@ const ProfessionalHomePage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const content = usePageContent('homepage');
 
   // Preserve existing slideshow functionality
-  const heroBannerImages = [
-    `${process.env.PUBLIC_URL}/images/banner/pastor-sermon_1.JPG`,
-    `${process.env.PUBLIC_URL}/images/banner/DSC_2131.jpg`,
-    `${process.env.PUBLIC_URL}/images/banner/DSC_2088.jpg`,
-  ];
+  const heroBannerImages = content.hero?.backgroundImages?.length
+    ? content.hero.backgroundImages
+    : [
+        `${process.env.PUBLIC_URL}/images/banner/church-building-new.png`,
+        `${process.env.PUBLIC_URL}/images/banner/pastor-sermon_1.JPG`,
+        `${process.env.PUBLIC_URL}/images/banner/DSC_2131.jpg`,
+        `${process.env.PUBLIC_URL}/images/banner/DSC_2088.jpg`,
+      ];
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
 
   // Video modal state
@@ -223,26 +241,44 @@ const ProfessionalHomePage = () => {
     setVideoModalOpen(false);
   };
 
-  const features = [
-    {
-      icon: <GroupsIcon />,
-      title: t('home.communityLife.title') || 'Community Life',
-      description: t('home.communityLife.description') || 'Join our warm and welcoming church family where everyone belongs and grows together in faith.',
-      color: '#1a365d'
-    },
-    {
-      icon: <VolunteerIcon />,
-      title: t('home.serviceAndSupport.title') || 'Service & Support',
-      description: t('home.serviceAndSupport.volunteerPrograms') || 'Make a difference through our various outreach programs and volunteer opportunities.',
-      color: '#2c5282'
-    },
-    {
-      icon: <SchoolIcon />,
-      title: t('home.spiritualGrowth.title') || 'Spiritual Growth',
-      description: t('home.spiritualGrowth.description') || 'Deepen your faith through biblical teaching, discipleship, and spiritual development programs.',
-      color: '#c9a84c'
+  // Get CMS features or fall back to hardcoded defaults
+  const getFeatures = () => {
+    const cmsFeatures = content.features;
+    if (cmsFeatures && cmsFeatures.length > 0) {
+      return cmsFeatures.map((f, i) => {
+        const icons = [<GroupsIcon />, <VolunteerIcon />, <SchoolIcon />];
+        const defaultColors = ['#1a365d', '#2c5282', '#c9a84c'];
+        return {
+          icon: icons[i % icons.length],
+          title: f.title,
+          description: f.description,
+          color: f.color && /^#/.test(f.color) ? f.color : defaultColors[i % defaultColors.length],
+        };
+      });
     }
-  ];
+    return [
+      {
+        icon: <GroupsIcon />,
+        title: t('home.communityLife.title') || 'Community Life',
+        description: t('home.communityLife.description') || 'Join our warm and welcoming church family where everyone belongs and grows together in faith.',
+        color: '#1a365d'
+      },
+      {
+        icon: <VolunteerIcon />,
+        title: t('home.serviceAndSupport.title') || 'Service & Support',
+        description: t('home.serviceAndSupport.volunteerPrograms') || 'Make a difference through our various outreach programs and volunteer opportunities.',
+        color: '#2c5282'
+      },
+      {
+        icon: <SchoolIcon />,
+        title: t('home.spiritualGrowth.title') || 'Spiritual Growth',
+        description: t('home.spiritualGrowth.description') || 'Deepen your faith through biblical teaching, discipleship, and spiritual development programs.',
+        color: '#c9a84c'
+      }
+    ];
+  };
+
+  const features = getFeatures();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -307,9 +343,9 @@ const ProfessionalHomePage = () => {
                     }
                   }}
                 >
-                  <span>{t('home.welcome')}</span>
-                  First Haitian Baptist Church of Kissimmee
-                  <span>{t('home.welcomeSubtitle')}</span>
+                  <span>{content.hero?.welcome || t('home.welcome')}</span>
+                  {content.hero?.title || 'First Haitian Baptist Church of Kissimmee'}
+                  <span>{content.hero?.subtitle || t('home.welcomeSubtitle')}</span>
                 </Typography>
                 <Typography
                   variant={isMobile ? 'h6' : 'h5'}
@@ -396,40 +432,102 @@ const ProfessionalHomePage = () => {
           </Container>
         </HeroSection>
 
+        {/* Service Times Bar */}
+        <Box
+          sx={{
+            bgcolor: 'primary.dark',
+            py: { xs: 2.5, md: 3 },
+            borderBottom: '3px solid',
+            borderColor: 'secondary.main',
+            position: 'relative',
+            zIndex: 3,
+          }}
+        >
+          <Container maxWidth="lg">
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={{ xs: 2, sm: 4, md: 6 }}
+              justifyContent="center"
+              alignItems="center"
+              divider={!isMobile ? <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.15)' }} /> : undefined}
+            >
+              <Stack direction="row" spacing={1.5} alignItems="center">
+                <Box sx={{ color: 'secondary.main', display: 'flex' }}>
+                  <CalendarToday sx={{ fontSize: '1.3rem' }} />
+                </Box>
+                <Box>
+                  <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
+                    Sunday Worship
+                  </Typography>
+                  <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: '1.05rem' }}>
+                    {content.serviceTimes?.sunday || '9:00 AM & 11:00 AM'}
+                  </Typography>
+                </Box>
+              </Stack>
+              <Stack direction="row" spacing={1.5} alignItems="center">
+                <Box sx={{ color: 'secondary.main', display: 'flex' }}>
+                  <ScheduleIcon sx={{ fontSize: '1.3rem' }} />
+                </Box>
+                <Box>
+                  <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
+                    Wednesday Service
+                  </Typography>
+                  <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: '1.05rem' }}>
+                    {content.serviceTimes?.wednesday || '7:00 PM'}
+                  </Typography>
+                </Box>
+              </Stack>
+              <Stack direction="row" spacing={1.5} alignItems="center">
+                <Box sx={{ color: 'secondary.main', display: 'flex' }}>
+                  <LocationOn sx={{ fontSize: '1.3rem' }} />
+                </Box>
+                <Box>
+                  <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
+                    Location
+                  </Typography>
+                  <Typography sx={{ color: '#fff', fontWeight: 600, fontSize: '0.95rem' }}>
+                    {content.serviceTimes?.location || 'Kissimmee, FL'}
+                  </Typography>
+                </Box>
+              </Stack>
+            </Stack>
+          </Container>
+        </Box>
+
         {/* Features Section */}
         <Section sx={{ bgcolor: 'background.paper' }}>
           <Container maxWidth="lg">
-            <Box textAlign="center" mb={8}>
-              <Slide direction="up" in timeout={600}>
-                <Box>
-                  <Typography
-                    variant="h3"
-                    component="h2"
-                    gutterBottom
-                    sx={{
-                      fontWeight: 700,
-                      mb: 3,
-                      color: '#1a365d',
-                      fontSize: { xs: '2rem', md: '2.5rem' },
-                    }}
-                  >
-                    {t('home.ourCommunity') || 'Welcome to Our Church Family'}
-                  </Typography>
-                  <Typography
-                    variant="h6"
-                    color="text.secondary"
-                    maxWidth="800px"
-                    mx="auto"
-                    lineHeight={1.7}
-                    mb={4}
-                  >
-                    {t('home.communityDescription') || 'We are a diverse community of believers committed to worshiping God, growing together in faith, and serving others with love and compassion.'}
-                  </Typography>
-                </Box>
-              </Slide>
-            </Box>
+            <ScrollReveal>
+              <Box textAlign="center" mb={4}>
+                <Typography
+                  variant="h3"
+                  component="h2"
+                  gutterBottom
+                  sx={{
+                    fontWeight: 700,
+                    mb: 2,
+                    color: 'primary.main',
+                    fontSize: { xs: '2rem', md: '2.5rem' },
+                  }}
+                >
+                  {t('home.ourCommunity') || 'Welcome to Our Church Family'}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                    maxWidth: '800px',
+                    mx: 'auto',
+                    lineHeight: 1.6,
+                    mb: 2,
+                    fontSize: '1.1rem',
+                  }}
+                >
+                  {t('home.communityDescription') || 'We are a diverse community of believers committed to worshiping God, growing together in faith, and serving others with love and compassion.'}
+                </Typography>
+              </Box>
+            </ScrollReveal>
 
-            <Grid container spacing={4}>
+            <Grid container spacing={3}>
               {features.map((feature, index) => (
                 <Grid item xs={12} md={4} key={index}>
                   <Slide direction="up" in timeout={800 + index * 200}>
@@ -500,37 +598,41 @@ const ProfessionalHomePage = () => {
         </Section>
 
         {/* Upcoming Events - PRESERVING EXISTING COMPONENT */}
-        <Box sx={{ bgcolor: 'background.paper', pt: 2, pb: 0, position: 'relative' }}>
+        <Box sx={{ bgcolor: 'background.paper', py: 2, position: 'relative' }}>
           <Container maxWidth="lg">
-            <Box textAlign="center" mb={4}>
-              <Typography
-                variant="h3"
-                component="h2"
-                gutterBottom
-                sx={{
-                  fontWeight: 700,
-                  mb: 3,
-                  color: '#1a365d',
-                  fontSize: { xs: '1.5rem', md: '2rem' },
-                }}
-              >
-                {t('upcomingGatherings', 'Join us for our upcoming gatherings and activities')}
-              </Typography>
-              <Typography
-                variant="h6"
-                color="text.secondary"
-                maxWidth="800px"
-                mx="auto"
-                lineHeight={1.7}
-                mb={4}
-              >
-                {t('upcomingGatheringsSubtitle', 'Discover our ministries, fellowship opportunities, and community activities designed to help you grow in faith and connect with others.')}
-              </Typography>
-            </Box>
+            <ScrollReveal>
+              <Box textAlign="center" mb={2}>
+                <Typography
+                  variant="h3"
+                  component="h2"
+                  gutterBottom
+                  sx={{
+                    fontWeight: 700,
+                    mb: 1,
+                    color: 'primary.main',
+                    fontSize: { xs: '1.5rem', md: '2rem' },
+                  }}
+                >
+                  {t('upcomingGatherings', 'Join us for our upcoming gatherings and activities')}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                    maxWidth: '800px',
+                    mx: 'auto',
+                    lineHeight: 1.6,
+                    mb: 1,
+                    fontSize: '1.1rem',
+                  }}
+                >
+                  {t('upcomingGatheringsSubtitle', 'Discover our ministries, fellowship opportunities, and community activities designed to help you grow in faith and connect with others.')}
+                </Typography>
+              </Box>
+            </ScrollReveal>
 
             <EventBoxes />
 
-            <Box textAlign="center" mt={4}>
+            <Box textAlign="center" mt={2}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -557,19 +659,21 @@ const ProfessionalHomePage = () => {
         </Box>
 
         {/* Latest News - PRESERVING EXISTING COMPONENT */}
-        <Box sx={{ bgcolor: 'background.paper', py: 4, position: 'relative' }}>
+        <Box sx={{ bgcolor: 'background.paper', py: 2, position: 'relative' }}>
           <Container maxWidth="lg">
-            <Box textAlign="center">
-              <NewsSection />
-            </Box>
+            <ScrollReveal>
+              <Box textAlign="center">
+                <NewsSection />
+              </Box>
+            </ScrollReveal>
           </Container>
         </Box>
 
         {/* Call to Action */}
         <Box
           sx={{
-            py: 8,
-            background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
+            py: { xs: 5, md: 6 },
+            background: 'linear-gradient(135deg, #0f2440 0%, #1a365d 50%, #2c5282 100%)',
             color: 'white',
             position: 'relative',
             overflow: 'hidden',
@@ -583,7 +687,19 @@ const ProfessionalHomePage = () => {
               background: 'url(/images/banner/pastor-sermon_1.JPG)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              opacity: 0.1,
+              opacity: 0.08,
+              filter: 'saturate(0.5)',
+            },
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              top: '-50%',
+              right: '-20%',
+              width: '600px',
+              height: '600px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(201, 168, 76, 0.08) 0%, transparent 70%)',
+              pointerEvents: 'none',
             },
           }}
         >
@@ -591,32 +707,63 @@ const ProfessionalHomePage = () => {
             <Slide direction="up" in timeout={1000}>
               <Box textAlign="center">
                 <Typography
-                  variant="h4"
+                  variant="h3"
                   component="h2"
                   sx={{
                     fontWeight: 700,
-                    mb: 3,
-                    fontSize: { xs: '1.8rem', md: '2.2rem' },
+                    mb: 2,
+                    fontSize: { xs: '2rem', md: '2.5rem' },
+                    fontFamily: '"Playfair Display", serif',
                   }}
                 >
-                  {t('joinUsThisSunday', 'Join Us This Sunday')}
+                  {content.cta?.title || t('joinUsThisSunday', 'Join Us This Sunday')}
                 </Typography>
                 <Typography
-                  variant="h6"
                   sx={{
-                    mb: 6,
+                    mb: 3,
                     maxWidth: '600px',
                     mx: 'auto',
-                    lineHeight: 1.6,
-                    opacity: 0.95,
+                    lineHeight: 1.7,
+                    color: 'rgba(255,255,255,0.8)',
+                    fontSize: '1.1rem',
                   }}
                 >
-                  {t('joinUsDescription', 'Experience God\'s presence, connect with our community, and grow in your faith. We\'d love to see you at our worship service!')}
+                  {content.cta?.description || t('joinUsDescription', 'Experience God\'s presence, connect with our community, and grow in your faith. We\'d love to see you at our worship service!')}
                 </Typography>
 
                 <Stack
+                  direction="row"
+                  spacing={2}
+                  justifyContent="center"
+                  sx={{ mb: 3 }}
+                >
+                  <Chip
+                    icon={<AccessTime sx={{ fontSize: '0.9rem !important' }} />}
+                    label={`Sundays: ${content.serviceTimes?.sunday || '9:00 AM & 11:00 AM'}`}
+                    sx={{
+                      bgcolor: 'rgba(255,255,255,0.1)',
+                      color: 'rgba(255,255,255,0.9)',
+                      fontWeight: 500,
+                      px: 1,
+                      '& .MuiChip-icon': { color: 'secondary.main' },
+                    }}
+                  />
+                  <Chip
+                    icon={<AccessTime sx={{ fontSize: '0.9rem !important' }} />}
+                    label={`Wednesdays: ${content.serviceTimes?.wednesday || '7:00 PM'}`}
+                    sx={{
+                      bgcolor: 'rgba(255,255,255,0.1)',
+                      color: 'rgba(255,255,255,0.9)',
+                      fontWeight: 500,
+                      px: 1,
+                      '& .MuiChip-icon': { color: 'secondary.main' },
+                    }}
+                  />
+                </Stack>
+
+                <Stack
                   direction={{ xs: 'column', sm: 'row' }}
-                  spacing={3}
+                  spacing={2}
                   justifyContent="center"
                   alignItems="center"
                 >
@@ -627,19 +774,20 @@ const ProfessionalHomePage = () => {
                     to="/contact"
                     sx={{
                       px: 4,
-                      py: 2,
-                      borderColor: 'white',
+                      py: 1.8,
+                      borderColor: 'rgba(255,255,255,0.4)',
                       color: 'white',
-                      textTransform: 'none',
                       fontWeight: 600,
                       fontSize: '1rem',
-                      borderRadius: 3,
+                      borderRadius: '50px',
                       '&:hover': {
-                        backgroundColor: 'white',
-                        color: '#1a365d',
+                        borderColor: 'white',
+                        backgroundColor: 'rgba(255,255,255,0.1)',
+                        transform: 'translateY(-2px)',
                       },
                     }}
                   >
+                    <LocationOn sx={{ mr: 1, fontSize: '1.2rem' }} />
                     {t('getDirections', 'Get Directions')}
                   </Button>
                   <Button
@@ -650,16 +798,17 @@ const ProfessionalHomePage = () => {
                     endIcon={<ArrowForwardIcon />}
                     sx={{
                       px: 4,
-                      py: 2,
+                      py: 1.8,
                       background: 'linear-gradient(135deg, #c9a84c, #f4e4bc)',
                       color: '#1a365d',
-                      textTransform: 'none',
                       fontWeight: 700,
                       fontSize: '1rem',
-                      borderRadius: 3,
+                      borderRadius: '50px',
+                      boxShadow: '0 4px 20px rgba(201, 168, 76, 0.35)',
                       '&:hover': {
+                        background: 'linear-gradient(135deg, #dbb95c, #f4e4bc)',
                         transform: 'translateY(-2px)',
-                        boxShadow: '0 8px 25px rgba(201, 168, 76, 0.4)',
+                        boxShadow: '0 8px 30px rgba(201, 168, 76, 0.5)',
                       },
                     }}
                   >

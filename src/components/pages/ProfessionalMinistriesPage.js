@@ -46,6 +46,7 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { styled, keyframes } from '@mui/material/styles';
+import { usePageContent } from '../../cms';
 
 // Animations
 const floatAnimation = keyframes`
@@ -234,6 +235,13 @@ const ministries = [
 
 const ProfessionalMinistriesPage = () => {
   const { t } = useTranslation();
+  const content = usePageContent('ministries');
+  const activeMinistries = content.ministries?.length
+    ? content.ministries.map((m, i) => ({
+        ...(ministries.find(d => String(d.id) === String(m.id)) || ministries[i % ministries.length]),
+        ...m,
+      }))
+    : ministries;
   const theme = useTheme();
   const [visibleCards, setVisibleCards] = useState(new Set());
   const cardRefs = useRef([]);
@@ -282,7 +290,7 @@ const ProfessionalMinistriesPage = () => {
                   lineHeight: 1.1,
                 }}
               >
-                Our Ministries
+                {content.hero?.title || 'Our Ministries'}
               </Typography>
               <Typography
                 variant="h4"
@@ -295,18 +303,17 @@ const ProfessionalMinistriesPage = () => {
                   lineHeight: 1.6,
                 }}
               >
-                "Each of you should use whatever gift you have received to serve others, 
-                as faithful stewards of God's grace in its various forms."
+                {content.hero?.subtitle || `"Each of you should use whatever gift you have received to serve others, as faithful stewards of God's grace in its various forms."`}
               </Typography>
               <Typography
                 variant="h6"
                 sx={{
                   fontStyle: 'italic',
                   opacity: 0.8,
-                  mb: 6,
+                  mb: 4,
                 }}
               >
-                1 Peter 4:10
+                {content.scripture || '1 Peter 4:10'}
               </Typography>
               
               {/* Quick Stats */}
@@ -372,7 +379,7 @@ const ProfessionalMinistriesPage = () => {
                   fontSize: { xs: '2rem', md: '2.5rem' },
                 }}
               >
-                Explore Our Ministries
+                {content.tagline || 'Explore Our Ministries'}
               </Typography>
               <Typography
                 variant="h6"
@@ -387,7 +394,7 @@ const ProfessionalMinistriesPage = () => {
         </Box>
 
         <Grid container spacing={4}>
-          {ministries.map((ministry, index) => (
+          {activeMinistries.map((ministry, index) => (
             <Grid
               item
               xs={12}
@@ -625,7 +632,7 @@ const ProfessionalMinistriesPage = () => {
                 <Typography
                   variant="h6"
                   sx={{
-                    mb: 6,
+                    mb: 4,
                     maxWidth: '600px',
                     mx: 'auto',
                     lineHeight: 1.6,

@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
-import { 
-  Box, 
+import { Box, 
   Typography, 
   Grid, 
   Card, 
   CardContent, 
   CardMedia, 
   Container,
-  Button,
-  styled
+  styled 
 } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const NewsCard = styled(Card)(({ theme }) => ({
   height: '100%',
@@ -84,7 +80,7 @@ const NewsSection = () => {
   };
 
   return (
-    <Box sx={{ pt: 0, pb: 2, bgcolor: 'background.paper' }}>
+    <Box sx={{ py: 1, bgcolor: 'background.paper' }}>
       <Container maxWidth="lg">
         <Box textAlign="center" mb={2}>
           <Typography
@@ -130,7 +126,7 @@ const NewsSection = () => {
             </Grid>
           ) : (
             news.map((item) => (
-              <Grid item key={item.key} xs={12} sm={6} md={4}>
+              <Grid item key={item.id} xs={12} sm={6} md={4}>
                 <NewsCard>
                   {item.imageUrl && (
                     <CardMedia
@@ -190,23 +186,7 @@ const NewsSection = () => {
                     >
                       {getExcerpt(item)}
                     </Typography>
-                    <Button
-                      component={RouterLink}
-                      to={`/news/${item.key}`}
-                      endIcon={<ArrowForwardIcon />}
-                      size="small"
-                      sx={{
-                        mt: 'auto',
-                        alignSelf: 'flex-start',
-                        fontWeight: 600,
-                        '&:hover': {
-                          backgroundColor: 'transparent',
-                          textDecoration: 'underline',
-                        },
-                      }}
-                    >
-                      Read More
-                    </Button>
+                    {/* Removed: no detail page exists */}
                   </CardContent>
                 </NewsCard>
               </Grid>
@@ -214,31 +194,7 @@ const NewsSection = () => {
           )}
         </Grid>
 
-        {news.length > 0 && (
-          <Box textAlign="center" mt={6}>
-            <Button
-              variant="outlined"
-              color="primary"
-              size="large"
-              component={RouterLink}
-              to="/news"
-              endIcon={<ArrowForwardIcon />}
-              sx={{
-                px: 4,
-                py: 1.5,
-                borderRadius: '50px',
-                textTransform: 'none',
-                fontWeight: 600,
-                '&:hover': {
-                  backgroundColor: 'primary.main',
-                  color: '#fff',
-                },
-              }}
-            >
-              View All News
-            </Button>
-          </Box>
-        )}
+        {/* Removed: "View All News" button removed — Upcoming Events section above has "View All Events" */}
       </Container>
     </Box>
   );

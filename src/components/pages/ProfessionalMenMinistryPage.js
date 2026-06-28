@@ -9,11 +9,12 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { styled, keyframes } from '@mui/material/styles';
+import { usePageContent } from '../../cms';
 
 const HeroBanner = styled(Box)(({ theme }) => ({
   position: 'relative',
   minHeight: '70vh',
-  background: 'linear-gradient(135deg, #FF9800 0%, #F57C00 100%)',
+  background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -54,6 +55,7 @@ const IconWrapper = styled(Box)(({ theme, color }) => ({
 const ProfessionalMenMinistryPage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const content = usePageContent('men');
   const [visibleSections, setVisibleSections] = useState(new Set());
   const sectionRefs = useRef([]);
 
@@ -73,68 +75,38 @@ const ProfessionalMenMinistryPage = () => {
     return () => observers.forEach(observer => observer?.disconnect());
   }, []);
 
-  const activities = [
-    {
-      icon: <Church color="primary" sx={{ fontSize: 32 }} />,
-      title: 'Bible Study',
-      description: 'Deep dive into Scripture with practical applications for men\'s daily lives and challenges.',
-      features: ['Bible Discussion', 'Life Applications', 'Prayer Time']
-    },
-    {
-      icon: <Handyman color="primary" sx={{ fontSize: 32 }} />,
-      title: 'Service Projects',
-      description: 'Use your skills to serve the church and community through practical hands-on projects.',
-      features: ['Church Maintenance', 'Community Help', 'Skill Training']
-    },
-    {
-      icon: <SportsSoccer color="primary" sx={{ fontSize: 32 }} />,
-      title: 'Sports & Recreation',
-      description: 'Build friendships through sports activities and recreational events.',
-      features: ['Basketball', 'Softball', 'Tournaments']
-    },
-    {
-      icon: <Groups color="primary" sx={{ fontSize: 32 }} />,
-      title: 'Mentorship',
-      description: 'Younger men paired with mature believers for spiritual growth and life guidance.',
-      features: ['One-on-One', 'Group Mentoring', 'Accountability']
-    }
+  const activityIcons = [
+    <Church color="primary" sx={{ fontSize: 32 }} />,
+    <Handyman color="primary" sx={{ fontSize: 32 }} />,
+    <SportsSoccer color="primary" sx={{ fontSize: 32 }} />,
+    <Groups color="primary" sx={{ fontSize: 32 }} />
   ];
 
-  const schedule = [
-    {
-      day: 'Wednesday',
-      time: '7:00 PM',
-      activity: 'Men\'s Bible Study',
-      description: 'Weekly gathering for Bible study, fellowship, and prayer',
-      color: '#FF9800'
-    },
-    {
-      day: 'Saturday',
-      time: '10:00 AM',
-      activity: 'Men\'s Fellowship',
-      description: 'Monthly breakfast, service projects, or recreational activities',
-      color: '#F57C00'
-    }
+  const defaultActivities = [
+    { title: 'Bible Study', description: 'Deep dive into Scripture with practical applications for men\'s daily lives and challenges.', features: ['Bible Discussion', 'Life Applications', 'Prayer Time'] },
+    { title: 'Service Projects', description: 'Use your skills to serve the church and community through practical hands-on projects.', features: ['Church Maintenance', 'Community Help', 'Skill Training'] },
+    { title: 'Sports & Recreation', description: 'Build friendships through sports activities and recreational events.', features: ['Basketball', 'Softball', 'Tournaments'] },
+    { title: 'Mentorship', description: 'Younger men paired with mature believers for spiritual growth and life guidance.', features: ['One-on-One', 'Group Mentoring', 'Accountability'] }
   ];
 
-  const leaders = [
-    {
-      name: 'Brother Jean',
-      role: 'Men\'s Ministry Leader',
-      description: 'Passionate about helping men become strong spiritual leaders in their homes and community.',
-      avatar: 'JJ',
-      experience: '12 years',
-      email: 'jean@church.org'
-    },
-    {
-      name: 'Brother Pierre',
-      role: 'Men\'s Fellowship Coordinator',
-      description: 'Dedicated to creating authentic community where men can grow together in faith.',
-      avatar: 'JP',
-      experience: '8 years',
-      email: 'pierre@church.org'
-    }
+  const activities = (content.activities && content.activities.length > 0 ? content.activities : defaultActivities).map((item, i) => ({
+    ...item,
+    icon: activityIcons[i] || activityIcons[activityIcons.length - 1]
+  }));
+
+  const defaultSchedule = [
+    { day: 'Wednesday', time: '7:00 PM', activity: 'Men\'s Bible Study', description: 'Weekly gathering for Bible study, fellowship, and prayer', color: '#1a365d' },
+    { day: 'Saturday', time: '10:00 AM', activity: 'Men\'s Fellowship', description: 'Monthly breakfast, service projects, or recreational activities', color: '#2c5282' }
   ];
+
+  const schedule = content.schedule && content.schedule.length > 0 ? content.schedule : defaultSchedule;
+
+  const defaultLeaders = [
+    { name: 'Brother Jean', role: 'Men\'s Ministry Leader', description: 'Passionate about helping men become strong spiritual leaders in their homes and community.', avatar: 'JJ', experience: '12 years', email: 'jean@church.org' },
+    { name: 'Brother Pierre', role: 'Men\'s Fellowship Coordinator', description: 'Dedicated to creating authentic community where men can grow together in faith.', avatar: 'JP', experience: '8 years', email: 'pierre@church.org' }
+  ];
+
+  const leaders = content.leaders && content.leaders.length > 0 ? content.leaders : defaultLeaders;
 
   return (
     <Box sx={{ backgroundColor: '#f8f9fa' }}>
@@ -147,13 +119,13 @@ const ProfessionalMenMinistryPage = () => {
                 fontWeight: 800, mb: 3,
                 textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
               }}>
-                Men's Ministry
+                {content.hero?.title || "Men's Ministry"}
               </Typography>
               <Typography variant="h4" sx={{
                 fontSize: { xs: '1.3rem', md: '1.6rem' },
                 mb: 4, opacity: 0.95, maxWidth: '800px', mx: 'auto',
               }}>
-                "Be watchful, stand firm in the faith, act like men, be strong."
+                {content.hero?.subtitle || '"Be watchful, stand firm in the faith, act like men, be strong."'}
               </Typography>
               <Typography variant="h6" sx={{ fontStyle: 'italic', opacity: 0.85, mb: 6 }}>
                 1 Corinthians 16:13
@@ -168,7 +140,7 @@ const ProfessionalMenMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(0)} timeout={600}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 3, color: '#F57C00',
+                fontWeight: 700, mb: 3, color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 Welcome to Men's Ministry
@@ -187,20 +159,20 @@ const ProfessionalMenMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(1)} timeout={800}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#F57C00',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 What We Do
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {activities.map((activity, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <ActivityCard index={index} elevation={6}>
                       <CardContent sx={{ p: 4 }}>
-                        <IconWrapper color="#FF9800">
+                        <IconWrapper color="#1a365d">
                           {activity.icon}
                         </IconWrapper>
-                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, textAlign: 'center', color: '#F57C00' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, textAlign: 'center', color: '#2c5282' }}>
                           {activity.title}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6, textAlign: 'center' }}>
@@ -210,7 +182,7 @@ const ProfessionalMenMinistryPage = () => {
                           <Stack direction="row" flexWrap="wrap" gap={1} justifyContent="center">
                             {activity.features.map((feature, idx) => (
                               <Chip key={idx} label={feature} size="small" sx={{
-                                backgroundColor: alpha('#FF9800', 0.1), color: '#F57C00', fontWeight: 500,
+                                backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                               }} />
                             ))}
                           </Stack>
@@ -228,12 +200,12 @@ const ProfessionalMenMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(2)} timeout={1000}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#F57C00',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 When We Meet
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {schedule.map((item, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <Paper elevation={4} sx={{
@@ -242,13 +214,13 @@ const ProfessionalMenMinistryPage = () => {
                       '&:hover': { transform: 'translateY(-4px)' }
                     }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                        <CalendarToday sx={{ mr: 2, color: '#FF9800', fontSize: 28 }} />
-                        <Typography variant="h5" sx={{ fontWeight: 600, color: '#F57C00' }}>
+                        <CalendarToday sx={{ mr: 2, color: '#1a365d', fontSize: 28 }} />
+                        <Typography variant="h5" sx={{ fontWeight: 600, color: '#2c5282' }}>
                           {item.day}
                         </Typography>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                        <AccessTime sx={{ mr: 2, color: '#FF9800' }} />
+                        <AccessTime sx={{ mr: 2, color: '#1a365d' }} />
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
                           {item.time}
                         </Typography>
@@ -271,12 +243,12 @@ const ProfessionalMenMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(3)} timeout={1200}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#F57C00',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 Our Leaders
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {leaders.map((leader, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <Card elevation={6} sx={{
@@ -287,15 +259,15 @@ const ProfessionalMenMinistryPage = () => {
                       <CardContent sx={{ p: 4, textAlign: 'center' }}>
                         <Avatar sx={{ 
                           width: 100, height: 100, mx: 'auto', mb: 3,
-                          background: 'linear-gradient(135deg, #FF9800, #F57C00)',
+                          background: 'linear-gradient(135deg, #1a365d, #2c5282)',
                           fontSize: '2.5rem', fontWeight: 700, color: 'white',
                         }}>
                           {leader.avatar}
                         </Avatar>
-                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#F57C00' }}>
+                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#2c5282' }}>
                           {leader.name}
                         </Typography>
-                        <Typography variant="body2" color="#FF9800" sx={{ mb: 2, fontWeight: 600 }}>
+                        <Typography variant="body2" color="#1a365d" sx={{ mb: 2, fontWeight: 600 }}>
                           {leader.role}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
@@ -303,10 +275,10 @@ const ProfessionalMenMinistryPage = () => {
                         </Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
                           <Chip label={leader.email} size="small" sx={{
-                            backgroundColor: alpha('#FF9800', 0.1), color: '#F57C00', fontWeight: 500,
+                            backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                           }} />
                           <Chip label={`${leader.experience} experience`} size="small" sx={{
-                            backgroundColor: alpha('#FF9800', 0.1), color: '#F57C00', fontWeight: 500,
+                            backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                           }} />
                         </Box>
                       </CardContent>
@@ -319,7 +291,7 @@ const ProfessionalMenMinistryPage = () => {
         </Box>
 
         <Box ref={(el) => (sectionRefs.current[4] = el)} sx={{
-          py: 8, background: 'linear-gradient(135deg, #FF9800 0%, #F57C00 100%)', borderRadius: 4,
+          py: 5, background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)', borderRadius: 4,
         }}>
           <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2 }}>
             <Slide direction="up" in={visibleSections.has(4)} timeout={1400}>
@@ -330,20 +302,20 @@ const ProfessionalMenMinistryPage = () => {
                   Join Our Brotherhood!
                 </Typography>
                 <Typography variant="h6" sx={{
-                  mb: 6, maxWidth: '600px', mx: 'auto', lineHeight: 1.6, opacity: 0.95,
+                  mb: 4, maxWidth: '600px', mx: 'auto', lineHeight: 1.6, opacity: 0.95,
                 }}>
                   Be part of a community of men committed to growing in faith and making a difference.
                 </Typography>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
                   <Button variant="outlined" size="large" sx={{
                     px: 4, py: 2, borderColor: 'white', color: 'white',
-                    '&:hover': { backgroundColor: 'white', color: '#F57C00' },
+                    '&:hover': { backgroundColor: 'white', color: '#2c5282' },
                   }}>
                     Learn More
                   </Button>
                   <Button variant="contained" size="large" endIcon={<ArrowForward />} sx={{
                     px: 4, py: 2, background: 'linear-gradient(135deg, #ffffff, #f0f0f0)',
-                    color: '#F57C00', fontWeight: 700,
+                    color: '#2c5282', fontWeight: 700,
                     '&:hover': { transform: 'translateY(-2px)' },
                   }}>
                     Join Men's Group

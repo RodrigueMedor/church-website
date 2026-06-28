@@ -54,10 +54,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "dev": "nodemon server/src/server.js",
-    "start": "node server/src/server.js",
-    "client": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
-    "build": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
+    "dev": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "start": "PORT=4000 NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "dev:server": "node server/index.js",
+    "start:server": "node server/index.js",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prisma:generate": "prisma generate",

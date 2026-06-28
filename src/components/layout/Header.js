@@ -39,6 +39,10 @@ import {
 } from '@mui/material';
 import { styled, alpha, keyframes } from '@mui/material/styles';
 import LanguageSwitcher from '../common/LanguageSwitcher';
+import { storage } from '../../cms';
+
+const settings = storage.get('settings') || {};
+const logoUrl = settings.siteLogo || '/images/logo/logo-blog1.png';
 
 // ─── Animations ────────────────────────────────────────────────────────────────
 const slideDown = keyframes`
@@ -445,7 +449,7 @@ const Header = () => {
               >
                 <Box
                   component="img"
-                  src="/images/logo/logo-blog1.png"
+                  src={logoUrl}
                   alt="Church Logo"
                   sx={{
                     width: '100%',
@@ -556,7 +560,7 @@ const Header = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
             <Box
               component="img"
-              src="/images/logo/logo-blog1.png"
+              src={logoUrl}
               alt="Church Logo"
               sx={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover' }}
             />

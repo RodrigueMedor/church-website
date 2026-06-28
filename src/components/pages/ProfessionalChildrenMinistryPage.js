@@ -45,6 +45,7 @@ import {
   Event
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { usePageContent } from '../../cms';
 import { styled, keyframes } from '@mui/material/styles';
 
 // Animations
@@ -64,7 +65,7 @@ const pulseAnimation = keyframes`
 const HeroBanner = styled(Box)(({ theme }) => ({
   position: 'relative',
   minHeight: '70vh',
-  background: 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)',
+  background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -99,7 +100,7 @@ const ActivityCard = styled(Card)(({ theme, index }) => ({
     left: 0,
     right: 0,
     height: '4px',
-    background: 'linear-gradient(90deg, #4CAF50, #2E7D32)',
+    background: 'linear-gradient(90deg, #1a365d, #2c5282)',
     transform: 'translateX(-100%)',
     transition: 'transform 0.6s ease',
   },
@@ -158,6 +159,7 @@ const LeaderCard = styled(Card)(({ theme }) => ({
 
 const ProfessionalChildrenMinistryPage = () => {
   const { t } = useTranslation();
+  const content = usePageContent('children');
   const theme = useTheme();
   const [visibleSections, setVisibleSections] = useState(new Set());
   const sectionRefs = useRef([]);
@@ -188,7 +190,7 @@ const ProfessionalChildrenMinistryPage = () => {
     };
   }, []);
 
-  const activities = [
+  const defaultActivities = [
     {
       icon: <School color="primary" sx={{ fontSize: 32 }} />,
       title: 'Sunday School',
@@ -215,24 +217,28 @@ const ProfessionalChildrenMinistryPage = () => {
     }
   ];
 
-  const schedule = [
+  const activities = content.activities?.length
+    ? content.activities.map((item, i) => ({ ...(defaultActivities[i] || defaultActivities[0]), ...item }))
+    : defaultActivities;
+
+  const schedule = content.schedule?.length ? content.schedule : [
     {
       day: 'Sunday',
       time: '9:30 AM',
       activity: 'Sunday School & Nursery',
       description: 'Age-appropriate classes for all children during main service',
-      color: '#4CAF50'
+      color: '#1a365d'
     },
     {
       day: 'Wednesday',
       time: '7:00 PM',
       activity: 'Bible Club & Activities',
       description: 'Mid-week program with Bible study, games, and fellowship',
-      color: '#2E7D32'
+      color: '#2c5282'
     }
   ];
 
-  const leaders = [
+  const leaders = content.leaders?.length ? content.leaders : [
     {
       name: 'Sarah Johnson',
       role: 'Children\'s Ministry Director',
@@ -269,7 +275,7 @@ const ProfessionalChildrenMinistryPage = () => {
                   lineHeight: 1.1,
                 }}
               >
-                Children's Ministry
+                {content.hero?.title || "Children's Ministry"}
               </Typography>
               <Typography
                 variant="h4"
@@ -282,22 +288,21 @@ const ProfessionalChildrenMinistryPage = () => {
                   lineHeight: 1.6,
                 }}
               >
-                "Train up a child in the way he should go; 
-                even when he is old he will not depart from it."
+                {content.hero?.subtitle || `"Train up a child in the way he should go; even when he is old he will not depart from it."`}
               </Typography>
               <Typography
                 variant="h6"
                 sx={{
                   fontStyle: 'italic',
                   opacity: 0.85,
-                  mb: 6,
+                  mb: 4,
                 }}
               >
                 Proverbs 22:6
               </Typography>
               
               {/* Quick Stats */}
-              <Grid container spacing={3} sx={{ mb: 6 }}>
+              <Grid container spacing={3} sx={{ mb: 4 }}>
                 <Grid item xs={12} sm={6} md={3}>
                   <Paper
                     elevation={0}
@@ -391,7 +396,7 @@ const ProfessionalChildrenMinistryPage = () => {
                 sx={{
                   fontWeight: 700,
                   mb: 3,
-                  color: '#2E7D32',
+                  color: '#2c5282',
                   fontSize: { xs: '2rem', md: '2.5rem' },
                 }}
               >
@@ -410,7 +415,7 @@ const ProfessionalChildrenMinistryPage = () => {
                 variant="h5"
                 sx={{
                   fontWeight: 600,
-                  color: '#4CAF50',
+                  color: '#1a365d',
                   mb: 2,
                 }}
               >
@@ -429,23 +434,23 @@ const ProfessionalChildrenMinistryPage = () => {
                 component="h2"
                 sx={{
                   fontWeight: 700,
-                  mb: 5,
+                  mb: 3,
                   textAlign: 'center',
-                  color: '#2E7D32',
+                  color: '#2c5282',
                   fontSize: { xs: '2rem', md: '2.5rem' },
                 }}
               >
                 What We Do
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {activities.map((activity, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <ActivityCard index={index} elevation={6}>
                       <CardContent sx={{ p: 4 }}>
-                        <IconWrapper color="#4CAF50" className="activity-icon">
+                        <IconWrapper color="#1a365d" className="activity-icon">
                           {activity.icon}
                         </IconWrapper>
-                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, textAlign: 'center', color: '#2E7D32' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, textAlign: 'center', color: '#2c5282' }}>
                           {activity.title}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6, textAlign: 'center' }}>
@@ -460,8 +465,8 @@ const ProfessionalChildrenMinistryPage = () => {
                                 label={feature}
                                 size="small"
                                 sx={{
-                                  backgroundColor: alpha('#4CAF50', 0.1),
-                                  color: '#2E7D32',
+                                  backgroundColor: alpha('#1a365d', 0.1),
+                                  color: '#2c5282',
                                   fontWeight: 500,
                                   fontSize: '0.75rem',
                                 }}
@@ -487,26 +492,26 @@ const ProfessionalChildrenMinistryPage = () => {
                 component="h2"
                 sx={{
                   fontWeight: 700,
-                  mb: 5,
+                  mb: 3,
                   textAlign: 'center',
-                  color: '#2E7D32',
+                  color: '#2c5282',
                   fontSize: { xs: '2rem', md: '2.5rem' },
                 }}
               >
                 When We Meet
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {schedule.map((item, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <ScheduleCard elevation={4}>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                        <CalendarToday sx={{ mr: 2, color: '#4CAF50', fontSize: 28 }} />
-                        <Typography variant="h5" sx={{ fontWeight: 600, color: '#2E7D32' }}>
+                        <CalendarToday sx={{ mr: 2, color: '#1a365d', fontSize: 28 }} />
+                        <Typography variant="h5" sx={{ fontWeight: 600, color: '#2c5282' }}>
                           {item.day}
                         </Typography>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                        <AccessTime sx={{ mr: 2, color: '#4CAF50' }} />
+                        <AccessTime sx={{ mr: 2, color: '#1a365d' }} />
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
                           {item.time}
                         </Typography>
@@ -534,15 +539,15 @@ const ProfessionalChildrenMinistryPage = () => {
                 component="h2"
                 sx={{
                   fontWeight: 700,
-                  mb: 5,
+                  mb: 3,
                   textAlign: 'center',
-                  color: '#2E7D32',
+                  color: '#2c5282',
                   fontSize: { xs: '2rem', md: '2.5rem' },
                 }}
               >
                 Our Dedicated Leaders
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {leaders.map((leader, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <LeaderCard elevation={6}>
@@ -553,7 +558,7 @@ const ProfessionalChildrenMinistryPage = () => {
                             height: 100, 
                             mx: 'auto', 
                             mb: 3,
-                            background: 'linear-gradient(135deg, #4CAF50, #2E7D32)',
+                            background: 'linear-gradient(135deg, #1a365d, #2c5282)',
                             fontSize: '2.5rem',
                             fontWeight: 700,
                             color: 'white',
@@ -562,10 +567,10 @@ const ProfessionalChildrenMinistryPage = () => {
                         >
                           {leader.avatar}
                         </Avatar>
-                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#2E7D32' }}>
+                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#2c5282' }}>
                           {leader.name}
                         </Typography>
-                        <Typography variant="body2" color="#4CAF50" sx={{ mb: 2, fontWeight: 600 }}>
+                        <Typography variant="body2" color="#1a365d" sx={{ mb: 2, fontWeight: 600 }}>
                           {leader.role}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
@@ -578,8 +583,8 @@ const ProfessionalChildrenMinistryPage = () => {
                             label={leader.email}
                             size="small"
                             sx={{
-                              backgroundColor: alpha('#4CAF50', 0.1),
-                              color: '#2E7D32',
+                              backgroundColor: alpha('#1a365d', 0.1),
+                              color: '#2c5282',
                               fontWeight: 500,
                             }}
                           />
@@ -587,8 +592,8 @@ const ProfessionalChildrenMinistryPage = () => {
                             label={`${leader.experience} experience`}
                             size="small"
                             sx={{
-                              backgroundColor: alpha('#4CAF50', 0.1),
-                              color: '#2E7D32',
+                              backgroundColor: alpha('#1a365d', 0.1),
+                              color: '#2c5282',
                               fontWeight: 500,
                             }}
                           />
@@ -606,8 +611,8 @@ const ProfessionalChildrenMinistryPage = () => {
         <Box
           ref={(el) => (sectionRefs.current[4] = el)}
           sx={{
-            py: 8,
-            background: 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)',
+            py: 5,
+            background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
             borderRadius: 4,
             position: 'relative',
             overflow: 'hidden',
@@ -642,7 +647,7 @@ const ProfessionalChildrenMinistryPage = () => {
                 <Typography
                   variant="h6"
                   sx={{
-                    mb: 6,
+                    mb: 4,
                     maxWidth: '600px',
                     mx: 'auto',
                     lineHeight: 1.6,
@@ -673,7 +678,7 @@ const ProfessionalChildrenMinistryPage = () => {
                       borderRadius: 3,
                       '&:hover': {
                         backgroundColor: 'white',
-                        color: '#2E7D32',
+                        color: '#2c5282',
                         borderColor: 'white',
                       },
                     }}
@@ -688,7 +693,7 @@ const ProfessionalChildrenMinistryPage = () => {
                       px: 4,
                       py: 2,
                       background: 'linear-gradient(135deg, #ffffff, #f0f0f0)',
-                      color: '#2E7D32',
+                      color: '#2c5282',
                       textTransform: 'none',
                       fontWeight: 700,
                       fontSize: '1rem',

@@ -8,12 +8,13 @@ import {
   Lightbulb, ArrowForward, Email, Phone, Event, FamilyRestroom, Home
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { usePageContent } from '../../cms';
 import { styled, keyframes } from '@mui/material/styles';
 
 const HeroBanner = styled(Box)(({ theme }) => ({
   position: 'relative',
   minHeight: '70vh',
-  background: 'linear-gradient(135deg, #F44336 0%, #D32F2F 100%)',
+  background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -54,6 +55,7 @@ const IconWrapper = styled(Box)(({ theme, color }) => ({
 const ProfessionalYoungCouplesMinistryPage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const content = usePageContent('couples');
   const [visibleSections, setVisibleSections] = useState(new Set());
   const sectionRefs = useRef([]);
 
@@ -73,51 +75,48 @@ const ProfessionalYoungCouplesMinistryPage = () => {
     return () => observers.forEach(observer => observer?.disconnect());
   }, []);
 
-  const activities = [
+  const activityIcons = [<Church color="primary" sx={{ fontSize: 32 }} />, <Favorite color="primary" sx={{ fontSize: 32 }} />, <FamilyRestroom color="primary" sx={{ fontSize: 32 }} />, <Home color="primary" sx={{ fontSize: 32 }} />];
+  const activities = (content.activities || [
     {
-      icon: <Church color="primary" sx={{ fontSize: 32 }} />,
       title: 'Bible Studies',
       description: 'Explore God\'s design for marriage and relationships through relevant biblical teaching.',
       features: ['Marriage Principles', 'Biblical Teaching', 'Group Discussion']
     },
     {
-      icon: <Favorite color="primary" sx={{ fontSize: 32 }} />,
       title: 'Date Nights',
       description: 'Romantic evenings designed to strengthen your connection and create lasting memories.',
       features: ['Themed Events', 'Romantic Dinners', 'Quality Time']
     },
     {
-      icon: <FamilyRestroom color="primary" sx={{ fontSize: 32 }} />,
       title: 'Parenting Support',
       description: 'Navigate the journey of parenthood with guidance from experienced couples and biblical wisdom.',
       features: ['Parenting Classes', 'Family Activities', 'Childcare Support']
     },
     {
-      icon: <Home color="primary" sx={{ fontSize: 32 }} />,
       title: 'Home Building',
       description: 'Practical workshops on creating a Christ-centered home that honors God.',
       features: ['Financial Planning', 'Home Management', 'Spiritual Leadership']
     }
-  ];
+  ]).map((item, i) => ({ ...item, icon: activityIcons[i] || activityIcons[0] }));
 
-  const schedule = [
+  const schedule = content.schedule || [
     {
       day: 'Friday',
       time: '7:30 PM',
       activity: 'Couples Fellowship',
       description: 'Weekly gathering for Bible study, discussion, and fellowship',
-      color: '#F44336'
+      color: '#1a365d'
     },
     {
       day: 'Saturday',
       time: '6:00 PM',
       activity: 'Date Night Events',
       description: 'Monthly themed date nights and special couples events',
-      color: '#D32F2F'
+      color: '#2c5282'
     }
   ];
 
-  const leaders = [
+  const leaders = content.leaders || [
     {
       name: 'Brother & Sister Jean',
       role: 'Young Couples Leaders',
@@ -147,14 +146,13 @@ const ProfessionalYoungCouplesMinistryPage = () => {
                 fontWeight: 800, mb: 3,
                 textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
               }}>
-                Young Couples Ministry
+                {content.hero?.title || 'Young Couples Ministry'}
               </Typography>
               <Typography variant="h4" sx={{
                 fontSize: { xs: '1.3rem', md: '1.6rem' },
                 mb: 4, opacity: 0.95, maxWidth: '800px', mx: 'auto',
               }}>
-                "Though one may be overpowered, two can defend themselves. 
-                A cord of three strands is not quickly broken."
+                {content.hero?.subtitle || '"Though one may be overpowered, two can defend themselves. A cord of three strands is not quickly broken."'}
               </Typography>
               <Typography variant="h6" sx={{ fontStyle: 'italic', opacity: 0.85, mb: 6 }}>
                 Ecclesiastes 4:12
@@ -169,7 +167,7 @@ const ProfessionalYoungCouplesMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(0)} timeout={600}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 3, color: '#D32F2F',
+                fontWeight: 700, mb: 3, color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 Welcome to Young Couples Ministry
@@ -188,20 +186,20 @@ const ProfessionalYoungCouplesMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(1)} timeout={800}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#D32F2F',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 What We Do
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {activities.map((activity, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <ActivityCard index={index} elevation={6}>
                       <CardContent sx={{ p: 4 }}>
-                        <IconWrapper color="#F44336">
+                        <IconWrapper color="#1a365d">
                           {activity.icon}
                         </IconWrapper>
-                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, textAlign: 'center', color: '#D32F2F' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, textAlign: 'center', color: '#2c5282' }}>
                           {activity.title}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6, textAlign: 'center' }}>
@@ -211,7 +209,7 @@ const ProfessionalYoungCouplesMinistryPage = () => {
                           <Stack direction="row" flexWrap="wrap" gap={1} justifyContent="center">
                             {activity.features.map((feature, idx) => (
                               <Chip key={idx} label={feature} size="small" sx={{
-                                backgroundColor: alpha('#F44336', 0.1), color: '#D32F2F', fontWeight: 500,
+                                backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                               }} />
                             ))}
                           </Stack>
@@ -229,12 +227,12 @@ const ProfessionalYoungCouplesMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(2)} timeout={1000}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#D32F2F',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 When We Meet
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {schedule.map((item, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <Paper elevation={4} sx={{
@@ -243,13 +241,13 @@ const ProfessionalYoungCouplesMinistryPage = () => {
                       '&:hover': { transform: 'translateY(-4px)' }
                     }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                        <CalendarToday sx={{ mr: 2, color: '#F44336', fontSize: 28 }} />
-                        <Typography variant="h5" sx={{ fontWeight: 600, color: '#D32F2F' }}>
+                        <CalendarToday sx={{ mr: 2, color: '#1a365d', fontSize: 28 }} />
+                        <Typography variant="h5" sx={{ fontWeight: 600, color: '#2c5282' }}>
                           {item.day}
                         </Typography>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                        <AccessTime sx={{ mr: 2, color: '#F44336' }} />
+                        <AccessTime sx={{ mr: 2, color: '#1a365d' }} />
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
                           {item.time}
                         </Typography>
@@ -272,12 +270,12 @@ const ProfessionalYoungCouplesMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(3)} timeout={1200}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#D32F2F',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 Our Leaders
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {leaders.map((leader, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <Card elevation={6} sx={{
@@ -288,15 +286,15 @@ const ProfessionalYoungCouplesMinistryPage = () => {
                       <CardContent sx={{ p: 4, textAlign: 'center' }}>
                         <Avatar sx={{ 
                           width: 100, height: 100, mx: 'auto', mb: 3,
-                          background: 'linear-gradient(135deg, #F44336, #D32F2F)',
+                          background: 'linear-gradient(135deg, #1a365d, #2c5282)',
                           fontSize: '2.5rem', fontWeight: 700, color: 'white',
                         }}>
                           {leader.avatar}
                         </Avatar>
-                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#D32F2F' }}>
+                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#2c5282' }}>
                           {leader.name}
                         </Typography>
-                        <Typography variant="body2" color="#F44336" sx={{ mb: 2, fontWeight: 600 }}>
+                        <Typography variant="body2" color="#1a365d" sx={{ mb: 2, fontWeight: 600 }}>
                           {leader.role}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
@@ -304,10 +302,10 @@ const ProfessionalYoungCouplesMinistryPage = () => {
                         </Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
                           <Chip label={leader.email} size="small" sx={{
-                            backgroundColor: alpha('#F44336', 0.1), color: '#D32F2F', fontWeight: 500,
+                            backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                           }} />
                           <Chip label={`${leader.experience} experience`} size="small" sx={{
-                            backgroundColor: alpha('#F44336', 0.1), color: '#D32F2F', fontWeight: 500,
+                            backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                           }} />
                         </Box>
                       </CardContent>
@@ -320,7 +318,7 @@ const ProfessionalYoungCouplesMinistryPage = () => {
         </Box>
 
         <Box ref={(el) => (sectionRefs.current[4] = el)} sx={{
-          py: 8, background: 'linear-gradient(135deg, #F44336 0%, #D32F2F 100%)', borderRadius: 4,
+          py: 5, background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)', borderRadius: 4,
         }}>
           <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2 }}>
             <Slide direction="up" in={visibleSections.has(4)} timeout={1400}>
@@ -331,20 +329,20 @@ const ProfessionalYoungCouplesMinistryPage = () => {
                   Join Our Couples Community!
                 </Typography>
                 <Typography variant="h6" sx={{
-                  mb: 6, maxWidth: '600px', mx: 'auto', lineHeight: 1.6, opacity: 0.95,
+                  mb: 4, maxWidth: '600px', mx: 'auto', lineHeight: 1.6, opacity: 0.95,
                 }}>
                   Build a stronger marriage and connect with other couples who share your values and faith.
                 </Typography>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
                   <Button variant="outlined" size="large" sx={{
                     px: 4, py: 2, borderColor: 'white', color: 'white',
-                    '&:hover': { backgroundColor: 'white', color: '#D32F2F' },
+                    '&:hover': { backgroundColor: 'white', color: '#2c5282' },
                   }}>
                     Learn More
                   </Button>
                   <Button variant="contained" size="large" endIcon={<ArrowForward />} sx={{
                     px: 4, py: 2, background: 'linear-gradient(135deg, #ffffff, #f0f0f0)',
-                    color: '#D32F2F', fontWeight: 700,
+                    color: '#2c5282', fontWeight: 700,
                     '&:hover': { transform: 'translateY(-2px)' },
                   }}>
                     Join Couples Group

@@ -66,7 +66,7 @@ const EventBoxes = () => {
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
             gap: 3,
-            mt: 4
+            mt: 2
         }}>
             {events.map((event) => (
                 <Card 

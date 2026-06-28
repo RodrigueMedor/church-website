@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { 
   Box, 
   Container, 
@@ -45,6 +46,7 @@ import {
   Public
 } from '@mui/icons-material';
 import { styled, keyframes } from '@mui/material/styles';
+import { usePageContent } from '../../cms';
 
 // Animations
 const floatAnimation = keyframes`
@@ -63,7 +65,7 @@ const pulseAnimation = keyframes`
 const HeroBanner = styled(Box)(({ theme }) => ({
   position: 'relative',
   minHeight: '60vh',
-  background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)',
+  background: 'linear-gradient(135deg, #1a365d 0%, #0f2440 100%)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -108,7 +110,7 @@ const ContactCard = styled(Paper)(({ theme, index }) => ({
     left: 0,
     right: 0,
     height: '4px',
-    background: 'linear-gradient(90deg, #2E7D32, #1B5E20)',
+    background: 'linear-gradient(90deg, #1a365d, #0f2440)',
     transform: 'translateX(-100%)',
     transition: 'transform 0.6s ease',
   },
@@ -134,7 +136,7 @@ const InfoCard = styled(Paper)(({ theme }) => ({
   '&:hover': {
     transform: 'translateY(-4px)',
     boxShadow: '0 12px 30px rgba(46, 125, 50, 0.15)',
-    backgroundColor: alpha('#2E7D32', 0.05),
+    backgroundColor: alpha('#1a365d', 0.05),
   },
 }));
 
@@ -142,22 +144,22 @@ const SocialButton = styled(IconButton)(({ theme, color }) => ({
   width: 48,
   height: 48,
   borderRadius: '50%',
-  backgroundColor: color || '#2E7D32',
+  backgroundColor: color || '#1a365d',
   color: 'white',
   transition: 'all 0.3s ease',
   '&:hover': {
     transform: 'scale(1.1)',
-    boxShadow: `0 8px 25px ${alpha(color || '#2E7D32', 0.4)}`,
+    boxShadow: `0 8px 25px ${alpha(color || '#1a365d', 0.4)}`,
   },
 }));
 
 const StatsCard = styled(Paper)(({ theme }) => ({
-  background: 'linear-gradient(145deg, #2E7D32 0%, #1B5E20 100%)',
+  background: 'linear-gradient(145deg, #1a365d 0%, #0f2440 100%)',
   color: 'white',
   padding: theme.spacing(3),
   textAlign: 'center',
   borderRadius: 16,
-  border: `1px solid ${alpha('#1B5E20', 0.3)}`,
+  border: `1px solid ${alpha('#0f2440', 0.3)}`,
   transition: 'all 0.3s ease',
   '&:hover': {
     transform: 'translateY(-5px)',
@@ -167,7 +169,9 @@ const StatsCard = styled(Paper)(({ theme }) => ({
 
 const ProfessionalContactPage = () => {
   const { t } = useTranslation();
+  const content = usePageContent('contact');
   const theme = useTheme();
+  const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   
   const [formData, setFormData] = useState({
@@ -288,42 +292,70 @@ const ProfessionalContactPage = () => {
     {
       title: 'Visit Us',
       icon: <LocationOnIcon sx={{ fontSize: 32 }} />,
-      content: '900 S Thacker Ave\nKissimmee, FL 34741',
-      color: '#2E7D32'
+      content: content.address || '900 S Thacker Ave\nKissimmee, FL 34741',
+      color: '#1a365d'
     },
     {
       title: 'Call Us',
       icon: <PhoneIcon sx={{ fontSize: 32 }} />,
-      content: '(407) 123-4567\n(407) 123-4568',
+      content: content.phone || '(407) 123-4567\n(407) 123-4568',
       color: '#1976D2'
     },
     {
       title: 'Email Us',
       icon: <EmailIcon sx={{ fontSize: 32 }} />,
-      content: 'info@fhbck.org\npasteur@fhbck.org',
+      content: content.email || 'info@fhbck.org\npasteur@fhbck.org',
       color: '#F57C00'
     },
     {
       title: 'Service Times',
       icon: <ScheduleIcon sx={{ fontSize: 32 }} />,
-      content: 'Sunday: 9:30 AM & 11:30 AM\nWednesday: 7:00 PM',
+      content: content.serviceTimes?.length
+        ? content.serviceTimes.map(st => `${st.day}: ${st.time}`).join('\n')
+        : 'Sunday: 9:30 AM & 11:30 AM\nWednesday: 7:00 PM',
       color: '#7B1FA2'
     }
   ];
 
-  const socialLinks = [
-    { icon: <Facebook />, url: '#', color: '#1877F2' },
-    { icon: <Twitter />, url: '#', color: '#1DA1F2' },
-    { icon: <Instagram />, url: '#', color: '#E4405F' },
-    { icon: <YouTube />, url: '#', color: '#FF0000' }
-  ];
+  const platformIcons = {
+    facebook: <Facebook />,
+    twitter: <Twitter />,
+    instagram: <Instagram />,
+    youtube: <YouTube />,
+  };
 
-  const stats = [
-    { number: '35+', label: 'Years of Ministry', icon: <ChurchIcon /> },
-    { number: '500+', label: 'Church Members', icon: <People /> },
-    { number: '7', label: 'Weekly Services', icon: <ScheduleIcon /> },
-    { number: '24/7', label: 'Prayer Support', icon: <Star /> }
-  ];
+  const socialLinks = content.socialLinks?.length
+    ? content.socialLinks.map(social => ({
+        icon: platformIcons[social.platform?.toLowerCase()] || <Language />,
+        url: social.url || '#',
+        color: social.color || '#1a365d'
+      }))
+    : [
+        { icon: <Facebook />, url: '#', color: '#1877F2' },
+        { icon: <Twitter />, url: '#', color: '#1DA1F2' },
+        { icon: <Instagram />, url: '#', color: '#E4405F' },
+        { icon: <YouTube />, url: '#', color: '#FF0000' }
+      ];
+
+  const statIcons = {
+    church: <ChurchIcon />,
+    people: <People />,
+    schedule: <ScheduleIcon />,
+    star: <Star />,
+  };
+
+  const stats = content.stats?.length
+    ? content.stats.map(stat => ({
+        number: stat.number,
+        label: stat.label,
+        icon: statIcons[stat.icon?.toLowerCase()] || <ChurchIcon />
+      }))
+    : [
+        { number: '35+', label: 'Years of Ministry', icon: <ChurchIcon /> },
+        { number: '500+', label: 'Church Members', icon: <People /> },
+        { number: '7', label: 'Weekly Services', icon: <ScheduleIcon /> },
+        { number: '24/7', label: 'Prayer Support', icon: <Star /> }
+      ];
 
   return (
     <Box sx={{ backgroundColor: '#f8f9fa' }}>
@@ -343,7 +375,7 @@ const ProfessionalContactPage = () => {
                   lineHeight: 1.1,
                 }}
               >
-                Get in Touch
+                {content.hero?.title || 'Get in Touch'}
               </Typography>
               <Typography
                 variant="h4"
@@ -356,7 +388,7 @@ const ProfessionalContactPage = () => {
                   lineHeight: 1.6,
                 }}
               >
-                "Therefore encourage one another and build each other up, just as in fact you are doing."
+                {content.hero?.subtitle || '"Therefore encourage one another and build each other up, just as in fact you are doing."'}
               </Typography>
               <Typography
                 variant="h6"
@@ -396,15 +428,15 @@ const ProfessionalContactPage = () => {
                 component="h2"
                 sx={{
                   fontWeight: 700,
-                  mb: 5,
+                  mb: 3,
                   textAlign: 'center',
-                  color: '#2E7D32',
+                  color: '#1a365d',
                   fontSize: { xs: '2rem', md: '2.5rem' },
                 }}
               >
                 Ways to Connect
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {contactInfo.map((info, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <ContactCard index={index} elevation={6}>
@@ -429,7 +461,7 @@ const ProfessionalContactPage = () => {
                         fontWeight: 600, 
                         mb: 2, 
                         textAlign: 'center',
-                        color: '#2E7D32' 
+                        color: '#1a365d' 
                       }}>
                         {info.title}
                       </Typography>
@@ -463,7 +495,7 @@ const ProfessionalContactPage = () => {
                     <Typography variant="h4" sx={{ 
                       fontWeight: 600, 
                       mb: 4, 
-                      color: '#2E7D32',
+                      color: '#1a365d',
                       textAlign: 'center'
                     }}>
                       Send Us a Message
@@ -490,10 +522,10 @@ const ProfessionalContactPage = () => {
                             sx={{
                               '& .MuiOutlinedInput-root': {
                                 '&:hover fieldset': {
-                                  borderColor: '#2E7D32',
+                                  borderColor: '#1a365d',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#2E7D32',
+                                  borderColor: '#1a365d',
                                 },
                               },
                             }}
@@ -513,10 +545,10 @@ const ProfessionalContactPage = () => {
                             sx={{
                               '& .MuiOutlinedInput-root': {
                                 '&:hover fieldset': {
-                                  borderColor: '#2E7D32',
+                                  borderColor: '#1a365d',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#2E7D32',
+                                  borderColor: '#1a365d',
                                 },
                               },
                             }}
@@ -532,17 +564,17 @@ const ProfessionalContactPage = () => {
                             InputProps={{
                               startAdornment: (
                                 <InputAdornment position="start">
-                                  <PhoneIcon sx={{ color: '#2E7D32' }} />
+                                  <PhoneIcon sx={{ color: '#1a365d' }} />
                                 </InputAdornment>
                               ),
                             }}
                             sx={{
                               '& .MuiOutlinedInput-root': {
                                 '&:hover fieldset': {
-                                  borderColor: '#2E7D32',
+                                  borderColor: '#1a365d',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#2E7D32',
+                                  borderColor: '#1a365d',
                                 },
                               },
                             }}
@@ -561,10 +593,10 @@ const ProfessionalContactPage = () => {
                             sx={{
                               '& .MuiOutlinedInput-root': {
                                 '&:hover fieldset': {
-                                  borderColor: '#2E7D32',
+                                  borderColor: '#1a365d',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#2E7D32',
+                                  borderColor: '#1a365d',
                                 },
                               },
                             }}
@@ -585,10 +617,10 @@ const ProfessionalContactPage = () => {
                             sx={{
                               '& .MuiOutlinedInput-root': {
                                 '&:hover fieldset': {
-                                  borderColor: '#2E7D32',
+                                  borderColor: '#1a365d',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#2E7D32',
+                                  borderColor: '#1a365d',
                                 },
                               },
                             }}
@@ -604,9 +636,9 @@ const ProfessionalContactPage = () => {
                             sx={{
                               px: 4,
                               py: 2,
-                              background: 'linear-gradient(135deg, #2E7D32, #1B5E20)',
+                              background: 'linear-gradient(135deg, #1a365d, #0f2440)',
                               '&:hover': {
-                                background: 'linear-gradient(135deg, #1B5E20, #2E7D32)',
+                                background: 'linear-gradient(135deg, #0f2440, #1a365d)',
                                 transform: 'translateY(-2px)',
                                 boxShadow: '0 8px 25px rgba(46, 125, 50, 0.4)',
                               },
@@ -622,13 +654,13 @@ const ProfessionalContactPage = () => {
 
                 {/* Map and Additional Info */}
                 <Grid item xs={12} md={5}>
-                  <Stack spacing={4}>
+                  <Stack spacing={3}>
                     {/* Interactive Map */}
                     <ContactCard index={1} elevation={6}>
                       <Typography variant="h6" sx={{ 
                         fontWeight: 600, 
                         mb: 3, 
-                        color: '#2E7D32',
+                        color: '#1a365d',
                         textAlign: 'center'
                       }}>
                         Find Us
@@ -656,7 +688,7 @@ const ProfessionalContactPage = () => {
                             py: 1,
                           }}
                         >
-                          <Typography variant="caption" sx={{ fontWeight: 600, color: '#2E7D32' }}>
+                          <Typography variant="caption" sx={{ fontWeight: 600, color: '#1a365d' }}>
                             900 S Thacker Ave
                           </Typography>
                         </Box>
@@ -672,12 +704,12 @@ const ProfessionalContactPage = () => {
                           rel="noopener noreferrer"
                           startIcon={<Map />}
                           sx={{
-                            borderColor: '#2E7D32',
-                            color: '#2E7D32',
+                            borderColor: '#1a365d',
+                            color: '#1a365d',
                             textTransform: 'none',
                             fontWeight: 600,
                             '&:hover': {
-                              backgroundColor: '#2E7D32',
+                              backgroundColor: '#1a365d',
                               color: 'white',
                             },
                           }}
@@ -692,7 +724,7 @@ const ProfessionalContactPage = () => {
                       <Typography variant="h6" sx={{ 
                         fontWeight: 600, 
                         mb: 3, 
-                        color: '#2E7D32',
+                        color: '#1a365d',
                         textAlign: 'center'
                       }}>
                         Follow Us
@@ -722,8 +754,8 @@ const ProfessionalContactPage = () => {
         <Box
           ref={(el) => (sectionRefs.current[2] = el)}
           sx={{
-            py: 8,
-            background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)',
+            py: 5,
+            background: 'linear-gradient(135deg, #1a365d 0%, #0f2440 100%)',
             color: 'white',
             position: 'relative',
             overflow: 'hidden',
@@ -758,7 +790,7 @@ const ProfessionalContactPage = () => {
                 <Typography
                   variant="h6"
                   sx={{
-                    mb: 6,
+                    mb: 4,
                     maxWidth: '600px',
                     mx: 'auto',
                     lineHeight: 1.6,
@@ -778,7 +810,7 @@ const ProfessionalContactPage = () => {
                   <Button
                     variant="outlined"
                     size="large"
-                    href="/events"
+                    onClick={() => navigate('/events')}
                     endIcon={<ArrowForward />}
                     sx={{
                       px: 4,
@@ -791,7 +823,7 @@ const ProfessionalContactPage = () => {
                       borderRadius: 3,
                       '&:hover': {
                         backgroundColor: 'white',
-                        color: '#2E7D32',
+                        color: '#1a365d',
                       },
                     }}
                   >
@@ -800,13 +832,13 @@ const ProfessionalContactPage = () => {
                   <Button
                     variant="contained"
                     size="large"
-                    href="/sermons"
+                    onClick={() => navigate('/sermons')}
                     endIcon={<ArrowForward />}
                     sx={{
                       px: 4,
                       py: 2,
                       background: 'linear-gradient(135deg, #ffffff, #f0f0f0)',
-                      color: '#2E7D32',
+                      color: '#1a365d',
                       textTransform: 'none',
                       fontWeight: 700,
                       fontSize: '1rem',

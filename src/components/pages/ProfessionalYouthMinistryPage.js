@@ -9,11 +9,12 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { styled, keyframes } from '@mui/material/styles';
+import { usePageContent } from '../../cms';
 
 const HeroBanner = styled(Box)(({ theme }) => ({
   position: 'relative',
   minHeight: '70vh',
-  background: 'linear-gradient(135deg, #2196F3 0%, #1565C0 100%)',
+  background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -54,6 +55,7 @@ const IconWrapper = styled(Box)(({ theme, color }) => ({
 const ProfessionalYouthMinistryPage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const content = usePageContent('youth');
   const [visibleSections, setVisibleSections] = useState(new Set());
   const sectionRefs = useRef([]);
 
@@ -73,7 +75,7 @@ const ProfessionalYouthMinistryPage = () => {
     return () => observers.forEach(observer => observer?.disconnect());
   }, []);
 
-  const activities = [
+  const defaultActivities = [
     {
       icon: <Church color="primary" sx={{ fontSize: 32 }} />,
       title: 'Bible Discussions',
@@ -100,24 +102,33 @@ const ProfessionalYouthMinistryPage = () => {
     }
   ];
 
-  const schedule = [
+  const activities = content.activities?.length
+    ? content.activities.map((item, i) => ({
+        ...item,
+        icon: defaultActivities[i]?.icon || <Church color="primary" sx={{ fontSize: 32 }} />,
+      }))
+    : defaultActivities;
+
+  const defaultSchedule = [
     {
       day: 'Saturday',
       time: '5:00 PM',
       activity: 'Youth Service & Fellowship',
       description: 'Weekly gathering with worship, message, games, and dinner',
-      color: '#2196F3'
+      color: '#1a365d'
     },
     {
       day: 'Sunday',
       time: '11:30 AM',
       activity: 'Sunday School Class',
       description: 'Age-specific Bible study and discussion for teens',
-      color: '#1565C0'
+      color: '#2c5282'
     }
   ];
 
-  const leaders = [
+  const schedule = content.schedule?.length ? content.schedule : defaultSchedule;
+
+  const defaultLeaders = [
     {
       name: 'Brother Vlad',
       role: 'Youth Pastor',
@@ -136,6 +147,8 @@ const ProfessionalYouthMinistryPage = () => {
     }
   ];
 
+  const leaders = content.leaders?.length ? content.leaders : defaultLeaders;
+
   return (
     <Box sx={{ backgroundColor: '#f8f9fa' }}>
       <HeroBanner>
@@ -147,14 +160,13 @@ const ProfessionalYouthMinistryPage = () => {
                 fontWeight: 800, mb: 3,
                 textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
               }}>
-                Youth Ministry
+                {content.hero?.title || 'Youth Ministry'}
               </Typography>
               <Typography variant="h4" sx={{
                 fontSize: { xs: '1.3rem', md: '1.6rem' },
                 mb: 4, opacity: 0.95, maxWidth: '800px', mx: 'auto',
               }}>
-                "Don\'t let anyone look down on you because you are young, 
-                but set an example for the believers in speech, conduct, love, faith and purity."
+                {content.hero?.subtitle || '"Don\'t let anyone look down on you because you are young, but set an example for the believers in speech, conduct, love, faith and purity."'}
               </Typography>
               <Typography variant="h6" sx={{ fontStyle: 'italic', opacity: 0.85, mb: 6 }}>
                 1 Timothy 4:12
@@ -169,7 +181,7 @@ const ProfessionalYouthMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(0)} timeout={600}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 3, color: '#1565C0',
+                fontWeight: 700, mb: 3, color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 Welcome to Youth Ministry
@@ -188,20 +200,20 @@ const ProfessionalYouthMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(1)} timeout={800}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#1565C0',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 What We Do
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {activities.map((activity, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <ActivityCard index={index} elevation={6}>
                       <CardContent sx={{ p: 4 }}>
-                        <IconWrapper color="#2196F3">
+                        <IconWrapper color="#1a365d">
                           {activity.icon}
                         </IconWrapper>
-                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, textAlign: 'center', color: '#1565C0' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, textAlign: 'center', color: '#2c5282' }}>
                           {activity.title}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6, textAlign: 'center' }}>
@@ -211,7 +223,7 @@ const ProfessionalYouthMinistryPage = () => {
                           <Stack direction="row" flexWrap="wrap" gap={1} justifyContent="center">
                             {activity.features.map((feature, idx) => (
                               <Chip key={idx} label={feature} size="small" sx={{
-                                backgroundColor: alpha('#2196F3', 0.1), color: '#1565C0', fontWeight: 500,
+                                backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                               }} />
                             ))}
                           </Stack>
@@ -229,12 +241,12 @@ const ProfessionalYouthMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(2)} timeout={1000}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#1565C0',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 When We Meet
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {schedule.map((item, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <Paper elevation={4} sx={{
@@ -243,13 +255,13 @@ const ProfessionalYouthMinistryPage = () => {
                       '&:hover': { transform: 'translateY(-4px)' }
                     }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                        <CalendarToday sx={{ mr: 2, color: '#2196F3', fontSize: 28 }} />
-                        <Typography variant="h5" sx={{ fontWeight: 600, color: '#1565C0' }}>
+                        <CalendarToday sx={{ mr: 2, color: '#1a365d', fontSize: 28 }} />
+                        <Typography variant="h5" sx={{ fontWeight: 600, color: '#2c5282' }}>
                           {item.day}
                         </Typography>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                        <AccessTime sx={{ mr: 2, color: '#2196F3' }} />
+                        <AccessTime sx={{ mr: 2, color: '#1a365d' }} />
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
                           {item.time}
                         </Typography>
@@ -272,12 +284,12 @@ const ProfessionalYouthMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(3)} timeout={1200}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#1565C0',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 Our Leaders
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {leaders.map((leader, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <Card elevation={6} sx={{
@@ -288,15 +300,15 @@ const ProfessionalYouthMinistryPage = () => {
                       <CardContent sx={{ p: 4, textAlign: 'center' }}>
                         <Avatar sx={{ 
                           width: 100, height: 100, mx: 'auto', mb: 3,
-                          background: 'linear-gradient(135deg, #2196F3, #1565C0)',
+                          background: 'linear-gradient(135deg, #1a365d, #2c5282)',
                           fontSize: '2.5rem', fontWeight: 700, color: 'white',
                         }}>
                           {leader.avatar}
                         </Avatar>
-                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#1565C0' }}>
+                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#2c5282' }}>
                           {leader.name}
                         </Typography>
-                        <Typography variant="body2" color="#2196F3" sx={{ mb: 2, fontWeight: 600 }}>
+                        <Typography variant="body2" color="#1a365d" sx={{ mb: 2, fontWeight: 600 }}>
                           {leader.role}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
@@ -304,10 +316,10 @@ const ProfessionalYouthMinistryPage = () => {
                         </Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
                           <Chip label={leader.email} size="small" sx={{
-                            backgroundColor: alpha('#2196F3', 0.1), color: '#1565C0', fontWeight: 500,
+                            backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                           }} />
                           <Chip label={`${leader.experience} experience`} size="small" sx={{
-                            backgroundColor: alpha('#2196F3', 0.1), color: '#1565C0', fontWeight: 500,
+                            backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                           }} />
                         </Box>
                       </CardContent>
@@ -320,7 +332,7 @@ const ProfessionalYouthMinistryPage = () => {
         </Box>
 
         <Box ref={(el) => (sectionRefs.current[4] = el)} sx={{
-          py: 8, background: 'linear-gradient(135deg, #2196F3 0%, #1565C0 100%)', borderRadius: 4,
+          py: 5, background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)', borderRadius: 4,
         }}>
           <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2 }}>
             <Slide direction="up" in={visibleSections.has(4)} timeout={1400}>
@@ -331,20 +343,20 @@ const ProfessionalYouthMinistryPage = () => {
                   Join Our Youth Community!
                 </Typography>
                 <Typography variant="h6" sx={{
-                  mb: 6, maxWidth: '600px', mx: 'auto', lineHeight: 1.6, opacity: 0.95,
+                  mb: 4, maxWidth: '600px', mx: 'auto', lineHeight: 1.6, opacity: 0.95,
                 }}>
                   Come be part of something amazing! Make friends, grow in faith, and discover your purpose.
                 </Typography>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
                   <Button variant="outlined" size="large" sx={{
                     px: 4, py: 2, borderColor: 'white', color: 'white',
-                    '&:hover': { backgroundColor: 'white', color: '#1565C0' },
+                    '&:hover': { backgroundColor: 'white', color: '#2c5282' },
                   }}>
                     Learn More
                   </Button>
                   <Button variant="contained" size="large" endIcon={<ArrowForward />} sx={{
                     px: 4, py: 2, background: 'linear-gradient(135deg, #ffffff, #f0f0f0)',
-                    color: '#1565C0', fontWeight: 700,
+                    color: '#2c5282', fontWeight: 700,
                     '&:hover': { transform: 'translateY(-2px)' },
                   }}>
                     Join Youth Group

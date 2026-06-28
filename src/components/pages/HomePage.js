@@ -251,7 +251,7 @@ const HomePage = () => {
                     transform: 'translateX(-50%)',
                     width: '80px',
                     height: '4px',
-                    background: 'linear-gradient(90deg, #4a6fa5, #6b8cce)',
+                    background: 'linear-gradient(90deg, #1a365d, #2c5282)',
                     borderRadius: '2px'
                   }
                 }}
@@ -327,7 +327,7 @@ const HomePage = () => {
             left: 0,
             right: 0,
             height: '10px',
-            background: 'linear-gradient(90deg, #4a6fa5, #6b8cce, #4a6fa5)',
+            background: 'linear-gradient(90deg, #1a365d, #2c5282, #1a365d)',
             opacity: 0.8
           },
           '&:after': {
@@ -337,7 +337,7 @@ const HomePage = () => {
             left: 0,
             right: 0,
             height: '10px',
-            background: 'linear-gradient(90deg, #4a6fa5, #6b8cce, #4a6fa5)',
+            background: 'linear-gradient(90deg, #1a365d, #2c5282, #1a365d)',
             opacity: 0.8
           }
         }}>
@@ -359,7 +359,7 @@ const HomePage = () => {
                     transform: 'translateX(-50%)',
                     width: '80px',
                     height: '4px',
-                    background: 'linear-gradient(90deg, #4a6fa5, #6b8cce)',
+                    background: 'linear-gradient(90deg, #1a365d, #2c5282)',
                     borderRadius: '2px'
                   }
                 }}
@@ -390,7 +390,7 @@ const HomePage = () => {
                     transform: 'translateX(-50%)',
                     width: '80px',
                     height: '4px',
-                    background: 'linear-gradient(90deg, #4a6fa5, #6b8cce)',
+                    background: 'linear-gradient(90deg, #1a365d, #2c5282)',
                     borderRadius: '2px'
                   }
                 }}
@@ -412,7 +412,7 @@ const HomePage = () => {
                     icon: 'groups',
                     title: t('home.communityLife.title'),
                     description: t('home.communityLife.description'),
-                    color: '#4a6fa5',
+                    color: '#1a365d',
                     bgColor: 'rgba(74, 111, 165, 0.1)',
                     hoverColor: 'rgba(74, 111, 165, 0.9)'
                   },
@@ -640,7 +640,7 @@ const HomePage = () => {
                     position: 'relative',
                     overflow: 'hidden',
                     zIndex: 1,
-                    background: 'linear-gradient(135deg, #4a6fa5, #6b8cce)',
+                    background: 'linear-gradient(135deg, #1a365d, #2c5282)',
                     boxShadow: '0 4px 15px rgba(74, 111, 165, 0.3)',
                     transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     '&:hover': {
@@ -664,7 +664,7 @@ const HomePage = () => {
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      background: 'linear-gradient(135deg, #6b8cce, #4a6fa5)',
+                      background: 'linear-gradient(135deg, #2c5282, #1a365d)',
                       opacity: 0,
                       transition: 'opacity 0.4s ease',
                       zIndex: -1
@@ -697,7 +697,7 @@ const HomePage = () => {
                     transform: 'translateX(-50%)',
                     width: '60px',
                     height: '3px',
-                    background: 'linear-gradient(90deg, #4a6fa5, #6b8cce)',
+                    background: 'linear-gradient(90deg, #1a365d, #2c5282)',
                     borderRadius: '2px'
                   }
                 }}

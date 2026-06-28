@@ -236,7 +236,7 @@ const ZellePage = () => {
               <Typography 
                 variant="h5" 
                 sx={{ 
-                  mb: 5, 
+                  mb: 3, 
                   maxWidth: '800px',
                   margin: '0 auto',
                   fontWeight: 300,
@@ -317,7 +317,7 @@ const ZellePage = () => {
       </Box>
 
       {/* Step-by-Step Instructions */}
-      <Box sx={{ py: 8, backgroundColor: 'white' }}>
+      <Box sx={{ py: 5, backgroundColor: 'white' }}>
         <Container maxWidth="lg">
           <Box textAlign="center" mb={6}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
@@ -328,7 +328,7 @@ const ZellePage = () => {
             </Typography>
           </Box>
           
-          <Grid container spacing={4}>
+          <Grid container spacing={3}>
             {steps.map((step, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <Slide direction="up" in timeout={1400 + index * 200}>
@@ -364,7 +364,7 @@ const ZellePage = () => {
       </Box>
 
       {/* Supported Banks */}
-      <Box sx={{ py: 8, backgroundColor: 'background.default' }}>
+      <Box sx={{ py: 5, backgroundColor: 'background.default' }}>
         <Container maxWidth="lg">
           <Box textAlign="center" mb={6}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
@@ -422,7 +422,7 @@ const ZellePage = () => {
       </Box>
 
       {/* Benefits Section */}
-      <Box sx={{ py: 8, backgroundColor: 'white' }}>
+      <Box sx={{ py: 5, backgroundColor: 'white' }}>
         <Container maxWidth="md">
           <Box textAlign="center" mb={6}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
@@ -430,7 +430,7 @@ const ZellePage = () => {
             </Typography>
           </Box>
           
-          <Grid container spacing={4}>
+          <Grid container spacing={3}>
             <Grid item xs={12} md={4}>
               <Slide direction="up" in timeout={1800}>
                 <Box sx={{ textAlign: 'center' }}>
@@ -475,7 +475,7 @@ const ZellePage = () => {
       </Box>
 
       {/* FAQ Section */}
-      <Box sx={{ py: 8, backgroundColor: 'background.default' }}>
+      <Box sx={{ py: 5, backgroundColor: 'background.default' }}>
         <Container maxWidth="md">
           <Box textAlign="center" mb={6}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
@@ -520,7 +520,7 @@ const ZellePage = () => {
       </Box>
 
       {/* CTA Section */}
-      <Box sx={{ py: 8, backgroundColor: 'white' }}>
+      <Box sx={{ py: 5, backgroundColor: 'white' }}>
         <Container maxWidth="md" sx={{ textAlign: 'center' }}>
           <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
             Ready to Give with Zelle®?

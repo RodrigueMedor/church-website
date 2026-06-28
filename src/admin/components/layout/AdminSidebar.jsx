@@ -25,7 +25,7 @@ import {
   ListAlt as FormIcon,
   Article as NewsIcon,
 } from '@mui/icons-material';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
 const drawerWidth = 240;
@@ -52,20 +52,27 @@ const StyledNavItem = styled(ListItem)(({ theme }) => ({
 
 const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },
-  { text: 'News', icon: <NewsIcon />, path: '/admin/news' },
   { text: 'Pages', icon: <PageIcon />, path: '/admin/pages' },
-  { text: 'Events', icon: <EventIcon />, path: '/admin/events' },
-  { text: 'Sermons', icon: <SermonIcon />, path: '/admin/sermons' },
+  { text: 'Homepage', icon: <PageIcon />, path: '/admin/pages/homepage' },
+  { text: 'About', icon: <PageIcon />, path: '/admin/pages/about' },
+  { text: 'Ministries', icon: <PageIcon />, path: '/admin/pages/ministries' },
+  { text: 'Events', icon: <EventIcon />, path: '/admin/pages/events' },
+  { text: 'Sermons', icon: <SermonIcon />, path: '/admin/pages/sermons' },
+  { text: 'Contact', icon: <PageIcon />, path: '/admin/pages/contact' },
+  { text: 'News', icon: <NewsIcon />, path: '/admin/news' },
   { text: 'Media', icon: <MediaIcon />, path: '/admin/media' },
-  { text: 'Categories', icon: <CategoryIcon />, path: '/admin/categories' },
-  { text: 'Forms', icon: <FormIcon />, path: '/admin/forms' },
-  { text: 'Users', icon: <PeopleIcon />, path: '/admin/users' },
 ];
 
 const AdminSidebar = ({ mobileOpen, handleDrawerToggle, drawerWidth }) => {
   const theme = useTheme();
   const location = useLocation();
+  const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    navigate('/admin/login');
+  };
 
   const drawer = (
     <div>
@@ -94,7 +101,7 @@ const AdminSidebar = ({ mobileOpen, handleDrawerToggle, drawerWidth }) => {
             key={item.text}
             component={RouterLink}
             to={item.path}
-            selected={location.pathname === item.path}
+            selected={location.pathname.startsWith(item.path)}
           >
             <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
             <ListItemText primary={item.text} />
@@ -109,7 +116,7 @@ const AdminSidebar = ({ mobileOpen, handleDrawerToggle, drawerWidth }) => {
           </ListItemIcon>
           <ListItemText primary="Settings" />
         </StyledNavItem>
-        <StyledNavItem button>
+        <StyledNavItem button onClick={handleLogout}>
           <ListItemIcon sx={{ minWidth: 40 }}>
             <LogoutIcon />
           </ListItemIcon>

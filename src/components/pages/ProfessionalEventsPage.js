@@ -54,6 +54,7 @@ import {
 } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
 import { styled, keyframes } from '@mui/material/styles';
+import { usePageContent } from '../../cms';
 
 // Animations
 const floatAnimation = keyframes`
@@ -171,6 +172,7 @@ const StatsCard = styled(Paper)(({ theme }) => ({
 
 const ProfessionalEventsPage = () => {
   const { t } = useTranslation();
+  const content = usePageContent('events');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -195,7 +197,7 @@ const ProfessionalEventsPage = () => {
     return () => observers.forEach(observer => observer?.disconnect());
   }, []);
 
-  const events = [
+  const events = content.items || [
     {
       id: 1,
       title: 'Sunday Worship Service',
@@ -290,7 +292,7 @@ const ProfessionalEventsPage = () => {
     ? events 
     : events.filter(event => event.category === selectedCategory);
 
-  const stats = [
+  const stats = content.stats || [
     { number: '15+', label: 'Monthly Events', icon: <CalendarToday /> },
     { number: '500+', label: 'Monthly Attendees', icon: <People /> },
     { number: '7', label: 'Event Categories', icon: <EventAvailable /> },
@@ -325,7 +327,7 @@ const ProfessionalEventsPage = () => {
                   lineHeight: 1.1,
                 }}
               >
-                Church Events
+                {content.hero?.title || 'Church Events'}
               </Typography>
               <Typography
                 variant="h4"
@@ -338,18 +340,17 @@ const ProfessionalEventsPage = () => {
                   lineHeight: 1.6,
                 }}
               >
-                "Let us not give up meeting together, as some are in the habit of doing, 
-                but let us encourage one another—and all the more as you see the Day approaching."
+                {content.hero?.subtitle || '"Let us not give up meeting together, as some are in the habit of doing, but let us encourage one another—and all the more as you see the Day approaching."'}
               </Typography>
               <Typography
                 variant="h6"
-                sx={{ fontStyle: 'italic', opacity: 0.85, mb: 6 }}
+                sx={{ fontStyle: 'italic', opacity: 0.85, mb: 4 }}
               >
                 Hebrews 10:25
               </Typography>
               
               {/* Quick Stats */}
-              <Grid container spacing={3} sx={{ mb: 6 }}>
+              <Grid container spacing={3} sx={{ mb: 4 }}>
                 {stats.map((stat, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <StatsCard elevation={0}>
@@ -431,7 +432,7 @@ const ProfessionalEventsPage = () => {
                 component="h2"
                 sx={{
                   fontWeight: 700,
-                  mb: 5,
+                  mb: 3,
                   textAlign: 'center',
                   color: '#6B46C1',
                   fontSize: { xs: '2rem', md: '2.5rem' },
@@ -439,7 +440,7 @@ const ProfessionalEventsPage = () => {
               >
                 Upcoming Events
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {filteredEvents.map((event, index) => (
                   <Grid item xs={12} sm={6} md={4} key={event.id}>
                     <EventCard index={index} elevation={6}>
@@ -570,7 +571,7 @@ const ProfessionalEventsPage = () => {
         <Box
           ref={(el) => (sectionRefs.current[3] = el)}
           sx={{
-            py: 8,
+            py: 5,
             background: 'linear-gradient(135deg, #6B46C1 0%, #9333EA 100%)',
             color: 'white',
             position: 'relative',
@@ -606,7 +607,7 @@ const ProfessionalEventsPage = () => {
                 <Typography
                   variant="h6"
                   sx={{
-                    mb: 6,
+                    mb: 4,
                     maxWidth: '600px',
                     mx: 'auto',
                     lineHeight: 1.6,

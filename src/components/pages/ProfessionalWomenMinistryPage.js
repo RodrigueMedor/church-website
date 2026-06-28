@@ -9,11 +9,12 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { styled, keyframes } from '@mui/material/styles';
+import { usePageContent } from '../../cms';
 
 const HeroBanner = styled(Box)(({ theme }) => ({
   position: 'relative',
   minHeight: '70vh',
-  background: 'linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%)',
+  background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -53,6 +54,7 @@ const IconWrapper = styled(Box)(({ theme, color }) => ({
 
 const ProfessionalWomenMinistryPage = () => {
   const { t } = useTranslation();
+  const content = usePageContent('women');
   const theme = useTheme();
   const [visibleSections, setVisibleSections] = useState(new Set());
   const sectionRefs = useRef([]);
@@ -73,68 +75,58 @@ const ProfessionalWomenMinistryPage = () => {
     return () => observers.forEach(observer => observer?.disconnect());
   }, []);
 
-  const activities = [
+  const activityIcons = [
+    <Church color="primary" sx={{ fontSize: 32 }} />,
+    <Favorite color="primary" sx={{ fontSize: 32 }} />,
+    <VolunteerActivism color="primary" sx={{ fontSize: 32 }} />,
+    <Star color="primary" sx={{ fontSize: 32 }} />
+  ];
+
+  const fallbackActivities = [
     {
-      icon: <Church color="primary" sx={{ fontSize: 32 }} />,
       title: 'Bible Study',
       description: 'Deep dive into God\'s Word with discussions relevant to women\'s lives and spiritual journeys.',
       features: ['Bible Discussion', 'Life Applications', 'Prayer Circles']
     },
     {
-      icon: <Favorite color="primary" sx={{ fontSize: 32 }} />,
       title: 'Fellowship Events',
       description: 'Build authentic friendships through gatherings designed for connection and support.',
       features: ['Tea Time', 'Social Events', 'Support Groups']
     },
     {
-      icon: <VolunteerActivism color="primary" sx={{ fontSize: 32 }} />,
       title: 'Outreach Ministry',
       description: 'Serve together in love through projects that impact our community and beyond.',
       features: ['Community Service', 'Mission Projects', 'Care Ministries']
     },
     {
-      icon: <Star color="primary" sx={{ fontSize: 32 }} />,
       title: 'Spiritual Growth',
       description: 'Grow deeper in faith through retreats, workshops, and discipleship opportunities.',
       features: ['Retreats', 'Workshops', 'Mentoring']
     }
   ];
 
-  const schedule = [
-    {
-      day: 'Tuesday',
-      time: '7:00 PM',
-      activity: 'Women\'s Bible Study',
-      description: 'Weekly gathering for Bible study, prayer, and fellowship',
-      color: '#9C27B0'
-    },
-    {
-      day: 'Saturday',
-      time: '10:00 AM',
-      activity: 'Women\'s Fellowship',
-      description: 'Monthly brunch, service projects, or special events',
-      color: '#7B1FA2'
-    }
-  ];
+  const activities = (content.activities && content.activities.length > 0
+    ? content.activities
+    : fallbackActivities
+  ).map((item, i) => ({
+    icon: activityIcons[i % activityIcons.length],
+    ...item,
+    features: item.features || []
+  }));
 
-  const leaders = [
-    {
-      name: 'Sister Marie',
-      role: 'Women\'s Ministry Director',
-      description: 'Passionate about empowering women to discover their God-given purpose and grow in spiritual maturity.',
-      avatar: 'SM',
-      experience: '15 years',
-      email: 'marie@church.org'
-    },
-    {
-      name: 'Sister Josette',
-      role: 'Fellowship Coordinator',
-      description: 'Dedicated to creating warm, welcoming environments where women can build lasting friendships.',
-      avatar: 'SJ',
-      experience: '10 years',
-      email: 'josette@church.org'
-    }
-  ];
+  const schedule = content.schedule && content.schedule.length > 0
+    ? content.schedule
+    : [
+        { day: 'Tuesday', time: '7:00 PM', activity: 'Women\'s Bible Study', description: 'Weekly gathering for Bible study, prayer, and fellowship', color: '#1a365d' },
+        { day: 'Saturday', time: '10:00 AM', activity: 'Women\'s Fellowship', description: 'Monthly brunch, service projects, or special events', color: '#2c5282' }
+      ];
+
+  const leaders = content.leaders && content.leaders.length > 0
+    ? content.leaders
+    : [
+        { name: 'Sister Marie', role: 'Women\'s Ministry Director', description: 'Passionate about empowering women to discover their God-given purpose and grow in spiritual maturity.', avatar: 'SM', experience: '15 years', email: 'marie@church.org' },
+        { name: 'Sister Josette', role: 'Fellowship Coordinator', description: 'Dedicated to creating warm, welcoming environments where women can build lasting friendships.', avatar: 'SJ', experience: '10 years', email: 'josette@church.org' }
+      ];
 
   return (
     <Box sx={{ backgroundColor: '#f8f9fa' }}>
@@ -147,14 +139,13 @@ const ProfessionalWomenMinistryPage = () => {
                 fontWeight: 800, mb: 3,
                 textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
               }}>
-                Women's Ministry
+                {content.hero?.title || "Women's Ministry"}
               </Typography>
               <Typography variant="h4" sx={{
                 fontSize: { xs: '1.3rem', md: '1.6rem' },
                 mb: 4, opacity: 0.95, maxWidth: '800px', mx: 'auto',
               }}>
-                "She is clothed with strength and dignity; 
-                she can laugh at the days to come."
+                {content.hero?.subtitle || "\"She is clothed with strength and dignity; she can laugh at the days to come.\""}
               </Typography>
               <Typography variant="h6" sx={{ fontStyle: 'italic', opacity: 0.85, mb: 6 }}>
                 Proverbs 31:25
@@ -169,7 +160,7 @@ const ProfessionalWomenMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(0)} timeout={600}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 3, color: '#7B1FA2',
+                fontWeight: 700, mb: 3, color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 Welcome to Women's Ministry
@@ -188,20 +179,20 @@ const ProfessionalWomenMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(1)} timeout={800}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#7B1FA2',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 What We Do
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {activities.map((activity, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <ActivityCard index={index} elevation={6}>
                       <CardContent sx={{ p: 4 }}>
-                        <IconWrapper color="#9C27B0">
+                        <IconWrapper color="#1a365d">
                           {activity.icon}
                         </IconWrapper>
-                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, textAlign: 'center', color: '#7B1FA2' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, textAlign: 'center', color: '#2c5282' }}>
                           {activity.title}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6, textAlign: 'center' }}>
@@ -211,7 +202,7 @@ const ProfessionalWomenMinistryPage = () => {
                           <Stack direction="row" flexWrap="wrap" gap={1} justifyContent="center">
                             {activity.features.map((feature, idx) => (
                               <Chip key={idx} label={feature} size="small" sx={{
-                                backgroundColor: alpha('#9C27B0', 0.1), color: '#7B1FA2', fontWeight: 500,
+                                backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                               }} />
                             ))}
                           </Stack>
@@ -229,12 +220,12 @@ const ProfessionalWomenMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(2)} timeout={1000}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#7B1FA2',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 When We Meet
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {schedule.map((item, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <Paper elevation={4} sx={{
@@ -243,13 +234,13 @@ const ProfessionalWomenMinistryPage = () => {
                       '&:hover': { transform: 'translateY(-4px)' }
                     }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                        <CalendarToday sx={{ mr: 2, color: '#9C27B0', fontSize: 28 }} />
-                        <Typography variant="h5" sx={{ fontWeight: 600, color: '#7B1FA2' }}>
+                        <CalendarToday sx={{ mr: 2, color: '#1a365d', fontSize: 28 }} />
+                        <Typography variant="h5" sx={{ fontWeight: 600, color: '#2c5282' }}>
                           {item.day}
                         </Typography>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                        <AccessTime sx={{ mr: 2, color: '#9C27B0' }} />
+                        <AccessTime sx={{ mr: 2, color: '#1a365d' }} />
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
                           {item.time}
                         </Typography>
@@ -272,12 +263,12 @@ const ProfessionalWomenMinistryPage = () => {
           <Slide direction="up" in={visibleSections.has(3)} timeout={1200}>
             <Box>
               <Typography variant="h3" component="h2" sx={{
-                fontWeight: 700, mb: 5, textAlign: 'center', color: '#7B1FA2',
+                fontWeight: 700, mb: 3, textAlign: 'center', color: '#2c5282',
                 fontSize: { xs: '2rem', md: '2.5rem' },
               }}>
                 Our Leaders
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {leaders.map((leader, index) => (
                   <Grid item xs={12} md={6} key={index}>
                     <Card elevation={6} sx={{
@@ -288,15 +279,15 @@ const ProfessionalWomenMinistryPage = () => {
                       <CardContent sx={{ p: 4, textAlign: 'center' }}>
                         <Avatar sx={{ 
                           width: 100, height: 100, mx: 'auto', mb: 3,
-                          background: 'linear-gradient(135deg, #9C27B0, #7B1FA2)',
+                          background: 'linear-gradient(135deg, #1a365d, #2c5282)',
                           fontSize: '2.5rem', fontWeight: 700, color: 'white',
                         }}>
                           {leader.avatar}
                         </Avatar>
-                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#7B1FA2' }}>
+                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#2c5282' }}>
                           {leader.name}
                         </Typography>
-                        <Typography variant="body2" color="#9C27B0" sx={{ mb: 2, fontWeight: 600 }}>
+                        <Typography variant="body2" color="#1a365d" sx={{ mb: 2, fontWeight: 600 }}>
                           {leader.role}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
@@ -304,10 +295,10 @@ const ProfessionalWomenMinistryPage = () => {
                         </Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
                           <Chip label={leader.email} size="small" sx={{
-                            backgroundColor: alpha('#9C27B0', 0.1), color: '#7B1FA2', fontWeight: 500,
+                            backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                           }} />
                           <Chip label={`${leader.experience} experience`} size="small" sx={{
-                            backgroundColor: alpha('#9C27B0', 0.1), color: '#7B1FA2', fontWeight: 500,
+                            backgroundColor: alpha('#1a365d', 0.1), color: '#2c5282', fontWeight: 500,
                           }} />
                         </Box>
                       </CardContent>
@@ -320,7 +311,7 @@ const ProfessionalWomenMinistryPage = () => {
         </Box>
 
         <Box ref={(el) => (sectionRefs.current[4] = el)} sx={{
-          py: 8, background: 'linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%)', borderRadius: 4,
+          py: 5, background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)', borderRadius: 4,
         }}>
           <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2 }}>
             <Slide direction="up" in={visibleSections.has(4)} timeout={1400}>
@@ -331,20 +322,20 @@ const ProfessionalWomenMinistryPage = () => {
                   Join Our Sisterhood!
                 </Typography>
                 <Typography variant="h6" sx={{
-                  mb: 6, maxWidth: '600px', mx: 'auto', lineHeight: 1.6, opacity: 0.95,
+                  mb: 4, maxWidth: '600px', mx: 'auto', lineHeight: 1.6, opacity: 0.95,
                 }}>
                   Be part of a loving community where women grow together in faith, friendship, and purpose.
                 </Typography>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
                   <Button variant="outlined" size="large" sx={{
                     px: 4, py: 2, borderColor: 'white', color: 'white',
-                    '&:hover': { backgroundColor: 'white', color: '#7B1FA2' },
+                    '&:hover': { backgroundColor: 'white', color: '#2c5282' },
                   }}>
                     Learn More
                   </Button>
                   <Button variant="contained" size="large" endIcon={<ArrowForward />} sx={{
                     px: 4, py: 2, background: 'linear-gradient(135deg, #ffffff, #f0f0f0)',
-                    color: '#7B1FA2', fontWeight: 700,
+                    color: '#2c5282', fontWeight: 700,
                     '&:hover': { transform: 'translateY(-2px)' },
                   }}>
                     Join Women's Group

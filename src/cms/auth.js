@@ -1,0 +1,79 @@
+const AUTH_KEY = 'cms_auth';
+
+const DEFAULT_ADMIN = {
+  email: 'admin@fhbck.org',
+  password: 'admin123',
+  name: 'Admin',
+};
+
+function init() {
+  try {
+    const raw = localStorage.getItem(AUTH_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      if (!data.users) data.users = [];
+      if (!data.users.some(u => u.email === DEFAULT_ADMIN.email)) {
+        data.users.push(DEFAULT_ADMIN);
+      }
+      if (!data.sessions) data.sessions = {};
+      localStorage.setItem(AUTH_KEY, JSON.stringify(data));
+      return;
+    }
+  } catch {}
+  localStorage.setItem(AUTH_KEY, JSON.stringify({
+    users: [DEFAULT_ADMIN],
+    sessions: {},
+  }));
+}
+
+init();
+
+export const auth = {
+  login(email, password) {
+    const data = JSON.parse(localStorage.getItem(AUTH_KEY));
+    const user = data.users.find(u => u.email === email && u.password === password);
+    if (!user) throw new Error('Invalid credentials');
+    const token = btoa(`${email}:${Date.now()}`);
+    data.sessions[token] = { email, name: user.name, loggedInAt: Date.now() };
+    localStorage.setItem(AUTH_KEY, JSON.stringify(data));
+    return { token, user: { email: user.email, name: user.name } };
+  },
+
+  logout(token) {
+    const data = JSON.parse(localStorage.getItem(AUTH_KEY));
+    delete data.sessions[token];
+    localStorage.setItem(AUTH_KEY, JSON.stringify(data));
+  },
+
+  validate(token) {
+    if (!token) return null;
+    const data = JSON.parse(localStorage.getItem(AUTH_KEY));
+    const session = data.sessions[token];
+    if (!session) return null;
+    return { email: session.email, name: session.name };
+  },
+
+  isLoggedIn() {
+    const token = localStorage.getItem('adminToken');
+    return !!this.validate(token);
+  },
+
+  updateProfile(email, updates) {
+    const data = JSON.parse(localStorage.getItem(AUTH_KEY));
+    const idx = data.users.findIndex(u => u.email === email);
+    if (idx === -1) throw new Error('User not found');
+    data.users[idx] = { ...data.users[idx], ...updates };
+    localStorage.setItem(AUTH_KEY, JSON.stringify(data));
+    return data.users[idx];
+  },
+
+  changePassword(email, oldPassword, newPassword) {
+    const data = JSON.parse(localStorage.getItem(AUTH_KEY));
+    const user = data.users.find(u => u.email === email);
+    if (!user || user.password !== oldPassword) throw new Error('Invalid current password');
+    user.password = newPassword;
+    localStorage.setItem(AUTH_KEY, JSON.stringify(data));
+  },
+};
+
+export default auth;

@@ -110,7 +110,7 @@ const AboutPage = () => {
         title: t('about.values.biblicalFoundation.title'),
         description: t('about.values.biblicalFoundation.description'),
         icon: <BookIcon fontSize="large" color="primary" />,
-        color: '#1a4b8c',
+        color: '#1a365d',
       },
       {
         title: t('about.values.passionateWorship.title'),
@@ -166,7 +166,7 @@ const AboutPage = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            background: 'linear-gradient(135deg, rgba(26, 75, 140, 0.3) 0%, rgba(13, 43, 78, 0.7) 100%)',
+            background: 'linear-gradient(135deg, rgba(15, 36, 64, 0.3) 0%, rgba(26, 54, 93, 0.7) 100%)',
             zIndex: 1
           },
           '&::after': {
@@ -293,7 +293,7 @@ const AboutPage = () => {
                 textTransform: 'none',
                 fontWeight: 600,
                 fontSize: '1.1rem',
-                background: 'linear-gradient(45deg, #1a4b8c 30%, #0d2b4e 90%)',
+                background: 'linear-gradient(45deg, #1a365d 30%, #0f2440 90%)',
                 '&:hover': {
                   transform: 'translateY(-2px)',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
@@ -427,7 +427,7 @@ const AboutPage = () => {
                         transform: 'translateY(-2px)'
                       },
                       transition: 'all 0.3s ease',
-                      background: 'linear-gradient(45deg, #1a4b8c 30%, #0d2b4e 90%)',
+                      background: 'linear-gradient(45deg, #1a365d 30%, #0f2440 90%)',
                       border: 'none'
                     }}
                   >
@@ -536,7 +536,7 @@ const AboutPage = () => {
                   transform: 'translateX(-50%)',
                   width: '80px',
                   height: '4px',
-                  background: 'linear-gradient(90deg, #4a6fa5, #6b8cce)',
+                  background: 'linear-gradient(90deg, #2c5282, #1a365d)',
                   borderRadius: '2px'
                 }
               }}
@@ -630,7 +630,7 @@ const AboutPage = () => {
                   py: 1, 
                   fontSize: '0.9rem',
                   fontWeight: 600,
-                  background: 'linear-gradient(135deg, #4a6fa5 0%, #6b8cce 100%)',
+                  background: 'linear-gradient(135deg, #2c5282 0%, #1a365d 100%)',
                   color: 'white',
                   '& .MuiChip-label': {
                     px: 1,
@@ -643,7 +643,7 @@ const AboutPage = () => {
                 sx={{ 
                   fontWeight: 700, 
                   mb: 2,
-                  background: 'linear-gradient(90deg, #2c3e50 0%, #4a6fa5 100%)',
+                  background: 'linear-gradient(90deg, #1a365d 0%, #2c5282 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   display: 'inline-block'

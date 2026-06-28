@@ -301,7 +301,7 @@ const EventsPage = () => {
       {/* Hero Banner - Inspired by FBC Kissimmee */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #1a237e 0%, #2d3748 100%)',
+          background: 'linear-gradient(135deg, #0f2440 0%, #1a365d 50%, #2c5282 100%)',
           color: 'white',
           padding: theme.spacing(12, 0),
           textAlign: 'center',

@@ -46,6 +46,7 @@ import {
 } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
 import { styled, keyframes } from '@mui/material/styles';
+import { usePageContent } from '../../cms';
 
 // Animations
 const floatAnimation = keyframes`
@@ -172,6 +173,7 @@ const ProfessionalAboutPage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const content = usePageContent('about');
   const [selectedMember, setSelectedMember] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [visibleSections, setVisibleSections] = useState(new Set());
@@ -224,43 +226,67 @@ const ProfessionalAboutPage = () => {
     }
   ];
 
-  const coreValues = [
-    {
-      title: t('professionalAbout.coreValuesList.biblicalFoundation.title'),
-      description: t('professionalAbout.coreValuesList.biblicalFoundation.description'),
-      icon: <BookIcon sx={{ fontSize: 36, color: 'white' }} />,
-      color: '#1a4b8c',
-      features: t('professionalAbout.coreValuesList.biblicalFoundation.features', { returnObjects: true })
-    },
-    {
-      title: t('professionalAbout.coreValuesList.passionateWorship.title'),
-      description: t('professionalAbout.coreValuesList.passionateWorship.description'),
-      icon: <MusicIcon sx={{ fontSize: 36, color: 'white' }} />,
-      color: '#d32f2f',
-      features: t('professionalAbout.coreValuesList.passionateWorship.features', { returnObjects: true })
-    },
-    {
-      title: t('professionalAbout.coreValuesList.unitedCommunity.title'),
-      description: t('professionalAbout.coreValuesList.unitedCommunity.description'),
-      icon: <GroupIcon sx={{ fontSize: 36, color: 'white' }} />,
-      color: '#2e7d32',
-      features: t('professionalAbout.coreValuesList.unitedCommunity.features', { returnObjects: true })
-    },
-    {
-      title: t('professionalAbout.coreValuesList.missionDriven.title'),
-      description: t('professionalAbout.coreValuesList.missionDriven.description'),
-      icon: <HeartIcon sx={{ fontSize: 36, color: 'white' }} />,
-      color: '#ed6c02',
-      features: t('professionalAbout.coreValuesList.missionDriven.features', { returnObjects: true })
-    }
-  ];
+  const iconMap = {
+    Book: <BookIcon sx={{ fontSize: 36, color: 'white' }} />,
+    Music: <MusicIcon sx={{ fontSize: 36, color: 'white' }} />,
+    Group: <GroupIcon sx={{ fontSize: 36, color: 'white' }} />,
+    Heart: <HeartIcon sx={{ fontSize: 36, color: 'white' }} />,
+  };
 
-  const stats = [
-    { number: '1985', label: t('professionalAbout.stats.founded'), icon: <History /> },
-    { number: '500+', label: t('professionalAbout.stats.members'), icon: <People /> },
-    { number: '5', label: t('professionalAbout.stats.ministries'), icon: <VolunteerActivism /> },
-    { number: '3', label: t('professionalAbout.stats.services'), icon: <ChurchIcon /> }
-  ];
+  const coreValues = (content.coreValues || []).length
+    ? content.coreValues.map((cv, i) => {
+        const validColor = cv.color && /^#/.test(cv.color) ? cv.color : ['#1a4b8c', '#d32f2f', '#2e7d32', '#ed6c02'][i] || '#1a4b8c';
+        return {
+          title: cv.title,
+          description: cv.description,
+          icon: iconMap[cv.icon] || <Star sx={{ fontSize: 36, color: 'white' }} />,
+          color: validColor,
+          features: cv.features || [],
+        };
+      })
+    : [
+        {
+          title: t('professionalAbout.coreValuesList.biblicalFoundation.title'),
+          description: t('professionalAbout.coreValuesList.biblicalFoundation.description'),
+          icon: <BookIcon sx={{ fontSize: 36, color: 'white' }} />,
+          color: '#1a4b8c',
+          features: t('professionalAbout.coreValuesList.biblicalFoundation.features', { returnObjects: true })
+        },
+        {
+          title: t('professionalAbout.coreValuesList.passionateWorship.title'),
+          description: t('professionalAbout.coreValuesList.passionateWorship.description'),
+          icon: <MusicIcon sx={{ fontSize: 36, color: 'white' }} />,
+          color: '#d32f2f',
+          features: t('professionalAbout.coreValuesList.passionateWorship.features', { returnObjects: true })
+        },
+        {
+          title: t('professionalAbout.coreValuesList.unitedCommunity.title'),
+          description: t('professionalAbout.coreValuesList.unitedCommunity.description'),
+          icon: <GroupIcon sx={{ fontSize: 36, color: 'white' }} />,
+          color: '#2e7d32',
+          features: t('professionalAbout.coreValuesList.unitedCommunity.features', { returnObjects: true })
+        },
+        {
+          title: t('professionalAbout.coreValuesList.missionDriven.title'),
+          description: t('professionalAbout.coreValuesList.missionDriven.description'),
+          icon: <HeartIcon sx={{ fontSize: 36, color: 'white' }} />,
+          color: '#ed6c02',
+          features: t('professionalAbout.coreValuesList.missionDriven.features', { returnObjects: true })
+        }
+      ];
+
+  const stats = (content.stats || []).length
+    ? content.stats.map(s => ({
+        number: s.number,
+        label: s.label,
+        icon: s.icon,
+      }))
+    : [
+        { number: '1985', label: t('professionalAbout.stats.founded'), icon: 'History' },
+        { number: '500+', label: t('professionalAbout.stats.members'), icon: 'People' },
+        { number: '5', label: t('professionalAbout.stats.ministries'), icon: 'VolunteerActivism' },
+        { number: '3', label: t('professionalAbout.stats.services'), icon: 'Church' }
+      ];
 
   const handleOpenModal = (member) => {
     setSelectedMember(member);
@@ -290,7 +316,7 @@ const ProfessionalAboutPage = () => {
                   lineHeight: 1.1,
                 }}
               >
-                {t('professionalAbout.title')}
+                {content.hero?.title || t('professionalAbout.title')}
               </Typography>
               <Typography
                 variant="h4"
@@ -303,13 +329,13 @@ const ProfessionalAboutPage = () => {
                   lineHeight: 1.6,
                 }}
               >
-                {t('professionalAbout.subtitle')}
+                {content.hero?.subtitle || t('professionalAbout.subtitle')}
               </Typography>
               <Typography
                 variant="h5"
                 sx={{
                   fontSize: { xs: '1.1rem', md: '1.3rem' },
-                  mb: 6,
+                  mb: 4,
                   opacity: 0.9,
                   maxWidth: '700px',
                   mx: 'auto',
@@ -321,7 +347,7 @@ const ProfessionalAboutPage = () => {
               </Typography>
               
               {/* Quick Stats */}
-              <Grid container spacing={3} sx={{ mb: 6 }}>
+              <Grid container spacing={3} sx={{ mb: 4 }}>
                 {stats.map((stat, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <StatsCard elevation={0}>
@@ -382,7 +408,7 @@ const ProfessionalAboutPage = () => {
         <Box mb={10} ref={(el) => (sectionRefs.current[1] = el)}>
           <Slide direction="up" in={visibleSections.has(1)} timeout={800}>
             <Box>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
                   <ValueCard index={0} elevation={6}>
                     <CardContent sx={{ p: 4 }}>
@@ -393,7 +419,7 @@ const ProfessionalAboutPage = () => {
                         {t('professionalAbout.ourMission')}
                       </Typography>
                       <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7, textAlign: 'center' }}>
-                        {t('professionalAbout.missionDescription')}
+                        {content.mission || t('professionalAbout.missionDescription')}
                       </Typography>
                     </CardContent>
                   </ValueCard>
@@ -408,7 +434,7 @@ const ProfessionalAboutPage = () => {
                         {t('professionalAbout.ourVision')}
                       </Typography>
                       <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7, textAlign: 'center' }}>
-                        {t('professionalAbout.visionDescription')}
+                        {content.vision || t('professionalAbout.visionDescription')}
                       </Typography>
                     </CardContent>
                   </ValueCard>
@@ -427,7 +453,7 @@ const ProfessionalAboutPage = () => {
                 component="h2"
                 sx={{
                   fontWeight: 700,
-                  mb: 5,
+                  mb: 3,
                   textAlign: 'center',
                   color: '#1a365d',
                   fontSize: { xs: '2rem', md: '2.5rem' },
@@ -435,7 +461,7 @@ const ProfessionalAboutPage = () => {
               >
                 {t('professionalAbout.coreValues')}
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {coreValues.map((value, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <ValueCard index={index + 2} elevation={6}>
@@ -484,7 +510,7 @@ const ProfessionalAboutPage = () => {
                 component="h2"
                 sx={{
                   fontWeight: 700,
-                  mb: 5,
+                  mb: 3,
                   textAlign: 'center',
                   color: '#1a365d',
                   fontSize: { xs: '2rem', md: '2.5rem' },
@@ -492,7 +518,7 @@ const ProfessionalAboutPage = () => {
               >
                 {t('professionalAbout.meetOurTeam')}
               </Typography>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                 {staffData.map((member, index) => (
                   <Grid item xs={12} md={4} key={index}>
                     <TeamCard elevation={6}>
@@ -575,7 +601,7 @@ const ProfessionalAboutPage = () => {
         <Box
           ref={(el) => (sectionRefs.current[4] = el)}
           sx={{
-            py: 8,
+            py: 5,
             background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
             color: 'white',
             position: 'relative',
@@ -611,7 +637,7 @@ const ProfessionalAboutPage = () => {
                 <Typography
                   variant="h6"
                   sx={{
-                    mb: 6,
+                    mb: 4,
                     maxWidth: '600px',
                     mx: 'auto',
                     lineHeight: 1.6,

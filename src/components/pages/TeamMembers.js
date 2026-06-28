@@ -317,7 +317,7 @@ const TeamMembers = () => {
       </Box>
 
       {/* Lead Pastor Section */}
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container maxWidth="lg" sx={{ py: 5 }}>
         <Box sx={{ textAlign: 'center', mb: 6 }}>
           <Typography 
             variant="h4" 
@@ -354,7 +354,7 @@ const TeamMembers = () => {
         )}
 
         {/* Other Team Members */}
-        <Box sx={{ textAlign: 'center', mb: 6, mt: 12 }}>
+        <Box sx={{ textAlign: 'center', mb: 4, mt: 12 }}>
           <Typography 
             variant="h4" 
             component="h2" 
@@ -381,7 +381,7 @@ const TeamMembers = () => {
           </Typography>
         </Box>
 
-        <Grid container spacing={4}>
+        <Grid container spacing={3}>
           {otherMembers.map((member, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <MemberCard member={member} />
@@ -395,7 +395,7 @@ const TeamMembers = () => {
         sx={{
           bgcolor: 'primary.main',
           color: 'white',
-          py: 8,
+          py: 5,
           textAlign: 'center',
         }}
       >
