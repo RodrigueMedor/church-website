@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
+
+logging:
+  level:
+    com.fhbck: DEBUG
+    org.springframework.security: DEBUG

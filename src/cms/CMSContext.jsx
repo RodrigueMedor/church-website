@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 import storage from './storage';
 import { pageDefaults } from './defaults';
+import { getPublishedContent as fetchApiContent, invalidateCache } from '../services/cmsApi';
 
 const CMSContext = createContext();
 
@@ -10,9 +11,13 @@ export function useCMS() {
   return ctx;
 }
 
+const apiContentCache = {};
+
 export function CMSProvider({ children }) {
   const [pages, setPages] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [apiLoaded, setApiLoaded] = useState({});
+  const loadedRef = useRef({});
 
   const refresh = useCallback(() => {
     setRefreshKey(k => k + 1);
@@ -21,7 +26,26 @@ export function CMSProvider({ children }) {
 
   useEffect(() => { refresh(); }, [refresh]);
 
+  useEffect(() => {
+    const pageKeys = Object.keys(pageDefaults);
+    pageKeys.forEach(async (key) => {
+      try {
+        const content = await fetchApiContent(key);
+        if (content) {
+          apiContentCache[key] = content;
+          if (!loadedRef.current[key]) {
+            loadedRef.current[key] = true;
+            setApiLoaded(prev => ({ ...prev, [key]: true }));
+          }
+        }
+      } catch {}
+    });
+  }, []);
+
   const getPublishedContent = useCallback((pageKey) => {
+    if (apiContentCache[pageKey]) {
+      return apiContentCache[pageKey];
+    }
     return storage.getPublished(pageKey) || pageDefaults[pageKey] || null;
   }, []);
 
@@ -30,22 +54,25 @@ export function CMSProvider({ children }) {
   }, []);
 
   const getEffectiveContent = useCallback((pageKey) => {
-    return storage.getDraft(pageKey) || storage.getPublished(pageKey) || pageDefaults[pageKey] || null;
+    return getPublishedContent(pageKey) || storage.getDraft(pageKey) || pageDefaults[pageKey] || null;
   }, []);
 
   const saveDraft = useCallback((pageKey, data) => {
     storage.saveDraft(pageKey, data);
+    invalidateCache(pageKey);
     refresh();
   }, [refresh]);
 
   const publish = useCallback((pageKey) => {
     const ok = storage.publish(pageKey);
+    invalidateCache(pageKey);
     refresh();
     return ok;
   }, [refresh]);
 
   const unpublish = useCallback((pageKey) => {
     storage.unpublish(pageKey);
+    invalidateCache(pageKey);
     refresh();
   }, [refresh]);
 
@@ -58,6 +85,7 @@ export function CMSProvider({ children }) {
       pages, refreshKey, refresh,
       getPublishedContent, getDraftContent, getEffectiveContent,
       saveDraft, publish, unpublish, getStatus,
+      apiLoaded,
     }}>
       {children}
     </CMSContext.Provider>
