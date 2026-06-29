@@ -1,37 +1,23 @@
 import React, { useState } from 'react';
-import { Box, 
-  Typography, 
-  Grid, 
-  Card, 
-  CardContent, 
-  CardMedia, 
-  Container,
-  styled 
+import { Box,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  alpha
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-
-const NewsCard = styled(Card)(({ theme }) => ({
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-  '&:hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: theme.shadows[6],
-  },
-}));
 
 const NewsSection = () => {
   const { t } = useTranslation();
 
-  // Current church-themed image paths with fallbacks
   const churchImages = [
     { primary: '/images/easter/worship-team.jpg', fallback: '/images/banner/pastor-sermon_1.JPG' },
     { primary: '/images/easter/pastor-bible-study.jpg', fallback: '/images/church-event.jpg' },
     { primary: '/images/easter/bridge-photo.jpg', fallback: '/images/contact-image.jpg' }
   ];
-  
-  // Static news data
+
   const [news] = useState([
     {
       id: '1',
@@ -80,122 +66,172 @@ const NewsSection = () => {
   };
 
   return (
-    <Box sx={{ py: 1, bgcolor: 'background.paper' }}>
-      <Container maxWidth="lg">
-        <Box textAlign="center" mb={2}>
-          <Typography
-            variant="h4"
-            component="h2"
-            gutterBottom
-            sx={{
-              fontWeight: 700,
-              color: 'primary.main',
-              position: 'relative',
-              display: 'inline-block',
-              '&:after': {
-                content: '""',
-                position: 'absolute',
-                width: '80px',
-                height: '4px',
-                bottom: '-10px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                backgroundColor: 'primary.main',
-                borderRadius: '2px',
-              },
-            }}
-          >
-            Latest News
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            color="text.secondary"
-            maxWidth="700px"
-            mx="auto"
-          >
-            Stay updated with our latest church activities, events, and opportunities for spiritual growth and community service.
-          </Typography>
-        </Box>
+    <Box>
+      <Box textAlign="center" mb={4}>
+        <Typography
+          component="span"
+          sx={{
+            color: 'secondary.main',
+            fontWeight: 700,
+            letterSpacing: '4px',
+            fontSize: '0.8rem',
+            textTransform: 'uppercase',
+            mb: 1.5,
+            display: 'block'
+          }}
+        >
+          {t('home.latestNews')}
+        </Typography>
+        <Typography
+          variant="h3"
+          component="h2"
+          sx={{
+            fontFamily: '"Playfair Display", serif',
+            fontWeight: 700,
+            color: 'primary.dark',
+            position: 'relative',
+            display: 'inline-block',
+            '&:after': {
+              content: '""',
+              position: 'absolute',
+              bottom: -12,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '60px',
+              height: '3px',
+              background: 'linear-gradient(90deg, #1a365d, #c9a84c)',
+              borderRadius: '2px'
+            }
+          }}
+        >
+          {t('home.latestNews')}
+        </Typography>
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          sx={{
+            maxWidth: '700px',
+            mx: 'auto',
+            mt: 3,
+            fontSize: '1.05rem',
+            lineHeight: 1.8
+          }}
+        >
+          Stay updated with our latest church activities, events, and opportunities for spiritual growth and community service.
+        </Typography>
+      </Box>
 
-        <Grid container spacing={4}>
-          {news.length === 0 ? (
-            <Grid item xs={12}>
-              <Typography align="center" color="textSecondary">
-                No news available at the moment. Please check back later.
-              </Typography>
-            </Grid>
-          ) : (
-            news.map((item) => (
-              <Grid item key={item.id} xs={12} sm={6} md={4}>
-                <NewsCard>
-                  {item.imageUrl && (
+      <Grid container spacing={3}>
+        {news.length === 0 ? (
+          <Grid item xs={12}>
+            <Typography align="center" color="textSecondary" sx={{ py: 4 }}>
+              No news available at the moment. Please check back later.
+            </Typography>
+          </Grid>
+        ) : (
+          news.map((item) => (
+            <Grid item key={item.id} xs={12} sm={6} md={4}>
+              <Card
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  border: '1px solid',
+                  borderColor: 'rgba(26, 54, 93, 0.08)',
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  '&:hover': {
+                    transform: 'translateY(-6px)',
+                    boxShadow: '0 16px 40px rgba(26, 54, 93, 0.12)',
+                    borderColor: 'transparent',
+                    '& .news-image': {
+                      transform: 'scale(1.05)'
+                    }
+                  }
+                }}
+              >
+                {item.imageUrl && (
+                  <Box sx={{
+                    position: 'relative',
+                    height: '220px',
+                    overflow: 'hidden',
+                  }}>
                     <CardMedia
+                      className="news-image"
                       component="img"
-                      height="300"
+                      height="220"
                       image={item.imageUrl}
                       alt={item.title}
                       sx={{
-                        objectPosition: 'center 20%'
+                        objectPosition: 'center 20%',
+                        transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       }}
                       onError={(e) => {
-                        // Fallback to backup image if primary image fails to load
                         if (item.fallbackImage && e.target.src !== item.fallbackImage) {
                           e.target.src = item.fallbackImage;
                         }
                       }}
                     />
-                  )}
-                  <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                    <Typography
-                      variant="caption"
-                      color="primary"
-                      sx={{
-                        display: 'block',
-                        mb: 1,
-                        fontWeight: 600,
-                        letterSpacing: '0.5px',
-                      }}
-                    >
+                    <Box sx={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(to top, rgba(10, 26, 48, 0.6) 0%, rgba(10, 26, 48, 0.05) 60%)',
+                    }} />
+                    <Box sx={{
+                      position: 'absolute',
+                      bottom: 12,
+                      left: 12,
+                      bgcolor: alpha('#1a365d', 0.85),
+                      color: '#fff',
+                      px: 1.5,
+                      py: 0.5,
+                      borderRadius: '8px',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      letterSpacing: '0.3px',
+                      backdropFilter: 'blur(4px)',
+                    }}>
                       {formatDate(item.createdAt)}
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                      component="h3"
-                      gutterBottom
-                      sx={{
-                        fontWeight: 600,
-                        lineHeight: 1.3,
-                        mb: 2,
-                        '&:hover': {
-                          color: 'primary.main',
-                        },
-                      }}
-                    >
-                      {item.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
-                        mb: 2,
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      {getExcerpt(item)}
-                    </Typography>
-                    {/* Removed: no detail page exists */}
-                  </CardContent>
-                </NewsCard>
-              </Grid>
-            ))
-          )}
-        </Grid>
-
-        {/* Removed: "View All News" button removed — Upcoming Events section above has "View All Events" */}
-      </Container>
+                    </Box>
+                  </Box>
+                )}
+                <CardContent sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column' }}>
+                  <Typography
+                    variant="h6"
+                    component="h3"
+                    sx={{
+                      fontWeight: 700,
+                      fontSize: '1.05rem',
+                      color: 'primary.dark',
+                      lineHeight: 1.3,
+                      mb: 1.5,
+                      fontFamily: '"Playfair Display", serif',
+                      transition: 'color 0.3s ease',
+                      '&:hover': {
+                        color: 'primary.light',
+                      },
+                    }}
+                  >
+                    {item.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      fontSize: '0.88rem',
+                      lineHeight: 1.7,
+                      flexGrow: 1,
+                    }}
+                  >
+                    {getExcerpt(item)}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        )}
+      </Grid>
     </Box>
   );
 };

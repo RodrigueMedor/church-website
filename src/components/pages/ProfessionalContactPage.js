@@ -65,10 +65,21 @@ const pulseAnimation = keyframes`
 const HeroBanner = styled(Box)(({ theme }) => ({
   position: 'relative',
   minHeight: '60vh',
-  background: 'linear-gradient(135deg, #1a365d 0%, #0f2440 100%)',
+  background: 'linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url(/images/banner/contact-banner.jpg) center / cover no-repeat',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  overflow: 'hidden',
+}));
+
+const ContactCard = styled(Paper)(({ theme, index }) => ({
+  height: '100%',
+  background: '#fff',
+  border: '1px solid rgba(26, 54, 93, 0.08)',
+  borderRadius: 16,
+  padding: theme.spacing(4),
+  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+  position: 'relative',
   overflow: 'hidden',
   '&::before': {
     content: '""',
@@ -76,52 +87,21 @@ const HeroBanner = styled(Box)(({ theme }) => ({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
-    background: 'url(/images/banner/contact-banner.jpg)',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    opacity: 0.2,
-    zIndex: 1,
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'radial-gradient(circle at 20% 80%, rgba(46, 125, 50, 0.3) 0%, transparent 50%)',
-    zIndex: 2,
-  },
-}));
-
-const ContactCard = styled(Paper)(({ theme, index }) => ({
-  height: '100%',
-  background: 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
-  border: '1px solid rgba(46, 125, 50, 0.1)',
-  borderRadius: 16,
-  padding: theme.spacing(4),
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-  position: 'relative',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '4px',
-    background: 'linear-gradient(90deg, #1a365d, #0f2440)',
-    transform: 'translateX(-100%)',
-    transition: 'transform 0.6s ease',
+    height: '3px',
+    background: 'linear-gradient(90deg, #1a365d, #C9A84C)',
+    opacity: 0,
+    transition: 'opacity 0.4s ease',
   },
   '&:hover': {
-    transform: 'translateY(-8px) scale(1.02)',
-    boxShadow: '0 20px 40px -12px rgba(46, 125, 50, 0.25)',
+    transform: 'translateY(-6px)',
+    boxShadow: '0 20px 40px -12px rgba(26, 54, 93, 0.15)',
+    borderColor: 'rgba(201, 168, 76, 0.2)',
     '&::before': {
-      transform: 'translateX(0)',
+      opacity: 1,
     },
     '& .contact-icon': {
-      transform: 'scale(1.1) rotate(5deg)',
+      transform: 'scale(1.05)',
+      backgroundColor: alpha('#1a365d', 0.12),
     },
   },
 }));
@@ -154,16 +134,35 @@ const SocialButton = styled(IconButton)(({ theme, color }) => ({
 }));
 
 const StatsCard = styled(Paper)(({ theme }) => ({
-  background: 'linear-gradient(145deg, #1a365d 0%, #0f2440 100%)',
+  background: alpha('#fff', 0.08),
+  backdropFilter: 'blur(12px)',
   color: 'white',
   padding: theme.spacing(3),
   textAlign: 'center',
-  borderRadius: 16,
-  border: `1px solid ${alpha('#0f2440', 0.3)}`,
+  borderRadius: 12,
+  border: `1px solid ${alpha('#C9A84C', 0.15)}`,
+  position: 'relative',
+  overflow: 'hidden',
   transition: 'all 0.3s ease',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: '20%',
+    right: '20%',
+    height: '2px',
+    background: 'linear-gradient(90deg, transparent, #C9A84C, transparent)',
+    opacity: 0.6,
+  },
   '&:hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: '0 15px 35px -5px rgba(46, 125, 50, 0.4)',
+    transform: 'translateY(-4px)',
+    boxShadow: `0 12px 30px ${alpha('#000', 0.25)}`,
+    borderColor: alpha('#C9A84C', 0.4),
+    '&::before': {
+      opacity: 1,
+      left: '10%',
+      right: '10%',
+    },
   },
 }));
 
@@ -398,14 +397,17 @@ const ProfessionalContactPage = () => {
               </Typography>
               
               {/* Quick Stats */}
-              <Grid container spacing={3} sx={{ mb: 6 }}>
+              <Grid container spacing={2.5} sx={{ mt: 16, mb: 6 }}>
                 {stats.map((stat, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <StatsCard elevation={0}>
-                      <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                      <Box sx={{ color: alpha('#C9A84C', 0.8), mb: 1.5, '& .MuiSvgIcon-root': { fontSize: 28 } }}>
+                        {stat.icon}
+                      </Box>
+                      <Typography variant="h3" sx={{ fontWeight: 700, mb: 0.5, color: '#C9A84C', fontFamily: '"Playfair Display", serif' }}>
                         {stat.number}
                       </Typography>
-                      <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                      <Typography variant="body2" sx={{ opacity: 0.85, fontSize: '0.85rem' }}>
                         {stat.label}
                       </Typography>
                     </StatsCard>
@@ -444,34 +446,39 @@ const ProfessionalContactPage = () => {
                         display: 'flex', 
                         justifyContent: 'center', 
                         mb: 3,
-                        transition: 'transform 0.3s ease',
+                        transition: 'all 0.3s ease',
                       }}>
                         <Avatar
                           sx={{
-                            width: 80,
-                            height: 80,
-                            backgroundColor: alpha(info.color, 0.1),
-                            color: info.color,
+                            width: 72,
+                            height: 72,
+                            backgroundColor: alpha('#1a365d', 0.06),
+                            color: '#1a365d',
+                            border: '1px solid',
+                            borderColor: alpha('#C9A84C', 0.2),
                           }}
                         >
                           {info.icon}
                         </Avatar>
                       </Box>
                       <Typography variant="h6" sx={{ 
-                        fontWeight: 600, 
-                        mb: 2, 
+                        fontWeight: 700, 
+                        mb: 1.5, 
                         textAlign: 'center',
-                        color: '#1a365d' 
+                        color: '#1a365d',
+                        fontFamily: '"Playfair Display", serif',
                       }}>
                         {info.title}
                       </Typography>
+                      <Box sx={{ width: 30, height: 2, backgroundColor: '#C9A84C', mx: 'auto', mb: 2, borderRadius: 1 }} />
                       <Typography 
                         variant="body2" 
                         color="text.secondary" 
                         sx={{ 
                           textAlign: 'center',
                           whiteSpace: 'pre-line',
-                          lineHeight: 1.6 
+                          lineHeight: 1.7,
+                          fontSize: '0.88rem',
                         }}
                       >
                         {info.content}

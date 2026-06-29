@@ -24,7 +24,8 @@ import {
   Church as ChurchIcon,
   People as PeopleIcon,
   Event as EventIcon,
-  VolunteerActivism as VolunteerActivismIcon
+  VolunteerActivism as VolunteerActivismIcon,
+  MusicNote as MusicNoteIcon
 } from '@mui/icons-material';
 import { usePageContent } from '../../cms';
 
@@ -93,6 +94,19 @@ const ministries = [
     link: '/young-couples-ministry',
     stats: { members: '25+', ageRange: '20-35 years' },
     features: ['Marriage Enrichment', 'Couples Fellowship', 'Parenting Support', 'Date Nights']
+  },
+  {
+    id: 6,
+    title: 'Worship & Music Ministry',
+    subtitle: 'Leading People to His Presence',
+    description: 'Leading the congregation in heartfelt worship through music, song, and creative arts to glorify God and usher in His presence.',
+    icon: <MusicNoteIcon />,
+    color: '#C9A84C',
+    image: '/images/banner/banner-sermont.jpg',
+    meetingTime: 'Wednesdays at 7:00 PM & Sundays at 9:00 AM',
+    link: '/worship-ministry',
+    stats: { members: '40+', ageRange: 'Ages 14+' },
+    features: ['Choir', 'Praise Team', 'Instrumental', 'Sound & Media']
   }
 ];
 const ProfessionalMinistriesPage = () => {
@@ -110,12 +124,12 @@ const ProfessionalMinistriesPage = () => {
     <Box>
       <Box
         sx={{
-          background: `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url(/images/banner/pastor-sermon_1.JPG)`,
+          background: `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url(/images/banner/pastor-sermon_1.JPG) center 10% / cover no-repeat`,
           color: 'common.white',
           position: 'relative',
           overflow: 'hidden',
-          pt: { xs: 10, md: 14 },
-          pb: { xs: 8, md: 12 },
+          pt: { xs: 14, md: 20 },
+          pb: { xs: 12, md: 18 },
         }}
       >
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
@@ -168,7 +182,7 @@ const ProfessionalMinistriesPage = () => {
         <Container maxWidth="lg">
           <Grid container spacing={3} justifyContent="center">
             {[
-              { value: '5', label: 'Active Ministries', icon: <ChurchIcon /> },
+              { value: '6', label: 'Active Ministries', icon: <ChurchIcon /> },
               { value: '210+', label: 'Members Engaged', icon: <PeopleIcon /> },
               { value: '15+', label: 'Weekly Activities', icon: <EventIcon /> },
               { value: 'All', label: 'Ages Welcome', icon: <VolunteerActivismIcon /> },
@@ -205,16 +219,43 @@ const ProfessionalMinistriesPage = () => {
         </Container>
       </Box>
 
-      <Box sx={{ bgcolor: 'grey.50', py: { xs: 8, md: 10 } }}>
+      <Box sx={{ bgcolor: '#f8f6f0', py: { xs: 5, md: 7 } }}>
         <Container maxWidth="lg">
-          <Box textAlign="center" mb={8}>
+          <Box textAlign="center" mb={5}>
+            <Typography
+              component="span"
+              sx={{
+                color: 'secondary.main',
+                fontWeight: 700,
+                letterSpacing: '4px',
+                fontSize: '0.8rem',
+                textTransform: 'uppercase',
+                mb: 1.5,
+                display: 'block'
+              }}
+            >
+              {content.tagline || 'Explore Our Ministries'}
+            </Typography>
             <Typography
               variant="h3"
               component="h2"
               sx={{
+                fontFamily: '"Playfair Display", serif',
                 fontWeight: 700,
-                color: theme.palette.primary.dark,
-                mb: 2,
+                color: 'primary.dark',
+                position: 'relative',
+                display: 'inline-block',
+                '&:after': {
+                  content: '""',
+                  position: 'absolute',
+                  bottom: -12,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '60px',
+                  height: '3px',
+                  background: 'linear-gradient(90deg, #1a365d, #c9a84c)',
+                  borderRadius: '2px'
+                }
               }}
             >
               {content.tagline || 'Explore Our Ministries'}
@@ -222,13 +263,19 @@ const ProfessionalMinistriesPage = () => {
             <Typography
               variant="body1"
               color="text.secondary"
-              sx={{ maxWidth: '650px', mx: 'auto', lineHeight: 1.7 }}
+              sx={{
+                maxWidth: '650px',
+                mx: 'auto',
+                mt: 3,
+                lineHeight: 1.7,
+                fontSize: '1.05rem'
+              }}
             >
               Discover how you can get involved and grow in your faith through our various ministries.
               We have opportunities for all ages and interests.
             </Typography>
           </Box>
-          <Grid container spacing={4}>
+          <Grid container spacing={3}>
             {activeMinistries.map((ministry) => (
               <Grid item xs={12} md={6} key={ministry.id}>
                 <Card
@@ -236,34 +283,51 @@ const ProfessionalMinistriesPage = () => {
                     display: 'flex',
                     flexDirection: { xs: 'column', sm: 'row' },
                     height: '100%',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    border: '1px solid',
+                    borderColor: 'rgba(26, 54, 93, 0.08)',
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     '&:hover': {
-                      boxShadow: `0 12px 40px ${alpha(theme.palette.primary.dark, 0.12)}`,
-                      transform: 'translateY(-2px)',
+                      boxShadow: `0 16px 40px ${alpha(theme.palette.primary.dark, 0.1)}`,
+                      transform: 'translateY(-4px)',
+                      borderColor: 'transparent',
                     },
                   }}
                 >
                   <Box
                     sx={{
-                      width: { xs: '100%', sm: 200 },
-                      minHeight: { xs: 160, sm: 'auto' },
+                      width: { xs: '100%', sm: 220 },
+                      minHeight: { xs: 140, sm: 'auto' },
                       flexShrink: 0,
-                      background: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${ministry.image})`,
+                      background: `linear-gradient(rgba(10, 26, 48, 0.5), rgba(10, 26, 48, 0.5)), url(${ministry.image})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      position: 'relative',
+                      transition: 'all 0.4s ease',
+                      '&:hover': {
+                        background: `linear-gradient(rgba(10, 26, 48, 0.3), rgba(10, 26, 48, 0.3)), url(${ministry.image})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      },
                     }}
                   >
                     <Box
                       sx={{
-                        width: 64,
-                        height: 64,
+                        width: 60,
+                        height: 60,
                         borderRadius: '50%',
-                        bgcolor: 'common.white',
+                        bgcolor: alpha('#fff', 0.2),
+                        backdropFilter: 'blur(4px)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        color: '#fff',
+                        '& svg': { fontSize: 30 },
+                        transition: 'all 0.3s ease',
                       }}
                     >
                       {ministry.icon}
@@ -275,43 +339,67 @@ const ProfessionalMinistriesPage = () => {
                       flex: 1,
                       display: 'flex',
                       flexDirection: 'column',
-                      p: 3,
-                      '&:last-child': { pb: 3 },
+                      p: 2.5,
+                      '&:last-child': { pb: 2.5 },
                     }}
                   >
-                    <Typography variant="h5" component="h3" sx={{ fontWeight: 700, mb: 0.5 }}>
+                    <Typography
+                      variant="h6"
+                      component="h3"
+                      sx={{
+                        fontWeight: 700,
+                        color: 'primary.dark',
+                        fontFamily: '"Playfair Display", serif',
+                        fontSize: '1.1rem',
+                        mb: 0.3,
+                      }}
+                    >
                       {ministry.title}
                     </Typography>
                     <Typography
-                      variant="body2"
+                      variant="caption"
+                      sx={{
+                        color: 'secondary.main',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        fontSize: '0.7rem',
+                        mb: 1.5,
+                      }}
                     >
                       {ministry.subtitle}
                     </Typography>
                     <Typography
                       variant="body2"
                       color="text.secondary"
-                      sx={{ mb: 2, lineHeight: 1.6, flexGrow: 1 }}
+                      sx={{
+                        mb: 1.5,
+                        lineHeight: 1.6,
+                        flexGrow: 1,
+                        fontSize: '0.85rem',
+                      }}
                     >
                       {ministry.description}
                     </Typography>
+
                     <Box
                       sx={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: 1,
-                        mb: 2,
-                        p: 1.5,
+                        mb: 1.5,
+                        p: 1.2,
                         bgcolor: alpha(theme.palette.primary.main, 0.04),
-                        borderRadius: 1,
+                        borderRadius: '8px',
                       }}
                     >
-                      <AccessTimeIcon sx={{ fontSize: 18, color: theme.palette.primary.main }} />
-                      <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                      <AccessTimeIcon sx={{ fontSize: 16, color: 'secondary.main' }} />
+                      <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.primary', fontSize: '0.78rem' }}>
                         {ministry.meetingTime}
                       </Typography>
                     </Box>
 
-                    <Stack direction="row" flexWrap="wrap" gap={0.8} mb={2}>
+                    <Stack direction="row" flexWrap="wrap" gap={0.6} mb={1.5}>
                       {ministry.features.map((feature, idx) => (
                         <Chip
                           key={idx}
@@ -319,8 +407,11 @@ const ProfessionalMinistriesPage = () => {
                           size="small"
                           sx={{
                             fontWeight: 600,
-                            fontSize: '0.72rem',
-                            height: 26,
+                            fontSize: '0.68rem',
+                            height: 24,
+                            bgcolor: alpha(theme.palette.primary.main, 0.06),
+                            color: 'primary.main',
+                            borderRadius: '6px',
                           }}
                         />
                       ))}
@@ -330,12 +421,20 @@ const ProfessionalMinistriesPage = () => {
                       to={ministry.link}
                       variant="outlined"
                       size="small"
-                      endIcon={<ArrowForwardIcon />}
+                      endIcon={<ArrowForwardIcon sx={{ fontSize: '0.85rem' }} />}
                       sx={{
                         alignSelf: 'flex-start',
                         fontWeight: 600,
                         px: 2.5,
+                        py: 0.7,
+                        fontSize: '0.8rem',
+                        borderRadius: '50px',
+                        borderColor: alpha(theme.palette.primary.main, 0.3),
+                        transition: 'all 0.3s ease',
                         '&:hover': {
+                          borderColor: 'primary.main',
+                          backgroundColor: 'primary.main',
+                          color: '#fff',
                         },
                       }}
                     >

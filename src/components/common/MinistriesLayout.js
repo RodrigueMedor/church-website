@@ -31,6 +31,7 @@ const MinistriesLayout = ({
   heroSubtitle,
   heroVerse,
   heroImage,
+  heroImagePosition,
   heroStats,
   welcomeTitle,
   welcomeDescription,
@@ -52,7 +53,7 @@ const MinistriesLayout = ({
         sx={{
           background: `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url(${heroImage})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: heroImagePosition || 'center',
           backgroundRepeat: 'no-repeat',
           color: 'common.white',
           position: 'relative',
@@ -278,28 +279,35 @@ const MinistriesLayout = ({
                   <Card
                     sx={{
                       textAlign: 'center',
+                      overflow: 'hidden',
                       '&:hover': {
                         boxShadow: `0 12px 40px ${alpha(accentColor, 0.12)}`,
                         transform: 'translateY(-4px)',
                       },
                     }}
                   >
+                    <Box
+                      sx={{
+                        width: '100%',
+                        height: 260,
+                        background: leader.image
+                          ? `linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.4)), url(${leader.image})`
+                          : accentColor,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                        justifyContent: 'center',
+                        pb: 2,
+                      }}
+                    >
+                      {!leader.image && (
+                        <Typography sx={{ color: 'common.white', fontSize: '4rem', fontWeight: 700 }}>
+                          {leader.avatar}
+                        </Typography>
+                      )}
+                    </Box>
                     <CardContent sx={{ p: 4 }}>
-                      <Avatar
-                        sx={{
-                          width: 88,
-                          height: 88,
-                          mx: 'auto',
-                          mb: 2.5,
-                          bgcolor: accentColor,
-                          fontSize: '2rem',
-                          fontWeight: 700,
-                          color: 'common.white',
-                          boxShadow: `0 4px 14px ${alpha(accentColor, 0.3)}`,
-                        }}
-                      >
-                        {leader.avatar}
-                      </Avatar>
                       <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5, color: theme.palette.primary.dark }}>
                         {leader.name}
                       </Typography>

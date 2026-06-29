@@ -19,8 +19,8 @@ const schedule = [
 ];
 
 const leaders = [
-  { name: "Brother Jean", role: "Men's Ministry Leader", description: "Passionate about helping men become strong spiritual leaders in their homes and community.", avatar: "JJ", experience: "12 years", email: "jean@church.org" },
-  { name: "Brother Pierre", role: "Men's Fellowship Coordinator", description: "Dedicated to creating authentic community where men can grow together in faith.", avatar: "JP", experience: "8 years", email: "pierre@church.org" }
+  { name: "Brother Jean", role: "Men's Ministry Leader", description: "Passionate about helping men become strong spiritual leaders in their homes and community.", image: "/images/easter/bridge-ministry-photo.jpg", avatar: "JJ", experience: "12 years", email: "jean@church.org" },
+  { name: "Brother Pierre", role: "Men's Fellowship Coordinator", description: "Dedicated to creating authentic community where men can grow together in faith.", image: "/images/easter/DSC_2261_proper.jpg", avatar: "JP", experience: "8 years", email: "pierre@church.org" }
 ];
 
 const ProfessionalMenMinistryPage = () => {

@@ -41,12 +41,12 @@ const leaders = [
   {
     name: "Sarah Johnson", role: "Children's Ministry Director",
     description: "Passionate about creating a safe, fun environment where children can discover God's love and build lasting faith foundations.",
-    avatar: "SJ", experience: "8 years", email: "sarah@church.org"
+    image: "/images/easter/DSC_2261.jpg", avatar: "SJ", experience: "8 years", email: "sarah@church.org"
   },
   {
     name: "Michael Chen", role: "Elementary Coordinator",
     description: "Dedicated to making Bible stories come alive through creative teaching and engaging activities that kids love.",
-    avatar: "MC", experience: "5 years", email: "michael@church.org"
+    image: "/images/easter/DSC_2307.jpg", avatar: "MC", experience: "5 years", email: "michael@church.org"
   }
 ];
 

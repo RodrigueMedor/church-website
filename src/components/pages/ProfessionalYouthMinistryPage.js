@@ -17,8 +17,8 @@ const schedule = [
 ];
 
 const leaders = [
-  { name: "Brother Vlad", role: "Youth Pastor", description: "Passionate about helping teens discover their identity in Christ and develop leadership skills.", avatar: "BV", experience: "10 years", email: "vlad@church.org" },
-  { name: "Brother Wisly", role: "Youth Leader", description: "Dedicated to mentoring teens and creating engaging environments for spiritual growth.", avatar: "BW", experience: "6 years", email: "wisly@church.org" }
+  { name: "Brother Vlad", role: "Youth Pastor", description: "Passionate about helping teens discover their identity in Christ and develop leadership skills.", image: "/images/easter/bridge-photo.jpg", avatar: "BV", experience: "10 years", email: "vlad@church.org" },
+  { name: "Brother Wisly", role: "Youth Leader", description: "Dedicated to mentoring teens and creating engaging environments for spiritual growth.", image: "/images/easter/offering-photo.jpg", avatar: "BW", experience: "6 years", email: "wisly@church.org" }
 ];
 
 const ProfessionalYouthMinistryPage = () => {

@@ -79,7 +79,7 @@ const HeroBanner = styled(Box)(({ theme }) => ({
     bottom: 0,
     background: 'url(/images/banner/pastor-sermon_1.JPG)',
     backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundPosition: 'center 20%',
     opacity: 0.15,
     zIndex: 1,
   },
@@ -204,7 +204,8 @@ const ProfessionalAboutPage = () => {
       email: 'pasteur@fhbck.org',
       phone: '(407) 123-4567',
       experience: '20+ years',
-      avatar: 'FB'
+      avatar: 'FB',
+      image: '/images/staff/pastor-charles.jpg'
     },
     {
       name: t('about.staff.deacon.name'),
@@ -213,7 +214,8 @@ const ProfessionalAboutPage = () => {
       email: 'culte@fhbck.org',
       phone: '(407) 123-4568',
       experience: '15+ years',
-      avatar: 'DP'
+      avatar: 'DP',
+      image: '/images/staff/deacon-pierre.jpg'
     },
     {
       name: t('about.staff.deaconess.name'),
@@ -222,7 +224,8 @@ const ProfessionalAboutPage = () => {
       email: 'femmes@fhbck.org',
       phone: '(407) 123-4569',
       experience: '12+ years',
-      avatar: 'DM'
+      avatar: 'DM',
+      image: '/images/staff/deaconess-joseph.jpg'
     }
   ];
 
@@ -524,20 +527,20 @@ const ProfessionalAboutPage = () => {
                     <TeamCard elevation={6}>
                       <CardContent sx={{ p: 4, textAlign: 'center' }}>
                         <Avatar
+                          src={member.image}
                           sx={{
-                            width: 100,
-                            height: 100,
+                            width: 160,
+                            height: 160,
                             mx: 'auto',
                             mb: 3,
-                            background: 'linear-gradient(135deg, #1a365d, #2c5282)',
-                            fontSize: '2.5rem',
-                            fontWeight: 700,
-                            color: 'white',
-                            boxShadow: '0 8px 20px rgba(26, 54, 93, 0.3)'
+                            border: '4px solid #c9a84c',
+                            boxShadow: '0 8px 25px rgba(26, 54, 93, 0.25)',
+                            transition: 'transform 0.3s ease',
+                            '&:hover': {
+                              transform: 'scale(1.05)'
+                            }
                           }}
-                        >
-                          {member.avatar}
-                        </Avatar>
+                        />
                         <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#1a365d' }}>
                           {member.name}
                         </Typography>
@@ -741,19 +744,16 @@ const ProfessionalAboutPage = () => {
                   <CloseIcon />
                 </IconButton>
                 <Avatar
+                  src={selectedMember.image}
                   sx={{
-                    width: 120,
-                    height: 120,
+                    width: 180,
+                    height: 180,
                     mx: 'auto',
                     mb: 3,
-                    background: 'linear-gradient(135deg, #c9a84c, #f4e4bc)',
-                    fontSize: '3rem',
-                    fontWeight: 700,
-                    color: '#1a365d',
+                    border: '4px solid rgba(255,255,255,0.6)',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.2)',
                   }}
-                >
-                  {selectedMember.avatar}
-                </Avatar>
+                />
                 <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, textAlign: 'center' }}>
                   {selectedMember.name}
                 </Typography>

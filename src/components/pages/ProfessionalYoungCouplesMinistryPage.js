@@ -19,8 +19,8 @@ const schedule = [
 ];
 
 const leaders = [
-  { name: "Brother & Sister Jean", role: "Young Couples Leaders", description: "Passionate about helping couples build strong, Christ-centered marriages that last a lifetime.", avatar: "JJ", experience: "8 years", email: "jean@church.org" },
-  { name: "Brother & Sister Marie", role: "Marriage Mentors", description: "Dedicated to walking alongside couples through the joys and challenges of married life.", avatar: "JM", experience: "12 years", email: "marie@church.org" }
+  { name: "Brother & Sister Jean", role: "Young Couples Leaders", description: "Passionate about helping couples build strong, Christ-centered marriages that last a lifetime.", image: "/images/church-event.jpg", avatar: "JJ", experience: "8 years", email: "jean@church.org" },
+  { name: "Brother & Sister Marie", role: "Marriage Mentors", description: "Dedicated to walking alongside couples through the joys and challenges of married life.", image: "/images/hero-bg.jpg", avatar: "JM", experience: "12 years", email: "marie@church.org" }
 ];
 
 const ProfessionalYoungCouplesMinistryPage = () => {
@@ -31,6 +31,7 @@ const ProfessionalYoungCouplesMinistryPage = () => {
       heroSubtitle={'"Though one may be overpowered, two can defend themselves. A cord of three strands is not quickly broken."'}
       heroVerse="Ecclesiastes 4:12"
       heroImage="/images/banner/ycm-banner.jpg"
+      heroImagePosition="center 30%"
       heroStats={[
         { value: "25+", label: "Active Couples" },
         { value: "4", label: "Group Leaders" },

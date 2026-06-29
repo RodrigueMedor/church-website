@@ -73,34 +73,11 @@ const pulseAnimation = keyframes`
 const HeroBanner = styled(Box)(({ theme }) => ({
   position: 'relative',
   minHeight: '70vh',
-  background: 'linear-gradient(135deg, #6B46C1 0%, #9333EA 100%)',
+  background: 'linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url(/images/banner/DSC_2131.jpg) center / cover no-repeat',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   overflow: 'hidden',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'url(/images/banner/DSC_2131.jpg)',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    opacity: 0.2,
-    zIndex: 1,
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'radial-gradient(circle at 20% 80%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)',
-    zIndex: 2,
-  },
 }));
 
 const EventCard = styled(Card)(({ theme, index }) => ({
@@ -157,16 +134,35 @@ const CategoryCard = styled(Paper)(({ theme, category }) => ({
 }));
 
 const StatsCard = styled(Paper)(({ theme }) => ({
-  background: 'linear-gradient(145deg, #6B46C1 0%, #9333EA 100%)',
+  background: alpha('#fff', 0.08),
+  backdropFilter: 'blur(12px)',
   color: 'white',
   padding: theme.spacing(3),
   textAlign: 'center',
-  borderRadius: 16,
-  border: `1px solid ${alpha('#9333EA', 0.3)}`,
+  borderRadius: 12,
+  border: `1px solid ${alpha('#C9A84C', 0.15)}`,
+  position: 'relative',
+  overflow: 'hidden',
   transition: 'all 0.3s ease',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: '20%',
+    right: '20%',
+    height: '2px',
+    background: 'linear-gradient(90deg, transparent, #C9A84C, transparent)',
+    opacity: 0.6,
+  },
   '&:hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: '0 15px 35px -5px rgba(107, 70, 193, 0.4)',
+    transform: 'translateY(-4px)',
+    boxShadow: `0 12px 30px ${alpha('#000', 0.25)}`,
+    borderColor: alpha('#C9A84C', 0.4),
+    '&::before': {
+      opacity: 1,
+      left: '10%',
+      right: '10%',
+    },
   },
 }));
 
@@ -350,14 +346,17 @@ const ProfessionalEventsPage = () => {
               </Typography>
               
               {/* Quick Stats */}
-              <Grid container spacing={3} sx={{ mb: 4 }}>
+              <Grid container spacing={2.5} sx={{ mt: 14, mb: 4 }}>
                 {stats.map((stat, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <StatsCard elevation={0}>
-                      <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                      <Box sx={{ color: alpha('#C9A84C', 0.8), mb: 1.5, '& .MuiSvgIcon-root': { fontSize: 28 } }}>
+                        {stat.icon}
+                      </Box>
+                      <Typography variant="h3" sx={{ fontWeight: 700, mb: 0.5, color: '#C9A84C', fontFamily: '"Playfair Display", serif' }}>
                         {stat.number}
                       </Typography>
-                      <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                      <Typography variant="body2" sx={{ opacity: 0.85, fontSize: '0.85rem' }}>
                         {stat.label}
                       </Typography>
                     </StatsCard>
@@ -442,7 +441,7 @@ const ProfessionalEventsPage = () => {
               </Typography>
               <Grid container spacing={3}>
                 {filteredEvents.map((event, index) => (
-                  <Grid item xs={12} sm={6} md={4} key={event.id}>
+                  <Grid item xs={12} sm={6} md={4} key={event.id} sx={{ display: 'flex' }}>
                     <EventCard index={index} elevation={6}>
                       <Box sx={{ position: 'relative', overflow: 'hidden' }}>
                         <CardMedia
@@ -484,7 +483,7 @@ const ProfessionalEventsPage = () => {
                         </Box>
                       </Box>
                       
-                      <CardContent sx={{ p: 3 }}>
+                      <CardContent sx={{ p: 3, display: 'flex', flexDirection: 'column', flex: 1 }}>
                         <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: '#6B46C1' }}>
                           {event.title}
                         </Typography>
@@ -540,24 +539,26 @@ const ProfessionalEventsPage = () => {
                           </Stack>
                         </Box>
 
-                        <Button
-                          variant="outlined"
-                          fullWidth
-                          onClick={() => handleOpenModal(event)}
-                          endIcon={<ArrowForward />}
-                          sx={{
-                            borderColor: '#6B46C1',
-                            color: '#6B46C1',
-                            textTransform: 'none',
-                            fontWeight: 600,
-                            '&:hover': {
-                              backgroundColor: '#6B46C1',
-                              color: 'white',
-                            },
-                          }}
-                        >
-                          Learn More
-                        </Button>
+                        <Box sx={{ mt: 'auto' }}>
+                          <Button
+                            variant="outlined"
+                            fullWidth
+                            onClick={() => handleOpenModal(event)}
+                            endIcon={<ArrowForward />}
+                            sx={{
+                              borderColor: '#6B46C1',
+                              color: '#6B46C1',
+                              textTransform: 'none',
+                              fontWeight: 600,
+                              '&:hover': {
+                                backgroundColor: '#6B46C1',
+                                color: 'white',
+                              },
+                            }}
+                          >
+                            Learn More
+                          </Button>
+                        </Box>
                       </CardContent>
                     </EventCard>
                   </Grid>

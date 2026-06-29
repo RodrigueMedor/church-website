@@ -24,6 +24,7 @@ import ProfessionalYouthMinistryPage from './components/pages/ProfessionalYouthM
 import ProfessionalMenMinistryPage from './components/pages/ProfessionalMenMinistryPage';
 import ProfessionalWomenMinistryPage from './components/pages/ProfessionalWomenMinistryPage';
 import ProfessionalYoungCouplesMinistryPage from './components/pages/ProfessionalYoungCouplesMinistryPage';
+import ProfessionalWorshipMinistryPage from './components/pages/ProfessionalWorshipMinistryPage';
 import YouthMinistryPage from './components/pages/YouthMinistryPage';
 import WomenMinistryPage from './components/pages/WomenMinistryPage';
 import MenMinistryPage from './components/pages/MenMinistryPage';
@@ -84,6 +85,7 @@ function App() {
                         <Route path="/men-ministry-old" element={<MenMinistryPage />} />
                         <Route path="/young-couples-ministry" element={<ProfessionalYoungCouplesMinistryPage />} />
                         <Route path="/young-couples-ministry-old" element={<YoungCouplesMinistryPage />} />
+                        <Route path="/worship-ministry" element={<ProfessionalWorshipMinistryPage />} />
                         <Route path="/sermons" element={<ProfessionalSermonsPage />} />
                         <Route path="/sermons-old" element={<SermonsPage />} />
                         <Route path="/contact" element={<ProfessionalContactPage />} />

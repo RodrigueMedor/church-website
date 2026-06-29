@@ -47,28 +47,42 @@ const Footer = () => {
     <Box
       component="footer"
       sx={{
-        bgcolor: '#0f2440',
+        bgcolor: '#0a1a30',
         color: 'rgba(255, 255, 255, 0.85)',
         pt: { xs: 6, md: 8 },
         pb: 0,
         mt: 'auto',
+        position: 'relative',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '4px',
+          background: 'linear-gradient(90deg, #1a365d, #c9a84c, #1a365d)',
+          opacity: 0.6
+        }
       }}
     >
-      {/* Main Footer */}
       <Container maxWidth="lg">
         <Grid container spacing={{ xs: 4, md: 6 }}>
           {/* Brand Column */}
           <Grid item xs={12} md={4}>
-            <Stack spacing={2.5}>
-              <Stack direction="row" spacing={1.5} alignItems="center">
+            <Stack spacing={3}>
+              <Stack direction="row" spacing={2} alignItems="center">
                 <Box
                   sx={{
-                    width: 48,
-                    height: 48,
+                    width: 52,
+                    height: 52,
                     borderRadius: '50%',
-                    border: '2px solid rgba(201, 168, 76, 0.6)',
+                    border: '2px solid rgba(201, 168, 76, 0.5)',
                     p: '3px',
                     flexShrink: 0,
+                    transition: 'border-color 0.3s ease',
+                    '&:hover': {
+                      borderColor: 'secondary.main',
+                    }
                   }}
                 >
                   <Box
@@ -88,7 +102,7 @@ const Footer = () => {
                     sx={{
                       fontFamily: '"Playfair Display", serif',
                       fontWeight: 700,
-                      fontSize: '1.1rem',
+                      fontSize: '1.15rem',
                       color: '#fff',
                       lineHeight: 1.2,
                     }}
@@ -97,10 +111,11 @@ const Footer = () => {
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: '0.75rem',
-                      color: 'rgba(255,255,255,0.5)',
-                      letterSpacing: '1px',
+                      fontSize: '0.7rem',
+                      color: 'rgba(201, 168, 76, 0.7)',
+                      letterSpacing: '2px',
                       textTransform: 'uppercase',
+                      mt: 0.3,
                     }}
                   >
                     Church of Kissimmee
@@ -108,12 +123,20 @@ const Footer = () => {
                 </Box>
               </Stack>
 
-              <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.65)', lineHeight: 1.8, maxWidth: 320 }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'rgba(255,255,255,0.55)',
+                  lineHeight: 1.9,
+                  maxWidth: 340,
+                  fontSize: '0.9rem'
+                }}
+              >
                 A welcoming community of faith, hope, and love. Join us as we grow together in Christ's love and serve our community.
               </Typography>
 
               {/* Social Links */}
-              <Stack direction="row" spacing={1}>
+              <Stack direction="row" spacing={1.5}>
                 {socialLinks.map((social) => (
                   <IconButton
                     key={social.label}
@@ -122,15 +145,16 @@ const Footer = () => {
                     rel="noopener noreferrer"
                     aria-label={social.label}
                     sx={{
-                      color: 'rgba(255,255,255,0.6)',
-                      bgcolor: 'rgba(255,255,255,0.08)',
-                      width: 40,
-                      height: 40,
-                      transition: 'all 0.3s ease',
+                      color: 'rgba(255,255,255,0.5)',
+                      bgcolor: 'rgba(255,255,255,0.06)',
+                      width: 42,
+                      height: 42,
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                       '&:hover': {
-                        bgcolor: alpha(theme.palette.secondary.main, 0.2),
+                        bgcolor: alpha(theme.palette.secondary.main, 0.15),
                         color: theme.palette.secondary.light,
-                        transform: 'translateY(-2px)',
+                        transform: 'translateY(-3px)',
+                        boxShadow: `0 4px 12px ${alpha(theme.palette.secondary.main, 0.2)}`,
                       },
                     }}
                   >
@@ -148,10 +172,11 @@ const Footer = () => {
               sx={{
                 color: '#fff',
                 fontWeight: 700,
-                mb: 2.5,
-                letterSpacing: '0.5px',
-                fontSize: '0.85rem',
+                mb: 3,
+                letterSpacing: '1.5px',
+                fontSize: '0.8rem',
                 textTransform: 'uppercase',
+                opacity: 0.9,
               }}
             >
               Quick Links
@@ -164,19 +189,26 @@ const Footer = () => {
                   to={link.path}
                   variant="body2"
                   sx={{
-                    color: 'rgba(255,255,255,0.6)',
+                    color: 'rgba(255,255,255,0.5)',
                     textDecoration: 'none',
-                    transition: 'all 0.2s ease',
+                    transition: 'all 0.25s ease',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 0.5,
+                    gap: 1,
+                    fontSize: '0.88rem',
                     '&:hover': {
                       color: theme.palette.secondary.light,
-                      transform: 'translateX(4px)',
+                      transform: 'translateX(6px)',
                     },
+                    '& .MuiSvgIcon-root': {
+                      transition: 'all 0.25s ease',
+                    },
+                    '&:hover .MuiSvgIcon-root': {
+                      color: theme.palette.secondary.main,
+                    }
                   }}
                 >
-                  <ArrowForward sx={{ fontSize: '0.65rem' }} />
+                  <ArrowForward sx={{ fontSize: '0.6rem', opacity: 0.6 }} />
                   {link.text}
                 </Link>
               ))}
@@ -190,10 +222,11 @@ const Footer = () => {
               sx={{
                 color: '#fff',
                 fontWeight: 700,
-                mb: 2.5,
-                letterSpacing: '0.5px',
-                fontSize: '0.85rem',
+                mb: 3,
+                letterSpacing: '1.5px',
+                fontSize: '0.8rem',
                 textTransform: 'uppercase',
+                opacity: 0.9,
               }}
             >
               Our Ministries
@@ -206,19 +239,26 @@ const Footer = () => {
                   to={link.path}
                   variant="body2"
                   sx={{
-                    color: 'rgba(255,255,255,0.6)',
+                    color: 'rgba(255,255,255,0.5)',
                     textDecoration: 'none',
-                    transition: 'all 0.2s ease',
+                    transition: 'all 0.25s ease',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 0.5,
+                    gap: 1,
+                    fontSize: '0.88rem',
                     '&:hover': {
                       color: theme.palette.secondary.light,
-                      transform: 'translateX(4px)',
+                      transform: 'translateX(6px)',
                     },
+                    '& .MuiSvgIcon-root': {
+                      transition: 'all 0.25s ease',
+                    },
+                    '&:hover .MuiSvgIcon-root': {
+                      color: theme.palette.secondary.main,
+                    }
                   }}
                 >
-                  <ArrowForward sx={{ fontSize: '0.65rem' }} />
+                  <ArrowForward sx={{ fontSize: '0.6rem', opacity: 0.6 }} />
                   {link.text}
                 </Link>
               ))}
@@ -232,45 +272,48 @@ const Footer = () => {
               sx={{
                 color: '#fff',
                 fontWeight: 700,
-                mb: 2.5,
-                letterSpacing: '0.5px',
-                fontSize: '0.85rem',
+                mb: 3,
+                letterSpacing: '1.5px',
+                fontSize: '0.8rem',
                 textTransform: 'uppercase',
+                opacity: 0.9,
               }}
             >
               Contact Us
             </Typography>
-            <Stack spacing={2}>
+            <Stack spacing={2.5}>
               <Stack direction="row" spacing={1.5} alignItems="flex-start">
-                <LocationOn sx={{ fontSize: '1.1rem', color: theme.palette.secondary.main, mt: 0.3, flexShrink: 0 }} />
-                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.65)', whiteSpace: 'pre-line' }}>
+                <Box sx={{ mt: 0.2, flexShrink: 0 }}>
+                  <LocationOn sx={{ fontSize: '1.1rem', color: 'rgba(201, 168, 76, 0.7)' }} />
+                </Box>
+                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.55)', whiteSpace: 'pre-line', fontSize: '0.88rem' }}>
                   {address}
                 </Typography>
               </Stack>
               <Stack direction="row" spacing={1.5} alignItems="center">
-                <Phone sx={{ fontSize: '1.1rem', color: theme.palette.secondary.main, flexShrink: 0 }} />
-                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.65)' }}>
+                <Phone sx={{ fontSize: '1.1rem', color: 'rgba(201, 168, 76, 0.7)', flexShrink: 0 }} />
+                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.88rem' }}>
                   {phone}
                 </Typography>
               </Stack>
               <Stack direction="row" spacing={1.5} alignItems="center">
-                <Email sx={{ fontSize: '1.1rem', color: theme.palette.secondary.main, flexShrink: 0 }} />
-                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.65)' }}>
+                <Email sx={{ fontSize: '1.1rem', color: 'rgba(201, 168, 76, 0.7)', flexShrink: 0 }} />
+                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.88rem' }}>
                   {email}
                 </Typography>
               </Stack>
               <Box sx={{ pt: 0.5 }}>
                 <Stack direction="row" spacing={1.5} alignItems="flex-start">
-                  <AccessTime sx={{ fontSize: '1.1rem', color: theme.palette.secondary.main, mt: 0.3, flexShrink: 0 }} />
+                  <AccessTime sx={{ fontSize: '1.1rem', color: 'rgba(201, 168, 76, 0.7)', mt: 0.2, flexShrink: 0 }} />
                   <Box>
-                    <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>
+                    <Typography variant="body2" sx={{ color: '#fff', fontWeight: 600, mb: 0.5, fontSize: '0.88rem' }}>
                       Service Times
                     </Typography>
-                    <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem' }}>
-                      {st.sunday || '9:00 AM & 11:00 AM'}
+                    <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', mb: 0.3 }}>
+                      Sunday: {st.sunday || '9:00 AM & 11:00 AM'}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem' }}>
-                      {st.wednesday || '7:00 PM'}
+                    <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem' }}>
+                      Wednesday: {st.wednesday || '7:00 PM'}
                     </Typography>
                   </Box>
                 </Stack>
@@ -283,10 +326,10 @@ const Footer = () => {
       {/* Bottom Bar */}
       <Box
         sx={{
-          mt: { xs: 5, md: 6 },
+          mt: { xs: 5, md: 7 },
           py: 3,
-          borderTop: '1px solid rgba(255,255,255,0.08)',
-          bgcolor: 'rgba(0,0,0,0.2)',
+          borderTop: '1px solid rgba(255,255,255,0.06)',
+          bgcolor: 'rgba(0,0,0,0.25)',
         }}
       >
         <Container maxWidth="lg">
@@ -296,8 +339,8 @@ const Footer = () => {
             alignItems="center"
             spacing={2}
           >
-            <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.85rem' }}>
-              © {new Date().getFullYear()} First Haitian Baptist Church of Kissimmee. All rights reserved.
+            <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.85rem' }}>
+              &copy; {new Date().getFullYear()} First Haitian Baptist Church of Kissimmee. All rights reserved.
             </Typography>
             <Stack direction="row" spacing={3}>
               <Link
@@ -305,9 +348,10 @@ const Footer = () => {
                 to="/privacy"
                 variant="body2"
                 sx={{
-                  color: 'rgba(255,255,255,0.45)',
+                  color: 'rgba(255,255,255,0.35)',
                   textDecoration: 'none',
                   fontSize: '0.85rem',
+                  transition: 'color 0.2s ease',
                   '&:hover': { color: theme.palette.secondary.light },
                 }}
               >
@@ -318,9 +362,10 @@ const Footer = () => {
                 to="/terms"
                 variant="body2"
                 sx={{
-                  color: 'rgba(255,255,255,0.45)',
+                  color: 'rgba(255,255,255,0.35)',
                   textDecoration: 'none',
                   fontSize: '0.85rem',
+                  transition: 'color 0.2s ease',
                   '&:hover': { color: theme.palette.secondary.light },
                 }}
               >

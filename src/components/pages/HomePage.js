@@ -233,25 +233,45 @@ const HomePage = () => {
         </HeroSection>
 
         {/* Upcoming Events */}
-        <Section sx={{ bgcolor: 'background.paper', pt: 1, pb: 0, position: 'relative' }}>
+        <Box sx={{
+          py: { xs: 5, md: 6 },
+          bgcolor: '#fff',
+          position: 'relative',
+        }}>
           <Container maxWidth="lg">
-            <Box textAlign="center" mb={1}>
+            <Box textAlign="center" mb={4}>
+              <Typography
+                component="span"
+                sx={{
+                  color: 'secondary.main',
+                  fontWeight: 700,
+                  letterSpacing: '4px',
+                  fontSize: '0.8rem',
+                  textTransform: 'uppercase',
+                  mb: 1.5,
+                  display: 'block'
+                }}
+              >
+                {t('home.upcomingEvents')}
+              </Typography>
               <Typography
                 variant="h3"
                 component="h2"
-                gutterBottom
                 sx={{
+                  fontFamily: '"Playfair Display", serif',
+                  fontWeight: 700,
+                  color: 'primary.dark',
                   position: 'relative',
                   display: 'inline-block',
                   '&:after': {
                     content: '""',
                     position: 'absolute',
-                    bottom: -10,
+                    bottom: -12,
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    width: '80px',
-                    height: '4px',
-                    background: 'linear-gradient(90deg, #1a365d, #2c5282)',
+                    width: '60px',
+                    height: '3px',
+                    background: 'linear-gradient(90deg, #1a365d, #c9a84c)',
                     borderRadius: '2px'
                   }
                 }}
@@ -259,12 +279,15 @@ const HomePage = () => {
                 {t('home.upcomingEvents')}
               </Typography>
               <Typography
-                variant="h6"
+                variant="body1"
                 color="text.secondary"
-                maxWidth="800px"
-                mx="auto"
-                mt={1}
-                mb={1}
+                sx={{
+                  maxWidth: '700px',
+                  mx: 'auto',
+                  mt: 3,
+                  fontSize: '1.05rem',
+                  lineHeight: 1.8
+                }}
               >
                 {t('home.upcomingEventsSubtitle')}
               </Typography>
@@ -272,23 +295,33 @@ const HomePage = () => {
 
             <EventBoxes />
 
-            <Box textAlign="center" mt={1}>
+            <Box textAlign="center" mt={4}>
               <Button
-                variant="outlined"
+                variant="contained"
                 color="primary"
                 size="large"
                 component={RouterLink}
                 to="/events"
                 endIcon={<ArrowForwardIcon />}
                 sx={{
-                  px: 4,
+                  px: 4.5,
                   py: 1.5,
-                  borderRadius: '30px',
+                  borderRadius: '50px',
                   textTransform: 'none',
                   fontWeight: 600,
+                  fontSize: '0.95rem',
+                  background: 'linear-gradient(135deg, #1a365d, #2c5282)',
+                  boxShadow: '0 4px 15px rgba(26, 54, 93, 0.25)',
+                  transition: 'all 0.3s ease',
                   '&:hover': {
-                    backgroundColor: 'primary.main',
-                    color: 'primary.contrastText',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 25px rgba(26, 54, 93, 0.35)',
+                    '& .MuiButton-endIcon': {
+                      transform: 'translateX(4px)'
+                    }
+                  },
+                  '& .MuiButton-endIcon': {
+                    transition: 'transform 0.3s ease'
                   }
                 }}
               >
@@ -296,14 +329,16 @@ const HomePage = () => {
               </Button>
             </Box>
           </Container>
-        </Section>
+        </Box>
 
         {/* Latest News */}
-        <Box sx={{ bgcolor: 'background.paper', py: 0, position: 'relative' }}>
+        <Box sx={{
+          py: { xs: 5, md: 6 },
+          bgcolor: '#f8f6f0',
+          position: 'relative',
+        }}>
           <Container maxWidth="lg">
-            <Box textAlign="center">
-              <NewsSection />
-            </Box>
+            <NewsSection />
           </Container>
         </Box>
 
@@ -371,348 +406,295 @@ const HomePage = () => {
           </Container>
         </Section>
 
-        {/* About Section */}
-        <Section sx={{ bgcolor: 'background.paper', py: 1 }}>
+        {/* Our Community Section */}
+        <Box sx={{
+          py: { xs: 5, md: 6 },
+          bgcolor: '#f8f6f0',
+          position: 'relative',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '4px',
+            background: 'linear-gradient(90deg, #1a365d, #c9a84c, #1a365d)',
+            opacity: 0.4
+          }
+        }}>
           <Container maxWidth="lg">
-            <Box textAlign="center" mb={1}>
+            <Box textAlign="center" mb={4}>
               <Typography
-                variant="h3" 
-                component="h2" 
-                gutterBottom
+                component="span"
                 sx={{
+                  color: 'secondary.main',
+                  fontWeight: 700,
+                  letterSpacing: '4px',
+                  fontSize: '0.8rem',
+                  textTransform: 'uppercase',
+                  mb: 1.5,
+                  display: 'block'
+                }}
+              >
+                {t('home.ourCommunity')}
+              </Typography>
+              <Typography
+                variant="h3"
+                component="h2"
+                sx={{
+                  fontFamily: '"Playfair Display", serif',
+                  fontWeight: 700,
+                  color: 'primary.dark',
                   position: 'relative',
                   display: 'inline-block',
                   '&:after': {
                     content: '""',
                     position: 'absolute',
-                    bottom: -10,
+                    bottom: -12,
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    width: '80px',
-                    height: '4px',
-                    background: 'linear-gradient(90deg, #1a365d, #2c5282)',
+                    width: '60px',
+                    height: '3px',
+                    background: 'linear-gradient(90deg, #1a365d, #c9a84c)',
                     borderRadius: '2px'
                   }
                 }}
               >
                 {t('home.ourCommunity')}
               </Typography>
-              <Typography variant="h6" color="text.secondary" maxWidth="800px" mx="auto" mb={1}>
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                sx={{
+                  maxWidth: '700px',
+                  mx: 'auto',
+                  mt: 3,
+                  fontSize: '1.05rem',
+                  lineHeight: 1.8
+                }}
+              >
                 {t('home.communityDescription')}
               </Typography>
-              
-              <Box sx={{ 
-                display: 'grid',
-                gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
-                gap: { xs: 3, md: 4 },
-                mt: 2
-              }}>
-                {[
-                  {
-                    icon: 'groups',
-                    title: t('home.communityLife.title'),
-                    description: t('home.communityLife.description'),
-                    color: '#1a365d',
-                    bgColor: 'rgba(74, 111, 165, 0.1)',
-                    hoverColor: 'rgba(74, 111, 165, 0.9)'
-                  },
-                  {
-                    icon: 'volunteer_activism',
-                    title: t('home.serviceAndSupport.title'),
-                    description: t('home.serviceAndSupport.volunteerPrograms'),
-                    color: '#2e7d32',
-                    bgColor: 'rgba(46, 125, 50, 0.1)',
-                    hoverColor: 'rgba(46, 125, 50, 0.9)'
-                  },
-                  {
-                    icon: 'school',
-                    title: t('home.spiritualGrowth.title'),
-                    description: t('home.spiritualGrowth.description'),
-                    color: '#6a1b9a',
-                    bgColor: 'rgba(106, 27, 154, 0.1)',
-                    hoverColor: 'rgba(106, 27, 154, 0.9)'
-                  }
-                ].map((item, index) => (
-                  <Box 
-                    key={index}
-                    sx={{
-                      p: { xs: 3, md: 3.5 },
-                      borderRadius: '16px',
-                      bgcolor: 'background.paper',
-                      border: '1px solid',
-                      borderColor: 'divider',
-                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      '&:hover': {
-                        transform: 'translateY(-8px)',
-                        boxShadow: `0 20px 40px -10px ${item.color}33`,
-                        borderColor: 'transparent',
-                        '&::before': {
-                          opacity: 0.05,
-                          transform: 'scale(1.5)'
-                        },
-                        '& .icon-wrapper': {
-                          transform: 'translateY(-5px) scale(1.1)',
-                          '&::after': {
-                            opacity: 0.2,
-                            transform: 'scale(1.2)'
-                          }
-                        }
-                      },
-                      '&::before': {
-                        content: '""',
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: `radial-gradient(circle at center, ${item.color} 0%, transparent 70%)`,
-                        opacity: 0,
-                        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                        zIndex: 0
-                      }
-                    }}
-                  >
-                    <Box 
-                      className="icon-wrapper"
-                      sx={{
-                        width: 90,
-                        height: 90,
-                        borderRadius: '24px',
-                        bgcolor: item.bgColor,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        mb: 3,
-                        mx: 'auto',
-                        position: 'relative',
-                        zIndex: 1,
-                        transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                        '&::after': {
-                          content: '""',
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          borderRadius: '24px',
-                          background: `radial-gradient(circle at center, ${item.color} 0%, transparent 70%)`,
-                          opacity: 0,
-                          transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                          zIndex: -1
-                        },
-                        '& .material-icons': {
-                          fontSize: '2.75rem',
-                          color: item.color,
-                          transition: 'all 0.3s ease',
-                          background: `linear-gradient(135deg, ${item.color}, ${item.hoverColor})`,
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          backgroundClip: 'text',
-                          textFillColor: 'transparent'
-                        },
-                        '&:hover .material-icons': {
-                          transform: 'scale(1.15) rotate(5deg)'
-                        }
-                      }}
-                    >
-                      <span className="material-icons">{item.icon}</span>
-                    </Box>
-                    <Box sx={{ position: 'relative', zIndex: 1, mb: 3 }}>
-                      <Typography 
-                        variant="h5" 
-                        component="h3" 
-                        sx={{ 
-                          textAlign: 'center', 
-                          fontWeight: 700,
-                          mb: 1.5,
-                          background: `linear-gradient(135deg, ${item.color}, ${item.hoverColor})`,
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          backgroundClip: 'text',
-                          textFillColor: 'transparent',
-                          fontSize: { xs: '1.35rem', md: '1.6rem' },
-                          position: 'relative',
-                          display: 'inline-block',
-                          '&::after': {
-                            content: '""',
-                            position: 'absolute',
-                            bottom: -8,
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            width: '50px',
-                            height: '3px',
-                            background: `linear-gradient(90deg, ${item.color}, ${item.hoverColor})`,
-                            borderRadius: '3px',
-                            opacity: 0.8,
-                            transition: 'all 0.3s ease'
-                          },
-                          '&:hover::after': {
-                            width: '70px',
-                            opacity: 1
-                          }
-                        }}
-                      >
-                        {item.title}
-                      </Typography>
-                    </Box>
-                    <Typography 
-                      variant="body1" 
-                      sx={{ 
-                        textAlign: 'center',
-                        color: 'text.secondary',
-                        lineHeight: 1.8,
-                        mt: 'auto',
-                        pt: 1,
-                        position: 'relative',
-                        zIndex: 1,
-                        fontSize: '1.05rem',
-                        '&::first-letter': {
-                          fontSize: '1.2em',
-                          fontWeight: 700,
-                          color: item.color,
-                          paddingRight: '2px'
-                        }
-                      }}
-                    >
-                      {item.description}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-              
-              <Box sx={{ 
-                mt: 2,
-                textAlign: 'center',
-                position: 'relative',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: '200px',
-                  height: '200px',
-                  background: 'radial-gradient(circle, rgba(74, 111, 165, 0.1) 0%, rgba(255,255,255,0) 70%)',
-                  borderRadius: '50%',
-                  opacity: 0,
-                  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+            </Box>
+
+            <Box sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+              gap: { xs: 3, md: 4 },
+              mb: 4
+            }}>
+              {[
+                {
+                  icon: 'groups',
+                  title: t('home.communityLife.title'),
+                  description: t('home.communityLife.description'),
+                  accent: '#1a365d',
+                  gradient: 'linear-gradient(135deg, #1a365d, #2c5282)'
                 },
-                '&:hover::before': {
-                  opacity: 1,
-                  width: '300px',
-                  height: '300px'
+                {
+                  icon: 'volunteer_activism',
+                  title: t('home.serviceAndSupport.title'),
+                  description: t('home.serviceAndSupport.volunteerPrograms'),
+                  accent: '#2e7d32',
+                  gradient: 'linear-gradient(135deg, #2e7d32, #4caf50)'
+                },
+                {
+                  icon: 'school',
+                  title: t('home.spiritualGrowth.title'),
+                  description: t('home.spiritualGrowth.description'),
+                  accent: '#6a1b9a',
+                  gradient: 'linear-gradient(135deg, #6a1b9a, #9c27b0)'
                 }
-              }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  component={RouterLink}
-                  to="/about"
-                  endIcon={
-                    <Box 
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        ml: 1,
-                        transition: 'all 0.3s ease',
-                        '& svg': {
-                          transition: 'transform 0.3s ease'
-                        }
-                      }}
-                    >
-                      <ArrowForwardIcon />
-                    </Box>
-                  }
+              ].map((item, index) => (
+                <Box
+                  key={index}
                   sx={{
-                    px: 5,
-                    py: 1.8,
-                    borderRadius: '50px',
-                    textTransform: 'none',
-                    fontWeight: 600,
-                    fontSize: '1.1rem',
+                    bgcolor: '#fff',
+                    borderRadius: '20px',
+                    p: { xs: 3, md: 4 },
+                    textAlign: 'center',
+                    border: '1px solid',
+                    borderColor: 'rgba(26, 54, 93, 0.06)',
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     position: 'relative',
                     overflow: 'hidden',
-                    zIndex: 1,
-                    background: 'linear-gradient(135deg, #1a365d, #2c5282)',
-                    boxShadow: '0 4px 15px rgba(74, 111, 165, 0.3)',
-                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    '&:hover': {
-                      transform: 'translateY(-2px)',
-                      boxShadow: '0 8px 25px rgba(74, 111, 165, 0.4)',
-                      '& .MuiButton-endIcon': {
-                        transform: 'translateX(4px)'
-                      },
-                      '&::before': {
-                        opacity: 1
-                      }
-                    },
-                    '&:active': {
-                      transform: 'translateY(0)',
-                      boxShadow: '0 2px 10px rgba(74, 111, 165, 0.4)'
-                    },
                     '&::before': {
                       content: '""',
                       position: 'absolute',
                       top: 0,
                       left: 0,
                       right: 0,
-                      bottom: 0,
-                      background: 'linear-gradient(135deg, #2c5282, #1a365d)',
+                      height: '4px',
+                      background: item.gradient,
                       opacity: 0,
-                      transition: 'opacity 0.4s ease',
-                      zIndex: -1
+                      transition: 'opacity 0.4s ease'
+                    },
+                    '&:hover': {
+                      transform: 'translateY(-8px)',
+                      boxShadow: '0 20px 40px rgba(26, 54, 93, 0.1)',
+                      borderColor: 'transparent',
+                      '&::before': {
+                        opacity: 1
+                      },
+                      '& .icon-circle': {
+                        transform: 'scale(1.1)'
+                      }
                     }
                   }}
                 >
-                  {t('home.learnMoreAboutChurch')}
-                </Button>
-              </Box>
+                  <Box
+                    className="icon-circle"
+                    sx={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: '50%',
+                      bgcolor: `${item.accent}0d`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mx: 'auto',
+                      mb: 3,
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      '& .material-icons': {
+                        fontSize: '2.5rem',
+                        background: item.gradient,
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text'
+                      }
+                    }}
+                  >
+                    <span className="material-icons">{item.icon}</span>
+                  </Box>
+                  <Typography
+                    variant="h5"
+                    component="h3"
+                    sx={{
+                      fontWeight: 700,
+                      mb: 2,
+                      color: 'primary.dark',
+                      fontFamily: '"Playfair Display", serif'
+                    }}
+                  >
+                    {item.title}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'text.secondary',
+                      lineHeight: 1.8,
+                      fontSize: '0.95rem'
+                    }}
+                  >
+                    {item.description}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+
+            <Box textAlign="center" mt={4}>
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                component={RouterLink}
+                to="/about"
+                endIcon={<ArrowForwardIcon />}
+                sx={{
+                  px: 4.5,
+                  py: 1.5,
+                  borderRadius: '50px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  fontSize: '0.95rem',
+                  background: 'linear-gradient(135deg, #1a365d, #2c5282)',
+                  boxShadow: '0 4px 15px rgba(26, 54, 93, 0.25)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 25px rgba(26, 54, 93, 0.35)',
+                    '& .MuiButton-endIcon': {
+                      transform: 'translateX(4px)'
+                    }
+                  },
+                  '& .MuiButton-endIcon': {
+                    transition: 'transform 0.3s ease'
+                  }
+                }}
+              >
+                {t('home.learnMoreAboutChurch')}
+              </Button>
             </Box>
           </Container>
-        </Section>
+        </Box>
 
         {/* Latest Sermon Section */}
-        <Section sx={{ bgcolor: 'background.paper', py: 1 }}>
+        <Box sx={{
+          py: { xs: 6, md: 8 },
+          bgcolor: '#fff',
+          position: 'relative',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '6px',
+            background: 'linear-gradient(90deg, #1a365d, #c9a84c, #1a365d)',
+            opacity: 0.3
+          }
+        }}>
           <Container maxWidth="lg">
-            <Box textAlign="center" mb={1}>
+            <Box textAlign="center" mb={5}>
               <Typography
-                variant="h4" 
-                component="h2" 
-                gutterBottom
+                component="span"
                 sx={{
+                  color: 'secondary.main',
+                  fontWeight: 700,
+                  letterSpacing: '4px',
+                  fontSize: '0.8rem',
+                  textTransform: 'uppercase',
+                  mb: 1.5,
+                  display: 'block'
+                }}
+              >
+                {t('home.latestSermonTitle')}
+              </Typography>
+              <Typography
+                variant="h3"
+                component="h2"
+                sx={{
+                  fontFamily: '"Playfair Display", serif',
+                  fontWeight: 700,
+                  color: 'primary.dark',
                   position: 'relative',
                   display: 'inline-block',
                   '&:after': {
                     content: '""',
                     position: 'absolute',
-                    bottom: -8,
+                    bottom: -12,
                     left: '50%',
                     transform: 'translateX(-50%)',
                     width: '60px',
                     height: '3px',
-                    background: 'linear-gradient(90deg, #1a365d, #2c5282)',
+                    background: 'linear-gradient(90deg, #1a365d, #c9a84c)',
                     borderRadius: '2px'
                   }
                 }}
               >
                 {t('home.latestSermonTitle')}
               </Typography>
-              <Typography variant="subtitle1" color="text.secondary" maxWidth="800px" mx="auto" sx={{ mt: 2, mb: 1 }}>
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                sx={{ mt: 3, fontSize: '1.05rem' }}
+              >
                 Écoutez nos derniers enseignements bibliques
               </Typography>
             </Box>
-            <Box sx={{ maxWidth: 900, mx: 'auto' }}>
-              <LatestSermon />
-            </Box>
+            <LatestSermon />
           </Container>
-        </Section>
+        </Box>
       </Box>
     </Box>
   );

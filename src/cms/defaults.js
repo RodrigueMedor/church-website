@@ -121,7 +121,7 @@ export const pageDefaults = {
 
   ministries: {
     hero: { title: 'Our Ministries', subtitle: 'Find your place to serve and grow' },
-    tagline: 'Each of you should use whatever gift you have received to serve others, as faithful stewards of God\'s grace.',
+    tagline: 'Explore Our Ministries',
     scripture: '1 Peter 4:10',
     ministries: [
       { id: 1, title: 'Children\'s Ministry', subtitle: 'Nurturing Young Faith', description: 'Nurturing the faith of our children through engaging programs and biblical teaching.', color: '#4CAF50', image: '/images/banner/children-banner.jpg', meetingTime: 'Sunday 9:30 AM', link: '/children-ministry', stats: { members: '50+', ageRange: 'Ages 4-12', activities: '40+' }, features: ['Sunday School', 'Vacation Bible School', 'Children\'s Church', 'Fun Activities'] },
@@ -129,6 +129,7 @@ export const pageDefaults = {
       { id: 3, title: 'Women\'s Ministry', subtitle: 'Sisterhood in Faith', description: 'Connecting women through fellowship, prayer, and spiritual growth opportunities.', color: '#9C27B0', image: '/images/banner/women-banner.jpg', meetingTime: 'Tuesday 7:00 PM', link: '/women-ministry', stats: { members: '80+', ageRange: 'Ages 18+', activities: '30+' }, features: ['Bible Study', 'Prayer Group', 'Fellowship Events', 'Missions'] },
       { id: 4, title: 'Men\'s Ministry', subtitle: 'Building Godly Men', description: 'Building men of faith through fellowship, service, and biblical teaching.', color: '#FF9800', image: '/images/banner/men-banner.jpg', meetingTime: 'Wednesday 7:00 PM', link: '/men-ministry', stats: { members: '60+', ageRange: 'Ages 18+', activities: '20+' }, features: ['Bible Study', 'Fellowship', 'Service Projects', 'Mentorship'] },
       { id: 5, title: 'Young Couples Ministry', subtitle: 'Strengthening Marriages', description: 'Strengthening marriages and building Christ-centered homes together.', color: '#f44336', image: '/images/banner/ycm-banner.jpg', meetingTime: 'Friday 7:30 PM', link: '/young-couples-ministry', stats: { members: '25+', ageRange: 'Young Couples', activities: '15+' }, features: ['Date Nights', 'Workshops', 'Small Groups', 'Retreats'] },
+      { id: 6, title: 'Worship & Music Ministry', subtitle: 'Leading People to His Presence', description: 'Leading the congregation in heartfelt worship through music, song, and creative arts to glorify God.', color: '#C9A84C', image: '/images/banner/banner-sermont.jpg', meetingTime: 'Wednesdays at 7:00 PM & Sundays at 9:00 AM', link: '/worship-ministry', stats: { members: '40+', ageRange: 'Ages 14+', activities: '20+' }, features: ['Choir', 'Praise Team', 'Instrumental', 'Sound & Media'] },
     ],
   },
 
@@ -145,8 +146,8 @@ export const pageDefaults = {
       { day: 'Wednesday', time: '7:00 PM', activity: 'Children\'s Choir', description: 'Music and worship practice', color: '#2196F3' },
     ],
     leaders: [
-      { name: 'Marie Joseph', role: 'Children\'s Director', description: 'Leading children\'s ministry with love and dedication.', avatar: 'MJ', experience: '8 years', email: 'marie.joseph@fhbck.org' },
-      { name: 'Pierre Noel', role: 'Assistant Director', description: 'Helping children grow in faith through engaging programs.', avatar: 'PN', experience: '5 years', email: 'pierre.noel@fhbck.org' },
+      { name: 'Marie Joseph', role: 'Children\'s Director', description: 'Leading children\'s ministry with love and dedication.', image: '/images/staff/deaconess-joseph.jpg', avatar: 'MJ', experience: '8 years', email: 'marie.joseph@fhbck.org' },
+      { name: 'Pierre Noel', role: 'Assistant Director', description: 'Helping children grow in faith through engaging programs.', image: '/images/easter/pastor-bible-study.jpg', avatar: 'PN', experience: '5 years', email: 'pierre.noel@fhbck.org' },
     ],
   },
 
@@ -162,8 +163,8 @@ export const pageDefaults = {
       { day: 'Saturday', time: '6:00 PM – 8:00 PM', activity: 'Youth Bible Study', description: 'Weekly worship and Bible study', color: '#2196F3' },
     ],
     leaders: [
-      { name: 'David Pierre', role: 'Youth Director', description: 'Passionate about guiding youth in faith.', avatar: 'DP', experience: '10 years', email: 'david.pierre@fhbck.org' },
-      { name: 'Sarah Jean', role: 'Assistant Youth Director', description: 'Dedicated to youth mentorship and growth.', avatar: 'SJ', experience: '6 years', email: 'sarah.jean@fhbck.org' },
+      { name: 'David Pierre', role: 'Youth Director', description: 'Passionate about guiding youth in faith.', image: '/images/staff/pastor-charles.jpg', avatar: 'DP', experience: '10 years', email: 'david.pierre@fhbck.org' },
+      { name: 'Sarah Jean', role: 'Assistant Youth Director', description: 'Dedicated to youth mentorship and growth.', image: '/images/easter/worship-team.jpg', avatar: 'SJ', experience: '6 years', email: 'sarah.jean@fhbck.org' },
     ],
   },
 
@@ -180,8 +181,8 @@ export const pageDefaults = {
       { day: 'Saturday', time: '10:00 AM', activity: 'Prayer Meeting', description: 'Monthly prayer gathering', color: '#E91E63' },
     ],
     leaders: [
-      { name: 'Rose-Marie Louis', role: 'Women\'s Director', description: 'Leading women in faith and fellowship.', avatar: 'RL', experience: '15 years', email: 'rose.louis@fhbck.org' },
-      { name: 'Esther Michel', role: 'Assistant Director', description: 'Coordinating events and outreach.', avatar: 'EM', experience: '10 years', email: 'esther.michel@fhbck.org' },
+      { name: 'Rose-Marie Louis', role: 'Women\'s Director', description: 'Leading women in faith and fellowship.', image: '/images/easter/worship-photo.jpg', avatar: 'RL', experience: '15 years', email: 'rose.louis@fhbck.org' },
+      { name: 'Esther Michel', role: 'Assistant Director', description: 'Coordinating events and outreach.', image: '/images/easter/music-photo.jpg', avatar: 'EM', experience: '10 years', email: 'esther.michel@fhbck.org' },
     ],
   },
 
@@ -198,8 +199,8 @@ export const pageDefaults = {
       { day: 'Saturday', time: '8:00 AM', activity: 'Men\'s Breakfast', description: 'Monthly fellowship breakfast', color: '#FF5722' },
     ],
     leaders: [
-      { name: 'Jean-Pierre Adam', role: 'Men\'s Director', description: 'Leading men in spiritual growth.', avatar: 'JA', experience: '12 years', email: 'jp.adam@fhbck.org' },
-      { name: 'Marc Antoine', role: 'Assistant Director', description: 'Coordinating fellowship and service.', avatar: 'MA', experience: '8 years', email: 'marc.antoine@fhbck.org' },
+      { name: 'Jean-Pierre Adam', role: 'Men\'s Director', description: 'Leading men in spiritual growth.', image: '/images/staff/deacon-pierre.jpg', avatar: 'JA', experience: '12 years', email: 'jp.adam@fhbck.org' },
+      { name: 'Marc Antoine', role: 'Assistant Director', description: 'Coordinating fellowship and service.', image: '/images/easter/DSC_2182.jpg', avatar: 'MA', experience: '8 years', email: 'marc.antoine@fhbck.org' },
     ],
   },
 
@@ -216,8 +217,26 @@ export const pageDefaults = {
       { day: 'Saturday', time: '6:00 PM', activity: 'Date Night', description: 'Monthly date night event', color: '#E91E63' },
     ],
     leaders: [
-      { name: 'Daniel & Maria', role: 'Couples Directors', description: 'Passionate about strengthening marriages.', avatar: 'DM', experience: '8 years', email: 'daniel.maria@fhbck.org' },
-      { name: 'James & Ruth', role: 'Assistant Directors', description: 'Supporting couples in their journey.', avatar: 'JR', experience: '6 years', email: 'james.ruth@fhbck.org' },
+      { name: 'Daniel & Maria', role: 'Couples Directors', description: 'Passionate about strengthening marriages.', image: '/images/easter/DSC_2302.jpg', avatar: 'DM', experience: '8 years', email: 'daniel.maria@fhbck.org' },
+      { name: 'James & Ruth', role: 'Assistant Directors', description: 'Supporting couples in their journey.', image: '/images/easter/DSC_2306.jpg', avatar: 'JR', experience: '6 years', email: 'james.ruth@fhbck.org' },
+    ],
+  },
+
+  worship: {
+    hero: { title: 'Worship & Music Ministry', subtitle: 'Leading People to His Presence' },
+    activities: [
+      { title: 'Choir', description: 'Voices united in harmony to lead the congregation in worship.', features: ['Hymns', 'Gospel', 'Anthems', 'Special Presentations'] },
+      { title: 'Praise Team', description: 'Contemporary worship leading with modern songs and arrangements.', features: ['Vocals', 'Band', 'Modern Worship', 'Rehearsals'] },
+      { title: 'Instrumental Ministry', description: 'Musicians using their gifts to glorify God through instrumental music.', features: ['Piano/Keys', 'Guitar', 'Drums', 'Orchestra'] },
+      { title: 'Sound & Media', description: 'Technical team supporting worship services with sound and visuals.', features: ['Sound Engineering', 'Projection', 'Streaming', 'Lighting'] },
+    ],
+    schedule: [
+      { day: 'Wednesday', time: '7:00 PM', activity: 'Choir & Band Rehearsal', description: 'Weekly practice for the worship team', color: '#C9A84C' },
+      { day: 'Sunday', time: '9:00 AM', activity: 'Pre-Service Sound Check', description: 'Technical setup and sound check before service', color: '#B8860B' },
+    ],
+    leaders: [
+      { name: 'Joseph Laurent', role: 'Worship Director', description: 'Leading the worship ministry with passion and musical excellence.', image: '/images/easter/worship-solo.jpg', avatar: 'JL', experience: '12 years', email: 'joseph.laurent@fhbck.org' },
+      { name: 'Marie-Claire Duval', role: 'Choir Director', description: 'Directing the choir and coordinating vocal teams for services.', image: '/images/easter/music2--photo.jpg', avatar: 'MD', experience: '9 years', email: 'mc.duval@fhbck.org' },
     ],
   },
 
@@ -299,6 +318,7 @@ export const pageDefaults = {
       { text: 'Women\'s Ministry', path: '/women-ministry' },
       { text: 'Men\'s Ministry', path: '/men-ministry' },
       { text: 'Young Couples Ministry', path: '/young-couples-ministry' },
+      { text: 'Worship & Music Ministry', path: '/worship-ministry' },
     ],
     socialLinks: [
       { platform: 'Facebook', url: 'https://facebook.com', label: 'Facebook' },
@@ -317,6 +337,7 @@ export const imageDefaults = [
   { url: '/images/banner/women-banner.jpg', label: 'Women Ministry' },
   { url: '/images/banner/men-banner.jpg', label: 'Men Ministry' },
   { url: '/images/banner/ycm-banner.jpg', label: 'Young Couples Ministry' },
+  { url: '/images/banner/banner-sermont.jpg', label: 'Worship Ministry' },
 ];
 
 export default pageDefaults;

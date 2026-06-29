@@ -19,8 +19,8 @@ const schedule = [
 ];
 
 const leaders = [
-  { name: "Sister Marie", role: "Women's Ministry Director", description: "Passionate about empowering women to discover their God-given purpose and grow in spiritual maturity.", avatar: "SM", experience: "15 years", email: "marie@church.org" },
-  { name: "Sister Josette", role: "Fellowship Coordinator", description: "Dedicated to creating warm, welcoming environments where women can build lasting friendships.", avatar: "SJ", experience: "10 years", email: "josette@church.org" }
+  { name: "Sister Marie", role: "Women's Ministry Director", description: "Passionate about empowering women to discover their God-given purpose and grow in spiritual maturity.", image: "/images/easter/multimedia-photo.jpg", avatar: "SM", experience: "15 years", email: "marie@church.org" },
+  { name: "Sister Josette", role: "Fellowship Coordinator", description: "Dedicated to creating warm, welcoming environments where women can build lasting friendships.", image: "/images/contact-image.jpg", avatar: "SJ", experience: "10 years", email: "josette@church.org" }
 ];
 
 const ProfessionalWomenMinistryPage = () => {
