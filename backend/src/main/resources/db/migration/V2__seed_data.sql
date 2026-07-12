@@ -53,10 +53,10 @@ INSERT INTO church_settings (setting_key, setting_value, description) VALUES
 
 -- Seed hero slides
 INSERT INTO hero_slides (title, subtitle, image_url, cta_text, cta_link, sort_order, page) VALUES
-    ('Welcome to FHBCK', 'Join us as we worship, grow, and serve together in faith', '/images/hero-bg.jpg', 'Plan Your Visit', '/visit', 1, 'homepage'),
-    ('Growing in Faith', 'Deepen your relationship with God through our ministries', '/images/hero-worship.jpg', 'Explore Ministries', '/ministries', 2, 'homepage'),
-    ('Serving Our Community', 'Together we make a difference in Kissimmee and beyond', '/images/hero-community.jpg', 'Get Involved', '/get-involved', 3, 'homepage');
+    ('Welcome to FHBCK', 'Join us as we worship, grow, and serve together in faith', '/images/banner/church-building-new.jpg', 'Plan Your Visit', '/visit', 1, 'homepage'),
+    ('Growing in Faith', 'Deepen your relationship with God through our ministries', '/images/banner/DSC_2131.jpg', 'Explore Ministries', '/ministries', 2, 'homepage'),
+    ('Serving Our Community', 'Together we make a difference in Kissimmee and beyond', '/images/banner/DSC_2088.jpg', 'Get Involved', '/get-involved', 3, 'homepage');
 
 -- Seed pastor
 INSERT INTO pastors (name, title, image_url, bio, message, email)
-VALUES ('Pastor Jean Smith', 'Senior Pastor', '/images/staff/pastor.jpg', 'Pastor Jean Smith has been leading FHBCK since 2010...', 'Welcome to our church family! Whether you are visiting for the first time or have been with us for years, we are glad you are here.', 'pastor@fhbck.org');
+VALUES ('Pastor Jean Smith', 'Senior Pastor', '/images/staff/pastor-senior.jpg', 'Pastor Jean Smith has been leading FHBCK since 2010...', 'Welcome to our church family! Whether you are visiting for the first time or have been with us for years, we are glad you are here.', 'pastor@fhbck.org');
