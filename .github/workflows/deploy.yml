@@ -63,6 +63,10 @@ jobs:
 
             export GITHUB_REPOSITORY=rodriguemedor/church-website
 
+            # Free port 80/443 for Docker frontend (stop host nginx if running)
+            systemctl stop nginx 2>/dev/null || true
+            docker stop $(docker ps -q --filter "name=nginx") 2>/dev/null || true
+
             # Create .env with production secrets on first deploy
             touch .env
             grep -q '^JWT_SECRET=' .env 2>/dev/null || \
