@@ -1,0 +1,5 @@
+# Dev overrides: expose DB port for local tooling
+services:
+  postgres:
+    ports:
+      - "5432:5432"

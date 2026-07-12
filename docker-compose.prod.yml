@@ -1,0 +1,7 @@
+# Production overrides: use pre-built images from registry
+services:
+  backend:
+    image: ghcr.io/${GITHUB_REPOSITORY:-rodriguemedor/church-website}/backend:latest
+
+  frontend:
+    image: ghcr.io/${GITHUB_REPOSITORY:-rodriguemedor/church-website}/frontend:latest
