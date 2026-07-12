@@ -1,0 +1,1 @@
+ALTER TABLE page_content ADD COLUMN IF NOT EXISTS data TEXT;
