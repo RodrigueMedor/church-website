@@ -169,6 +169,11 @@
         "name": "Deaconess Marie L. Joseph",
         "role": "Women's Ministry",
         "bio": "Deaconess Joseph coordinates activities of the women's ministry, encouraging spiritual growth and mutual support among the women of our assembly."
+      },
+      "administrator": {
+        "name": "Administratrice",
+        "role": "Church Administrator",
+        "bio": "Managing church operations and coordinating administrative functions."
       }
     },
     "ourServices": "Our Services",

@@ -239,6 +239,16 @@ const ProfessionalAboutPage = () => {
           experience: '12+ years',
           avatar: 'DM',
           image: '/images/staff/deaconess-joseph.jpg'
+        },
+        {
+          name: t('about.staff.administrator.name'),
+          role: t('about.staff.administrator.role'),
+          bio: t('about.staff.administrator.bio'),
+          email: 'admin@fhbck.org',
+          phone: '(407) 123-4567',
+          experience: '',
+          avatar: 'AD',
+          image: '/images/staff/deaconess-joseph1.jpg'
         }
       ];
 

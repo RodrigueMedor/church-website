@@ -546,12 +546,13 @@ const ProfessionalHomePage = () => {
                     <FeatureCard index={index} elevation={6}>
                       {feature.image ? (
                         <Box sx={{
-                          height: 180,
+                          height: 260,
                           backgroundImage: `url(${feature.image})`,
                           backgroundSize: 'cover',
                           backgroundPosition: 'center',
-                          borderRadius: '12px',
-                          mb: 2,
+                          mx: -4,
+                          mt: -4,
+                          mb: 3,
                         }} />
                       ) : (
                         <Box className="feature-icon" sx={{ 

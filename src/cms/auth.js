@@ -33,20 +33,12 @@ init();
 
 export const auth = {
   async login(email, password) {
-    try {
-      const response = await api.post('/auth/login', { email, password });
-      if (response && response.accessToken) {
-        api.setTokens(response.accessToken, response.refreshToken);
-        return { token: response.accessToken, user: { email, name: email.split('@')[0] } };
-      }
-    } catch {}
-    const data = JSON.parse(localStorage.getItem(AUTH_KEY));
-    const user = data.users.find(u => u.email === email && u.password === password);
-    if (!user) throw new Error(i18n.t('auth.invalidCredentials', 'Invalid credentials'));
-    const token = btoa(`${email}:${Date.now()}`);
-    data.sessions[token] = { email, name: user.name, loggedInAt: Date.now() };
-    localStorage.setItem(AUTH_KEY, JSON.stringify(data));
-    return { token, user: { email: user.email, name: user.name } };
+    const response = await api.post('/auth/login', { email, password });
+    if (response && response.accessToken) {
+      api.setTokens(response.accessToken, response.refreshToken);
+      return { token: response.accessToken, user: { email, name: email.split('@')[0] } };
+    }
+    throw new Error(i18n.t('auth.loginFailed', 'Login failed'));
   },
 
   logout(token) {
