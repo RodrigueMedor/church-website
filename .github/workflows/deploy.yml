@@ -55,7 +55,9 @@ jobs:
             set -e
             cd /opt/church-website
 
-            git pull
+            # Discard local changes (e.g. .env) and match origin exactly
+            git fetch origin
+            git reset --hard origin/master
 
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
