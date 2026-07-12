@@ -39,6 +39,11 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_FRONTEND }}:${{ github.sha }},${{ env.REGISTRY }}/${{ env.IMAGE_FRONTEND }}:latest
           build-args: |
             REACT_APP_API_URL=https://${{ secrets.DOMAIN }}
+            REACT_APP_YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}
+            REACT_APP_YOUTUBE_CHANNEL_ID=${{ secrets.YOUTUBE_CHANNEL_ID }}
+            REACT_APP_ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
+            REACT_APP_ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
+            REACT_APP_ADMIN_NAME=${{ secrets.ADMIN_NAME }}
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.2.0
@@ -50,13 +55,19 @@ jobs:
             set -e
             cd /opt/church-website
 
-            # Pull latest compose files
             git pull
 
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
             export GITHUB_REPOSITORY=rodriguemedor/church-website
 
-            docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
-            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --remove-orphans
+            # Create .env with production secrets on first deploy
+            touch .env
+            grep -q '^JWT_SECRET=' .env 2>/dev/null || \
+              echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+            grep -q '^DB_PASSWORD=' .env 2>/dev/null || \
+              echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+
+            docker compose --env-file .env -f docker-compose.yml -f docker-compose.prod.yml pull
+            docker compose --env-file .env -f docker-compose.yml -f docker-compose.prod.yml up -d --remove-orphans
             docker image prune -f

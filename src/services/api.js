@@ -35,7 +35,10 @@ class ApiClient {
   async request(endpoint, options = {}) {
     const { method = 'GET', body, auth = false, params } = options;
 
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept-Language': i18n.language || 'en',
+    };
     const token = this._resolveToken(auth);
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;

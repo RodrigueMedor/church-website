@@ -1,16 +1,23 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppBar, IconButton, Toolbar, Typography, Box, Avatar } from '@mui/material';
+import { AppBar, IconButton, Toolbar, Typography, Box, Avatar, Chip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LanguageIcon from '@mui/icons-material/Language';
 import { deepOrange } from '@mui/material/colors';
 import { useThemeMode } from '../../../theme/ThemeModeContext';
 
 const AdminHeader = ({ drawerWidth, handleDrawerToggle }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { mode, toggleMode } = useThemeMode();
+
+  const toggleLanguage = () => {
+    const next = i18n.language === 'en' ? 'fr' : 'en';
+    i18n.changeLanguage(next);
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -36,6 +43,14 @@ const AdminHeader = ({ drawerWidth, handleDrawerToggle }) => {
         <Box sx={{ flexGrow: 1 }} />
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Chip
+            icon={<LanguageIcon />}
+            label={i18n.language === 'en' ? 'EN' : 'FR'}
+            variant="outlined"
+            size="small"
+            onClick={toggleLanguage}
+            sx={{ cursor: 'pointer', fontWeight: 600 }}
+          />
           <IconButton color="inherit" onClick={toggleMode} aria-label="toggle theme">
             {mode === 'light' ? <DarkModeIcon /> : <LightModeIcon />}
           </IconButton>

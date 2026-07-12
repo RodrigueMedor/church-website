@@ -4,9 +4,9 @@ import i18n from '../i18n';
 const AUTH_KEY = 'cms_auth';
 
 const DEFAULT_ADMIN = {
-  email: 'admin@fhbck.org',
-  password: 'admin123',
-  name: 'Admin',
+  email: process.env.REACT_APP_ADMIN_EMAIL || 'admin@fhbck.org',
+  password: process.env.REACT_APP_ADMIN_PASSWORD || 'admin123',
+  name: process.env.REACT_APP_ADMIN_NAME || 'Admin',
 };
 
 function init() {

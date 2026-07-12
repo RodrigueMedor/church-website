@@ -19,8 +19,8 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PersonIcon from '@mui/icons-material/Person';
 
 // YouTube API Configuration
-const YOUTUBE_API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY || 'AIzaSyAo8qWdA_Cp7FVzis4ywrtGBtIrJ3yCHo0';
-const CHANNEL_ID = process.env.REACT_APP_YOUTUBE_CHANNEL_ID || 'UCPTq5ur5PxzFhoJ0LVRHKhA';
+const YOUTUBE_API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY || '';
+const CHANNEL_ID = process.env.REACT_APP_YOUTUBE_CHANNEL_ID || '';
 const MAX_RESULTS = 1;
 
 // Format duration from ISO 8601 to HH:MM:SS

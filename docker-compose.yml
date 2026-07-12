@@ -29,7 +29,11 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/church_db
       DB_USERNAME: church_admin
       DB_PASSWORD: ${DB_PASSWORD:-church_pass}
-      JWT_SECRET: ${JWT_SECRET}
+      JWT_SECRET: ${JWT_SECRET:-}
+      MAIL_HOST: ${MAIL_HOST:-}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_NOTIFY_TO: ${MAIL_NOTIFY_TO:-info@fhbck.org}
       UPLOAD_DIR: /app/uploads
       CORS_ORIGINS: https://fhbck.org,https://www.fhbck.org
     volumes:
