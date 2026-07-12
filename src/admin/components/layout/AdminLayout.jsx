@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Outlet, useLocation, Navigate } from 'react-router-dom';
-import { Box, CssBaseline, Toolbar, ThemeProvider } from '@mui/material';
+import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import AdminSidebar from './AdminSidebar';
 import AdminHeader from './AdminHeader';
-import adminTheme from '../../theme/adminTheme';
+import { createAdminTheme } from '../../theme/adminTheme';
+import { useThemeMode } from '../../../theme/ThemeModeContext';
 import { PageLoading } from '../common/Loading';
+import { NotificationProvider } from '../../context/NotificationContext';
 
 const drawerWidth = 240;
 
 const AdminLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { mode } = useThemeMode();
+  const theme = useMemo(() => createAdminTheme(mode), [mode]);
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
@@ -22,7 +26,7 @@ const AdminLayout = () => {
 
   if (location.pathname === '/admin/login') {
     return (
-      <ThemeProvider theme={adminTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <React.Suspense fallback={<PageLoading />}>
           <Outlet />
@@ -32,30 +36,32 @@ const AdminLayout = () => {
   }
 
   return (
-    <ThemeProvider theme={adminTheme}>
-      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-        <CssBaseline />
-        <AdminHeader drawerWidth={drawerWidth} handleDrawerToggle={handleDrawerToggle} />
-        <AdminSidebar drawerWidth={drawerWidth} mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            p: { xs: 2, sm: 3 },
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-            backgroundColor: 'background.default',
-            marginLeft: { sm: `${drawerWidth}px` },
-            mt: '64px',
-            minHeight: 'calc(100vh - 64px)',
-          }}
-        >
-          <React.Suspense fallback={<PageLoading />}>
-            <Box sx={{ width: '100%' }}>
-              <Outlet />
-            </Box>
-          </React.Suspense>
+    <ThemeProvider theme={theme}>
+      <NotificationProvider>
+        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+          <CssBaseline />
+          <AdminHeader drawerWidth={drawerWidth} handleDrawerToggle={handleDrawerToggle} />
+          <AdminSidebar drawerWidth={drawerWidth} mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              p: { xs: 2, sm: 3 },
+              width: { sm: `calc(100% - ${drawerWidth}px)` },
+              backgroundColor: 'background.default',
+              marginLeft: { sm: `${drawerWidth}px` },
+              mt: '64px',
+              minHeight: 'calc(100vh - 64px)',
+            }}
+          >
+            <React.Suspense fallback={<PageLoading />}>
+              <Box sx={{ width: '100%' }}>
+                <Outlet />
+              </Box>
+            </React.Suspense>
+          </Box>
         </Box>
-      </Box>
+      </NotificationProvider>
     </ThemeProvider>
   );
 };

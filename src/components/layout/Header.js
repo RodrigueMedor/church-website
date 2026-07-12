@@ -39,10 +39,8 @@ import {
 } from '@mui/material';
 import { styled, alpha, keyframes } from '@mui/material/styles';
 import LanguageSwitcher from '../common/LanguageSwitcher';
-import { storage } from '../../cms';
-
-const settings = storage.get('settings') || {};
-const logoUrl = settings.siteLogo || '/images/logo/logo-blog1.png';
+import ThemeToggle from '../common/ThemeToggle';
+import CMS_API from '../../services/cmsApi';
 
 // ─── Animations ────────────────────────────────────────────────────────────────
 const slideDown = keyframes`
@@ -223,9 +221,23 @@ const Header = () => {
   const [openSubMenu, setOpenSubMenu]   = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const dropdownRef                     = useRef(null);
+  const [logoUrl, setLogoUrl]           = useState('/images/logo/logo-blog1.png');
   const { t }                           = useTranslation();
   const theme                           = useTheme();
   const location                        = useLocation();
+
+  // Fetch settings from API for logo
+  useEffect(() => {
+    CMS_API.fetchSettings().then(data => {
+      if (data) {
+        const map = {};
+        if (Array.isArray(data)) {
+          data.forEach(s => { map[s.settingKey] = s.settingValue; });
+        }
+        if (map.siteLogo) setLogoUrl(map.siteLogo);
+      }
+    }).catch(() => {});
+  }, []);
 
   // Scroll effect
   useEffect(() => {
@@ -518,11 +530,13 @@ const Header = () => {
 
             {/* ── Right Side Actions ── */}
             <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1, flexShrink: 0 }}>
+              <ThemeToggle />
               <LanguageSwitcher />
             </Box>
 
             {/* ── Mobile Right ── */}
             <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1, ml: 'auto' }}>
+              <ThemeToggle />
               <LanguageSwitcher />
               <IconButton
                 aria-label="open drawer"

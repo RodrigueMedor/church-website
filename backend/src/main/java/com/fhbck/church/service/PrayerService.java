@@ -7,6 +7,8 @@ import com.fhbck.church.repository.PrayerRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class PrayerService {
 
     private final PrayerRequestRepository prayerRequestRepository;
+    private final MessageSource messageSource;
 
     public PagedResponse<PrayerRequestDto> getAll(int page, int size) {
         var pageable = PageRequest.of(page, size);
@@ -50,7 +53,7 @@ public class PrayerService {
     @Transactional
     public PrayerRequestDto markAsPrayed(Long id) {
         var req = prayerRequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Prayer request not found: " + id));
+                .orElseThrow(() -> new RuntimeException(messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.prayerRequest", null, LocaleContextHolder.getLocale()), id}, LocaleContextHolder.getLocale())));
         req.setPrayed(true);
         return toDto(prayerRequestRepository.save(req));
     }

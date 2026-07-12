@@ -10,6 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 public class SermonService {
 
     private final SermonRepository sermonRepository;
+    private final MessageSource messageSource;
 
     public PagedResponse<SermonDto> getAll(int page, int size, String keyword) {
         var pageable = PageRequest.of(page, size);
@@ -31,7 +35,11 @@ public class SermonService {
 
     public SermonDto getById(Long id) {
         return toDto(sermonRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Sermon not found: " + id)));
+                .orElseThrow(() -> {
+                    var locale = LocaleContextHolder.getLocale();
+                    return new ResourceNotFoundException(
+                        messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.sermon", null, locale), id}, locale));
+                }));
     }
 
     @Transactional
@@ -43,7 +51,11 @@ public class SermonService {
     @Transactional
     public SermonDto update(Long id, SermonDto dto) {
         var sermon = sermonRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Sermon not found: " + id));
+                .orElseThrow(() -> {
+                    var locale = LocaleContextHolder.getLocale();
+                    return new ResourceNotFoundException(
+                        messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.sermon", null, locale), id}, locale));
+                });
         sermon.setTitle(dto.getTitle());
         sermon.setDescription(dto.getDescription());
         sermon.setSpeaker(dto.getSpeaker());
@@ -62,7 +74,9 @@ public class SermonService {
     @Transactional
     public void delete(Long id) {
         if (!sermonRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Sermon not found: " + id);
+            var locale = LocaleContextHolder.getLocale();
+            throw new ResourceNotFoundException(
+                messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.sermon", null, locale), id}, locale));
         }
         sermonRepository.deleteById(id);
     }

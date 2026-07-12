@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Container,
@@ -22,6 +23,7 @@ import {
 } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { usePageContent } from '../../cms';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
@@ -208,32 +210,34 @@ const SectionTitle = styled(Typography)(({ theme }) => ({
 }));
 
 const GivingPage = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
+  const content = usePageContent('giving');
 
   const impactStats = [
     {
       number: '500+',
-      label: 'Families Helped',
+      label: t('giving.familiesHelped'),
       icon: <PeopleIcon className="impact-icon" />,
       color: '#1a365d',
     },
     {
       number: '50+',
-      label: 'Community Programs',
+      label: t('giving.communityPrograms'),
       icon: <VolunteerActivismIcon className="impact-icon" />,
       color: '#2c5282',
     },
     {
       number: '100%',
-      label: 'Goes to Mission',
+      label: t('giving.goesToMission'),
       icon: <TrendingUpIcon className="impact-icon" />,
       color: '#c9a84c',
     },
     {
       number: '15+',
-      label: 'Years of Service',
+      label: t('giving.yearsOfService'),
       icon: <FavoriteIcon className="impact-icon" />,
       color: '#1a365d',
     },
@@ -241,23 +245,23 @@ const GivingPage = () => {
 
   const testimonials = [
     {
-      name: 'Marie Dupont',
-      role: 'Church Member',
-      content: 'Giving through Zelle has been so convenient. I can give directly from my banking app and know it arrives instantly and securely.',
+      name: t('giving.testimonial1Name', 'Marie Dupont'),
+      role: t('giving.testimonial1Role', 'Church Member'),
+      content: t('giving.testimonial1Content', 'Giving through Zelle has been so convenient. I can give directly from my banking app and know it arrives instantly and securely.'),
       avatar: 'MD',
       rating: 5,
     },
     {
-      name: 'Jean Pierre',
-      role: 'Volunteer',
-      content: 'The Zelle option makes it so easy to support the mission. No fees, instant transfer, and I can give from anywhere using my phone.',
+      name: t('giving.testimonial2Name', 'Jean Pierre'),
+      role: t('giving.testimonial2Role', 'Volunteer'),
+      content: t('giving.testimonial2Content', 'The Zelle option makes it so easy to support the mission. No fees, instant transfer, and I can give from anywhere using my phone.'),
       avatar: 'JP',
       rating: 5,
     },
     {
-      name: 'Sarah Johnson',
-      role: 'Community Partner',
-      content: 'This church truly makes a difference. Zelle giving is secure and fast - perfect for supporting their amazing work in our community.',
+      name: t('giving.testimonial3Name', 'Sarah Johnson'),
+      role: t('giving.testimonial3Role', 'Community Partner'),
+      content: t('giving.testimonial3Content', 'This church truly makes a difference. Zelle giving is secure and fast - perfect for supporting their amazing work in our community.'),
       avatar: 'SJ',
       rating: 5,
     },
@@ -297,7 +301,7 @@ const GivingPage = () => {
                     backgroundClip: 'text',
                   }}
                 >
-                  Invest in Our Mission
+                  {content.heroTitle || t('giving.heroTitle')}
                 </Typography>
                 <Typography 
                   variant="h5" 
@@ -313,7 +317,7 @@ const GivingPage = () => {
                     fontStyle: 'italic',
                   }}
                 >
-                  Your generous support enables us to expand our outreach, strengthen our community, and bring hope to those in need. Every contribution makes a lasting impact.
+                  {content.heroSubtitle || t('giving.heroSubtitle')}
                 </Typography>
               </Box>
             </Fade>
@@ -343,17 +347,17 @@ const GivingPage = () => {
                 }}
               >
                 <AccountBalanceIcon sx={{ mr: 2, fontSize: 28 }} />
-                Open Zelle Now
+                {content.zelleButton || t('giving.zelleButton')}
               </Button>
               <Typography variant="body2" color="rgba(255, 255, 255, 0.8)" sx={{ mt: 2, textAlign: 'center' }}>
-                Learn how to give using your own banking app with Zelle®
+                 {content.zelleLearnMore || t('giving.zelleLearnMore')}
               </Typography>
             </Box>
 
             {/* Impact Statistics */}
             <Box sx={{ mt: 8 }}>
               <Typography variant="h4" sx={{ mb: 4, fontWeight: 600 }}>
-                Our Impact Together
+                {content.impactTitle || t('giving.impactTitle')}
               </Typography>
               <Grid container spacing={3}>
                 {impactStats.map((stat, index) => (
@@ -391,7 +395,7 @@ const GivingPage = () => {
             <Box sx={{ mt: 5, mb: 8 }}>
               <Container maxWidth="lg">
                 <Typography variant="h4" sx={{ mb: 4, fontWeight: 600, textAlign: 'center' }}>
-                  Our Community in Action
+                  {content.communityTitle || t('giving.communityTitle')}
                 </Typography>
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={6}>
@@ -457,10 +461,10 @@ const GivingPage = () => {
         <Container maxWidth="md">
           <Box textAlign="center" mb={6}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
-              Give Securely with Zelle
+              {content.zelleSectionTitle || t('giving.zelleSectionTitle', 'Give Securely with Zelle')}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '700px', mx: 'auto', mb: 4 }}>
-              Zelle is a payment service built into your banking app. Use your own bank's app to give securely and instantly to our church.
+              {t('giving.zelleDescription', 'Zelle is a payment service built into your banking app. Use your own bank\'s app to give securely and instantly to our church.')}
             </Typography>
           </Box>
           
@@ -501,14 +505,14 @@ const GivingPage = () => {
                     </Box>
                     
                     <Typography variant="h4" gutterBottom sx={{ fontWeight: 700, color: '#1a365d' }}>
-                      Zelle Giving
+                      {t('giving.zelleGivingHeading', 'Zelle Giving')}
                     </Typography>
                     <Typography variant="body1" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
-                      Give quickly and securely through Zelle<sup>&reg;</sup> - the payment service built into your banking app. No fees, instant delivery, and complete security.
+                      {t('giving.zelleDescription2', 'Give quickly and securely through Zelle')}<sup>&reg;</sup>{t('giving.zelleDescription2Suffix', ' - the payment service built into your banking app. No fees, instant delivery, and complete security.')}
                     </Typography>
                     
                     <Box sx={{ mb: 4 }}>
-                      {['Fee-free transfers', 'Bank-level security', 'Instant delivery', 'Mobile & desktop'].map((feature, idx) => (
+                      {[t('giving.featureFeeFree', 'Fee-free transfers'), t('giving.featureSecurity', 'Bank-level security'), t('giving.featureInstant', 'Instant delivery'), t('giving.featureMobile', 'Mobile & desktop')].map((feature, idx) => (
                         <Chip 
                           key={idx}
                           label={feature}
@@ -536,15 +540,15 @@ const GivingPage = () => {
                     boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
                   }}>
                     <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, textAlign: 'center' }}>
-                      How to Give with Zelle
+                      {t('giving.howToTitle', 'How to Give with Zelle')}
                     </Typography>
                     
                     <Box sx={{ mb: 3 }}>
                       {[
-                        'Open your banking app and select Zelle',
-                        'Send to: +1 (407) 218-0827',
-                        'Enter your donation amount',
-                        'Complete secure transfer'
+                        t('giving.step1', 'Open your banking app and select Zelle'),
+                        t('giving.step2', 'Send to: +1 (407) 218-0827'),
+                        t('giving.step3', 'Enter your donation amount'),
+                        t('giving.step4', 'Complete secure transfer')
                       ].map((step, index) => (
                         <Box key={index} sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
                           <Box sx={{ 
@@ -579,7 +583,7 @@ const GivingPage = () => {
                       textAlign: 'center'
                     }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 600, color: '#1a365d', mb: 1 }}>
-                        Zelle Recipient
+                        {t('giving.zelleRecipient', 'Zelle Recipient')}
                       </Typography>
                       <Typography variant="body2" sx={{ fontFamily: 'monospace', color: '#1a365d' }}>
                         church@fhbckissimmee.org
@@ -609,11 +613,11 @@ const GivingPage = () => {
                         transition: 'all 0.3s ease',
                       }}
                     >
-                      Open Zelle Now
+                      {t('giving.openZelleNow', 'Open Zelle Now')}
                     </Button>
                     
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 2, textAlign: 'center' }}>
-                      Available in most US banking apps. Check with your bank for Zelle availability.
+                      {t('giving.zelleAvailability', 'Available in most US banking apps. Check with your bank for Zelle availability.')}
                     </Typography>
                   </Box>
                 </Grid>
@@ -631,7 +635,7 @@ const GivingPage = () => {
               }}>
                 <SecurityIcon sx={{ color: '#1a365d', fontSize: 20 }} />
                 <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
-                  Bank-Level Security & Fraud Protection
+                  {t('giving.securityBadge', 'Bank-Level Security & Fraud Protection')}
                 </Typography>
               </Box>
             </Box>
@@ -647,10 +651,10 @@ const GivingPage = () => {
         <Container maxWidth="lg">
           <Box textAlign="center" mb={6}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
-              What Our Givers Say
+              {content.testimonialsTitle || t('giving.testimonialsTitle', 'What Our Givers Say')}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '700px', mx: 'auto' }}>
-              Hear from members of our community who have experienced the joy of giving and making a difference.
+              {t('giving.testimonialsSubtitle', 'Hear from members of our community who have experienced the joy of giving and making a difference.')}
             </Typography>
           </Box>
           
@@ -710,39 +714,34 @@ const GivingPage = () => {
         <Container maxWidth="md">
           <Box textAlign="center" mb={6}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
-              Frequently Asked Questions
+              {content.faqTitle || t('giving.faqTitle', 'Frequently Asked Questions')}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '700px', mx: 'auto', mb: 4 }}>
-              Find answers to common questions about giving to our church and how your donations make a difference.
+              {t('giving.faqSubtitle', 'Find answers to common questions about giving to our church and how your donations make a difference.')}
             </Typography>
           </Box>
           
           <Box sx={{ maxWidth: '800px', mx: 'auto' }}>
             {[
               {
-                question: 'Is my donation tax-deductible?',
-                answer: 'Yes, First Haitian Baptist Church of Kissimmee is a registered 501(c)(3) non-profit organization. All donations are tax-deductible to the full extent allowed by law. You will receive an annual tax statement for your records.',
+                question: t('giving.faq1Q', 'Is my donation tax-deductible?'),
+                answer: t('giving.faq1A', 'Yes, First Haitian Baptist Church of Kissimmee is a registered 501(c)(3) non-profit organization. All donations are tax-deductible to the full extent allowed by law. You will receive an annual tax statement for your records.'),
                 icon: <SecurityIcon />,
               },
               {
-                question: 'Will I receive a receipt for my donation?',
-                answer: 'Yes, you will receive an email receipt immediately after your donation is processed. The receipt will include your donation amount and tax information for your records.',
+                question: t('giving.faq2Q', 'Will I receive a receipt for my donation?'),
+                answer: t('giving.faq2A', 'Yes, you will receive an email receipt immediately after your donation is processed. The receipt will include your donation amount and tax information for your records.'),
                 icon: <CheckCircleIcon />,
               },
               {
-                question: 'How does Zelle giving work?',
-                answer: 'Simply open your banking app, select Zelle, and send money to church@fhbckissimmee.org. The transfer is instant and fee-free. Most major US banks offer Zelle in their mobile apps.',
+                question: t('giving.faq3Q', 'How does Zelle giving work?'),
+                answer: t('giving.faq3A', 'Simply open your banking app, select Zelle, and send money to church@fhbckissimmee.org. The transfer is instant and fee-free. Most major US banks offer Zelle in their mobile apps.'),
                 icon: <AccountBalanceIcon />,
               },
               {
-                question: 'Is Zelle secure?',
-                answer: 'Absolutely! Zelle uses bank-level security and encryption to protect your transactions. It\'s the same trusted technology your bank uses for other transfers, with fraud protection included.',
+                question: t('giving.faq4Q', 'Is Zelle secure?'),
+                answer: t('giving.faq4A', 'Absolutely! Zelle uses bank-level security and encryption to protect your transactions. It\'s the same trusted technology your bank uses for other transfers, with fraud protection included.'),
                 icon: <SecurityIcon />,
-              },
-              {
-                question: 'Are there any fees for giving with Zelle?',
-                answer: 'No! Zelle is completely fee-free for both you and our church. 100% of your donation goes directly to support our mission work.',
-                icon: <TrendingUpIcon />,
               },
             ].map((faq, index) => (
               <Slide direction="up" in timeout={2200 + index * 100} key={index}>
@@ -851,7 +850,7 @@ const GivingPage = () => {
                 }
               }}
             >
-              Have Questions About Giving?
+              {content.ctaTitle || t('giving.ctaTitle', 'Have Questions About Giving?')}
             </Typography>
             
             <Typography 
@@ -865,7 +864,7 @@ const GivingPage = () => {
                 lineHeight: 1.8,
               }}
             >
-              Our team is here to help you with any questions you may have about giving to First Haitian Baptist Church of Kissimmee. We're happy to assist you in finding the best way to support our mission.
+              {t('giving.contactBody', 'Our team is here to help you with any questions you may have about giving to First Haitian Baptist Church of Kissimmee. We\'re happy to assist you in finding the best way to support our mission.')}
             </Typography>
             
             <Stack 
@@ -896,7 +895,7 @@ const GivingPage = () => {
                   },
                 }}
               >
-                Contact Us
+                {t('giving.contactUsButton', 'Contact Us')}
               </Button>
               
               <Button 
@@ -917,7 +916,7 @@ const GivingPage = () => {
                   },
                 }}
               >
-                Call (407) 218-0827
+                {t('giving.callButton', 'Call (407) 218-0827')}
               </Button>
             </Stack>
           </Box>

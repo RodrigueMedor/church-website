@@ -34,7 +34,7 @@ const EventBoxes = () => {
         {
             id: 1,
             title: t('events.multimedia.title', 'Multimedia Ministry'),
-            date: t('events.multimedia.date', 'Sunday, 10:00 AM - 12:00 PM'),
+            date: '',
             location: t('events.multimedia.location', 'Main Sanctuary'),
             description: t('events.multimedia.description', 'The Multimedia Ministry is dedicated to using technology and creativity to support and enhance worship experience. Through sound, visuals, and digital media, we help communicate the message of the Gospel clearly and effectively to both in-person and online audiences. "Go into all the world and preach the gospel to all creation." — Mark 16:15'),
             image: '/images/easter/multimedia-photo.jpg',
@@ -44,20 +44,20 @@ const EventBoxes = () => {
         {
             id: 2,
             title: t('events.fellowship.title', 'Community Fellowship Gathering'),
-            date: t('events.fellowship.date', 'Wednesdays 6:30 PM'),
+            date: '',
             location: t('events.fellowship.location', 'Fellowship Hall'),
             description: t('events.fellowship.description', 'Connect with our church family through meaningful fellowship, prayer, and building lasting relationships in Christ.'),
-            image: '/images/easter/worship-photo.jpg',
+            image: '/images/photo/prayer-1.jpg',
             category: t('events.fellowship.category', 'Fellowship'),
             registrationUrl: 'https://onrealm.org/fbckissimmee/PublicRegistrations/Event?linkString=N2Y4NmNiNzctOTVlMC00MjE3LWFjOGEtYjNjYTAxNWU2MGRl'
         },
         {
             id: 3,
             title: t('events.bridge.title', 'Bridge Ministry'),
-            date: t('events.bridge.date', 'Starting April 1'),
+            date: '',
             location: t('events.bridge.location', 'Education Wing'),
-            description: t('events.bridge.description', 'Connecting youth to God, the church, and one another. We serve as a welcoming pathway for new visitors and the surrounding community by building meaningful relationships and providing support where needed most. "Therefore welcome one another as Christ has welcomed you, for the glory of God." — Romans 15:7'),
-            image: '/images/easter/bridge-ministry-photo.jpg',
+            description: t('events.bridge.description', 'The Bridge Ministry is dedicated to celebrating and supporting the educational achievements of our church family. Each year, we organize the Annual Student Recognition Program to honor students of all ages\u2014from preschool and elementary school to middle school, high school, college, university, vocational, and graduate programs\u2014as they complete another academic year or reach significant milestones.\n\nIn addition to recognizing academic accomplishments, the ministry plans and coordinates church-wide fellowship and entertainment activities that bring families together in a joyful, Christ-centered environment. Through meaningful events, celebrations, and community engagement, we encourage students to pursue excellence, inspire lifelong learning, strengthen relationships within the church, and give all glory to God for every achievement.\n\nOur mission is to encourage every student to grow academically, spiritually, and personally while reminding them that their gifts, talents, and success are blessings from God. We strive to create memorable experiences that inspire future generations to serve Christ faithfully and positively impact their communities.\n\n\u201cTrain up a child in the way he should go; even when he is old he will not depart from it.\u201d \u2014 Proverbs 22:6'),
+            image: '/images/easter/bridge-ministry.jpg',
             category: t('events.bridge.category', 'Youth & Community'),
             registrationUrl: 'https://onrealm.org/fbckissimmee/PublicRegistrations/Event?linkString=N2Y4NmNiNzctOTVlMC00MjE3LWFjOGEtYjNjYTAxNWU2MGRl'
         },

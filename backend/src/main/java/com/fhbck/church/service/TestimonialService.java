@@ -6,6 +6,8 @@ import com.fhbck.church.exception.ResourceNotFoundException;
 import com.fhbck.church.repository.TestimonialRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class TestimonialService {
 
     private final TestimonialRepository testimonialRepository;
+    private final MessageSource messageSource;
 
     public List<TestimonialDto> getAll() {
         return testimonialRepository.findByActiveTrueOrderBySortOrderAsc()
@@ -31,7 +34,11 @@ public class TestimonialService {
     @Transactional
     public TestimonialDto update(Long id, TestimonialDto dto) {
         var t = testimonialRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Testimonial not found: " + id));
+                .orElseThrow(() -> {
+                    var locale = LocaleContextHolder.getLocale();
+                    return new ResourceNotFoundException(
+                        messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.testimonial", null, locale), id}, locale));
+                });
         t.setName(dto.getName());
         t.setTitle(dto.getTitle());
         t.setContent(dto.getContent());
@@ -44,7 +51,9 @@ public class TestimonialService {
     @Transactional
     public void delete(Long id) {
         if (!testimonialRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Testimonial not found: " + id);
+            var locale = LocaleContextHolder.getLocale();
+            throw new ResourceNotFoundException(
+                messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.testimonial", null, locale), id}, locale));
         }
         testimonialRepository.deleteById(id);
     }

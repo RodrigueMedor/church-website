@@ -31,6 +31,7 @@ public class AdminController {
     private final ContactService contactService;
     private final PrayerService prayerService;
     private final ChurchSettingService churchSettingService;
+    private final PageContentService pageContentService;
     private final UserService userService;
 
     // Hero Slides
@@ -344,6 +345,55 @@ public class AdminController {
     @Operation(summary = "Update user roles")
     public ResponseEntity<UserDto> updateUserRoles(@PathVariable Long id, @RequestBody List<String> roles) {
         return ResponseEntity.ok(userService.updateRoles(id, roles));
+    }
+
+    // Page Content
+    @GetMapping("/page-content")
+    @Operation(summary = "Get all page content entries")
+    public ResponseEntity<?> getAllPageContent() {
+        return ResponseEntity.ok(pageContentService.findAll());
+    }
+
+    @GetMapping("/page-content/{pageKey}")
+    @Operation(summary = "Get a page content entry by key")
+    public ResponseEntity<?> getPageContent(@PathVariable String pageKey) {
+        try {
+            return ResponseEntity.ok(pageContentService.findByPageKey(pageKey));
+        } catch (com.fhbck.church.exception.ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/page-content")
+    @Operation(summary = "Create a page content entry")
+    public ResponseEntity<?> createPageContent(@Valid @RequestBody PageContentDTO dto) {
+        return ResponseEntity.ok(pageContentService.create(dto));
+    }
+
+    @PutMapping("/page-content/{pageKey}")
+    @Operation(summary = "Update a page content entry by key")
+    public ResponseEntity<?> updatePageContent(@PathVariable String pageKey, @Valid @RequestBody PageContentDTO dto) {
+        return ResponseEntity.ok(pageContentService.update(pageKey, dto));
+    }
+
+    @DeleteMapping("/page-content/{pageKey}")
+    @Operation(summary = "Delete a page content entry by key")
+    public ResponseEntity<Void> deletePageContent(@PathVariable String pageKey) {
+        pageContentService.delete(pageKey);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/page-content/{pageKey}/full")
+    @Operation(summary = "Save full page content JSON data")
+    public ResponseEntity<?> saveFullPageContent(@PathVariable String pageKey, @RequestBody java.util.Map<String, Object> body) {
+        try {
+            var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            String json = mapper.writeValueAsString(body);
+            var saved = pageContentService.savePageData(pageKey, json);
+            return ResponseEntity.ok(mapper.readTree(saved.getData()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
+        }
     }
 
     // Dashboard stats

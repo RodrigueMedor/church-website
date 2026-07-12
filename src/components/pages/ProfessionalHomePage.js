@@ -252,6 +252,7 @@ const ProfessionalHomePage = () => {
           icon: icons[i % icons.length],
           title: f.title,
           description: f.description,
+          image: f.image || null,
           color: f.color && /^#/.test(f.color) ? f.color : defaultColors[i % defaultColors.length],
         };
       });
@@ -424,7 +425,7 @@ const ProfessionalHomePage = () => {
                       transform: 'translateY(0)'
                     }}
                   >
-                    {loadingVideo ? 'Loading...' : t('home.watchLive')}
+                    {loadingVideo ? t('home.watchLiveLoading', 'Loading...') : t('home.watchLive')}
                   </Button>
                 </Box>
               </Box>
@@ -495,8 +496,19 @@ const ProfessionalHomePage = () => {
         </Box>
 
         {/* Features Section */}
-        <Section sx={{ bgcolor: 'background.paper' }}>
-          <Container maxWidth="lg">
+        <Section sx={{
+          position: 'relative', bgcolor: 'background.paper', overflow: 'hidden',
+          ...(content.communitySection?.image ? {
+            '&::before': {
+              content: '""',
+              position: 'absolute', inset: 0,
+              backgroundImage: `url(${content.communitySection.image})`,
+              backgroundSize: 'cover', backgroundPosition: 'center',
+              opacity: 0.1,
+            }
+          } : {})
+        }}>
+          <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
             <ScrollReveal>
               <Box textAlign="center" mb={4}>
                 <Typography
@@ -510,7 +522,7 @@ const ProfessionalHomePage = () => {
                     fontSize: { xs: '2rem', md: '2.5rem' },
                   }}
                 >
-                  {t('home.ourCommunity') || 'Welcome to Our Church Family'}
+                  {content.communitySection?.title || t('home.ourCommunity') || 'Welcome to Our Church Family'}
                 </Typography>
                 <Typography
                   sx={{
@@ -522,7 +534,7 @@ const ProfessionalHomePage = () => {
                     fontSize: '1.1rem',
                   }}
                 >
-                  {t('home.communityDescription') || 'We are a diverse community of believers committed to worshiping God, growing together in faith, and serving others with love and compassion.'}
+                  {content.communitySection?.description || t('home.communityDescription') || 'We are a diverse community of believers committed to worshiping God, growing together in faith, and serving others with love and compassion.'}
                 </Typography>
               </Box>
             </ScrollReveal>
@@ -532,23 +544,34 @@ const ProfessionalHomePage = () => {
                 <Grid item xs={12} md={4} key={index}>
                   <Slide direction="up" in timeout={800 + index * 200}>
                     <FeatureCard index={index} elevation={6}>
-                      <Box className="feature-icon" sx={{ 
-                        display: 'flex', 
-                        justifyContent: 'center', 
-                        mb: 3,
-                        transition: 'transform 0.3s ease',
-                      }}>
-                        <Avatar
-                          sx={{
-                            width: 80,
-                            height: 80,
-                            backgroundColor: alpha(feature.color, 0.1),
-                            color: feature.color,
-                          }}
-                        >
-                          {feature.icon}
-                        </Avatar>
-                      </Box>
+                      {feature.image ? (
+                        <Box sx={{
+                          height: 180,
+                          backgroundImage: `url(${feature.image})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          borderRadius: '12px',
+                          mb: 2,
+                        }} />
+                      ) : (
+                        <Box className="feature-icon" sx={{ 
+                          display: 'flex', 
+                          justifyContent: 'center', 
+                          mb: 3,
+                          transition: 'transform 0.3s ease',
+                        }}>
+                          <Avatar
+                            sx={{
+                              width: 80,
+                              height: 80,
+                              backgroundColor: alpha(feature.color, 0.1),
+                              color: feature.color,
+                            }}
+                          >
+                            {feature.icon}
+                          </Avatar>
+                        </Box>
+                      )}
                       <Typography variant="h5" sx={{ 
                         fontWeight: 600, 
                         mb: 2, 
@@ -598,8 +621,19 @@ const ProfessionalHomePage = () => {
         </Section>
 
         {/* Upcoming Events - PRESERVING EXISTING COMPONENT */}
-        <Box sx={{ bgcolor: 'background.paper', py: 2, position: 'relative' }}>
-          <Container maxWidth="lg">
+        <Box sx={{
+          bgcolor: 'background.paper', py: 2, position: 'relative', overflow: 'hidden',
+          ...(content.upcomingGatherings?.image ? {
+            '&::before': {
+              content: '""',
+              position: 'absolute', inset: 0,
+              backgroundImage: `url(${content.upcomingGatherings.image})`,
+              backgroundSize: 'cover', backgroundPosition: 'center',
+              opacity: 0.1,
+            }
+          } : {})
+        }}>
+          <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
             <ScrollReveal>
               <Box textAlign="center" mb={2}>
                 <Typography
@@ -613,7 +647,7 @@ const ProfessionalHomePage = () => {
                     fontSize: { xs: '1.5rem', md: '2rem' },
                   }}
                 >
-                  {t('upcomingGatherings', 'Join us for our upcoming gatherings and activities')}
+                  {content.upcomingGatherings?.title || t('upcomingGatherings', 'Join us for our upcoming gatherings and activities')}
                 </Typography>
                 <Typography
                   sx={{
@@ -625,7 +659,7 @@ const ProfessionalHomePage = () => {
                     fontSize: '1.1rem',
                   }}
                 >
-                  {t('upcomingGatheringsSubtitle', 'Discover our ministries, fellowship opportunities, and community activities designed to help you grow in faith and connect with others.')}
+                  {content.upcomingGatherings?.subtitle || t('upcomingGatheringsSubtitle', 'Discover our ministries, fellowship opportunities, and community activities designed to help you grow in faith and connect with others.')}
                 </Typography>
               </Box>
             </ScrollReveal>
@@ -659,8 +693,50 @@ const ProfessionalHomePage = () => {
         </Box>
 
         {/* Latest News - PRESERVING EXISTING COMPONENT */}
-        <Box sx={{ bgcolor: 'background.paper', py: 2, position: 'relative' }}>
-          <Container maxWidth="lg">
+        <Box sx={{
+          bgcolor: 'background.paper', py: 2, position: 'relative', overflow: 'hidden',
+          ...(content.latestNews?.image ? {
+            '&::before': {
+              content: '""',
+              position: 'absolute', inset: 0,
+              backgroundImage: `url(${content.latestNews.image})`,
+              backgroundSize: 'cover', backgroundPosition: 'center',
+              opacity: 0.1,
+            }
+          } : {})
+        }}>
+          <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+            <ScrollReveal>
+              <Box textAlign="center" mb={2}>
+                <Typography
+                  variant="h3"
+                  component="h2"
+                  gutterBottom
+                  sx={{
+                    fontWeight: 700,
+                    mb: 1,
+                    color: 'primary.main',
+                    fontSize: { xs: '1.5rem', md: '2rem' },
+                  }}
+                >
+                  {content.latestNews?.title || t('home.latestNews', 'Latest News & Updates')}
+                </Typography>
+                {content.latestNews?.subtitle && (
+                  <Typography
+                    sx={{
+                      color: 'text.secondary',
+                      maxWidth: '800px',
+                      mx: 'auto',
+                      lineHeight: 1.6,
+                      mb: 2,
+                      fontSize: '1.1rem',
+                    }}
+                  >
+                    {content.latestNews.subtitle}
+                  </Typography>
+                )}
+              </Box>
+            </ScrollReveal>
             <ScrollReveal>
               <Box textAlign="center">
                 <NewsSection />

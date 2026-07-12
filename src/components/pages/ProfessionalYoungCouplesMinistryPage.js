@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Church, Favorite, FamilyRestroom, Home } from '@mui/icons-material';
 import MinistriesLayout from '../common/MinistriesLayout';
 
@@ -24,28 +25,29 @@ const leaders = [
 ];
 
 const ProfessionalYoungCouplesMinistryPage = () => {
+  const { t } = useTranslation();
   return (
     <MinistriesLayout
       accentColor={accent}
-      heroTitle="Young Couples Ministry"
+      heroTitle={t('youngCouples.title')}
       heroSubtitle={'"Though one may be overpowered, two can defend themselves. A cord of three strands is not quickly broken."'}
       heroVerse="Ecclesiastes 4:12"
       heroImage="/images/banner/ycm-banner.jpg"
       heroImagePosition="center 30%"
       heroStats={[
-        { value: "25+", label: "Active Couples" },
-        { value: "4", label: "Group Leaders" },
-        { value: "20-35", label: "Age Range" },
-        { value: "Bi-weekly", label: "Meetings" },
+        { value: "25+", label: t('youngCouples.stats.activeCouples', 'Active Couples') },
+        { value: "4", label: t('youngCouples.stats.groupLeaders', 'Group Leaders') },
+        { value: "20-35", label: t('youngCouples.stats.ageRange', 'Age Range') },
+        { value: "Bi-weekly", label: t('youngCouples.stats.meetings', 'Meetings') },
       ]}
-      welcomeTitle="Welcome to Young Couples Ministry"
-      welcomeDescription="We're building strong marriages and Christ-centered relationships through fellowship, Bible study, and shared experiences. Join us as we grow together in love and faith."
+      welcomeTitle={t('youngCouples.welcome')}
+      welcomeDescription={t('youngCouples.welcomeDescription')}
       activities={activities}
       schedule={schedule}
       leaders={leaders}
-      ctaTitle="Join Our Couples Community!"
-      ctaDescription="Build a stronger marriage and connect with other couples who share your values and faith."
-      ctaButtonText="Join Couples Group"
+      ctaTitle={t('youngCouples.readyToJoin')}
+      ctaDescription={t('youngCouples.readyToJoinDescription')}
+      ctaButtonText={t('youngCouples.joinGroup', 'Join Couples Group')}
       ctaButtonLink="/contact"
     />
   );

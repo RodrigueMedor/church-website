@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useTranslation } from 'react-i18next';
 import { School, ChildCare, EmojiEvents, Book } from '@mui/icons-material';
 import MinistriesLayout from '../common/MinistriesLayout';
 
@@ -51,27 +51,28 @@ const leaders = [
 ];
 
 const ProfessionalChildrenMinistryPage = () => {
+  const { t } = useTranslation();
   return (
     <MinistriesLayout
       accentColor={accent}
-      heroTitle="Children's Ministry"
+      heroTitle={t('children.title')}
       heroSubtitle={'"Train up a child in the way he should go; even when he is old he will not depart from it."'}
       heroVerse="Proverbs 22:6"
       heroImage="/images/banner/children-banner.JPG"
       heroStats={[
-        { value: "45+", label: "Children Enrolled" },
-        { value: "12", label: "Dedicated Teachers" },
-        { value: "4-12", label: "Age Range" },
-        { value: "100%", label: "Safe & Fun" },
+        { value: "45+", label: t('children.stats.enrolled', 'Children Enrolled') },
+        { value: "12", label: t('children.stats.teachers', 'Dedicated Teachers') },
+        { value: "4-12", label: t('children.stats.ageRange', 'Age Range') },
+        { value: "100%", label: t('children.stats.safe', 'Safe & Fun') },
       ]}
-      welcomeTitle="Welcome to Our Children's Ministry"
-      welcomeDescription="We believe every child is precious in God's sight and deserves to experience His love in a safe, fun, and nurturing environment. Our dedicated team creates engaging experiences that help children build strong spiritual foundations while having the time of their lives."
+      welcomeTitle={t('children.welcome')}
+      welcomeDescription={t('children.welcomeDescription')}
       activities={activities}
       schedule={schedule}
       leaders={leaders}
-      ctaTitle="Ready to Join Our Family?"
-      ctaDescription="We'd love to have your children join our growing family! Sign up today and watch them grow in faith while making new friends."
-      ctaButtonText="Register Your Child"
+      ctaTitle={t('children.readyToJoin')}
+      ctaDescription={t('children.readyToJoinDescription')}
+      ctaButtonText={t('children.ctaButton', 'Register Your Child')}
       ctaButtonLink="/contact"
     />
   );

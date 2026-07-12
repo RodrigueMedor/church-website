@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Church, Handyman, SportsSoccer, Groups } from '@mui/icons-material';
 import MinistriesLayout from '../common/MinistriesLayout';
 
@@ -24,27 +25,28 @@ const leaders = [
 ];
 
 const ProfessionalMenMinistryPage = () => {
+  const { t } = useTranslation();
   return (
     <MinistriesLayout
       accentColor={accent}
-      heroTitle="Men's Ministry"
+      heroTitle={t('men.title')}
       heroSubtitle={'"Be watchful, stand firm in the faith, act like men, be strong."'}
       heroVerse="1 Corinthians 16:13"
       heroImage="/images/banner/men-banner.JPG"
       heroStats={[
-        { value: "30+", label: "Active Members" },
-        { value: "6", label: "Group Leaders" },
-        { value: "18+", label: "Age Range" },
-        { value: "Weekly", label: "Meetings" },
+        { value: "30+", label: t('men.stats.activeMembers', 'Active Members') },
+        { value: "6", label: t('men.stats.groupLeaders', 'Group Leaders') },
+        { value: "18+", label: t('men.stats.ageRange', 'Age Range') },
+        { value: "Weekly", label: t('men.stats.meetings', 'Meetings') },
       ]}
-      welcomeTitle="Welcome to Men's Ministry"
-      welcomeDescription="We're building strong men of faith who lead courageously at home, work, and in their communities. Join us as we grow together in God's strength and purpose."
+      welcomeTitle={t('men.welcome')}
+      welcomeDescription={t('men.welcomeDescription')}
       activities={activities}
       schedule={schedule}
       leaders={leaders}
-      ctaTitle="Join Our Brotherhood!"
-      ctaDescription="Be part of a community of men committed to growing in faith and making a difference."
-      ctaButtonText="Join Men's Group"
+      ctaTitle={t('men.readyToJoin')}
+      ctaDescription={t('men.readyToJoinDescription')}
+      ctaButtonText={t('men.joinGroup', 'Join Men\'s Group')}
       ctaButtonLink="/contact"
     />
   );

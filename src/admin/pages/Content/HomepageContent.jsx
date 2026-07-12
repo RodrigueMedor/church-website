@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useContent } from '../../context/ContentContext';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -22,6 +23,7 @@ import {
 import { ContentPaste as ContentIcon, Edit as EditIcon } from '@mui/icons-material';
 
 const HomepageContent = () => {
+  const { t } = useTranslation();
   const { 
     contents, 
     loading, 
@@ -55,7 +57,7 @@ const HomepageContent = () => {
     try {
       await getContentsByType('HOME');
     } catch (err) {
-      showSnackbar('Failed to load content', 'error');
+      showSnackbar(t('admin.homepage.failedLoad'), 'error');
     }
   };
 
@@ -72,13 +74,13 @@ const HomepageContent = () => {
     try {
       if (editingContent) {
         await updateContent(editingContent.key, formData);
-        showSnackbar('Content updated successfully');
+        showSnackbar(t('admin.homepage.updated'));
       } else {
         await createContent({
           ...formData,
           key: formData.key.toLowerCase().replace(/\s+/g, '-')
         });
-        showSnackbar('Content created successfully');
+        showSnackbar(t('admin.homepage.created'));
       }
       resetForm();
       loadContents();
@@ -130,7 +132,7 @@ const HomepageContent = () => {
     return (
       <Container>
         <Box display="flex" justifyContent="center" my={4}>
-          <Typography>Loading...</Typography>
+          <Typography>{t('admin.homepage.loading')}</Typography>
         </Box>
       </Container>
     );
@@ -152,14 +154,14 @@ const HomepageContent = () => {
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
           <Typography variant="h4" component="h1">
             <ContentIcon fontSize="large" sx={{ verticalAlign: 'middle', mr: 1 }} />
-            Homepage Content
+            {t('admin.homepage.title')}
           </Typography>
           <Button 
             variant="contained" 
             color="primary" 
             onClick={() => navigate('/admin/content/new')}
           >
-            Add New Content
+            {t('admin.homepage.addNew')}
           </Button>
         </Box>
 
@@ -168,29 +170,29 @@ const HomepageContent = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                {editingContent ? 'Edit Content' : 'Add New Content'}
+                {editingContent ? t('admin.homepage.editContent') : t('admin.homepage.addNew')}
               </Typography>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
-                    label="Key"
+                    label={t('admin.homepage.key')}
                     name="key"
                     value={formData.key}
                     onChange={handleInputChange}
                     required
                     disabled={!!editingContent}
-                    helperText="A unique identifier for this content (e.g., home-hero)"
+                    helperText={t('admin.homepage.keyHelper')}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <FormControl fullWidth>
-                    <InputLabel>Type</InputLabel>
+                    <InputLabel>{t('admin.homepage.type')}</InputLabel>
                     <Select
                       name="type"
                       value={formData.type}
                       onChange={handleInputChange}
-                      label="Type"
+                      label={t('admin.homepage.type')}
                       required
                     >
                       <MenuItem value="HOME">Homepage</MenuItem>
@@ -198,13 +200,13 @@ const HomepageContent = () => {
                       <MenuItem value="FEATURE">Feature</MenuItem>
                       <MenuItem value="TESTIMONIAL">Testimonial</MenuItem>
                     </Select>
-                    <FormHelperText>Select the content type</FormHelperText>
+                    <FormHelperText>{t('admin.homepage.selectType')}</FormHelperText>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
-                    label="Title"
+                    label={t('admin.homepage.titleField')}
                     name="title"
                     value={formData.title}
                     onChange={handleInputChange}
@@ -214,7 +216,7 @@ const HomepageContent = () => {
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
-                    label="Description"
+                    label={t('admin.homepage.description')}
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
@@ -225,7 +227,7 @@ const HomepageContent = () => {
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
-                    label="Body Content"
+                    label={t('admin.homepage.body')}
                     name="body"
                     value={formData.body}
                     onChange={handleInputChange}
@@ -238,11 +240,11 @@ const HomepageContent = () => {
             <CardActions sx={{ justifyContent: 'flex-end', p: 2 }}>
               {editingContent && (
                 <Button onClick={resetForm} color="inherit">
-                  Cancel
+                  {t('admin.homepage.cancel')}
                 </Button>
               )}
               <Button type="submit" variant="contained" color="primary">
-                {editingContent ? 'Update' : 'Create'} Content
+                {editingContent ? t('admin.homepage.updateContent') : t('admin.homepage.createContent')}
               </Button>
             </CardActions>
           </Card>
@@ -251,7 +253,7 @@ const HomepageContent = () => {
         {/* Content List */}
         <Box>
           <Typography variant="h6" gutterBottom>
-            Existing Content
+            {t('admin.homepage.existing')}
           </Typography>
           <Grid container spacing={3}>
             {contents.map((content) => (
@@ -277,7 +279,7 @@ const HomepageContent = () => {
                         startIcon={<EditIcon />}
                         onClick={() => handleEdit(content)}
                       >
-                        Edit
+                        {t('admin.homepage.editContent')}
                       </Button>
                     </Box>
                     {content.body && (

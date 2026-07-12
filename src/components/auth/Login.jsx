@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { TextField, Button, Box, Typography, Container, Paper, Alert } from '@mui/material';
 import { auth } from '../../cms';
 
@@ -8,6 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,17 +18,17 @@ const Login = () => {
 
     const trimmedEmail = email.trim();
     if (!trimmedEmail || !password) {
-      setError('Please enter both email and password');
+      setError(t('admin.login.errorRequired', 'Please enter both email and password'));
       return;
     }
 
     try {
       setIsLoading(true);
-      const response = auth.login(trimmedEmail, password);
+      const response = await auth.login(trimmedEmail, password);
       localStorage.setItem('adminToken', response.token);
       navigate('/admin');
     } catch (err) {
-      setError(err.message || 'Invalid credentials');
+      setError(err.message || t('admin.login.errorInvalid', 'Invalid credentials'));
     } finally {
       setIsLoading(false);
     }
@@ -36,7 +38,7 @@ const Login = () => {
     <Container component="main" maxWidth="xs">
       <Paper elevation={3} sx={{ mt: 8, p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography component="h1" variant="h5">
-          Sign in to Admin Panel
+          {t('admin.login.signIn', 'Sign In')}
         </Typography>
         {error && (
           <Alert severity="error" sx={{ width: '100%', mt: 2, mb: 1 }}>{error}</Alert>
@@ -47,7 +49,7 @@ const Login = () => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label={t('admin.login.email', 'Email Address')}
             name="email"
             autoComplete="email"
             autoFocus
@@ -59,7 +61,7 @@ const Login = () => {
             required
             fullWidth
             name="password"
-            label="Password"
+            label={t('admin.login.password', 'Password')}
             type="password"
             id="password"
             autoComplete="current-password"
@@ -73,7 +75,7 @@ const Login = () => {
             sx={{ mt: 3, mb: 2 }}
             disabled={isLoading}
           >
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? t('admin.login.signingIn', 'Signing in...') : t('admin.login.signIn', 'Sign In')}
           </Button>
         </Box>
       </Paper>

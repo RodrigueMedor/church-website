@@ -15,7 +15,7 @@ const NewsSection = () => {
   const churchImages = [
     { primary: '/images/easter/worship-team.jpg', fallback: '/images/banner/pastor-sermon_1.JPG' },
     { primary: '/images/easter/pastor-bible-study.jpg', fallback: '/images/church-event.jpg' },
-    { primary: '/images/easter/bridge-photo.jpg', fallback: '/images/contact-image.jpg' }
+    { primary: '/images/photo/outreach-service-1.jpg', fallback: '/images/contact-image.jpg' }
   ];
 
   const [news] = useState([
@@ -67,60 +67,6 @@ const NewsSection = () => {
 
   return (
     <Box>
-      <Box textAlign="center" mb={4}>
-        <Typography
-          component="span"
-          sx={{
-            color: 'secondary.main',
-            fontWeight: 700,
-            letterSpacing: '4px',
-            fontSize: '0.8rem',
-            textTransform: 'uppercase',
-            mb: 1.5,
-            display: 'block'
-          }}
-        >
-          {t('home.latestNews')}
-        </Typography>
-        <Typography
-          variant="h3"
-          component="h2"
-          sx={{
-            fontFamily: '"Playfair Display", serif',
-            fontWeight: 700,
-            color: 'primary.dark',
-            position: 'relative',
-            display: 'inline-block',
-            '&:after': {
-              content: '""',
-              position: 'absolute',
-              bottom: -12,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '60px',
-              height: '3px',
-              background: 'linear-gradient(90deg, #1a365d, #c9a84c)',
-              borderRadius: '2px'
-            }
-          }}
-        >
-          {t('home.latestNews')}
-        </Typography>
-        <Typography
-          variant="body1"
-          color="text.secondary"
-          sx={{
-            maxWidth: '700px',
-            mx: 'auto',
-            mt: 3,
-            fontSize: '1.05rem',
-            lineHeight: 1.8
-          }}
-        >
-          Stay updated with our latest church activities, events, and opportunities for spiritual growth and community service.
-        </Typography>
-      </Box>
-
       <Grid container spacing={3}>
         {news.length === 0 ? (
           <Grid item xs={12}>

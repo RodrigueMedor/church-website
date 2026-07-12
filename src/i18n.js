@@ -16,23 +16,25 @@ const resources = {
   }
 };
 
-i18n
-  // detect user language
-  .use(LanguageDetector)
-  // pass the i18n instance to react-i18next
-  .use(initReactI18next)
-  // init i18next
-  .init({
-    resources,
-    fallbackLng: 'en',
-    debug: true,
-    interpolation: {
-      escapeValue: false, // not needed for react as it escapes by default
-    },
-    detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
-    },
-  });
+if (!i18n.isInitialized) {
+  i18n
+    // detect user language
+    .use(LanguageDetector)
+    // pass the i18n instance to react-i18next
+    .use(initReactI18next)
+    // init i18next
+    .init({
+      resources,
+      fallbackLng: 'en',
+      debug: true,
+      interpolation: {
+        escapeValue: false, // not needed for react as it escapes by default
+      },
+      detection: {
+        order: ['localStorage', 'navigator'],
+        caches: ['localStorage'],
+      },
+    });
+}
 
 export default i18n;

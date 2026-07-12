@@ -27,6 +27,7 @@ import {
   VolunteerActivism as VolunteerActivismIcon,
   MusicNote as MusicNoteIcon
 } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 import { usePageContent } from '../../cms';
 
 const ministries = [
@@ -110,7 +111,7 @@ const ministries = [
   }
 ];
 const ProfessionalMinistriesPage = () => {
-
+  const { t } = useTranslation();
   const content = usePageContent('ministries');
   const theme = useTheme();
   const activeMinistries = content.ministries?.length
@@ -144,7 +145,7 @@ const ProfessionalMinistriesPage = () => {
                 fontSize: { xs: '2rem', md: '3rem' },
               }}
             >
-              {content.hero?.title || 'Our Ministries'}
+              {content.hero?.title || t('ministriesPage.heroTitle', 'Our Ministries')}
             </Typography>
             <Typography
               variant="h6"
@@ -182,10 +183,10 @@ const ProfessionalMinistriesPage = () => {
         <Container maxWidth="lg">
           <Grid container spacing={3} justifyContent="center">
             {[
-              { value: '6', label: 'Active Ministries', icon: <ChurchIcon /> },
-              { value: '210+', label: 'Members Engaged', icon: <PeopleIcon /> },
-              { value: '15+', label: 'Weekly Activities', icon: <EventIcon /> },
-              { value: 'All', label: 'Ages Welcome', icon: <VolunteerActivismIcon /> },
+              { value: '6', label: t('ministriesPage.stats.activeMinistries', 'Active Ministries'), icon: <ChurchIcon /> },
+              { value: '210+', label: t('ministriesPage.stats.membersEngaged', 'Members Engaged'), icon: <PeopleIcon /> },
+              { value: '15+', label: t('ministriesPage.stats.weeklyActivities', 'Weekly Activities'), icon: <EventIcon /> },
+              { value: 'All', label: t('ministriesPage.stats.agesWelcome', 'Ages Welcome'), icon: <VolunteerActivismIcon /> },
             ].map((stat, i) => (
               <Grid item xs={6} sm={3} key={i}>
                 <Box textAlign="center">
@@ -234,7 +235,7 @@ const ProfessionalMinistriesPage = () => {
                 display: 'block'
               }}
             >
-              {content.tagline || 'Explore Our Ministries'}
+              {content.tagline || t('ministriesPage.tagline', 'Explore Our Ministries')}
             </Typography>
             <Typography
               variant="h3"
@@ -258,7 +259,7 @@ const ProfessionalMinistriesPage = () => {
                 }
               }}
             >
-              {content.tagline || 'Explore Our Ministries'}
+              {content.tagline || t('ministriesPage.tagline', 'Explore Our Ministries')}
             </Typography>
             <Typography
               variant="body1"
@@ -271,8 +272,7 @@ const ProfessionalMinistriesPage = () => {
                 fontSize: '1.05rem'
               }}
             >
-              Discover how you can get involved and grow in your faith through our various ministries.
-              We have opportunities for all ages and interests.
+              {t('ministriesPage.description', 'Discover how you can get involved and grow in your faith through our various ministries. We have opportunities for all ages and interests.')}
             </Typography>
           </Box>
           <Grid container spacing={3}>
@@ -438,7 +438,7 @@ const ProfessionalMinistriesPage = () => {
                         },
                       }}
                     >
-                      Learn More
+                      {t('ministriesPage.learnMore', 'Learn More')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -459,7 +459,7 @@ const ProfessionalMinistriesPage = () => {
       >
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
           <Typography variant="h3" component="h2" sx={{ fontWeight: 700, mb: 2 }}>
-            Ready to Get Involved?
+            {t('ministriesPage.ctaTitle', 'Ready to Get Involved?')}
           </Typography>
           <Typography
             variant="body1"
@@ -471,7 +471,7 @@ const ProfessionalMinistriesPage = () => {
               lineHeight: 1.7,
             }}
           >
-            Join a community that will support you in your faith journey and help you discover your God-given purpose.
+            {t('ministriesPage.ctaDescription', 'Join a community that will support you in your faith journey and help you discover your God-given purpose.')}
           </Typography>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
@@ -496,7 +496,7 @@ const ProfessionalMinistriesPage = () => {
                 },
               }}
             >
-              Contact Us
+              {t('ministriesPage.contactUs', 'Contact Us')}
             </Button>
             <Button
               component={RouterLink}
@@ -515,7 +515,7 @@ const ProfessionalMinistriesPage = () => {
                 },
               }}
             >
-              View Events
+              {t('ministriesPage.viewEvents', 'View Events')}
             </Button>
           </Stack>
         </Container>

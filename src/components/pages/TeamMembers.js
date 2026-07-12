@@ -22,6 +22,7 @@ import {
   Phone as PhoneIcon,
   Church as ChurchIcon
 } from '@mui/icons-material';
+import { usePageContent } from '../../cms';
 
 // Team member data (you might want to move this to a separate data file)
 const teamMembers = [
@@ -111,6 +112,7 @@ const TeamMembers = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const content = usePageContent('team');
 
   // Separate the lead pastor
   const leadPastor = teamMembers.find(member => member.role === 'Pasteur Principal');
@@ -297,7 +299,7 @@ const TeamMembers = () => {
               textAlign: 'center',
             }}
           >
-            Notre Équipe Pastorale
+            {content.title || 'Notre Équipe Pastorale'}
           </Typography>
           <Typography
             variant="h6"
@@ -311,7 +313,7 @@ const TeamMembers = () => {
               textAlign: 'center',
             }}
           >
-            Rencontrez les membres dévoués de notre équipe pastorale qui servent avec passion notre communauté.
+            {content.subtitle || 'Rencontrez les membres dévoués de notre équipe pastorale qui servent avec passion notre communauté.'}
           </Typography>
         </Container>
       </Box>
@@ -341,7 +343,7 @@ const TeamMembers = () => {
               }
             }}
           >
-            Notre Pasteur Principal
+            {content.leadPastorTitle || 'Notre Pasteur Principal'}
           </Typography>
         </Box>
         
@@ -377,7 +379,7 @@ const TeamMembers = () => {
               }
             }}
           >
-            Notre Équipe
+            {content.teamTitle || 'Notre Équipe'}
           </Typography>
         </Box>
 
@@ -409,7 +411,7 @@ const TeamMembers = () => {
               mb: 3,
             }}
           >
-            Rejoignez Notre Communauté
+            {content.ctaTitle || 'Rejoignez Notre Communauté'}
           </Typography>
           <Typography
             variant="h6"
@@ -422,7 +424,7 @@ const TeamMembers = () => {
               fontSize: { xs: '1rem', md: '1.25rem' },
             }}
           >
-            Nous serions ravis de vous accueillir dans notre église et de vous présenter personnellement notre équipe.
+            {content.ctaText || 'Nous serions ravis de vous accueillir dans notre église et de vous présenter personnellement notre équipe.'}
           </Typography>
           <Button
             variant="contained"

@@ -289,12 +289,12 @@ const MinistriesLayout = ({
                     <Box
                       sx={{
                         width: '100%',
-                        height: 260,
+                        height: 320,
                         background: leader.image
                           ? `linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.4)), url(${leader.image})`
                           : accentColor,
                         backgroundSize: 'cover',
-                        backgroundPosition: 'center',
+                        backgroundPosition: 'center top',
                         display: 'flex',
                         alignItems: 'flex-end',
                         justifyContent: 'center',

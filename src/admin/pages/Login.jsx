@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Box, Button, TextField, Typography, Paper, Alert, CircularProgress,
   InputAdornment, IconButton,
@@ -44,6 +45,7 @@ const Logo = styled('div')(({ theme }) => ({
 }));
 
 const Login = () => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -58,16 +60,16 @@ const Login = () => {
     setError('');
     const trimmedEmail = email.trim();
     if (!trimmedEmail || !password) {
-      setError('Please enter both email and password');
+      setError(t('admin.login.errorRequired'));
       return;
     }
     try {
       setIsLoading(true);
-      const response = auth.login(trimmedEmail, password);
+      const response = await auth.login(trimmedEmail, password);
       localStorage.setItem('adminToken', response.token);
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message || 'Invalid credentials');
+      setError(err.message || t('admin.login.errorInvalid'));
     } finally {
       setIsLoading(false);
     }
@@ -83,17 +85,17 @@ const Login = () => {
       <LoginPaper elevation={3}>
         <Logo>CB</Logo>
         <Typography component="h1" variant="h5" fontWeight="bold" gutterBottom>
-          Welcome Back
+          {t('admin.login.welcomeBack')}
         </Typography>
         <Typography variant="body2" color="textSecondary" align="center" mb={4}>
-          Sign in to manage your website content
+          {t('admin.login.subtitle')}
         </Typography>
         {error && (
           <Alert severity="error" sx={{ width: '100%', mb: 3 }}>{error}</Alert>
         )}
         <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
           <TextField
-            margin="normal" required fullWidth id="email" label="Email Address"
+            margin="normal" required fullWidth id="email" label={t('admin.login.email')}
             name="email" autoComplete="email" autoFocus
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -104,7 +106,7 @@ const Login = () => {
           />
           <TextField
             margin="normal" required fullWidth name="password"
-            label="Password" type={showPassword ? 'text' : 'password'}
+            label={t('admin.login.password')} type={showPassword ? 'text' : 'password'}
             id="password" autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -122,12 +124,12 @@ const Login = () => {
           <Button type="submit" fullWidth variant="contained" size="large"
             disabled={isLoading}
             sx={{ mt: 3, mb: 2, py: 1.5, borderRadius: 2, textTransform: 'none', fontSize: '1rem' }}>
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : t('admin.login.signIn')}
           </Button>
           <Typography variant="caption" color="textSecondary" textAlign="center" display="block">
-            Demo: admin@fhbck.org / admin123
+            {t('admin.login.demo')}
             <Box component="span" sx={{ ml: 1, cursor: 'pointer', textDecoration: 'underline' }} onClick={() => quickFill()}>
-              (Auto-fill)
+              {t('admin.login.autoFill')}
             </Box>
           </Typography>
         </Box>

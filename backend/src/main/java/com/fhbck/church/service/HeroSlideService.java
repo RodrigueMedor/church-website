@@ -5,6 +5,8 @@ import com.fhbck.church.entity.HeroSlide;
 import com.fhbck.church.exception.ResourceNotFoundException;
 import com.fhbck.church.repository.HeroSlideRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,8 @@ public class HeroSlideService {
 
     private final HeroSlideRepository heroSlideRepository;
 
+    private final MessageSource messageSource;
+
     public List<HeroSlideDto> getActiveSlidesByPage(String page) {
         return heroSlideRepository.findByPageAndActiveTrueOrderBySortOrderAsc(page)
                 .stream().map(this::toDto).collect(Collectors.toList());
@@ -28,7 +32,11 @@ public class HeroSlideService {
 
     public HeroSlideDto getById(Long id) {
         return toDto(heroSlideRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("HeroSlide not found: " + id)));
+                .orElseThrow(() -> {
+                    var locale = LocaleContextHolder.getLocale();
+                    return new ResourceNotFoundException(
+                            messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.heroSlide", null, locale), id}, locale));
+                }));
     }
 
     @Transactional
@@ -40,7 +48,11 @@ public class HeroSlideService {
     @Transactional
     public HeroSlideDto update(Long id, HeroSlideDto dto) {
         var slide = heroSlideRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("HeroSlide not found: " + id));
+                .orElseThrow(() -> {
+                    var locale = LocaleContextHolder.getLocale();
+                    return new ResourceNotFoundException(
+                            messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.heroSlide", null, locale), id}, locale));
+                });
         slide.setTitle(dto.getTitle());
         slide.setSubtitle(dto.getSubtitle());
         slide.setImageUrl(dto.getImageUrl());
@@ -55,7 +67,9 @@ public class HeroSlideService {
     @Transactional
     public void delete(Long id) {
         if (!heroSlideRepository.existsById(id)) {
-            throw new ResourceNotFoundException("HeroSlide not found: " + id);
+            var locale = LocaleContextHolder.getLocale();
+            throw new ResourceNotFoundException(
+                    messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.heroSlide", null, locale), id}, locale));
         }
         heroSlideRepository.deleteById(id);
     }

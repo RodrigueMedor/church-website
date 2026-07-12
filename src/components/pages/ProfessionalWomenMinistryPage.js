@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Church, Favorite, VolunteerActivism as OutreachIcon, Star } from '@mui/icons-material';
 import MinistriesLayout from '../common/MinistriesLayout';
 
@@ -24,27 +25,28 @@ const leaders = [
 ];
 
 const ProfessionalWomenMinistryPage = () => {
+  const { t } = useTranslation();
   return (
     <MinistriesLayout
       accentColor={accent}
-      heroTitle="Women's Ministry"
+      heroTitle={t('women.title')}
       heroSubtitle={'"She is clothed with strength and dignity; she can laugh at the days to come."'}
       heroVerse="Proverbs 31:25"
       heroImage="/images/banner/women-banner.jpg"
       heroStats={[
-        { value: "50+", label: "Active Members" },
-        { value: "10", label: "Group Leaders" },
-        { value: "18+", label: "Age Range" },
-        { value: "Weekly", label: "Meetings" },
+        { value: "50+", label: t('women.stats.activeMembers', 'Active Members') },
+        { value: "10", label: t('women.stats.groupLeaders', 'Group Leaders') },
+        { value: "18+", label: t('women.stats.ageRange', 'Age Range') },
+        { value: "Weekly", label: t('women.stats.meetings', 'Meetings') },
       ]}
-      welcomeTitle="Welcome to Women's Ministry"
-      welcomeDescription="We're a community of women supporting each other in faith, growing together in God's love, and making a difference in our world. Join us as we discover the amazing plans God has for our lives."
+      welcomeTitle={t('women.welcome')}
+      welcomeDescription={t('women.welcomeDescription')}
       activities={activities}
       schedule={schedule}
       leaders={leaders}
-      ctaTitle="Join Our Sisterhood!"
-      ctaDescription="Be part of a loving community where women grow together in faith, friendship, and purpose."
-      ctaButtonText="Join Women's Group"
+      ctaTitle={t('women.readyToJoin')}
+      ctaDescription={t('women.readyToJoinDescription')}
+      ctaButtonText={t('women.joinGroup', 'Join Women\'s Group')}
       ctaButtonLink="/contact"
     />
   );

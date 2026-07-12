@@ -7,6 +7,8 @@ import com.fhbck.church.exception.ResourceNotFoundException;
 import com.fhbck.church.repository.LeaderRepository;
 import com.fhbck.church.repository.MinistryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ public class LeaderService {
 
     private final LeaderRepository leaderRepository;
     private final MinistryRepository ministryRepository;
+    private final MessageSource messageSource;
 
     public List<LeaderDto> getByMinistry(Long ministryId) {
         return leaderRepository.findByMinistryIdAndActiveTrueOrderBySortOrderAsc(ministryId)
@@ -42,7 +45,7 @@ public class LeaderService {
 
         if (dto.getMinistryId() != null) {
             var ministry = ministryRepository.findById(dto.getMinistryId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Ministry not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException(messageSource.getMessage("resource.not-found", new Object[]{messageSource.getMessage("entity.ministry", null, LocaleContextHolder.getLocale())}, LocaleContextHolder.getLocale())));
             leader.setMinistry(ministry);
         }
 
@@ -52,7 +55,7 @@ public class LeaderService {
     @Transactional
     public LeaderDto update(Long id, LeaderDto dto) {
         var leader = leaderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Leader not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.leader", null, LocaleContextHolder.getLocale()), id}, LocaleContextHolder.getLocale())));
         leader.setName(dto.getName());
         leader.setTitle(dto.getTitle());
         leader.setImageUrl(dto.getImageUrl());
@@ -62,7 +65,7 @@ public class LeaderService {
 
         if (dto.getMinistryId() != null) {
             var ministry = ministryRepository.findById(dto.getMinistryId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Ministry not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException(messageSource.getMessage("resource.not-found", new Object[]{messageSource.getMessage("entity.ministry", null, LocaleContextHolder.getLocale())}, LocaleContextHolder.getLocale())));
             leader.setMinistry(ministry);
         }
 
@@ -72,7 +75,9 @@ public class LeaderService {
     @Transactional
     public void delete(Long id) {
         if (!leaderRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Leader not found: " + id);
+            var locale = LocaleContextHolder.getLocale();
+            throw new ResourceNotFoundException(
+                messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.leader", null, locale), id}, locale));
         }
         leaderRepository.deleteById(id);
     }

@@ -1,9 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
-  Box, 
-  Container, 
-  Typography, 
-  Button, 
+  Box,
+  Container,
+  Typography,
+  Button,
   useTheme,
   useMediaQuery
 } from '@mui/material';
@@ -11,6 +12,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 const NotFoundPage = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -54,7 +56,7 @@ const NotFoundPage = () => {
               color: 'text.primary',
             }}
           >
-            404 - Page Not Found
+            {t('notFound.title')}
           </Typography>
           
           <Typography 
@@ -67,7 +69,7 @@ const NotFoundPage = () => {
               mx: 'auto',
             }}
           >
-            Oops! The page you're looking for doesn't exist or has been moved.
+            {t('notFound.subtitle')}
           </Typography>
           
           <Typography 
@@ -80,7 +82,7 @@ const NotFoundPage = () => {
               mx: 'auto',
             }}
           >
-            Don't worry, let's get you back on track. You can return to the homepage or check out some of our popular pages below.
+            {t('notFound.description')}
           </Typography>
           
           <Box 
@@ -102,7 +104,7 @@ const NotFoundPage = () => {
               to="/"
               size="large"
             >
-              Go to Homepage
+              {t('notFound.goToHomepage')}
             </Button>
             <Button 
               variant="outlined" 
@@ -110,7 +112,7 @@ const NotFoundPage = () => {
               to="/about"
               size="large"
             >
-              About Us
+              {t('notFound.aboutUs')}
             </Button>
             <Button 
               variant="outlined" 
@@ -118,7 +120,7 @@ const NotFoundPage = () => {
               to="/events"
               size="large"
             >
-              Events
+              {t('notFound.events')}
             </Button>
             <Button 
               variant="outlined" 
@@ -126,7 +128,7 @@ const NotFoundPage = () => {
               to="/contact"
               size="large"
             >
-              Contact Us
+              {t('notFound.contactUs')}
             </Button>
           </Box>
           
@@ -150,7 +152,7 @@ const NotFoundPage = () => {
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215209056537!2d-73.9878446845938!3d40.75798597932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" 
               allowFullScreen="" 
               loading="lazy"
-              title="Church Location"
+              title={t('notFound.mapTitle')}
             ></iframe>
           </Box>
           
@@ -159,7 +161,7 @@ const NotFoundPage = () => {
             color="text.secondary"
             sx={{ mb: 2 }}
           >
-            Still can't find what you're looking for?
+            {t('notFound.stillCantFind')}
           </Typography>
           
           <Button 
@@ -176,7 +178,7 @@ const NotFoundPage = () => {
               }
             }}
           >
-            Contact our support team
+            {t('notFound.contactSupport')}
           </Button>
         </Box>
       </Container>

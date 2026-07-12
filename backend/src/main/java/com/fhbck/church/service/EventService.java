@@ -7,6 +7,8 @@ import com.fhbck.church.exception.ResourceNotFoundException;
 import com.fhbck.church.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final MessageSource messageSource;
 
     public PagedResponse<EventDto> getAll(int page, int size, String keyword, String category) {
         var pageable = PageRequest.of(page, size);
@@ -45,7 +48,7 @@ public class EventService {
 
     public EventDto getById(Long id) {
         return toDto(eventRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found: " + id)));
+                .orElseThrow(() -> new ResourceNotFoundException(messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.event", null, LocaleContextHolder.getLocale()), id}, LocaleContextHolder.getLocale()))));
     }
 
     @Transactional
@@ -57,7 +60,7 @@ public class EventService {
     @Transactional
     public EventDto update(Long id, EventDto dto) {
         var event = eventRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.event", null, LocaleContextHolder.getLocale()), id}, LocaleContextHolder.getLocale())));
         event.setTitle(dto.getTitle());
         event.setDescription(dto.getDescription());
         event.setStartDate(dto.getStartDate());
@@ -76,7 +79,9 @@ public class EventService {
     @Transactional
     public void delete(Long id) {
         if (!eventRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Event not found: " + id);
+            var locale = LocaleContextHolder.getLocale();
+            throw new ResourceNotFoundException(
+                messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.event", null, locale), id}, locale));
         }
         eventRepository.deleteById(id);
     }

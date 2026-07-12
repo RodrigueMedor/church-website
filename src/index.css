@@ -8,51 +8,59 @@ html {
   scroll-behavior: smooth;
 }
 
+:root {
+  --bg-default: #fafafa;
+  --text-primary: #1a1a2e;
+  --scrollbar-track: rgba(26, 54, 93, 0.05);
+  --scrollbar-thumb: rgba(26, 54, 93, 0.2);
+  --scrollbar-thumb-hover: rgba(26, 54, 93, 0.35);
+}
+
+[data-theme='dark'] {
+  --bg-default: #0f172a;
+  --text-primary: #e2e8f0;
+  --scrollbar-track: rgba(255, 255, 255, 0.05);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #fafafa;
-  color: #1a1a2e;
+  background-color: var(--bg-default);
+  color: var(--text-primary);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(26, 54, 93, 0.05);
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(26, 54, 93, 0.2);
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(26, 54, 93, 0.35);
+  background: var(--scrollbar-thumb-hover);
 }
 
-/* Animation keyframes */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
 .animate-in {

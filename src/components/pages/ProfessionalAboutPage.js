@@ -47,6 +47,7 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { styled, keyframes } from '@mui/material/styles';
 import { usePageContent } from '../../cms';
+import { pageDefaults } from '../../cms/defaults';
 
 // Animations
 const floatAnimation = keyframes`
@@ -195,39 +196,61 @@ const ProfessionalAboutPage = () => {
     return () => observers.forEach(observer => observer?.disconnect());
   }, []);
 
-  const staffData = [
-    {
-      name: t('about.staff.pastor.name'),
-      role: t('about.staff.pastor.role'),
-      bio: t('about.staff.pastor.bio'),
-      fullBio: t('about.staff.pastor.fullBio'),
-      email: 'pasteur@fhbck.org',
-      phone: '(407) 123-4567',
-      experience: '20+ years',
-      avatar: 'FB',
-      image: '/images/staff/pastor-charles.jpg'
-    },
-    {
-      name: t('about.staff.deacon.name'),
-      role: t('about.staff.deacon.role'),
-      bio: t('about.staff.deacon.bio'),
-      email: 'culte@fhbck.org',
-      phone: '(407) 123-4568',
-      experience: '15+ years',
-      avatar: 'DP',
-      image: '/images/staff/deacon-pierre.jpg'
-    },
-    {
-      name: t('about.staff.deaconess.name'),
-      role: t('about.staff.deaconess.role'),
-      bio: t('about.staff.deaconess.bio'),
-      email: 'femmes@fhbck.org',
-      phone: '(407) 123-4569',
-      experience: '12+ years',
-      avatar: 'DM',
-      image: '/images/staff/deaconess-joseph.jpg'
-    }
-  ];
+  const staffData = (content.staffData || []).length
+    ? content.staffData.map(s => ({
+        name: s.name,
+        role: s.role,
+        bio: s.bio,
+        fullBio: s.fullBio || s.bio,
+        email: s.email || '',
+        phone: s.phone || '',
+        experience: s.experience || '',
+        avatar: (s.name || '').split(' ').map(n => n[0]).join('').toUpperCase() || '?',
+        image: s.image || '',
+      }))
+    : [
+        {
+          name: t('about.staff.pastor.name'),
+          role: t('about.staff.pastor.role'),
+          bio: t('about.staff.pastor.bio'),
+          fullBio: t('about.staff.pastor.fullBio'),
+          email: 'pasteur@fhbck.org',
+          phone: '(407) 123-4567',
+          experience: '20+ years',
+          avatar: 'FB',
+          image: '/images/staff/pastor-charles.jpg'
+        },
+        {
+          name: t('about.staff.deacon.name'),
+          role: t('about.staff.deacon.role'),
+          bio: t('about.staff.deacon.bio'),
+          email: 'culte@fhbck.org',
+          phone: '(407) 123-4568',
+          experience: '15+ years',
+          avatar: 'DP',
+          image: '/images/staff/deacon-pierre.jpg'
+        },
+        {
+          name: t('about.staff.deaconess.name'),
+          role: t('about.staff.deaconess.role'),
+          bio: t('about.staff.deaconess.bio'),
+          email: 'femmes@fhbck.org',
+          phone: '(407) 123-4569',
+          experience: '12+ years',
+          avatar: 'DM',
+          image: '/images/staff/deaconess-joseph.jpg'
+        }
+      ];
+
+  const defaultLeaders = pageDefaults.about?.otherLeaders || [];
+  const leadersSource = (content.otherLeaders || []).length ? content.otherLeaders : defaultLeaders;
+  const otherLeadersData = leadersSource.map(s => ({
+    name: s.name,
+    role: s.role,
+    bio: s.bio || '',
+    email: s.email || '',
+    image: s.image || '',
+  }));
 
   const iconMap = {
     Book: <BookIcon sx={{ fontSize: 36, color: 'white' }} />,
@@ -521,26 +544,31 @@ const ProfessionalAboutPage = () => {
               >
                 {t('professionalAbout.meetOurTeam')}
               </Typography>
-              <Grid container spacing={3}>
+              <Grid container spacing={3} justifyContent="center">
                 {staffData.map((member, index) => (
                   <Grid item xs={12} md={4} key={index}>
                     <TeamCard elevation={6}>
                       <CardContent sx={{ p: 4, textAlign: 'center' }}>
                         <Avatar
-                          src={member.image}
+                          src={member.image || undefined}
+                          imgProps={{ style: { objectPosition: 'top center' } }}
                           sx={{
-                            width: 160,
-                            height: 160,
+                            width: 320,
+                            height: 320,
                             mx: 'auto',
                             mb: 3,
                             border: '4px solid #c9a84c',
                             boxShadow: '0 8px 25px rgba(26, 54, 93, 0.25)',
                             transition: 'transform 0.3s ease',
+                            bgcolor: 'primary.main',
+                            fontSize: '3rem',
                             '&:hover': {
                               transform: 'scale(1.05)'
-                            }
+                            },
                           }}
-                        />
+                        >
+                          {(member.name || '').split(' ').map(n => n[0]).join('').toUpperCase()}
+                        </Avatar>
                         <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#1a365d' }}>
                           {member.name}
                         </Typography>
@@ -600,9 +628,94 @@ const ProfessionalAboutPage = () => {
           </Slide>
         </Box>
 
+        {/* Other Church Leaders */}
+        {otherLeadersData.length > 0 && (
+          <Box mb={10} ref={(el) => (sectionRefs.current[4] = el)}>
+            <Slide direction="up" in={visibleSections.has(4)} timeout={1300}>
+              <Box>
+                <Typography
+                  variant="h3"
+                  component="h2"
+                  sx={{
+                    fontWeight: 700,
+                    mb: 1,
+                    textAlign: 'center',
+                    color: '#1a365d',
+                    fontSize: { xs: '2rem', md: '2.5rem' },
+                  }}
+                >
+                  {t('professionalAbout.otherLeaders')}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  sx={{ mb: 5, textAlign: 'center', maxWidth: '700px', mx: 'auto' }}
+                >
+                  {t('professionalAbout.otherLeadersSubtitle')}
+                </Typography>
+                <Grid container spacing={3} justifyContent="center">
+                  {otherLeadersData.map((member, index) => (
+                    <Grid item xs={12} sm={6} md={4} key={index}>
+                      <TeamCard elevation={6}>
+                        <CardContent sx={{ p: 4, textAlign: 'center' }}>
+                          <Avatar
+                            src={member.image || undefined}
+                            imgProps={{ style: { objectPosition: 'top center' } }}
+                            sx={{
+                              width: 160,
+                              height: 160,
+                              mx: 'auto',
+                              mb: 3,
+                              border: '4px solid #c9a84c',
+                              boxShadow: '0 8px 25px rgba(26, 54, 93, 0.25)',
+                              bgcolor: 'primary.main',
+                              fontSize: '1.5rem',
+                            }}
+                          >
+                            {(member.name || '').split(' ').map(n => n[0]).join('').toUpperCase()}
+                          </Avatar>
+                          <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#1a365d' }}>
+                            {member.name}
+                          </Typography>
+                          <Typography variant="body2" color="#c9a84c" sx={{ mb: 2, fontWeight: 600 }}>
+                            {member.role}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
+                            {member.bio}
+                          </Typography>
+                          {member.email && (
+                            <Button
+                              variant="outlined"
+                              size="small"
+                              startIcon={<EmailIcon />}
+                              href={`mailto:${member.email}`}
+                              sx={{
+                                borderColor: '#1a365d',
+                                color: '#1a365d',
+                                textTransform: 'none',
+                                fontWeight: 600,
+                                '&:hover': {
+                                  backgroundColor: '#1a365d',
+                                  color: 'white',
+                                },
+                              }}
+                            >
+                              {member.email}
+                            </Button>
+                          )}
+                        </CardContent>
+                      </TeamCard>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            </Slide>
+          </Box>
+        )}
+
         {/* Call to Action */}
         <Box
-          ref={(el) => (sectionRefs.current[4] = el)}
+          ref={(el) => (sectionRefs.current[5] = el)}
           sx={{
             py: 5,
             background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
@@ -624,7 +737,7 @@ const ProfessionalAboutPage = () => {
           }}
         >
           <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2 }}>
-            <Slide direction="up" in={visibleSections.has(4)} timeout={1400}>
+            <Slide direction="up" in={visibleSections.has(5)} timeout={1500}>
               <Box textAlign="center">
                 <Typography
                   variant="h4"
@@ -744,16 +857,21 @@ const ProfessionalAboutPage = () => {
                   <CloseIcon />
                 </IconButton>
                 <Avatar
-                  src={selectedMember.image}
+                  src={selectedMember.image || undefined}
+                  imgProps={{ style: { objectPosition: 'top center' } }}
                   sx={{
-                    width: 180,
-                    height: 180,
+                    width: 280,
+                    height: 280,
                     mx: 'auto',
                     mb: 3,
                     border: '4px solid rgba(255,255,255,0.6)',
                     boxShadow: '0 8px 25px rgba(0,0,0,0.2)',
+                    bgcolor: 'rgba(255,255,255,0.2)',
+                    fontSize: '3rem',
                   }}
-                />
+                >
+                  {(selectedMember.name || '').split(' ').map(n => n[0]).join('').toUpperCase()}
+                </Avatar>
                 <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, textAlign: 'center' }}>
                   {selectedMember.name}
                 </Typography>

@@ -1,136 +1,155 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
-  Box, Container, Typography, Button, Card, CardContent, CardActions, Grid,
-  Dialog, DialogTitle, DialogContent, DialogActions, TextField, Snackbar,
-  Alert, CircularProgress, Chip,
+  Box, Button, Card, CardContent, CardMedia, Dialog, DialogActions,
+  DialogTitle, DialogContent, Grid, TextField, Typography, FormControlLabel, Switch,
+  Snackbar, Alert, CircularProgress,
 } from '@mui/material';
-import { MenuBook as SermonIcon, Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { contentService } from '../../services/api';
+import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import api from '../../../services/api';
+
+const apiWithAuth = {
+  get: (path, params) => api.get(path, params, true),
+  post: (path, body) => api.post(path, body, true),
+  put: (path, body) => api.put(path, body, true),
+  del: (path) => api.delete(path, true),
+};
+
+const defaultItem = {
+  title: '', description: '', speaker: '', series: '', datePreached: '',
+  bibleVerse: '', content: '', videoUrl: '', audioUrl: '', imageUrl: '', duration: '', active: true,
+};
 
 const SermonsManager = () => {
-  const navigate = useNavigate();
-  const [sermons, setSermons] = useState([]);
+  const { t } = useTranslation();
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dialog, setDialog] = useState(false);
-  const [editIdx, setEditIdx] = useState(null);
-  const [form, setForm] = useState({ title: '', speaker: '', date: '', description: '', videoUrl: '', audioUrl: '', imageUrl: '' });
+  const [deleteDialog, setDeleteDialog] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [form, setForm] = useState({ ...defaultItem });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
-  useEffect(() => { loadSermons(); }, []);
+  useEffect(() => { loadItems(); }, []);
 
-  const loadSermons = async () => {
+  const loadItems = async () => {
     setLoading(true);
     try {
-      const data = await contentService.get('sermons');
-      setSermons(data.items || []);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+      const data = await apiWithAuth.get('/admin/sermons', { page: 0, size: 100 });
+      setItems(data?.content || []);
+    } catch { setItems([]); }
+    setLoading(false);
   };
 
-  const openAdd = () => {
-    setEditIdx(null);
-    setForm({ title: '', speaker: '', date: '', description: '', videoUrl: '', audioUrl: '', imageUrl: '' });
+  const showSnack = (msg, s = 'success') => setSnackbar({ open: true, message: msg, severity: s });
+
+  const handleAdd = () => { setForm({ ...defaultItem }); setIsEditMode(false); setDialog(true); };
+  const handleEdit = (item) => {
+    setForm({ ...defaultItem, ...item, datePreached: item.datePreached ? item.datePreached.substring(0, 10) : '' });
+    setIsEditMode(true);
     setDialog(true);
   };
+  const handleClose = () => { setDialog(false); setForm({ ...defaultItem }); };
 
-  const openEdit = (idx) => {
-    setEditIdx(idx);
-    setForm({ ...sermons[idx] });
-    setDialog(true);
+  const handleDelete = async () => {
+    if (!deleteDialog) return;
+    try { await apiWithAuth.del(`/admin/sermons/${deleteDialog.id}`); showSnack(t('admin.sermonsManager.deleted')); loadItems(); }
+    catch (e) { showSnack(e.message, 'error'); }
+    setDeleteDialog(null);
   };
 
-  const save = async () => {
-    let items;
-    if (editIdx !== null) {
-      items = sermons.map((s, i) => i === editIdx ? form : s);
-    } else {
-      items = [...sermons, form];
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.title) { showSnack(t('admin.sermonsManager.titleRequired'), 'error'); return; }
+    setIsSubmitting(true);
     try {
-      await contentService.update('sermons', { hero: { title: 'Sermons', subtitle: 'Listen to our latest sermons' }, items });
-      await loadSermons();
-      setDialog(false);
-      setSnackbar({ open: true, message: editIdx !== null ? 'Sermon updated!' : 'Sermon added!', severity: 'success' });
-    } catch (err) {
-      setSnackbar({ open: true, message: err.message, severity: 'error' });
-    }
+      if (isEditMode) {
+        await apiWithAuth.put(`/admin/sermons/${form.id}`, form);
+        showSnack(t('admin.sermonsManager.updated'));
+      } else {
+        await apiWithAuth.post('/admin/sermons', form);
+        showSnack(t('admin.sermonsManager.created'));
+      }
+      handleClose(); loadItems();
+    } catch (e) { showSnack(e.message, 'error'); }
+    setIsSubmitting(false);
   };
 
-  const remove = async (idx) => {
-    const items = sermons.filter((_, i) => i !== idx);
-    try {
-      await contentService.update('sermons', { hero: { title: 'Sermons', subtitle: 'Listen to our latest sermons' }, items });
-      await loadSermons();
-      setSnackbar({ open: true, message: 'Sermon deleted', severity: 'success' });
-    } catch (err) {
-      setSnackbar({ open: true, message: err.message, severity: 'error' });
-    }
-  };
+  const formatDate = (d) => { if (!d) return ''; try { return new Date(d).toLocaleDateString(); } catch { return d; } };
 
-  if (loading) return <Box display="flex" justifyContent="center" py={8}><CircularProgress /></Box>;
+  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}><CircularProgress /></Box>;
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-        <Typography variant="h4" component="h1">
-          <SermonIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-          Sermons
-        </Typography>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={openAdd}>Add Sermon</Button>
+    <Box sx={{ p: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h4" fontWeight="bold">{t('admin.sermonsManager.title')}</Typography>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>{t('admin.sermonsManager.add')}</Button>
       </Box>
 
       <Grid container spacing={3}>
-        {sermons.map((sermon, idx) => (
-          <Grid item xs={12} sm={6} md={4} key={idx}>
+        {items.length === 0 && (
+          <Grid item xs={12}>
+            <Card><CardContent><Typography color="text.secondary" textAlign="center">{t('admin.sermonsManager.noItems')}</Typography></CardContent></Card>
+          </Grid>
+        )}
+        {items.map((item) => (
+          <Grid item xs={12} sm={6} md={4} key={item.id}>
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              {item.imageUrl && <CardMedia component="img" height="140" image={item.imageUrl} alt={item.title} />}
               <CardContent sx={{ flexGrow: 1 }}>
-                <Typography variant="h6" gutterBottom>{sermon.title}</Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {sermon.speaker} &bull; {sermon.date}
-                </Typography>
-                {sermon.description && (
-                  <Typography variant="body2" sx={{ mt: 1 }}>{sermon.description}</Typography>
-                )}
+                <Typography gutterBottom variant="h6">{item.title}</Typography>
+                <Typography variant="body2" color="text.secondary">{item.speaker}{item.datePreached ? ` · ${formatDate(item.datePreached)}` : ''}</Typography>
+                {item.series && <Typography variant="caption" color="text.secondary">Series: {item.series}</Typography>}
               </CardContent>
-              <CardActions>
-                <Button size="small" startIcon={<EditIcon />} onClick={() => openEdit(idx)}>Edit</Button>
-                <Button size="small" color="error" startIcon={<DeleteIcon />} onClick={() => remove(idx)}>Delete</Button>
-              </CardActions>
+              <Box sx={{ p: 2, pt: 0, display: 'flex', gap: 1 }}>
+                <Button size="small" startIcon={<EditIcon />} onClick={() => handleEdit(item)}>{t('admin.sermonsManager.edit')}</Button>
+                <Button size="small" color="error" startIcon={<DeleteIcon />} onClick={() => setDeleteDialog(item)}>{t('admin.sermonsManager.delete')}</Button>
+              </Box>
             </Card>
           </Grid>
         ))}
-        {sermons.length === 0 && (
-          <Grid item xs={12}><Typography color="textSecondary" textAlign="center" py={8}>No sermons yet.</Typography></Grid>
-        )}
       </Grid>
 
-      <Dialog open={dialog} onClose={() => setDialog(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>{editIdx !== null ? 'Edit Sermon' : 'Add Sermon'}</DialogTitle>
-        <DialogContent>
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={12}><TextField fullWidth label="Title" value={form.title} onChange={(e) => setForm(p => ({ ...p, title: e.target.value }))} /></Grid>
-            <Grid item xs={6}><TextField fullWidth label="Speaker" value={form.speaker} onChange={(e) => setForm(p => ({ ...p, speaker: e.target.value }))} /></Grid>
-            <Grid item xs={6}><TextField fullWidth label="Date" value={form.date} onChange={(e) => setForm(p => ({ ...p, date: e.target.value }))} /></Grid>
-            <Grid item xs={12}><TextField fullWidth label="Description" multiline rows={3} value={form.description} onChange={(e) => setForm(p => ({ ...p, description: e.target.value }))} /></Grid>
-            <Grid item xs={12}><TextField fullWidth label="Video URL" value={form.videoUrl} onChange={(e) => setForm(p => ({ ...p, videoUrl: e.target.value }))} /></Grid>
-            <Grid item xs={12}><TextField fullWidth label="Audio URL" value={form.audioUrl} onChange={(e) => setForm(p => ({ ...p, audioUrl: e.target.value }))} /></Grid>
-            <Grid item xs={12}><TextField fullWidth label="Image URL" value={form.imageUrl} onChange={(e) => setForm(p => ({ ...p, imageUrl: e.target.value }))} /></Grid>
-          </Grid>
-        </DialogContent>
+      <Dialog open={dialog} onClose={handleClose} maxWidth="md" fullWidth>
+        <form onSubmit={handleSubmit}>
+          <DialogTitle>{isEditMode ? t('admin.sermonsManager.editTitle') : t('admin.sermonsManager.addTitle')}</DialogTitle>
+          <DialogContent>
+            <Grid container spacing={2} sx={{ mt: 0.5 }}>
+              <Grid item xs={12}><TextField fullWidth label={t('admin.field.title', 'Title')} value={form.title} onChange={(e) => setForm(p => ({ ...p, title: e.target.value }))} required /></Grid>
+              <Grid item xs={12}><TextField fullWidth label={t('admin.field.description', 'Description')} value={form.description || ''} onChange={(e) => setForm(p => ({ ...p, description: e.target.value }))} multiline rows={3} /></Grid>
+              <Grid item xs={6}><TextField fullWidth label={t('admin.manager.sermon.speaker', 'Speaker')} value={form.speaker || ''} onChange={(e) => setForm(p => ({ ...p, speaker: e.target.value }))} /></Grid>
+              <Grid item xs={6}><TextField fullWidth label={t('admin.manager.sermon.series', 'Series')} value={form.series || ''} onChange={(e) => setForm(p => ({ ...p, series: e.target.value }))} /></Grid>
+              <Grid item xs={6}><TextField fullWidth label={t('admin.manager.sermon.datePreached', 'Date Preached')} type="date" InputLabelProps={{ shrink: true }} value={form.datePreached} onChange={(e) => setForm(p => ({ ...p, datePreached: e.target.value }))} /></Grid>
+              <Grid item xs={6}><TextField fullWidth label={t('admin.manager.sermon.bibleVerse', 'Bible Verse')} value={form.bibleVerse || ''} onChange={(e) => setForm(p => ({ ...p, bibleVerse: e.target.value }))} /></Grid>
+              <Grid item xs={12}><TextField fullWidth label="Content" value={form.content || ''} onChange={(e) => setForm(p => ({ ...p, content: e.target.value }))} multiline rows={6} /></Grid>
+              <Grid item xs={6}><TextField fullWidth label="Video URL" value={form.videoUrl || ''} onChange={(e) => setForm(p => ({ ...p, videoUrl: e.target.value }))} /></Grid>
+              <Grid item xs={6}><TextField fullWidth label="Audio URL" value={form.audioUrl || ''} onChange={(e) => setForm(p => ({ ...p, audioUrl: e.target.value }))} /></Grid>
+              <Grid item xs={6}><TextField fullWidth label="Image URL" value={form.imageUrl || ''} onChange={(e) => setForm(p => ({ ...p, imageUrl: e.target.value }))} /></Grid>
+              <Grid item xs={6}><TextField fullWidth label="Duration" value={form.duration || ''} onChange={(e) => setForm(p => ({ ...p, duration: e.target.value }))} /></Grid>
+              <Grid item xs={12}><FormControlLabel control={<Switch checked={form.active !== false} onChange={(e) => setForm(p => ({ ...p, active: e.target.checked }))} />} label="Active" /></Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>{t('admin.sermonsManager.cancel')}</Button>
+            <Button type="submit" variant="contained" disabled={isSubmitting}>{isSubmitting ? <CircularProgress size={20} /> : (isEditMode ? t('admin.sermonsManager.update') : t('admin.sermonsManager.create'))}</Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+
+      <Dialog open={!!deleteDialog} onClose={() => setDeleteDialog(null)}>
+        <DialogTitle>{t('admin.sermonsManager.confirmDelete')}</DialogTitle>
+        <DialogContent><Typography>{t('admin.sermonsManager.deleteConfirm', { title: deleteDialog?.title })}</Typography></DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialog(false)}>Cancel</Button>
-          <Button onClick={save} variant="contained">{editIdx !== null ? 'Update' : 'Add'}</Button>
+          <Button onClick={() => setDeleteDialog(null)}>{t('admin.sermonsManager.cancel')}</Button>
+          <Button onClick={handleDelete} color="error" variant="contained">{t('admin.sermonsManager.delete')}</Button>
         </DialogActions>
       </Dialog>
 
-      <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}>
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}>{snackbar.message}</Alert>
+      <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar(p => ({ ...p, open: false }))}>
+        <Alert severity={snackbar.severity} variant="filled">{snackbar.message}</Alert>
       </Snackbar>
-    </Container>
+    </Box>
   );
 };
 

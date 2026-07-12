@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDropzone } from 'react-dropzone';
 import {
   Box, Container, Typography, Button, Grid, Card, CardMedia, CardContent,
@@ -12,6 +13,7 @@ import {
 import { mediaService } from '../../services/api';
 
 const MediaManager = () => {
+  const { t } = useTranslation();
   const [media, setMedia] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -39,13 +41,13 @@ const MediaManager = () => {
         await mediaService.upload(file);
       }
       await loadMedia();
-      setSnackbar({ open: true, message: 'Upload successful!', severity: 'success' });
+      setSnackbar({ open: true, message: t('admin.mediaManager.uploadSuccess'), severity: 'success' });
     } catch (err) {
       setSnackbar({ open: true, message: err.message, severity: 'error' });
     } finally {
       setUploading(false);
     }
-  }, []);
+  }, [t]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop, accept: { 'image/*': [] }, multiple: true,
@@ -56,7 +58,7 @@ const MediaManager = () => {
     try {
       await mediaService.delete(deleteDialog.filename);
       setMedia(prev => prev.filter(m => m.filename !== deleteDialog.filename));
-      setSnackbar({ open: true, message: 'Deleted successfully', severity: 'success' });
+      setSnackbar({ open: true, message: t('admin.mediaManager.deleted'), severity: 'success' });
     } catch (err) {
       setSnackbar({ open: true, message: err.message, severity: 'error' });
     }
@@ -65,14 +67,14 @@ const MediaManager = () => {
 
   const copyUrl = (url) => {
     navigator.clipboard.writeText(url);
-    setSnackbar({ open: true, message: 'URL copied to clipboard!', severity: 'success' });
+    setSnackbar({ open: true, message: t('admin.mediaManager.urlCopied'), severity: 'success' });
   };
 
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <Typography variant="h4" component="h1" mb={4}>
         <ImageIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-        Media Manager
+        {t('admin.mediaManager.title')}
       </Typography>
 
       <Paper
@@ -86,9 +88,9 @@ const MediaManager = () => {
         <input {...getInputProps()} />
         <UploadIcon sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
         <Typography variant="h6">
-          {isDragActive ? 'Drop files here...' : 'Drag & drop images here, or click to select'}
+          {isDragActive ? t('admin.mediaManager.dragActive') : t('admin.mediaManager.dragDrop')}
         </Typography>
-        <Typography variant="body2" color="textSecondary">Supported: JPG, PNG, GIF, WebP, SVG (max 10MB)</Typography>
+        <Typography variant="body2" color="textSecondary">{t('admin.mediaManager.supported')}</Typography>
       </Paper>
 
       {uploading && <LinearProgress sx={{ mb: 2 }} />}
@@ -119,20 +121,20 @@ const MediaManager = () => {
           ))}
           {media.length === 0 && !loading && (
             <Grid item xs={12}>
-              <Typography color="textSecondary" textAlign="center" py={8}>No media uploaded yet.</Typography>
+              <Typography color="textSecondary" textAlign="center" py={8}>{t('admin.mediaManager.noItems')}</Typography>
             </Grid>
           )}
         </Grid>
       )}
 
       <Dialog open={!!deleteDialog} onClose={() => setDeleteDialog(null)}>
-        <DialogTitle>Delete Media</DialogTitle>
+        <DialogTitle>{t('admin.mediaManager.deleteTitle')}</DialogTitle>
         <DialogContent>
-          <Typography>Are you sure you want to delete "{deleteDialog?.filename}"?</Typography>
+          <Typography>{t('admin.mediaManager.deleteConfirm', { name: deleteDialog?.filename })}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDeleteDialog(null)}>Cancel</Button>
-          <Button onClick={handleDelete} color="error" variant="contained">Delete</Button>
+          <Button onClick={() => setDeleteDialog(null)}>{t('admin.mediaManager.cancel')}</Button>
+          <Button onClick={handleDelete} color="error" variant="contained">{t('admin.mediaManager.delete')}</Button>
         </DialogActions>
       </Dialog>
 

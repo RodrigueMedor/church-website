@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Church, Groups, Star, Favorite } from '@mui/icons-material';
 import MinistriesLayout from '../common/MinistriesLayout';
 
@@ -22,27 +23,28 @@ const leaders = [
 ];
 
 const ProfessionalYouthMinistryPage = () => {
+  const { t } = useTranslation();
   return (
     <MinistriesLayout
       accentColor={accent}
-      heroTitle="Youth Ministry"
+      heroTitle={t('youth.title')}
       heroSubtitle={'"Don\'t let anyone look down on you because you are young, but set an example for the believers in speech, conduct, love, faith and purity."'}
       heroVerse="1 Timothy 4:12"
       heroImage="/images/banner/youth-banner.jpg"
       heroStats={[
-        { value: "60+", label: "Active Teens" },
-        { value: "8", label: "Youth Leaders" },
-        { value: "13-18", label: "Age Range" },
-        { value: "Weekly", label: "Meetings" },
+        { value: "60+", label: t('youth.stats.activeTeens', 'Active Teens') },
+        { value: "8", label: t('youth.stats.youthLeaders', 'Youth Leaders') },
+        { value: "13-18", label: t('youth.stats.ageRange', 'Age Range') },
+        { value: "Weekly", label: t('youth.stats.meetings', 'Meetings') },
       ]}
-      welcomeTitle="Welcome to Youth Ministry"
-      welcomeDescription="We're a community where teens can be themselves, ask tough questions, and discover the amazing plans God has for their lives. Join us as we grow in faith, build friendships, and make a difference."
+      welcomeTitle={t('youth.welcome')}
+      welcomeDescription={t('youth.welcomeDescription')}
       activities={activities}
       schedule={schedule}
       leaders={leaders}
-      ctaTitle="Join Our Youth Community!"
-      ctaDescription="Come be part of something amazing! Make friends, grow in faith, and discover your purpose."
-      ctaButtonText="Join Youth Group"
+      ctaTitle={t('youth.readyToJoin')}
+      ctaDescription={t('youth.readyToJoinDescription')}
+      ctaButtonText={t('youth.joinGroup', 'Join Youth Group')}
       ctaButtonLink="/contact"
     />
   );

@@ -6,9 +6,11 @@ import {
   useTheme,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { usePageContent } from '../../cms';
 
 const PrivacyPage = () => {
   const { t } = useTranslation();
+  const content = usePageContent('privacy');
   const theme = useTheme();
 
   return (
@@ -43,7 +45,7 @@ const PrivacyPage = () => {
               mb: 2,
             }}
           >
-            Privacy Policy
+            {content.title || t('privacy.title', 'Privacy Policy')}
           </Typography>
           <Typography
             variant="h6"
@@ -60,34 +62,28 @@ const PrivacyPage = () => {
           {t('privacy.lastUpdated', 'Last updated: January 2024')}
         </Typography>
 
-        <Section title="Information We Collect">
-          We collect information you provide directly, such as when you fill out contact forms, 
-          register for events, or make donations. This may include your name, email address, 
-          phone number, and mailing address.
+        <Section title={t('privacy.sectionCollect', 'Information We Collect')}>
+          {t('privacy.sectionCollectText', 'We collect information you provide directly, such as when you fill out contact forms, register for events, or make donations. This may include your name, email address, phone number, and mailing address.')}
         </Section>
 
-        <Section title="How We Use Your Information">
-          We use the information we collect to communicate with you about church activities, 
-          process donations, respond to your inquiries, and improve our services. We do not 
-          sell or share your personal information with third parties for marketing purposes.
+        <Section title={t('privacy.sectionUse', 'How We Use Your Information')}>
+          {t('privacy.sectionUseText', 'We use the information we collect to communicate with you about church activities, process donations, respond to your inquiries, and improve our services. We do not sell or share your personal information with third parties for marketing purposes.')}
         </Section>
 
-        <Section title="Donation Processing">
-          When you make a donation, your payment information is processed securely through 
-          our payment partners. We do not store full credit card numbers on our servers.
+        <Section title={t('privacy.sectionDonations', 'Donation Processing')}>
+          {t('privacy.sectionDonationsText', 'When you make a donation, your payment information is processed securely through our payment partners. We do not store full credit card numbers on our servers.')}
         </Section>
 
-        <Section title="Cookies">
-          Our website may use cookies to enhance your browsing experience. You can control 
-          cookie preferences through your browser settings.
+        <Section title={t('privacy.sectionCookies', 'Cookies')}>
+          {t('privacy.sectionCookiesText', 'Our website may use cookies to enhance your browsing experience. You can control cookie preferences through your browser settings.')}
         </Section>
 
-        <Section title="Contact Us">
-          If you have questions about this privacy policy, please contact us at{' '}
+        <Section title={t('privacy.sectionContact', 'Contact Us')}>
+          {t('privacy.sectionContactText', 'If you have questions about this privacy policy, please contact us at')}{' '}
           <Typography component="span" sx={{ color: theme.palette.primary.main }}>
             info@fhbck.org
           </Typography>
-          {' '}or call (407) 218-0827.
+          {' '}{t('privacy.sectionContactOrCall', 'or call')} (407) 218-0827.
         </Section>
       </Container>
     </Box>

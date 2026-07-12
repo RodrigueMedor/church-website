@@ -14,8 +14,10 @@ import {
   Paper
 } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 
 const VolunteerForm = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -30,15 +32,15 @@ const VolunteerForm = () => {
   const [submitStatus, setSubmitStatus] = useState({ success: false, message: '' });
 
   const serviceAreas = [
-    'Worship Team',
-    'Children\'s Ministry',
-    'Youth Ministry',
-    'Hospitality Team',
-    'Tech Team',
-    'Facilities Team',
-    'Prayer Team',
-    'Outreach & Missions',
-    'Other'
+    t('getInvolved.worshipTeam', 'Worship Team'),
+    t('getInvolved.childrenMinistry', "Children's Ministry"),
+    t('getInvolved.youthMinistry', 'Youth Ministry'),
+    t('getInvolved.hospitalityTeam', 'Hospitality Team'),
+    t('getInvolved.techTeam', 'Tech Team'),
+    t('getInvolved.facilitiesTeam', 'Facilities Team'),
+    t('getInvolved.prayerTeam', 'Prayer Team'),
+    t('getInvolved.outreachMissions', 'Outreach & Missions'),
+    t('getInvolved.other', 'Other')
   ];
 
   const handleChange = (e) => {
@@ -68,15 +70,15 @@ const VolunteerForm = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
+    if (!formData.firstName.trim()) newErrors.firstName = t('getInvolved.validation.firstNameRequired', 'First name is required');
+    if (!formData.lastName.trim()) newErrors.lastName = t('getInvolved.validation.lastNameRequired', 'Last name is required');
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('getInvolved.validation.emailRequired', 'Email is required');
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = t('getInvolved.validation.emailInvalid', 'Email is invalid');
     }
     if (formData.areasOfInterest.length === 0) {
-      newErrors.areasOfInterest = 'Please select at least one area of interest';
+      newErrors.areasOfInterest = t('getInvolved.validation.areaRequired', 'Please select at least one area of interest');
     }
     
     setErrors(newErrors);
@@ -98,7 +100,7 @@ const VolunteerForm = () => {
       
       setSubmitStatus({
         success: true,
-        message: 'Thank you for your interest in volunteering! Our team will contact you soon.'
+        message: t('getInvolved.formSuccess', 'Thank you for your interest in volunteering! Our team will contact you soon.')
       });
       
       // Reset form on successful submission
@@ -115,7 +117,7 @@ const VolunteerForm = () => {
       console.error('Error submitting form:', error);
       setSubmitStatus({
         success: false,
-        message: 'There was an error submitting your form. Please try again later.'
+        message: t('getInvolved.formError', 'There was an error submitting your form. Please try again later.')
       });
     } finally {
       setIsSubmitting(false);
@@ -125,7 +127,7 @@ const VolunteerForm = () => {
   return (
     <Paper elevation={3} sx={{ p: 4, borderRadius: 2, maxWidth: 800, mx: 'auto' }}>
       <Typography variant="h5" component="h2" gutterBottom sx={{ mb: 3, fontWeight: 600, color: 'primary.main' }}>
-        Volunteer Interest Form
+        {t('getInvolved.formTitle', 'Volunteer Interest Form')}
       </Typography>
       
       {submitStatus.message && (
@@ -142,7 +144,7 @@ const VolunteerForm = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="First Name"
+              label={t('getInvolved.formName', 'First Name')}
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
@@ -155,7 +157,7 @@ const VolunteerForm = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Last Name"
+              label={t('getInvolved.formLastName', 'Last Name')}
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
@@ -168,7 +170,7 @@ const VolunteerForm = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Email"
+              label={t('getInvolved.formEmail', 'Email')}
               name="email"
               type="email"
               value={formData.email}
@@ -182,13 +184,13 @@ const VolunteerForm = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Phone Number"
+              label={t('getInvolved.formPhone', 'Phone Number')}
               name="phone"
               type="tel"
               value={formData.phone}
               onChange={handleChange}
               disabled={isSubmitting}
-              placeholder="(123) 456-7890"
+              placeholder={t('getInvolved.formPhonePlaceholder', '(123) 456-7890')}
             />
           </Grid>
           <Grid item xs={12}>
@@ -197,7 +199,7 @@ const VolunteerForm = () => {
               error={!!errors.areasOfInterest}
               disabled={isSubmitting}
             >
-              <InputLabel id="areas-of-interest-label">Areas of Interest *</InputLabel>
+              <InputLabel id="areas-of-interest-label">{t('getInvolved.formArea', 'Areas of Interest *')}</InputLabel>
               <Select
                 labelId="areas-of-interest-label"
                 id="areas-of-interest"
@@ -205,7 +207,7 @@ const VolunteerForm = () => {
                 multiple
                 value={formData.areasOfInterest}
                 onChange={handleSelectChange}
-                label="Areas of Interest *"
+                label={t('getInvolved.formArea', 'Areas of Interest *')}
                 renderValue={(selected) => selected.join(', ')}
               >
                 {serviceAreas.map((area) => (
@@ -222,13 +224,13 @@ const VolunteerForm = () => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Additional Information"
+              label={t('getInvolved.formMessage', 'Additional Information')}
               name="message"
               value={formData.message}
               onChange={handleChange}
               multiline
               rows={4}
-              placeholder="Tell us about your skills, experience, or any other relevant information..."
+              placeholder={t('getInvolved.formMessagePlaceholder', 'Tell us about your skills, experience, or any other relevant information...')}
               disabled={isSubmitting}
             />
           </Grid>
@@ -252,7 +254,7 @@ const VolunteerForm = () => {
                 transition: 'all 0.2s ease-in-out',
               }}
             >
-              {isSubmitting ? 'Submitting...' : 'Submit Interest Form'}
+              {isSubmitting ? t('getInvolved.formSubmitting', 'Submitting...') : t('getInvolved.formSubmit', 'Submit Interest Form')}
             </Button>
           </Grid>
         </Grid>

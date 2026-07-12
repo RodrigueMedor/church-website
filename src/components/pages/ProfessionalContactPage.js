@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 import { 
   Box, 
   Container, 
@@ -223,21 +224,21 @@ const ProfessionalContactPage = () => {
     const newErrors = {};
     
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = t('contact.form.nameRequired', 'Name is required');
     }
     
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('contact.form.emailRequired', 'Email is required');
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email';
+      newErrors.email = t('contact.form.emailInvalid', 'Please enter a valid email');
     }
     
     if (!formData.subject.trim()) {
-      newErrors.subject = 'Subject is required';
+      newErrors.subject = t('contact.form.subjectRequired', 'Subject is required');
     }
     
     if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
+      newErrors.message = t('contact.form.messageRequired', 'Message is required');
     }
     
     setErrors(newErrors);
@@ -252,21 +253,7 @@ const ProfessionalContactPage = () => {
       setErrors(prev => ({ ...prev, submit: '' }));
       
       try {
-        const response = await fetch('/.netlify/functions/submit-form', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-
-        const data = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(data.error || 'Failed to send message');
-        }
-
-        console.log('Success:', data);
+        await api.post('/public/contact', formData);
         setIsSuccess(true);
         setFormData({
           name: '',
@@ -519,7 +506,7 @@ const ProfessionalContactPage = () => {
                         <Grid item xs={12} sm={6}>
                           <TextField
                             fullWidth
-                            label="Your Name"
+                            label={t('contact.page.yourName', 'Your Name')}
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
@@ -541,7 +528,7 @@ const ProfessionalContactPage = () => {
                         <Grid item xs={12} sm={6}>
                           <TextField
                             fullWidth
-                            label="Your Email"
+                            label={t('contact.page.emailAddress', 'Email Address')}
                             name="email"
                             type="email"
                             value={formData.email}
@@ -564,7 +551,7 @@ const ProfessionalContactPage = () => {
                         <Grid item xs={12} sm={6}>
                           <TextField
                             fullWidth
-                            label="Phone Number"
+                            label={t('contact.info.phoneNumber', 'Phone Number')}
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
@@ -590,7 +577,7 @@ const ProfessionalContactPage = () => {
                         <Grid item xs={12} sm={6}>
                           <TextField
                             fullWidth
-                            label="Subject"
+                            label={t('contact.page.purpose', 'Purpose')}
                             name="subject"
                             value={formData.subject}
                             onChange={handleChange}
@@ -612,7 +599,7 @@ const ProfessionalContactPage = () => {
                         <Grid item xs={12}>
                           <TextField
                             fullWidth
-                            label="Your Message"
+                            label={t('contact.page.yourMessage', 'Your Message')}
                             name="message"
                             value={formData.message}
                             onChange={handleChange}

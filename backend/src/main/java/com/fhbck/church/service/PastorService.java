@@ -6,6 +6,8 @@ import com.fhbck.church.exception.ResourceNotFoundException;
 import com.fhbck.church.repository.PastorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class PastorService {
 
     private final PastorRepository pastorRepository;
+    private final MessageSource messageSource;
 
     public List<PastorDto> getAll() {
         return pastorRepository.findAllByOrderByCreatedAtAsc()
@@ -23,8 +26,10 @@ public class PastorService {
     }
 
     public PastorDto getById(Long id) {
+        var locale = LocaleContextHolder.getLocale();
         return toDto(pastorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Pastor not found: " + id)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.pastor", null, locale), id}, locale))));
     }
 
     @Transactional
@@ -35,8 +40,10 @@ public class PastorService {
 
     @Transactional
     public PastorDto update(Long id, PastorDto dto) {
+        var locale = LocaleContextHolder.getLocale();
         var pastor = pastorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Pastor not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.pastor", null, locale), id}, locale)));
         pastor.setName(dto.getName());
         pastor.setTitle(dto.getTitle());
         pastor.setImageUrl(dto.getImageUrl());
@@ -49,7 +56,9 @@ public class PastorService {
     @Transactional
     public void delete(Long id) {
         if (!pastorRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Pastor not found: " + id);
+            var locale = LocaleContextHolder.getLocale();
+            throw new ResourceNotFoundException(
+                    messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.pastor", null, locale), id}, locale));
         }
         pastorRepository.deleteById(id);
     }

@@ -1,28 +1,55 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme as createMuiTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+export const createTheme = (mode = 'light') => createMuiTheme({
   palette: {
-    primary: {
-      main: '#1a365d',
-      light: '#2c5282',
-      dark: '#0f2440',
-      contrastText: '#ffffff',
-    },
-    secondary: {
-      main: '#c9a84c',
-      light: '#f4e4bc',
-      dark: '#a8882e',
-      contrastText: '#1a365d',
-    },
-    background: {
-      default: '#fafafa',
-      paper: '#ffffff',
-    },
-    text: {
-      primary: '#1a1a2e',
-      secondary: '#4a5568',
-    },
-    divider: 'rgba(26, 54, 93, 0.1)',
+    mode,
+    ...(mode === 'light'
+      ? {
+          primary: {
+            main: '#1a365d',
+            light: '#2c5282',
+            dark: '#0f2440',
+            contrastText: '#ffffff',
+          },
+          secondary: {
+            main: '#c9a84c',
+            light: '#f4e4bc',
+            dark: '#a8882e',
+            contrastText: '#1a365d',
+          },
+          background: {
+            default: '#fafafa',
+            paper: '#ffffff',
+          },
+          text: {
+            primary: '#1a1a2e',
+            secondary: '#4a5568',
+          },
+          divider: 'rgba(26, 54, 93, 0.1)',
+        }
+      : {
+          primary: {
+            main: '#4a8fd4',
+            light: '#6aafe8',
+            dark: '#2a6fa0',
+            contrastText: '#ffffff',
+          },
+          secondary: {
+            main: '#e0b84c',
+            light: '#f0d070',
+            dark: '#c09030',
+            contrastText: '#0f172a',
+          },
+          background: {
+            default: '#0f172a',
+            paper: '#1e293b',
+          },
+          text: {
+            primary: '#e2e8f0',
+            secondary: '#94a3b8',
+          },
+          divider: 'rgba(255, 255, 255, 0.12)',
+        }),
   },
   typography: {
     fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -88,16 +115,22 @@ const theme = createTheme({
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         },
         contained: {
-          boxShadow: '0 4px 14px rgba(26, 54, 93, 0.25)',
+          boxShadow: mode === 'light'
+            ? '0 4px 14px rgba(26, 54, 93, 0.25)'
+            : '0 4px 14px rgba(0, 0, 0, 0.4)',
           '&:hover': {
-            boxShadow: '0 8px 25px rgba(26, 54, 93, 0.35)',
+            boxShadow: mode === 'light'
+              ? '0 8px 25px rgba(26, 54, 93, 0.35)'
+              : '0 8px 25px rgba(0, 0, 0, 0.5)',
             transform: 'translateY(-2px)',
           },
         },
         outlined: {
           '&:hover': {
             transform: 'translateY(-2px)',
-            boxShadow: '0 4px 12px rgba(26, 54, 93, 0.15)',
+            boxShadow: mode === 'light'
+              ? '0 4px 12px rgba(26, 54, 93, 0.15)'
+              : '0 4px 12px rgba(0, 0, 0, 0.3)',
           },
         },
       },
@@ -106,7 +139,9 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 16,
-          boxShadow: '0 1px 3px rgba(26, 54, 93, 0.08), 0 1px 2px rgba(26, 54, 93, 0.06)',
+          boxShadow: mode === 'light'
+            ? '0 1px 3px rgba(26, 54, 93, 0.08), 0 1px 2px rgba(26, 54, 93, 0.06)'
+            : '0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2)',
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         },
       },
@@ -121,4 +156,5 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+const lightTheme = createTheme('light');
+export default lightTheme;

@@ -7,6 +7,8 @@ import com.fhbck.church.exception.ResourceNotFoundException;
 import com.fhbck.church.repository.NewsArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 public class NewsService {
 
     private final NewsArticleRepository newsArticleRepository;
+
+    private final MessageSource messageSource;
 
     public PagedResponse<NewsArticleDto> getAll(int page, int size) {
         var pageable = PageRequest.of(page, size);
@@ -35,7 +39,11 @@ public class NewsService {
 
     public NewsArticleDto getById(Long id) {
         return toDto(newsArticleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("News not found: " + id)));
+                .orElseThrow(() -> {
+                    var locale = LocaleContextHolder.getLocale();
+                    return new ResourceNotFoundException(
+                            messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.news", null, locale), id}, locale));
+                }));
     }
 
     @Transactional
@@ -47,7 +55,11 @@ public class NewsService {
     @Transactional
     public NewsArticleDto update(Long id, NewsArticleDto dto) {
         var article = newsArticleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("News not found: " + id));
+                .orElseThrow(() -> {
+                    var locale = LocaleContextHolder.getLocale();
+                    return new ResourceNotFoundException(
+                            messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.news", null, locale), id}, locale));
+                });
         article.setTitle(dto.getTitle());
         article.setExcerpt(dto.getExcerpt());
         article.setContent(dto.getContent());
@@ -61,7 +73,9 @@ public class NewsService {
     @Transactional
     public void delete(Long id) {
         if (!newsArticleRepository.existsById(id)) {
-            throw new ResourceNotFoundException("News not found: " + id);
+            var locale = LocaleContextHolder.getLocale();
+            throw new ResourceNotFoundException(
+                    messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.news", null, locale), id}, locale));
         }
         newsArticleRepository.deleteById(id);
     }

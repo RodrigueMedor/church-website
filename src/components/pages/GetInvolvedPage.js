@@ -38,11 +38,15 @@ import {
   ContactMail as ContactIcon,
   ArrowForward as ArrowForwardIcon
 } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
+import { usePageContent } from '../../cms';
 
 const GetInvolvedPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const content = usePageContent('get-involved');
+  const { t } = useTranslation();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -54,49 +58,49 @@ const GetInvolvedPage = () => {
 
   const serviceAreas = [
     {
-      title: 'Worship Team',
-      description: 'Join our worship team as a vocalist, musician, or audio/visual technician.',
+      title: t('getInvolved.worshipTeam', 'Worship Team'),
+      description: t('getInvolved.worshipTeamDesc', 'Join our worship team as a vocalist, musician, or audio/visual technician.'),
       icon: <MusicNoteIcon color="primary" fontSize="large" />,
       contact: 'worship@churchname.com'
     },
     {
-      title: 'Children\'s Ministry',
-      description: 'Make a difference in the lives of children by helping with Sunday School or childcare.',
+      title: t('getInvolved.childrenMinistry', "Children's Ministry"),
+      description: t('getInvolved.childrenMinistryDesc', "Make a difference in the lives of children by helping with Sunday School or childcare."),
       icon: <ChildCareIcon color="primary" fontSize="large" />,
       contact: 'children@churchname.com'
     },
     {
-      title: 'Youth Ministry',
-      description: 'Mentor and guide teenagers through their spiritual journey.',
+      title: t('getInvolved.youthMinistry', 'Youth Ministry'),
+      description: t('getInvolved.youthMinistryDesc', 'Mentor and guide teenagers through their spiritual journey.'),
       icon: <PeopleIcon color="primary" fontSize="large" />,
       contact: 'youth@churchname.com'
     },
     {
-      title: 'Hospitality Team',
-      description: 'Welcome visitors, serve refreshments, and help with special events.',
+      title: t('getInvolved.hospitalityTeam', 'Hospitality Team'),
+      description: t('getInvolved.hospitalityTeamDesc', 'Welcome visitors, serve refreshments, and help with special events.'),
       icon: <RestaurantIcon color="primary" fontSize="large" />,
       contact: 'hospitality@churchname.com'
     },
     {
-      title: 'Tech Team',
-      description: 'Help with live streaming, sound, and video production.',
+      title: t('getInvolved.techTeam', 'Tech Team'),
+      description: t('getInvolved.techTeamDesc', 'Help with live streaming, sound, and video production.'),
       icon: <WifiIcon color="primary" fontSize="large" />,
       contact: 'tech@churchname.com'
     },
     {
-      title: 'Facilities Team',
-      description: 'Assist with building maintenance, cleaning, and groundskeeping.',
+      title: t('getInvolved.facilitiesTeam', 'Facilities Team'),
+      description: t('getInvolved.facilitiesTeamDesc', 'Assist with building maintenance, cleaning, and groundskeeping.'),
       icon: <BuildIcon color="primary" fontSize="large" />,
       contact: 'facilities@churchname.com'
     },
     {
-      title: 'Prayer Team',
-      description: 'Join our prayer warriors in interceding for the church and community.',
+      title: t('getInvolved.prayerTeam', 'Prayer Team'),
+      description: t('getInvolved.prayerTeamDesc', 'Join our prayer warriors in interceding for the church and community.'),
       icon: <FavoriteIcon color="primary" fontSize="large" />,
     },
     {
-      title: 'Outreach & Missions',
-      description: 'Participate in local and international mission opportunities.',
+      title: t('getInvolved.outreachMissions', 'Outreach & Missions'),
+      description: t('getInvolved.outreachMissionsDesc', 'Participate in local and international mission opportunities.'),
       icon: <PublicIcon color="primary" fontSize="large" />,
       contact: 'missions@churchname.com'
     }
@@ -142,7 +146,7 @@ const GetInvolvedPage = () => {
               textShadow: '0 2px 4px rgba(0,0,0,0.3)'
             }}
           >
-            Join Us in God's Work
+            {content.heroTitle || t('getInvolved.heroTitle', 'Join Us in God\'s Work')}
           </Typography>
           <Typography 
             variant={isMobile ? 'body1' : 'h6'}
@@ -153,7 +157,7 @@ const GetInvolvedPage = () => {
               textShadow: '0 1px 3px rgba(0,0,0,0.3)'
             }}
           >
-            Join our team of dedicated volunteers and use your God-given talents to serve others and grow in faith.
+            {content.heroSubtitle || 'Join our team of dedicated volunteers and use your God-given talents to serve others and grow in faith.'}
           </Typography>
           <Button
             variant="contained"
@@ -176,7 +180,7 @@ const GetInvolvedPage = () => {
               transition: 'all 0.2s ease-in-out'
             }}
           >
-            Join Our Team Today
+            {content.heroButton || 'Join Our Team Today'}
           </Button>
         </Container>
       </Box>
@@ -203,7 +207,7 @@ const GetInvolvedPage = () => {
                 color: 'primary.main'
               }}
             >
-              Ways to Get Involved
+              {content.sectionTitle || 'Ways to Get Involved'}
             </Typography>
             <Typography 
               variant="h6" 
@@ -214,7 +218,7 @@ const GetInvolvedPage = () => {
                 mb: 4
               }}
             >
-              Discover how you can use your gifts and talents to serve our church community.
+              {content.sectionSubtitle || 'Discover how you can use your gifts and talents to serve our church community.'}
             </Typography>
           </Box>
 
@@ -319,7 +323,7 @@ const GetInvolvedPage = () => {
                 mb: 3
               }}
             >
-              Ready to Take the Next Step?
+              {content.ctaTitle || 'Ready to Take the Next Step?'}
             </Typography>
             <Typography 
               variant="h6" 
@@ -330,7 +334,7 @@ const GetInvolvedPage = () => {
                 opacity: 0.9
               }}
             >
-              Fill out our volunteer form and we'll help you find the perfect place to serve.
+              {content.ctaText || 'Fill out our volunteer form and we\'ll help you find the perfect place to serve.'}
             </Typography>
             <Button
               variant="contained"
@@ -352,7 +356,7 @@ const GetInvolvedPage = () => {
                 transition: 'all 0.2s ease-in-out'
               }}
             >
-              Volunteer Now
+              {content.ctaButton || 'Volunteer Now'}
             </Button>
           </Paper>
           
@@ -367,7 +371,7 @@ const GetInvolvedPage = () => {
           >
             <DialogTitle sx={{ m: 0, p: 2 }}>
               <Typography variant="h5" component="div" sx={{ fontWeight: 600 }}>
-                Volunteer Application
+                {content.modalTitle || t('getInvolved.volunteerForm', 'Volunteer Application')}
               </Typography>
               <IconButton
                 aria-label="close"

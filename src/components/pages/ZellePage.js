@@ -32,6 +32,8 @@ import SecurityIcon from '@mui/icons-material/Security';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import { useTranslation } from 'react-i18next';
+import { usePageContent } from '../../cms';
 
 // Animations
 const fadeInUp = keyframes`
@@ -139,6 +141,8 @@ const ZellePage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
+  const content = usePageContent('zelle');
+  const { t } = useTranslation();
 
   const zellePhone = '+1 (407) 218-0827';
 
@@ -149,56 +153,56 @@ const ZellePage = () => {
 
   const banks = [
     {
-      name: 'Bank of America',
+      name: t('giving.bankBOAName', 'Bank of America'),
       hasZelle: true,
-      instructions: 'Open your Bank of America app, tap "Transfer/Zelle", select "Send", enter our phone number and amount.'
+      instructions: t('giving.bankBOA', 'Open your Bank of America app, tap "Transfer/Zelle", select "Send", enter our phone number and amount.')
     },
     {
-      name: 'Wells Fargo',
+      name: t('giving.bankWellsName', 'Wells Fargo'),
       hasZelle: true,
-      instructions: 'In Wells Fargo app, go to "Transfer", select "Zelle", choose "Send", and enter our phone number.'
+      instructions: t('giving.bankWells', 'In Wells Fargo app, go to "Transfer", select "Zelle", choose "Send", and enter our phone number.')
     },
     {
-      name: 'Chase',
+      name: t('giving.bankChaseName', 'Chase'),
       hasZelle: true,
-      instructions: 'Open Chase app, tap "Pay & Transfer", select "Zelle", then "Send" with our phone number.'
+      instructions: t('giving.bankChase', 'Open Chase app, tap "Pay & Transfer", select "Zelle", then "Send" with our phone number.')
     },
     {
-      name: 'Capital One',
+      name: t('giving.bankCapOneName', 'Capital One'),
       hasZelle: true,
-      instructions: 'In Capital One app, go to "Payments", select "Zelle", and send to our phone number.'
+      instructions: t('giving.bankCapOne', 'In Capital One app, go to "Payments", select "Zelle", and send to our phone number.')
     },
     {
-      name: 'US Bank',
+      name: t('giving.bankUSBName', 'US Bank'),
       hasZelle: true,
-      instructions: 'Open US Bank app, navigate to "Move Money", select "Zelle", and send to our phone number.'
+      instructions: t('giving.bankUSB', 'Open US Bank app, navigate to "Move Money", select "Zelle", and send to our phone number.')
     },
     {
-      name: 'PNC Bank',
+      name: t('giving.bankPNCName', 'PNC Bank'),
       hasZelle: true,
-      instructions: 'In PNC app, go to "Pay Bills", select "Zelle", and enter our phone number to send money.'
+      instructions: t('giving.bankPNC', 'In PNC app, go to "Pay Bills", select "Zelle", and enter our phone number to send money.')
     },
   ];
 
   const steps = [
     {
-      title: 'Open Your Banking App',
-      description: 'Launch your mobile banking app or visit your bank\'s website. Look for Zelle® option.',
+      title: t('giving.step1Title', 'Open Your Banking App'),
+      description: t('giving.step1Desc', 'Launch your mobile banking app or visit your bank\'s website. Look for Zelle® option.'),
       icon: <PhoneAndroidIcon sx={{ fontSize: 40 }} />,
     },
     {
-      title: 'Select Zelle®',
-      description: 'Find Zelle® in your app\'s transfer or payment section. It\'s usually labeled "Zelle®" or "Send Money with Zelle®".',
+      title: t('giving.step2Title', 'Select Zelle®'),
+      description: t('giving.step2Desc', 'Find Zelle® in your app\'s transfer or payment section. It\'s usually labeled "Zelle®" or "Send Money with Zelle®".'),
       icon: <AccountBalanceIcon sx={{ fontSize: 40 }} />,
     },
     {
-      title: 'Enter Our Phone Number',
-      description: `Send to: ${zellePhone}`,
+      title: t('giving.step3Title', 'Enter Our Phone Number'),
+      description: t('giving.step3Desc', `Send to: ${zellePhone}`),
       icon: <ContentCopyIcon sx={{ fontSize: 40 }} />,
     },
     {
-      title: 'Enter Amount & Send',
-      description: 'Enter your donation amount, review the details, and confirm the transfer. It arrives instantly!',
+      title: t('giving.step4Title', 'Enter Amount & Send'),
+      description: t('giving.step4Desc', 'Enter your donation amount, review the details, and confirm the transfer. It arrives instantly!'),
       icon: <CheckCircleIcon sx={{ fontSize: 40 }} />,
     },
   ];
@@ -231,7 +235,7 @@ const ZellePage = () => {
                   letterSpacing: '-0.5px',
                 }}
               >
-                Give with Zelle®
+                {content.heroTitle || t('giving.heroTitle', 'Give with Zelle®')}
               </Typography>
               <Typography 
                 variant="h5" 
@@ -246,7 +250,7 @@ const ZellePage = () => {
                   lineHeight: 1.6,
                 }}
               >
-                Zelle® is a payment service built into your banking app. Use your own bank's app to give securely and instantly to our church.
+                {content.heroSubtitle || t('giving.heroSubtitle', 'Zelle® is a payment service built into your banking app. Use your own bank\'s app to give securely and instantly to our church.')}
               </Typography>
             </Box>
           </Fade>
@@ -268,10 +272,10 @@ const ZellePage = () => {
               overflow: 'hidden',
             }}>
               <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a365d', mb: 2 }}>
-                Our Zelle® Recipient Phone Number
+                {content.recipientTitle || t('giving.recipientTitle', 'Our Zelle® Recipient Phone Number')}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2, textAlign: 'center' }}>
-                Use this phone number when sending money through Zelle® in your banking app
+                {t('giving.useThisNumber', 'Use this phone number when sending money through Zelle® in your banking app')}
               </Typography>
               <Box sx={{ 
                 display: 'flex', 
@@ -309,7 +313,7 @@ const ZellePage = () => {
                 </IconButton>
               </Box>
               <Typography variant="body2" color="text.secondary">
-                Click to copy our phone number for use in your banking app
+                {t('giving.clickToCopy', 'Click to copy our phone number for use in your banking app')}
               </Typography>
             </Box>
           </Slide>
@@ -321,10 +325,10 @@ const ZellePage = () => {
         <Container maxWidth="lg">
           <Box textAlign="center" mb={6}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
-              How to Give with Zelle®
+              {content.howToTitle || t('giving.howToTitle', 'How to Give with Zelle®')}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '700px', mx: 'auto' }}>
-              Follow these simple steps to send your donation securely through Zelle®
+              {t('giving.stepsSubtitle', 'Follow these simple steps to send your donation securely through Zelle®')}
             </Typography>
           </Box>
           
@@ -368,10 +372,10 @@ const ZellePage = () => {
         <Container maxWidth="lg">
           <Box textAlign="center" mb={6}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
-              Zelle® Supported Banks
+              {content.banksTitle || t('giving.banksTitle', 'Zelle® Supported Banks')}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '700px', mx: 'auto' }}>
-              Zelle® is available in most major US banking apps. Check if your bank supports Zelle® below.
+              {t('giving.banksSubtitle', 'Zelle® is available in most major US banking apps. Check if your bank supports Zelle® below.')}
             </Typography>
           </Box>
           
@@ -390,7 +394,7 @@ const ZellePage = () => {
                     <CardContent sx={{ p: 3 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                         <Chip 
-                          label="Zelle® Available"
+                          label={t('giving.zelleAvailable', 'Zelle® Available')}
                           size="small"
                           sx={{ 
                             backgroundColor: 'success.light',
@@ -415,7 +419,7 @@ const ZellePage = () => {
           
           <Box sx={{ mt: 6, textAlign: 'center' }}>
             <Typography variant="body2" color="text.secondary">
-              Don't see your bank? Zelle® is available in hundreds of banking apps. Check your app or visit zellepay.com for a complete list.
+              {t('giving.noBankListed', 'Don\'t see your bank? Zelle® is available in hundreds of banking apps. Check your app or visit zellepay.com for a complete list.')}
             </Typography>
           </Box>
         </Container>
@@ -426,7 +430,7 @@ const ZellePage = () => {
         <Container maxWidth="md">
           <Box textAlign="center" mb={6}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
-              Why Give with Zelle®?
+              {content.whyTitle || t('giving.whyTitle', 'Why Give with Zelle®?')}
             </Typography>
           </Box>
           
@@ -436,10 +440,10 @@ const ZellePage = () => {
                 <Box sx={{ textAlign: 'center' }}>
                   <SecurityIcon sx={{ fontSize: 60, color: '#1a365d', mb: 2 }} />
                   <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-                    Bank-Level Security
+                    {t('giving.benefitSecurityTitle', 'Bank-Level Security')}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Protected by your bank's security systems and fraud protection.
+                    {t('giving.benefitSecurityDesc', 'Protected by your bank\'s security systems and fraud protection.')}
                   </Typography>
                 </Box>
               </Slide>
@@ -449,10 +453,10 @@ const ZellePage = () => {
                 <Box sx={{ textAlign: 'center' }}>
                   <TrendingUpIcon sx={{ fontSize: 60, color: '#c9a84c', mb: 2 }} />
                   <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-                    100% Fee-Free
+                    {t('giving.benefitFeeTitle', '100% Fee-Free')}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    No fees for you or our church. Your full donation goes to our mission.
+                    {t('giving.benefitFeeDesc', 'No fees for you or our church. Your full donation goes to our mission.')}
                   </Typography>
                 </Box>
               </Slide>
@@ -462,10 +466,10 @@ const ZellePage = () => {
                 <Box sx={{ textAlign: 'center' }}>
                   <VolunteerActivismIcon sx={{ fontSize: 60, color: '#2c5282', mb: 2 }} />
                   <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-                    Instant Delivery
+                    {t('giving.benefitInstantTitle', 'Instant Delivery')}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Your donation arrives immediately, ready to support our work.
+                    {t('giving.benefitInstantDesc', 'Your donation arrives immediately, ready to support our work.')}
                   </Typography>
                 </Box>
               </Slide>
@@ -479,26 +483,26 @@ const ZellePage = () => {
         <Container maxWidth="md">
           <Box textAlign="center" mb={6}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
-              Frequently Asked Questions
+              {content.faqTitle || t('giving.faqTitle', 'Frequently Asked Questions')}
             </Typography>
           </Box>
           
           {[
             {
-              question: 'Is my donation tax-deductible?',
-              answer: 'Yes, First Haitian Baptist Church of Kissimmee is a registered 501(c)(3) non-profit organization. All donations are tax-deductible to the full extent allowed by law.',
+              question: t('giving.faq1Q', 'Is my donation tax-deductible?'),
+              answer: t('giving.faq1A', 'Yes, First Haitian Baptist Church of Kissimmee is a registered 501(c)(3) non-profit organization. All donations are tax-deductible to the full extent allowed by law.'),
             },
             {
-              question: 'Will I receive a receipt?',
-              answer: 'Yes, you will receive an email receipt for your tax records. Please keep your Zelle® transaction confirmation as well.',
+              question: t('giving.faq2Q', 'Will I receive a receipt?'),
+              answer: t('giving.faq2A', 'Yes, you will receive an email receipt for your tax records. Please keep your Zelle® transaction confirmation as well.'),
             },
             {
-              question: 'What if my bank doesn\'t have Zelle®?',
-              answer: 'You can still use Zelle® by downloading the Zelle® app and enrolling with your debit card. Most major banks support Zelle®.',
+              question: t('giving.faq3Q', 'What if my bank doesn\'t have Zelle®?'),
+              answer: t('giving.faq3A', 'You can still use Zelle® by downloading the Zelle® app and enrolling with your debit card. Most major banks support Zelle®.'),
             },
             {
-              question: 'Are there limits on how much I can give?',
-              answer: 'Zelle® has sending limits set by your bank. Most banks allow transfers up to $1,000-$5,000 per day for enrolled users.',
+              question: t('giving.faq4Q', 'Are there limits on how much I can give?'),
+              answer: t('giving.faq4A', 'Zelle® has sending limits set by your bank. Most banks allow transfers up to $1,000-$5,000 per day for enrolled users.'),
             },
           ].map((faq, index) => (
             <Slide direction="up" in timeout={2400 + index * 100} key={index}>
@@ -523,10 +527,10 @@ const ZellePage = () => {
       <Box sx={{ py: 5, backgroundColor: 'white' }}>
         <Container maxWidth="md" sx={{ textAlign: 'center' }}>
           <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
-            Ready to Give with Zelle®?
+            {content.ctaTitle || t('giving.ctaTitle', 'Ready to Give with Zelle®?')}
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-            Open your banking app now and send your donation to +1 (407) 218-0827
+            {t('giving.ctaBody', 'Open your banking app now and send your donation to +1 (407) 218-0827')}
           </Typography>
           <Button 
             variant="contained"
@@ -551,7 +555,7 @@ const ZellePage = () => {
               mr: 2,
             }}
           >
-            Back to Giving
+            {t('giving.backToGiving', 'Back to Giving')}
           </Button>
         </Container>
       </Box>
@@ -564,7 +568,7 @@ const ZellePage = () => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert severity="success" onClose={() => setCopied(false)}>
-          Phone number copied to clipboard!
+          {t('giving.copiedMessage', 'Phone number copied to clipboard!')}
         </Alert>
       </Snackbar>
     </Box>

@@ -25,6 +25,8 @@
     "welcomeSubtitle": "A Place of Worship, Fellowship, and Service",
     "joinUs": "Join Us This Sunday",
     "watchLive": "Watch Live",
+    "watchLiveLoading": "Loading...",
+    "serviceTimesLabel": "Service Times",
     "ourCommunity": "Our Community",
     "communityDescription": "A welcoming church where everyone can grow in faith and build meaningful relationships.",
     "learnMoreAboutChurch": "Learn more about our church",
@@ -107,7 +109,9 @@
         "description": "We are called to serve our community and share the love of Christ with everyone.",
         "features": ["Community Service", "Outreach Programs", "Global Missions"]
       }
-    }
+    },
+    "otherLeaders": "Other Church Leaders",
+    "otherLeadersSubtitle": "Meet the dedicated deacons, directors, and volunteers who serve our church family."
   },
   "about": {
     "welcome": "Welcome to",
@@ -177,6 +181,21 @@
     "viewEvents": "View Events",
     "copyRight": "© {{year}} First Haitian Baptist Church of Kissimmee. All rights reserved."
   },
+  "footer": {
+    "brandName": "First Haitian Baptist Church of Kissimmee",
+    "brandSubtitle": "Serving God, Serving People, Building Community",
+    "description": "A welcoming church where everyone can grow in faith and build meaningful relationships.",
+    "churchLogoAlt": "Church Logo",
+    "quickLinks": "Quick Links",
+    "ourMinistries": "Our Ministries",
+    "contactUs": "Contact Us",
+    "serviceTimes": "Service Times",
+    "sundayLabel": "Sunday:",
+    "wednesdayLabel": "Wednesday:",
+    "copyright": "© {{year}} First Haitian Baptist Church of Kissimmee. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use"
+  },
   "common": {
     "worship": "Worship",
     "study": "Study",
@@ -218,6 +237,7 @@
       "joinUsDirectly": "Join us directly"
     },
     "categories": {
+      "all": "All",
       "worship": "Worship",
       "bibleStudy": "Bible Study",
       "fellowship": "Fellowship",
@@ -667,7 +687,7 @@
       "title": "Bridge Ministry",
       "date": "Starting April 1",
       "location": "Education Wing",
-      "description": "Connecting youth to God, the church, and one another. We serve as a welcoming pathway for new visitors and the surrounding community by building meaningful relationships and providing support where needed most. \"Therefore welcome one another as Christ has welcomed you, for the glory of God.\" — Romans 15:7",
+      "description": "The Bridge Ministry is dedicated to celebrating and supporting the educational achievements of our church family. Each year, we organize the Annual Student Recognition Program to honor students of all ages\u2014from preschool and elementary school to middle school, high school, college, university, vocational, and graduate programs\u2014as they complete another academic year or reach significant milestones.\n\nIn addition to recognizing academic accomplishments, the ministry plans and coordinates church-wide fellowship and entertainment activities that bring families together in a joyful, Christ-centered environment. Through meaningful events, celebrations, and community engagement, we encourage students to pursue excellence, inspire lifelong learning, strengthen relationships within the church, and give all glory to God for every achievement.\n\nOur mission is to encourage every student to grow academically, spiritually, and personally while reminding them that their gifts, talents, and success are blessings from God. We strive to create memorable experiences that inspire future generations to serve Christ faithfully and positively impact their communities.\n\n\u201cTrain up a child in the way he should go; even when he is old he will not depart from it.\u201d \u2014 Proverbs 22:6",
       "category": "Youth & Community"
     }
   },
@@ -687,5 +707,376 @@
       "description": "Connecting youth and community through our Bridge Ministry outreach programs and volunteer opportunities.",
       "body": "We are committed to being the hands and feet of Christ in our community through our Bridge Ministry. We connect youth to God, the church, and one another, serving as a welcoming pathway for new visitors. Through youth programs, community partnerships, and volunteer opportunities, we make a positive impact."
     }
+  },
+  "admin": {
+    "loading": "Loading...",
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "pages": "Pages",
+      "homepage": "Homepage",
+      "about": "About",
+      "ministries": "Ministries",
+      "ministriesCrud": "Ministries CRUD",
+      "events": "Events",
+      "sermons": "Sermons",
+      "contact": "Contact",
+      "news": "News",
+      "pastors": "Pastors",
+      "testimonials": "Testimonials",
+      "heroSlides": "Hero Slides",
+      "gallery": "Gallery",
+      "contactMessages": "Contact Messages",
+      "media": "Media",
+      "settings": "Settings",
+      "logout": "Logout",
+      "admin": "Admin"
+    },
+    "login": {
+      "welcomeBack": "Welcome Back",
+      "subtitle": "Sign in to manage your website content",
+      "email": "Email Address",
+      "password": "Password",
+      "signIn": "Sign In",
+      "demo": "Demo: admin@fhbck.org / admin123",
+      "autoFill": "(Auto-fill)",
+      "errorRequired": "Please enter both email and password",
+      "errorInvalid": "Invalid credentials"
+    },
+    "field": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "gallery": {
+      "title": "Gallery Manager"
+    },
+    "heroSlides": {
+      "title": "Hero Slides Manager"
+    },
+    "manager": {
+      "ministry": {
+        "name": "Name",
+        "slug": "URL Slug (e.g. youth)",
+        "tagline": "Tagline",
+        "shortDescription": "Short Description",
+        "longDescription": "Long Description",
+        "imageUrl": "Image URL",
+        "meetingTime": "Meeting Time",
+        "meetingLocation": "Meeting Location",
+        "contactEmail": "Contact Email",
+        "contactPhone": "Contact Phone"
+      },
+      "testimonial": {
+        "name": "Name",
+        "title": "Title",
+        "content": "Content",
+        "rating": "Rating (1-5)"
+      },
+      "pastor": {
+        "name": "Name",
+        "title": "Title",
+        "email": "Email"
+      },
+      "heroSlide": {
+        "subtitle": "Subtitle",
+        "page": "Page (e.g. homepage, about)",
+        "ctaText": "CTA Button Text",
+        "ctaLink": "CTA Button Link",
+        "imageUrl": "Image URL",
+        "order": "Order"
+      },
+      "gallery": {
+        "imageUrl": "Image URL",
+        "category": "Category"
+      }
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "subtitle": "Welcome to the Content Management System.",
+      "savedPages": "Saved Pages",
+      "mediaFiles": "Media Files",
+      "unreadMessages": "Unread Messages",
+      "quickActions": "Quick Actions",
+      "editPages": "Edit Pages",
+      "editEvents": "Edit Events",
+      "mediaLibrary": "Media Library",
+      "editHomepage": "Edit Homepage"
+    },
+    "crud": {
+      "add": "Add",
+      "cancel": "Cancel",
+      "update": "Update",
+      "create": "Create",
+      "confirmDelete": "Confirm Delete",
+      "deleteConfirm": "Are you sure you want to delete this {{name}}?",
+      "actions": "Actions",
+      "nameRequired": "Name/Title is required",
+      "deleted": "deleted successfully",
+      "failedDelete": "Failed to delete",
+      "updated": "updated successfully",
+      "created": "created successfully",
+      "failedSave": "Failed to save",
+      "noItems": "No {{name}} found. Create one to get started.",
+      "select": "Select...",
+      "yes": "Yes",
+      "no": "No",
+      "edit": "Edit {{name}}",
+      "addNew": "Add {{name}}",
+      "delete": "Delete"
+    },
+    "pageList": {
+      "title": "Content Editor",
+      "search": "Search pages...",
+      "saved": "Saved",
+      "defaults": "Defaults",
+      "editContent": "Edit Content"
+    },
+    "pageEditor": {
+      "save": "Save",
+      "reset": "Reset",
+      "saveChanges": "Save Changes",
+      "savedApi": "Saved (API)",
+      "defaults": "Defaults",
+      "resetConfirm": "Reset to Defaults?",
+      "resetMessage": "This will discard all your changes and reset to factory defaults.",
+      "noSections": "This page doesn't have editable sections defined yet.",
+      "add": "Add {{label}}",
+      "savedSuccess": "Saved! Changes are now live.",
+      "resetSuccess": "Reset to defaults"
+    },
+    "homepage": {
+      "title": "Homepage Content",
+      "addNew": "Add New Content",
+      "editContent": "Edit Content",
+      "key": "Key",
+      "titleField": "Title",
+      "description": "Description",
+      "body": "Body Content",
+      "cancel": "Cancel",
+      "updateContent": "Update Content",
+      "createContent": "Create Content",
+      "existing": "Existing Content",
+      "type": "Type",
+      "keyHelper": "A unique identifier for this content (e.g., home-hero)",
+      "selectType": "Select the content type",
+      "loading": "Loading...",
+      "error": "Error",
+      "failedLoad": "Failed to load content",
+      "updated": "Content updated successfully",
+      "created": "Content created successfully"
+    },
+    "newsManagement": {
+      "title": "News Management",
+      "add": "Add News",
+      "noItems": "No news articles yet.",
+      "edit": "Edit",
+      "delete": "Delete",
+      "editTitle": "Edit News",
+      "addTitle": "Add News",
+      "confirmDelete": "Confirm Delete",
+      "deleteConfirm": "Delete \"{{title}}\"?",
+      "cancel": "Cancel",
+      "update": "Update",
+      "create": "Create",
+      "titleRequired": "Title is required",
+      "titleField": "Title",
+      "excerpt": "Excerpt",
+      "content": "Content",
+      "imageUrl": "Image URL",
+      "author": "Author",
+      "featured": "Featured",
+      "active": "Active"
+    },
+    "pastors": {
+      "title": "Pastors Manager"
+    },
+    "sermonsManager": {
+      "title": "Sermons Manager",
+      "add": "Add Sermon",
+      "noItems": "No sermons yet.",
+      "edit": "Edit",
+      "delete": "Delete",
+      "editTitle": "Edit Sermon",
+      "addTitle": "Add Sermon",
+      "confirmDelete": "Confirm Delete",
+      "deleteConfirm": "Delete \"{{title}}\"?",
+      "cancel": "Cancel",
+      "update": "Update",
+      "create": "Create",
+      "titleRequired": "Title is required"
+    },
+    "eventsManager": {
+      "title": "Events Manager",
+      "add": "Add Event",
+      "noItems": "No events yet.",
+      "edit": "Edit",
+      "delete": "Delete",
+      "editTitle": "Edit Event",
+      "addTitle": "Add Event",
+      "confirmDelete": "Confirm Delete",
+      "deleteConfirm": "Delete \"{{title}}\"?",
+      "cancel": "Cancel",
+      "update": "Update",
+      "create": "Create",
+      "titleRequired": "Title is required"
+    },
+    "contactMessages": {
+      "title": "Contact Messages",
+      "unread": "{{count}} unread",
+      "noItems": "No messages yet.",
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "date": "Date",
+      "actions": "Actions",
+      "view": "View",
+      "markRead": "Mark as read",
+      "delete": "Delete",
+      "deleteTitle": "Delete Message",
+      "deleteConfirm": "Delete message from \"{{name}}\"?",
+      "reply": "Reply",
+      "close": "Close",
+      "cancel": "Cancel",
+      "from": "From",
+      "phone": "Phone",
+      "message": "Message",
+      "failedRead": "Failed to mark as read",
+      "deleted": "Message deleted",
+      "failedDelete": "Failed to delete"
+    },
+    "testimonials": {
+      "title": "Testimonials Manager"
+    },
+    "ministries": {
+      "title": "Ministries Manager"
+    },
+    "mediaManager": {
+      "title": "Media Manager",
+      "dragDrop": "Drag & drop images here, or click to select",
+      "dragActive": "Drop files here...",
+      "supported": "Supported: JPG, PNG, GIF, WebP, SVG (max 10MB)",
+      "noItems": "No media uploaded yet.",
+      "deleteTitle": "Delete Media",
+      "deleteConfirm": "Are you sure you want to delete \"{{name}}\"?",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "uploadSuccess": "Upload successful!",
+      "deleted": "Deleted successfully",
+      "urlCopied": "URL copied to clipboard!"
+    },
+    "mediaLibrary": {
+      "title": "Media Library",
+      "files": "{{count}} files",
+      "dragDrop": "Drag & drop images here, or click to select",
+      "dragActive": "Drop files here...",
+      "supported": "Supported: JPG, PNG, GIF, WebP (max 2MB per image for browser storage)",
+      "noItems": "No images uploaded yet. Drop images above to get started.",
+      "deleteTitle": "Delete Image",
+      "deleteConfirm": "Are you sure you want to delete \"{{name}}\"?",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "renameTitle": "Rename Image",
+      "rename": "Rename",
+      "copyUrl": "Copy URL",
+      "close": "Close",
+      "urlCopied": "Image data URL copied!",
+      "renamed": "Renamed successfully",
+      "deleted": "Deleted successfully",
+      "uploadSuccess": "Upload complete!",
+      "size": "Size: {{size}} | Type: {{type}}",
+      "undoWarning": "This action cannot be undone.",
+      "exceedsLimit": "{{name}} exceeds 2MB limit. Try compressing it."
+    },
+    "settings": {
+      "title": "Site Settings",
+      "general": "General",
+      "siteName": "Site Name",
+      "siteDescription": "Site Description",
+      "adminEmail": "Admin Email",
+      "defaultLanguage": "Default Language",
+      "siteLogo": "Site Logo",
+      "logoUrl": "Logo Image URL",
+      "logoHelper": "Enter a URL or path to your logo image",
+      "save": "Save Settings",
+      "saved": "Settings saved!",
+      "logoPreview": "Logo preview"
+    },
+    "notifications": {
+      "newMessages": "{{count}} new contact message(s) received"
+    }
+  },
+  "giving": {
+    "heroTitle": "Give with Zelle\u00ae",
+    "heroSubtitle": "Support our ministry and help us continue serving our community with the love of Christ.",
+    "zelleButton": "Give with Zelle",
+    "zelleLearnMore": "Learn More About Giving",
+    "impactTitle": "Your Impact",
+    "communityTitle": "How Your Giving Helps",
+    "familiesHelped": "Families Helped",
+    "communityPrograms": "Community Programs",
+    "goesToMission": "Goes to Mission",
+    "yearsOfService": "Years of Service",
+    "howToTitle": "How to Give with Zelle\u00ae",
+    "step1Title": "Open Your Banking App",
+    "step1Desc": "Log in to your mobile banking app and navigate to the Zelle\u00ae section.",
+    "step2Title": "Add Our Church",
+    "step2Desc": "Use our registered email or phone number to add First Haitian Baptist Church of Kissimmee as a recipient.",
+    "step3Title": "Enter Amount",
+    "step3Desc": "Enter the amount you wish to give. Every contribution, no matter the size, makes a difference.",
+    "step4Title": "Send & Confirm",
+    "step4Desc": "Review the details and confirm your transfer. You will receive a confirmation from your bank.",
+    "faq1Q": "Is my donation tax-deductible?",
+    "faq1A": "Yes! First Haitian Baptist Church of Kissimmee is a 501(c)(3) non-profit organization. All donations are tax-deductible as allowed by law. You will receive a receipt for your contribution.",
+    "faq2Q": "Will I receive a receipt?",
+    "faq2A": "Yes, we will send you a donation receipt via email for tax purposes.",
+    "faq3Q": "Is Zelle secure?",
+    "faq3A": "Zelle is a secure payment platform used by major banks across the United States.",
+    "faq4Q": "Can I set up recurring giving?",
+    "faq4A": "Yes! Most banking apps allow you to set up recurring payments through Zelle for regular giving."
+  },
+  "getInvolved": {
+    "heroTitle": "Join Us in God's Work",
+    "heroSubtitle": "There are many ways to get involved and make a difference in our church and community.",
+    "serviceAreas": "Service Areas",
+    "serviceAreasDesc": "Discover how you can use your gifts to serve others.",
+    "volunteerForm": "Volunteer Application",
+    "formName": "Full Name",
+    "formEmail": "Email Address",
+    "formPhone": "Phone Number",
+    "formArea": "Area of Interest",
+    "formMessage": "Why do you want to volunteer?",
+    "formSubmit": "Submit Application",
+    "formSuccess": "Application submitted successfully!",
+    "teamTitle": "Join Our Ministry Team",
+    "teamDesc": "We believe every member is a minister. Find your place to serve."
+  },
+  "privacy": {
+    "subtitle": "How we protect and handle your information",
+    "lastUpdated": "Last updated: January 2024"
+  },
+  "api": {
+    "requestFailed": "Request failed",
+    "sessionExpired": "Session expired",
+    "uploadFailed": "Upload failed"
+  },
+  "auth": {
+    "invalidCredentials": "Invalid credentials",
+    "userNotFound": "User not found",
+    "invalidCurrentPassword": "Invalid current password"
+  },
+  "terms": {
+    "subtitle": "Guidelines for using our website",
+    "lastUpdated": "Last updated: January 2024",
+    "sectionAcceptance": "Acceptance of Terms",
+    "sectionAcceptanceText": "By accessing and using this website, you agree to comply with and be bound by these Terms of Use. If you do not agree with any part of these terms, please do not use our website.",
+    "sectionUse": "Use of Content",
+    "sectionUseText": "All content on this website, including text, images, graphics, and videos, is the property of First Haitian Baptist Church of Kissimmee unless otherwise noted. You may not reproduce, distribute, or modify any content without prior written permission.",
+    "sectionDonations": "Donations",
+    "sectionDonationsText": "All donations made through this website are voluntary and non-refundable. You will receive a receipt for tax purposes via email. Please consult your tax advisor regarding deductibility.",
+    "sectionLinks": "External Links",
+    "sectionLinksText": "Our website may contain links to third-party websites. We are not responsible for the content or practices of these external sites.",
+    "sectionChanges": "Changes to Terms",
+    "sectionChangesText": "We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting to this page. Your continued use of the site constitutes acceptance of the updated terms.",
+    "sectionContact": "Contact",
+    "sectionContactText": "For questions about these terms, please contact us at <styledEmail>{{email}}</styledEmail> or call {{phone}}."
   }
 }

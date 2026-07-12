@@ -8,6 +8,8 @@ import com.fhbck.church.repository.LeaderRepository;
 import com.fhbck.church.repository.MinistryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class MinistryService {
 
     private final MinistryRepository ministryRepository;
     private final LeaderRepository leaderRepository;
+    private final MessageSource messageSource;
 
     public List<MinistryDto> getAll() {
         return ministryRepository.findByActiveTrueOrderBySortOrderAsc()
@@ -27,13 +30,13 @@ public class MinistryService {
 
     public MinistryDto getBySlug(String slug) {
         var ministry = ministryRepository.findBySlugAndActiveTrue(slug)
-                .orElseThrow(() -> new ResourceNotFoundException("Ministry not found: " + slug));
+                .orElseThrow(() -> new ResourceNotFoundException(messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.ministry", null, LocaleContextHolder.getLocale()), slug}, LocaleContextHolder.getLocale())));
         return toDto(ministry);
     }
 
     public MinistryDto getById(Long id) {
         return toDto(ministryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Ministry not found: " + id)));
+                .orElseThrow(() -> new ResourceNotFoundException(messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.ministry", null, LocaleContextHolder.getLocale()), id}, LocaleContextHolder.getLocale()))));
     }
 
     @Transactional
@@ -45,7 +48,7 @@ public class MinistryService {
     @Transactional
     public MinistryDto update(Long id, MinistryDto dto) {
         var ministry = ministryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Ministry not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.ministry", null, LocaleContextHolder.getLocale()), id}, LocaleContextHolder.getLocale())));
         ministry.setName(dto.getName());
         ministry.setTagline(dto.getTagline());
         ministry.setDescription(dto.getDescription());
@@ -64,7 +67,9 @@ public class MinistryService {
     @Transactional
     public void delete(Long id) {
         if (!ministryRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Ministry not found: " + id);
+            var locale = LocaleContextHolder.getLocale();
+            throw new ResourceNotFoundException(
+                messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.ministry", null, locale), id}, locale));
         }
         ministryRepository.deleteById(id);
     }

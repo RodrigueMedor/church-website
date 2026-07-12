@@ -3,7 +3,8 @@ package com.fhbck.church.service;
 import com.fhbck.church.dto.MediaFileDto;
 import com.fhbck.church.entity.MediaFile;
 import com.fhbck.church.repository.MediaFileRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -22,10 +23,15 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class MediaService {
 
     private final MediaFileRepository mediaFileRepository;
+    private final MessageSource messageSource;
+
+    public MediaService(MediaFileRepository mediaFileRepository, MessageSource messageSource) {
+        this.mediaFileRepository = mediaFileRepository;
+        this.messageSource = messageSource;
+    }
 
     @Value("${app.upload.dir:/app/uploads}")
     private String uploadDir;
@@ -41,9 +47,9 @@ public class MediaService {
             if (resource.exists() && resource.isReadable()) {
                 return resource;
             }
-            throw new RuntimeException("File not found: " + fileName);
+            throw new RuntimeException(messageSource.getMessage("file.not-found", new Object[]{fileName}, LocaleContextHolder.getLocale()));
         } catch (MalformedURLException e) {
-            throw new RuntimeException("File not found: " + fileName, e);
+            throw new RuntimeException(messageSource.getMessage("file.not-found", new Object[]{fileName}, LocaleContextHolder.getLocale()), e);
         }
     }
 
@@ -76,14 +82,14 @@ public class MediaService {
 
             return toDto(mediaFileRepository.save(mediaFile));
         } catch (IOException e) {
-            throw new RuntimeException("Failed to upload file", e);
+            throw new RuntimeException(messageSource.getMessage("file.upload-failed", null, LocaleContextHolder.getLocale()), e);
         }
     }
 
     @Transactional
     public void delete(Long id) {
         var mediaFile = mediaFileRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("File not found: " + id));
+                .orElseThrow(() -> new RuntimeException(messageSource.getMessage("file.not-found", new Object[]{id}, LocaleContextHolder.getLocale())));
         try {
             var fileName = mediaFile.getFilePath().substring(mediaFile.getFilePath().lastIndexOf("/") + 1);
             Files.deleteIfExists(Paths.get(uploadDir).resolve(fileName));

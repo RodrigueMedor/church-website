@@ -5,6 +5,8 @@ import com.fhbck.church.entity.GalleryItem;
 import com.fhbck.church.exception.ResourceNotFoundException;
 import com.fhbck.church.repository.GalleryItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 public class GalleryService {
 
     private final GalleryItemRepository galleryItemRepository;
+
+    private final MessageSource messageSource;
 
     public List<GalleryItemDto> getAll() {
         return galleryItemRepository.findByActiveTrueOrderBySortOrderAsc()
@@ -36,7 +40,11 @@ public class GalleryService {
     @Transactional
     public GalleryItemDto update(Long id, GalleryItemDto dto) {
         var item = galleryItemRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Gallery item not found: " + id));
+                .orElseThrow(() -> {
+                    var locale = LocaleContextHolder.getLocale();
+                    return new ResourceNotFoundException(
+                            messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.galleryItem", null, locale), id}, locale));
+                });
         item.setTitle(dto.getTitle());
         item.setDescription(dto.getDescription());
         item.setImageUrl(dto.getImageUrl());
@@ -49,7 +57,9 @@ public class GalleryService {
     @Transactional
     public void delete(Long id) {
         if (!galleryItemRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Gallery item not found: " + id);
+            var locale = LocaleContextHolder.getLocale();
+            throw new ResourceNotFoundException(
+                    messageSource.getMessage("resource.not-found-with-id", new Object[]{messageSource.getMessage("entity.galleryItem", null, locale), id}, locale));
         }
         galleryItemRepository.deleteById(id);
     }

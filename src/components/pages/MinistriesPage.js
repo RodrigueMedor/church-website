@@ -6,6 +6,7 @@ import {
   useMediaQuery, Paper, alpha, styled, Fade
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Home as HomeIcon,
   Info as InfoIcon,
@@ -231,6 +232,7 @@ const Header = () => {
 const Banner = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { t } = useTranslation();
   
   return (
     <StyledBanner>
@@ -246,7 +248,7 @@ const Banner = () => {
               lineHeight: 1.2
             }}
           >
-            Our Ministries
+            {t('ministriesPage.heroTitle', 'Our Ministries')}
           </Typography>
           <Typography 
             variant={isMobile ? 'h6' : 'h5'} 
@@ -281,6 +283,7 @@ const Banner = () => {
 const MinistryCard = ({ ministry }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { t } = useTranslation();
   
   return (
     <Card 
@@ -429,7 +432,7 @@ const MinistryCard = ({ ministry }) => {
               },
             }}
           >
-            Learn More
+            {t('ministriesPage.learnMore', 'Learn More')}
           </Button>
         </Box>
       </CardContent>
@@ -440,16 +443,16 @@ const MinistryCard = ({ ministry }) => {
 // Ministries Grid Component
 const MinistriesGrid = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
   
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
       <Box textAlign="center" mb={6}>
         <SectionTitle variant="h3" component="h2">
-          Explore Our Ministries
+          {t('ministriesPage.tagline', 'Explore Our Ministries')}
         </SectionTitle>
         <Typography variant="subtitle1" color="text.secondary" maxWidth="700px" mx="auto">
-          Discover how you can get involved and grow in your faith through our various ministries. 
-          We have opportunities for all ages and interests.
+          {t('ministriesPage.subtitle', 'Discover how you can get involved and grow in your faith through our various ministries. We have opportunities for all ages and interests.')}
         </Typography>
       </Box>
       

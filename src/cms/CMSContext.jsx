@@ -26,6 +26,7 @@ export function CMSProvider({ children }) {
 
   useEffect(() => { refresh(); }, [refresh]);
 
+  // Populate API cache on mount
   useEffect(() => {
     const pageKeys = Object.keys(pageDefaults);
     pageKeys.forEach(async (key) => {
@@ -40,6 +41,28 @@ export function CMSProvider({ children }) {
         }
       } catch {}
     });
+  }, [refreshKey]);
+
+  // Listen for content saved events (e.g. from PageEditor)
+  useEffect(() => {
+    const handler = (e) => {
+      const key = e.detail?.pageKey;
+      if (key) {
+        fetchApiContent(key).then(content => {
+          if (content) {
+            apiContentCache[key] = content;
+            loadedRef.current[key] = true;
+            setApiLoaded(prev => ({ ...prev, [key]: true }));
+            setRefreshKey(k => k + 1);
+          }
+        });
+      } else {
+        // Refresh all
+        setRefreshKey(k => k + 1);
+      }
+    };
+    window.addEventListener('cms-content-saved', handler);
+    return () => window.removeEventListener('cms-content-saved', handler);
   }, []);
 
   const getPublishedContent = useCallback((pageKey) => {
@@ -55,7 +78,7 @@ export function CMSProvider({ children }) {
 
   const getEffectiveContent = useCallback((pageKey) => {
     return getPublishedContent(pageKey) || storage.getDraft(pageKey) || pageDefaults[pageKey] || null;
-  }, []);
+  }, [getPublishedContent]);
 
   const saveDraft = useCallback((pageKey, data) => {
     storage.saveDraft(pageKey, data);

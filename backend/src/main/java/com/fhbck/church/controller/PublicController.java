@@ -6,9 +6,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/public")
@@ -27,6 +30,8 @@ public class PublicController {
     private final ContactService contactService;
     private final PrayerService prayerService;
     private final ChurchSettingService churchSettingService;
+    private final PageContentService pageContentService;
+    private final MessageSource messageSource;
 
     @GetMapping("/hero-slides")
     @Operation(summary = "Get active hero slides for a page")
@@ -155,5 +160,64 @@ public class PublicController {
     @Operation(summary = "Get church settings")
     public ResponseEntity<List<ChurchSettingDto>> getSettings() {
         return ResponseEntity.ok(churchSettingService.getAll());
+    }
+
+    @GetMapping("/page-content/{pageKey}")
+    @Operation(summary = "Get a page content by key (e.g. giving, privacy, terms)")
+    public ResponseEntity<?> getPageContent(@PathVariable String pageKey) {
+        try {
+            return ResponseEntity.ok(pageContentService.findByPageKey(pageKey));
+        } catch (com.fhbck.church.exception.ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/page-content/{pageKey}/full")
+    @Operation(summary = "Get full page content JSON data (for complex CMS pages)")
+    public ResponseEntity<?> getFullPageContent(@PathVariable String pageKey) {
+        String data = pageContentService.getPageData(pageKey);
+        if (data == null) return ResponseEntity.ok(new java.util.LinkedHashMap<>());
+        try {
+            var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            return ResponseEntity.ok(mapper.readTree(data));
+        } catch (Exception e) {
+            return ResponseEntity.ok(data);
+        }
+    }
+
+    @GetMapping("/footer")
+    @Operation(summary = "Get footer data (social links, contact info, service times)")
+    public ResponseEntity<java.util.Map<String, Object>> getFooter() {
+        var settings = churchSettingService.getAll();
+        var result = new java.util.LinkedHashMap<String, Object>();
+
+        for (var s : settings) {
+            result.put(s.getSettingKey(), s.getSettingValue());
+        }
+
+        Locale locale = LocaleContextHolder.getLocale();
+        var socialLinks = new java.util.ArrayList<java.util.Map<String, String>>();
+        String[][] platforms = {
+            {"facebook", "church.social_facebook"},
+            {"instagram", "church.social_instagram"},
+            {"youtube", "church.social_youtube"},
+        };
+        for (var p : platforms) {
+            String url = (String) result.get(p[1]);
+            if (url != null && !url.isEmpty()) {
+                String label = messageSource.getMessage("footer.default." + p[0], null, locale);
+                socialLinks.add(java.util.Map.of("platform", label, "url", url, "label", label));
+            }
+        }
+        result.put("socialLinks", socialLinks);
+        result.put("address", result.getOrDefault("church.address", messageSource.getMessage("footer.default.address", null, locale)));
+        result.put("phone", result.getOrDefault("church.phone", messageSource.getMessage("footer.default.phone", null, locale)));
+        result.put("email", result.getOrDefault("church.email", messageSource.getMessage("footer.default.email", null, locale)));
+        result.put("serviceTimes", java.util.Map.of(
+            "sunday", result.getOrDefault("church.service_time", messageSource.getMessage("footer.default.sundayService", null, locale)),
+            "wednesday", result.getOrDefault("church.wednesday_time", messageSource.getMessage("footer.default.wednesdayService", null, locale))
+        ));
+
+        return ResponseEntity.ok(result);
     }
 }

@@ -9,8 +9,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-church_pass}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    # port 5432 not exposed to host in production; use docker-compose.dev.yml for local tools
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U church_admin -d church_db"]
       interval: 10s

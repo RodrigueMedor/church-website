@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
@@ -21,28 +22,34 @@ import {
   AccessTime,
   ArrowForward,
 } from '@mui/icons-material';
-import { useCMS } from '../../cms/CMSContext';
 import { pageDefaults } from '../../cms/defaults';
-import { storage } from '../../cms';
-
-const settings = storage.get('settings') || {};
-const logoUrl = settings.siteLogo || '/images/logo/logo-blog1.png';
+import CMS_API from '../../services/cmsApi';
 
 const Footer = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
-  const cms = useCMS();
-  const footerData = cms.getPublishedContent('footer') || pageDefaults.footer || {};
-  const socialLinks = (footerData.socialLinks || pageDefaults.footer?.socialLinks || []).map(s => ({
+  const [footerData, setFooterData] = useState(null);
+
+  useEffect(() => {
+    CMS_API.fetchFooter().then(data => {
+      if (data) setFooterData(data);
+    });
+  }, []);
+
+  const fd = footerData || pageDefaults.footer || {};
+  const settings = footerData || {};
+  const logoUrl = settings.siteLogo || '/images/logo/logo-blog1.png';
+  const socialLinks = (fd.socialLinks || pageDefaults.footer?.socialLinks || []).map(s => ({
     icon: s.platform === 'Facebook' ? <FacebookIcon /> : s.platform === 'Instagram' ? <InstagramIcon /> : <YouTubeIcon />,
     url: s.url || '#',
     label: s.platform || '',
   }));
   const quickLinks = pageDefaults.footer?.quickLinks || [];
   const ministryLinks = pageDefaults.footer?.ministryLinks || [];
-  const address = footerData.address || '900 S Thacker Ave\nKissimmee, FL 34741';
-  const phone = footerData.phone || '(407) 218-0827';
-  const email = footerData.email || 'info@fhbck.org';
-  const st = footerData.serviceTimes || {};
+  const address = fd.address || '900 S Thacker Ave\nKissimmee, FL 34741';
+  const phone = fd.phone || '(407) 218-0827';
+  const email = fd.email || 'info@fhbck.org';
+  const st = fd.serviceTimes || {};
   return (
     <Box
       component="footer"
@@ -88,7 +95,7 @@ const Footer = () => {
                   <Box
                     component="img"
                     src={logoUrl}
-                    alt="Church Logo"
+                    alt={t('footer.churchLogoAlt')}
                     sx={{
                       width: '100%',
                       height: '100%',
@@ -107,7 +114,7 @@ const Footer = () => {
                       lineHeight: 1.2,
                     }}
                   >
-                    First Haitian Baptist
+                    {t('footer.brandName')}
                   </Typography>
                   <Typography
                     sx={{
@@ -118,7 +125,7 @@ const Footer = () => {
                       mt: 0.3,
                     }}
                   >
-                    Church of Kissimmee
+                    {t('footer.brandSubtitle')}
                   </Typography>
                 </Box>
               </Stack>
@@ -132,7 +139,7 @@ const Footer = () => {
                   fontSize: '0.9rem'
                 }}
               >
-                A welcoming community of faith, hope, and love. Join us as we grow together in Christ's love and serve our community.
+                {t('footer.description')}
               </Typography>
 
               {/* Social Links */}
@@ -179,7 +186,7 @@ const Footer = () => {
                 opacity: 0.9,
               }}
             >
-              Quick Links
+              {t('footer.quickLinks')}
             </Typography>
             <Stack spacing={1.5}>
               {quickLinks.map((link) => (
@@ -229,7 +236,7 @@ const Footer = () => {
                 opacity: 0.9,
               }}
             >
-              Our Ministries
+              {t('footer.ourMinistries')}
             </Typography>
             <Stack spacing={1.5}>
               {ministryLinks.map((link) => (
@@ -279,7 +286,7 @@ const Footer = () => {
                 opacity: 0.9,
               }}
             >
-              Contact Us
+              {t('footer.contactUs')}
             </Typography>
             <Stack spacing={2.5}>
               <Stack direction="row" spacing={1.5} alignItems="flex-start">
@@ -307,13 +314,13 @@ const Footer = () => {
                   <AccessTime sx={{ fontSize: '1.1rem', color: 'rgba(201, 168, 76, 0.7)', mt: 0.2, flexShrink: 0 }} />
                   <Box>
                     <Typography variant="body2" sx={{ color: '#fff', fontWeight: 600, mb: 0.5, fontSize: '0.88rem' }}>
-                      Service Times
+                      {t('footer.serviceTimes')}
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', mb: 0.3 }}>
-                      Sunday: {st.sunday || '9:00 AM & 11:00 AM'}
+                      {t('footer.sundayLabel')} {st.sunday || '9:00 AM & 11:00 AM'}
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem' }}>
-                      Wednesday: {st.wednesday || '7:00 PM'}
+                      {t('footer.wednesdayLabel')} {st.wednesday || '7:00 PM'}
                     </Typography>
                   </Box>
                 </Stack>
@@ -340,7 +347,7 @@ const Footer = () => {
             spacing={2}
           >
             <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.85rem' }}>
-              &copy; {new Date().getFullYear()} First Haitian Baptist Church of Kissimmee. All rights reserved.
+              {t('footer.copyright', { year: new Date().getFullYear() })}
             </Typography>
             <Stack direction="row" spacing={3}>
               <Link
@@ -355,7 +362,7 @@ const Footer = () => {
                   '&:hover': { color: theme.palette.secondary.light },
                 }}
               >
-                Privacy Policy
+                {t('footer.privacyPolicy')}
               </Link>
               <Link
                 component={RouterLink}
@@ -369,7 +376,7 @@ const Footer = () => {
                   '&:hover': { color: theme.palette.secondary.light },
                 }}
               >
-                Terms of Use
+                {t('footer.termsOfUse')}
               </Link>
             </Stack>
           </Stack>

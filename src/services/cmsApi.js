@@ -72,6 +72,22 @@ const CMS_API = {
   async fetchPublicPrayerRequests() {
     try { return await api.get('/public/prayer-requests/public'); } catch { return []; }
   },
+
+  async fetchPageContent(pageKey) {
+    try { return await api.get(`/public/page-content/${pageKey}`); } catch { return null; }
+  },
+
+  async fetchFooter() {
+    try { return await api.get('/public/footer'); } catch { return null; }
+  },
+
+  async fetchPageContentFull(pageKey) {
+    try { return await api.get(`/public/page-content/${pageKey}/full`); } catch { return null; }
+  },
+
+  async savePageContentFull(pageKey, data) {
+    return api.put(`/admin/page-content/${pageKey}/full`, data, true);
+  },
 };
 
 const slugToPageKey = {
@@ -97,6 +113,16 @@ async function fetchAndBuildPageContent(pageKey) {
   if (!defaults) return null;
 
   try {
+    // Try API-saved full page content first (from admin panel)
+    const fullData = await CMS_API.fetchPageContentFull(pageKey);
+    if (fullData && typeof fullData === 'object' && Object.keys(fullData).length > 1) {
+      const merged = { ...defaults, ...fullData };
+      if (fullData.leaders && defaults.leaders) {
+        merged.leaders = fullData.leaders.map((l, i) => ({ ...(defaults.leaders?.[i] || {}), ...l }));
+      }
+      return merged;
+    }
+
     let content = { ...defaults };
 
     // Handle individual ministry pages
@@ -115,7 +141,9 @@ async function fetchAndBuildPageContent(pageKey) {
           meetingTime: ministry.meetingTime || content.meetingTime,
           meetingLocation: ministry.meetingLocation || content.meetingLocation,
           contactEmail: ministry.contactEmail || content.contactEmail,
-          leaders: ministry.leaders?.length > 0 ? ministry.leaders : content.leaders,
+          leaders: ministry.leaders?.length > 0
+            ? ministry.leaders.map((l, i) => ({ ...(content.leaders?.[i] || {}), ...l }))
+            : content.leaders,
           hero: {
             ...content.hero,
             title: ministry.name || content.hero?.title,
@@ -160,7 +188,7 @@ async function fetchAndBuildPageContent(pageKey) {
     }
 
     if (pageKey === 'about') {
-      const [pastors, testimonialData] = await Promise.all([
+      const [pastors] = await Promise.all([
         CMS_API.fetchPastors(),
         CMS_API.fetchTestimonials(),
       ]);
@@ -238,6 +266,23 @@ async function fetchAndBuildPageContent(pageKey) {
       content.ministries = ministriesData.length > 0 ? ministriesData : defaults.ministries;
     }
 
+    const contentPages = ['giving', 'zelle', 'get-involved', 'privacy', 'terms', 'team'];
+    if (contentPages.includes(pageKey)) {
+      const pageData = await CMS_API.fetchPageContent(pageKey);
+      if (pageData) {
+        content = {
+          ...content,
+          heroTitle: pageData.heroTitle || pageData.title || content.heroTitle,
+          heroSubtitle: pageData.heroSubtitle || pageData.subtitle || content.heroSubtitle,
+          heroImageUrl: pageData.heroImageUrl || content.heroImageUrl,
+          title: pageData.title || content.title,
+          subtitle: pageData.subtitle || content.subtitle,
+          content: pageData.content || content.content,
+          published: pageData.published,
+        };
+      }
+    }
+
     return content;
   } catch {
     return defaults;
@@ -258,6 +303,11 @@ export async function getPublishedContent(pageKey) {
 export function invalidateCache(pageKey) {
   if (pageKey) contentCache.delete(pageKey);
   else contentCache.clear();
+}
+
+export function notifyContentSaved(pageKey) {
+  invalidateCache(pageKey);
+  window.dispatchEvent(new CustomEvent('cms-content-saved', { detail: { pageKey } }));
 }
 
 export { slugToPageKey, pageKeyToSlug };

@@ -1,5 +1,9 @@
 server:
   port: 8080
+  ssl:
+    enabled: false
+  http2:
+    enabled: true
 
 spring:
   application:
@@ -51,11 +55,24 @@ app:
     refresh-expiration-ms: 604800000
 
   upload:
-    dir: ${UPLOAD_DIR:/app/uploads}
+    dir: ${UPLOAD_DIR:./uploads}
     max-size: 52428800
 
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:80}
+
+  mail:
+    host: ${MAIL_HOST:}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    notify-to: ${MAIL_NOTIFY_TO:info@fhbck.org}
 
 springdoc:
   api-docs:

@@ -4,10 +4,12 @@ import {
   Container,
   Typography,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
+import { usePageContent } from '../../cms';
 
 const TermsPage = () => {
   const { t } = useTranslation();
+  const content = usePageContent('terms');
 
   return (
     <Box>
@@ -41,7 +43,7 @@ const TermsPage = () => {
               mb: 2,
             }}
           >
-            Terms of Use
+            {content.title || 'Terms of Use'}
           </Typography>
           <Typography
             variant="h6"
@@ -58,41 +60,33 @@ const TermsPage = () => {
           {t('terms.lastUpdated', 'Last updated: January 2024')}
         </Typography>
 
-        <Section title="Acceptance of Terms">
-          By accessing and using this website, you agree to comply with and be bound by 
-          these Terms of Use. If you do not agree with any part of these terms, please 
-          do not use our website.
+        <Section title={t('terms.sectionAcceptance', 'Acceptance of Terms')}>
+          {t('terms.sectionAcceptanceText', 'By accessing and using this website, you agree to comply with and be bound by these Terms of Use. If you do not agree with any part of these terms, please do not use our website.')}
         </Section>
 
-        <Section title="Use of Content">
-          All content on this website, including text, images, graphics, and videos, is 
-          the property of First Haitian Baptist Church of Kissimmee unless otherwise noted. 
-          You may not reproduce, distribute, or modify any content without prior written permission.
+        <Section title={t('terms.sectionUse', 'Use of Content')}>
+          {t('terms.sectionUseText', 'All content on this website, including text, images, graphics, and videos, is the property of First Haitian Baptist Church of Kissimmee unless otherwise noted. You may not reproduce, distribute, or modify any content without prior written permission.')}
         </Section>
 
-        <Section title="Donations">
-          All donations made through this website are voluntary and non-refundable. 
-          You will receive a receipt for tax purposes via email. Please consult your 
-          tax advisor regarding deductibility.
+        <Section title={t('terms.sectionDonations', 'Donations')}>
+          {t('terms.sectionDonationsText', 'All donations made through this website are voluntary and non-refundable. You will receive a receipt for tax purposes via email. Please consult your tax advisor regarding deductibility.')}
         </Section>
 
-        <Section title="External Links">
-          Our website may contain links to third-party websites. We are not responsible 
-          for the content or practices of these external sites.
+        <Section title={t('terms.sectionLinks', 'External Links')}>
+          {t('terms.sectionLinksText', 'Our website may contain links to third-party websites. We are not responsible for the content or practices of these external sites.')}
         </Section>
 
-        <Section title="Changes to Terms">
-          We reserve the right to modify these terms at any time. Changes will be 
-          effective immediately upon posting to this page. Your continued use of the 
-          site constitutes acceptance of the updated terms.
+        <Section title={t('terms.sectionChanges', 'Changes to Terms')}>
+          {t('terms.sectionChangesText', 'We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting to this page. Your continued use of the site constitutes acceptance of the updated terms.')}
         </Section>
 
-        <Section title="Contact">
-          For questions about these terms, please contact us at{' '}
-          <Typography component="span" sx={{ color: 'primary.main' }}>
-            info@fhbck.org
-          </Typography>
-          {' '}or call (407) 218-0827.
+        <Section title={t('terms.sectionContact', 'Contact')}>
+          <Trans
+            i18nKey="terms.sectionContactText"
+            defaults="For questions about these terms, please contact us at <styledEmail>{{email}}</styledEmail> or call {{phone}}."
+            values={{ email: 'info@fhbck.org', phone: '(407) 218-0827' }}
+            components={{ styledEmail: <Typography component="span" sx={{ color: 'primary.main' }} /> }}
+          />
         </Section>
       </Container>
     </Box>

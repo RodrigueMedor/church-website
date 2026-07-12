@@ -63,7 +63,11 @@
     "eject": "react-scripts eject",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test:e2e": "cypress run",
+    "test:e2e:headed": "cypress run --headed"
   },
   "eslintConfig": {
     "extends": [
@@ -98,6 +102,7 @@
     "babel-loader": "^8.3.0",
     "cross-env": "^10.1.0",
     "customize-cra": "^1.0.0",
+    "cypress": "^15.18.0",
     "html-webpack-plugin": "^4.5.2",
     "netlify-cli": "^15.0.0",
     "nodemon": "^3.0.1",

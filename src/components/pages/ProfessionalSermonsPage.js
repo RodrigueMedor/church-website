@@ -229,7 +229,6 @@ const fetchYouTubeVideos = async () => {
   }
 };
 
-// Fallback mock data for when API fails
 const FALLBACK_SERMONS = [
   {
     id: 'fallback1',
@@ -247,6 +246,7 @@ const FALLBACK_SERMONS = [
 ];
 
 const ProfessionalSermonsPage = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -284,18 +284,53 @@ const ProfessionalSermonsPage = () => {
   }, []);
 
   useEffect(() => {
-    // Load sermon data from YouTube API
     const loadSermons = async () => {
       setLoading(true);
       try {
         const youtubeSermons = await fetchYouTubeVideos();
-        setSermons(youtubeSermons);
-        setFilteredSermons(youtubeSermons);
+        const hasRealYouTube = youtubeSermons.length > 1 || (youtubeSermons.length === 1 && youtubeSermons[0].id === 'fallback1');
+        if (!hasRealYouTube && effectiveSermons.length > 0) {
+          const cmsSermons = effectiveSermons.map((s, i) => ({
+            id: s.id || `cms-${i}`,
+            title: s.title || '',
+            speaker: s.speaker || s.pastor || '',
+            date: s.date || s.sermonDate || new Date().toISOString(),
+            duration: s.duration || s.videoDuration || 'PT30M',
+            thumbnail: s.imageUrl || s.thumbnail || '/images/banner/pastor-sermon_1.JPG',
+            videoUrl: s.videoUrl || s.youtubeUrl || '',
+            description: s.description || '',
+            category: (s.category || s.series || 'all').toLowerCase(),
+            views: s.views || 0,
+            tags: s.tags || [s.category || 'Sermon'].filter(Boolean),
+          }));
+          setSermons(cmsSermons);
+          setFilteredSermons(cmsSermons);
+        } else {
+          setSermons(youtubeSermons);
+          setFilteredSermons(youtubeSermons);
+        }
       } catch (error) {
         console.error('Error loading sermons:', error);
-        // Use fallback data if API fails
-        setSermons(FALLBACK_SERMONS);
-        setFilteredSermons(FALLBACK_SERMONS);
+        if (effectiveSermons.length > 0) {
+          const cmsSermons = effectiveSermons.map((s, i) => ({
+            id: s.id || `cms-${i}`,
+            title: s.title || '',
+            speaker: s.speaker || s.pastor || '',
+            date: s.date || s.sermonDate || new Date().toISOString(),
+            duration: s.duration || s.videoDuration || 'PT30M',
+            thumbnail: s.imageUrl || s.thumbnail || '/images/banner/pastor-sermon_1.JPG',
+            videoUrl: s.videoUrl || s.youtubeUrl || '',
+            description: s.description || '',
+            category: (s.category || s.series || 'all').toLowerCase(),
+            views: s.views || 0,
+            tags: s.tags || [s.category || 'Sermon'].filter(Boolean),
+          }));
+          setSermons(cmsSermons);
+          setFilteredSermons(cmsSermons);
+        } else {
+          setSermons(FALLBACK_SERMONS);
+          setFilteredSermons(FALLBACK_SERMONS);
+        }
       } finally {
         setLoading(false);
       }
@@ -303,6 +338,8 @@ const ProfessionalSermonsPage = () => {
 
     loadSermons();
   }, []);
+
+  const effectiveSermons = (content.sermons || []).length > 0 ? content.sermons : [];
 
   useEffect(() => {
     // Filter sermons based on search and category
@@ -323,32 +360,36 @@ const ProfessionalSermonsPage = () => {
     setFilteredSermons(filtered);
   }, [sermons, searchTerm, selectedCategory]);
 
-  const categories = [
-    { id: 'all', name: 'All Sermons', icon: <Book /> },
-    { id: 'hope', name: 'Hope', icon: <Lightbulb /> },
-    { id: 'prayer', name: 'Prayer', icon: <Mic /> },
-    { id: 'purpose', name: 'Purpose', icon: <Star /> },
-    { id: 'family', name: 'Family', icon: <Groups /> },
-    { id: 'salvation', name: 'Salvation', icon: <TrendingUp /> },
-    { id: 'faith', name: 'Faith', icon: <Lightbulb /> }
-  ];
-
-  const stats = content.stats?.length > 0
-    ? content.stats.map((stat, i) => ({
-        number: stat.number,
-        label: stat.label,
-        icon: iconMap[stat.icon] || [<Book />, <Visibility />, <Category />, <Schedule />][i] || <Book />,
-      }))
+  const categories = effectiveSermons.length > 0
+    ? [{ id: 'all', name: t('sermons.page.allSermons', 'All Sermons'), icon: <Book /> }].concat(
+        [...new Set(effectiveSermons.map(s => s.category || s.series || '').filter(Boolean))]
+          .map(cat => ({ id: cat.toLowerCase(), name: cat, icon: <Lightbulb /> }))
+      )
     : [
-        { number: '50+', label: 'Sermons Available', icon: <Book /> },
-        { number: '10K+', label: 'Total Views', icon: <Visibility /> },
-        { number: '7', label: 'Categories', icon: <Category /> },
-        { number: '24/7', label: 'On-Demand', icon: <Schedule /> },
+        { id: 'all', name: t('sermons.page.allSermons', 'All Sermons'), icon: <Book /> },
+        { id: 'hope', name: 'Hope', icon: <Lightbulb /> },
+        { id: 'prayer', name: 'Prayer', icon: <Mic /> },
+        { id: 'purpose', name: 'Purpose', icon: <Star /> },
+        { id: 'family', name: 'Family', icon: <Groups /> },
+        { id: 'salvation', name: 'Salvation', icon: <TrendingUp /> },
+        { id: 'faith', name: 'Faith', icon: <Lightbulb /> }
+      ];
+
+  const stats = effectiveSermons.length > 0
+    ? [
+        { number: `${effectiveSermons.length}+`, label: t('sermons.stats.sermonsAvailable', 'Sermons Available'), icon: <Book /> },
+        { number: 'On-Demand', label: t('sermons.stats.available247', 'Available 24/7'), icon: <Schedule /> },
+      ]
+    : [
+        { number: '50+', label: t('sermons.stats.sermonsAvailable', 'Sermons Available'), icon: <Book /> },
+        { number: '10K+', label: t('sermons.stats.totalViews', 'Total Views'), icon: <Visibility /> },
+        { number: '7', label: t('sermons.stats.categories', 'Categories'), icon: <Category /> },
+        { number: '24/7', label: t('sermons.stats.onDemand', 'On-Demand'), icon: <Schedule /> },
       ];
 
   const formatDuration = (duration) => {
     const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
-    if (!match) return 'Unknown';
+    if (!match) return t('sermons.page.unknownDuration', 'Unknown');
     
     const hours = parseInt(match[1]) || 0;
     const minutes = parseInt(match[2]) || 0;
@@ -403,7 +444,7 @@ const ProfessionalSermonsPage = () => {
                   lineHeight: 1.1,
                 }}
               >
-                {content.hero?.title || 'Sermons'}
+                {content.hero?.title || t('sermons.page.title', 'Sermons')}
               </Typography>
               <Typography
                 variant="h4"
@@ -457,7 +498,7 @@ const ProfessionalSermonsPage = () => {
                 <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
-                    placeholder="Search sermons..."
+                    placeholder={t('sermons.page.searchPlaceholder', 'Search sermons...')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     InputProps={{
@@ -516,7 +557,7 @@ const ProfessionalSermonsPage = () => {
                   fontSize: { xs: '2rem', md: '2.5rem' },
                 }}
               >
-                Recent Sermons
+                {t('sermons.tabs.recent', 'Recent Sermons')}
               </Typography>
               
               {loading ? (
@@ -526,7 +567,7 @@ const ProfessionalSermonsPage = () => {
               ) : filteredSermons.length === 0 ? (
                 <Box sx={{ textAlign: 'center', py: 5 }}>
                   <Typography variant="h6" color="text.secondary">
-                    No sermons found matching your criteria.
+                    {t('sermons.page.noResults', 'No sermons found matching your criteria.')}
                   </Typography>
                 </Box>
               ) : (
@@ -620,7 +661,7 @@ const ProfessionalSermonsPage = () => {
                               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <Visibility sx={{ fontSize: 18, color: '#1565C0' }} />
                                 <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                                  {formatViews(sermon.views)} views
+                                  {t('sermons.page.views', { count: sermon.views, formatted: formatViews(sermon.views) })}
                                 </Typography>
                               </Box>
                             </Stack>
@@ -673,7 +714,7 @@ const ProfessionalSermonsPage = () => {
                               },
                             }}
                           >
-                            Watch Now
+                            {t('sermons.page.watchNow', 'Watch Now')}
                           </Button>
                         </CardContent>
                       </SermonCard>
@@ -720,7 +761,7 @@ const ProfessionalSermonsPage = () => {
                     fontSize: { xs: '1.8rem', md: '2.2rem' },
                   }}
                 >
-                  Share the Word
+                  {t('sermons.page.shareTitle', 'Share the Word')}
                 </Typography>
                 <Typography
                   variant="h6"
@@ -732,8 +773,7 @@ const ProfessionalSermonsPage = () => {
                     opacity: 0.95,
                   }}
                 >
-                  These sermons are meant to be shared. Help spread God's word by sharing 
-                  these messages with friends, family, and on social media.
+                  {t('sermons.page.shareDescription', 'These sermons are meant to be shared. Help spread God\'s word by sharing these messages with friends, family, and on social media.')}
                 </Typography>
 
                 <Stack
@@ -761,7 +801,7 @@ const ProfessionalSermonsPage = () => {
                       },
                     }}
                   >
-                    Share Sermons
+                    {t('sermons.page.shareSermons', 'Share Sermons')}
                   </Button>
                   <Button
                     variant="contained"
@@ -784,7 +824,7 @@ const ProfessionalSermonsPage = () => {
                       },
                     }}
                   >
-                    Request Prayer
+                    {t('sermons.page.requestPrayer', 'Request Prayer')}
                   </Button>
                 </Stack>
               </Box>
@@ -877,7 +917,7 @@ const ProfessionalSermonsPage = () => {
                   />
                   <Chip
                     icon={<Visibility />}
-                    label={`${formatViews(selectedSermon.views)} views`}
+                    label={t('sermons.page.views', { count: selectedSermon.views, formatted: formatViews(selectedSermon.views) })}
                     size="small"
                     sx={{
                       backgroundColor: alpha('#1565C0', 0.1),

@@ -1,3 +1,6 @@
+import api from '../services/api';
+import i18n from '../i18n';
+
 const AUTH_KEY = 'cms_auth';
 
 const DEFAULT_ADMIN = {
@@ -29,10 +32,17 @@ function init() {
 init();
 
 export const auth = {
-  login(email, password) {
+  async login(email, password) {
+    try {
+      const response = await api.post('/auth/login', { email, password });
+      if (response && response.accessToken) {
+        api.setTokens(response.accessToken, response.refreshToken);
+        return { token: response.accessToken, user: { email, name: email.split('@')[0] } };
+      }
+    } catch {}
     const data = JSON.parse(localStorage.getItem(AUTH_KEY));
     const user = data.users.find(u => u.email === email && u.password === password);
-    if (!user) throw new Error('Invalid credentials');
+    if (!user) throw new Error(i18n.t('auth.invalidCredentials', 'Invalid credentials'));
     const token = btoa(`${email}:${Date.now()}`);
     data.sessions[token] = { email, name: user.name, loggedInAt: Date.now() };
     localStorage.setItem(AUTH_KEY, JSON.stringify(data));
@@ -61,7 +71,7 @@ export const auth = {
   updateProfile(email, updates) {
     const data = JSON.parse(localStorage.getItem(AUTH_KEY));
     const idx = data.users.findIndex(u => u.email === email);
-    if (idx === -1) throw new Error('User not found');
+    if (idx === -1) throw new Error(i18n.t('auth.userNotFound', 'User not found'));
     data.users[idx] = { ...data.users[idx], ...updates };
     localStorage.setItem(AUTH_KEY, JSON.stringify(data));
     return data.users[idx];
@@ -70,7 +80,7 @@ export const auth = {
   changePassword(email, oldPassword, newPassword) {
     const data = JSON.parse(localStorage.getItem(AUTH_KEY));
     const user = data.users.find(u => u.email === email);
-    if (!user || user.password !== oldPassword) throw new Error('Invalid current password');
+    if (!user || user.password !== oldPassword) throw new Error(i18n.t('auth.invalidCurrentPassword', 'Invalid current password'));
     user.password = newPassword;
     localStorage.setItem(AUTH_KEY, JSON.stringify(data));
   },

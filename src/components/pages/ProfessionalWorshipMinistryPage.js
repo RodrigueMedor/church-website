@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Church, MusicNote, Mic, SurroundSound } from '@mui/icons-material';
 import MinistriesLayout from '../common/MinistriesLayout';
 
@@ -22,27 +23,28 @@ const leaders = [
 ];
 
 const ProfessionalWorshipMinistryPage = () => {
+  const { t } = useTranslation();
   return (
     <MinistriesLayout
       accentColor={accent}
-      heroTitle="Worship & Music Ministry"
+      heroTitle={t('worship.title', 'Worship & Music Ministry')}
       heroSubtitle={'"Let everything that has breath praise the Lord. Praise the Lord!"'}
       heroVerse="Psalm 150:6"
       heroImage="/images/banner/banner-sermont.jpg"
       heroStats={[
-        { value: "40+", label: "Worship Team Members" },
-        { value: "4", label: "Ministry Areas" },
-        { value: "Ages 14+", label: "Open To" },
-        { value: "Weekly", label: "Rehearsals" },
+        { value: "40+", label: t('worship.stats.worshipTeamMembers', 'Worship Team Members') },
+        { value: "4", label: t('worship.stats.ministryAreas', 'Ministry Areas') },
+        { value: "Ages 14+", label: t('worship.stats.openTo', 'Open To') },
+        { value: "Weekly", label: t('worship.stats.rehearsals', 'Rehearsals') },
       ]}
-      welcomeTitle="Welcome to Worship & Music Ministry"
-      welcomeDescription="We are a community of musicians, singers, and technical artists dedicated to leading the congregation into the presence of God through excellence in worship. Whether you sing, play an instrument, or have a passion for sound and media, there is a place for you to serve."
+      welcomeTitle={t('worship.welcome', 'Welcome to Worship & Music Ministry')}
+      welcomeDescription={t('worship.welcomeDescription', 'We are a community of musicians, singers, and technical artists dedicated to leading the congregation into the presence of God through excellence in worship. Whether you sing, play an instrument, or have a passion for sound and media, there is a place for you to serve.')}
       activities={activities}
       schedule={schedule}
       leaders={leaders}
-      ctaTitle="Join the Worship Team!"
-      ctaDescription="Use your musical gifts to glorify God and help lead others into His presence. All skill levels welcome."
-      ctaButtonText="Get Involved"
+      ctaTitle={t('worship.ctaTitle', 'Join the Worship Team!')}
+      ctaDescription={t('worship.ctaDescription', 'Use your musical gifts to glorify God and help lead others into His presence. All skill levels welcome.')}
+      ctaButtonText={t('worship.ctaButton', 'Get Involved')}
       ctaButtonLink="/contact"
     />
   );

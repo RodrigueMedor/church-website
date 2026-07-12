@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-const Loading = ({ message = 'Loading...', fullScreen = true }) => {
+const Loading = ({ message, fullScreen = true }) => {
+  const { t } = useTranslation();
   return (
     <Box
       display="flex"
@@ -23,7 +25,7 @@ const Loading = ({ message = 'Loading...', fullScreen = true }) => {
         color="textSecondary"
         align="center"
       >
-        {message}
+        {message || t('admin.loading')}
       </Typography>
     </Box>
   );

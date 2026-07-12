@@ -193,105 +193,100 @@ const ProfessionalEventsPage = () => {
     return () => observers.forEach(observer => observer?.disconnect());
   }, []);
 
-  const events = content.items || [
-    {
-      id: 1,
-      title: 'Sunday Worship Service',
-      description: 'Join us for our weekly worship service with inspiring music, biblical teaching, and community fellowship.',
-      date: 'Every Sunday',
-      time: '10:00 AM',
-      location: 'Main Sanctuary',
-      category: 'worship',
-      image: '/images/banner/pastor-sermon_1.JPG',
-      attendees: '200+',
-      features: ['Live Worship', 'Biblical Teaching', 'Children\'s Church', 'Fellowship'],
-      color: '#6B46C1'
-    },
-    {
-      id: 2,
-      title: 'Youth Night',
-      description: 'An exciting evening for teenagers with games, worship, and relevant messages about faith and life.',
-      date: 'Every Friday',
-      time: '7:00 PM',
-      location: 'Youth Center',
-      category: 'youth',
-      image: '/images/banner/youth-banner.jpg',
-      attendees: '45+',
-      features: ['Games', 'Worship', 'Bible Study', 'Snacks'],
-      color: '#2196F3'
-    },
-    {
-      id: 3,
-      title: 'Women\'s Bible Study',
-      description: 'A time for women to gather, study God\'s Word, and build meaningful relationships.',
-      date: 'Every Tuesday',
-      time: '7:00 PM',
-      location: 'Fellowship Hall',
-      category: 'women',
-      image: '/images/banner/women-banner.jpg',
-      attendees: '30+',
-      features: ['Bible Study', 'Prayer', 'Fellowship', 'Refreshments'],
-      color: '#9C27B0'
-    },
-    {
-      id: 4,
-      title: 'Men\'s Breakfast',
-      description: 'Monthly gathering for men to enjoy breakfast, fellowship, and spiritual encouragement.',
-      date: 'First Saturday',
-      time: '8:00 AM',
-      location: 'Fellowship Hall',
-      category: 'men',
-      image: '/images/banner/men-banner.JPG',
-      attendees: '25+',
-      features: ['Breakfast', 'Fellowship', 'Testimony', 'Prayer'],
-      color: '#FF9800'
-    },
-    {
-      id: 5,
-      title: 'Family Fun Day',
-      description: 'A fun-filled day for the whole family with games, food, and activities for all ages.',
-      date: 'Monthly',
-      time: '2:00 PM',
-      location: 'Church Grounds',
-      category: 'family',
-      image: '/images/banner/children-banner.JPG',
-      attendees: '100+',
-      features: ['Games', 'Food', 'Activities', 'Prizes'],
-      color: '#4CAF50'
-    },
-    {
-      id: 6,
-      title: 'Prayer Meeting',
-      description: 'Join us for a powerful time of prayer and intercession for our church and community.',
-      date: 'Every Wednesday',
-      time: '6:30 PM',
-      location: 'Prayer Room',
-      category: 'prayer',
-      image: '/images/easter/DSC_2261_proper.jpg',
-      attendees: '20+',
-      features: ['Corporate Prayer', 'Testimonies', 'Worship', 'Fellowship'],
-      color: '#F44336'
-    }
-  ];
+  const events = (content.items || []).length
+    ? content.items.map((e, i) => ({
+        id: e.id || i,
+        title: e.title || '',
+        description: e.description || '',
+        date: e.date || e.eventDate || '',
+        time: e.eventTime || e.time || '',
+        location: e.location || '',
+        category: (e.category || e.eventType || '').toLowerCase(),
+        image: e.imageUrl || e.image || '',
+        attendees: e.attendees || '',
+        features: e.features || [],
+        color: '#6B46C1',
+      }))
+    : [
+        {
+          id: 1, title: 'Sunday Worship Service',
+          description: 'Join us for our weekly worship service with inspiring music, biblical teaching, and community fellowship.',
+          date: 'Every Sunday', time: '10:00 AM', location: 'Main Sanctuary',
+          category: 'worship', image: '/images/banner/pastor-sermon_1.JPG',
+          attendees: '200+', features: ['Live Worship', 'Biblical Teaching', 'Children\'s Church', 'Fellowship'],
+          color: '#6B46C1'
+        },
+        {
+          id: 2, title: 'Youth Night',
+          description: 'An exciting evening for teenagers with games, worship, and relevant messages about faith and life.',
+          date: 'Every Friday', time: '7:00 PM', location: 'Youth Center',
+          category: 'youth', image: '/images/banner/youth-banner.jpg',
+          attendees: '45+', features: ['Games', 'Worship', 'Bible Study', 'Snacks'],
+          color: '#2196F3'
+        },
+        {
+          id: 3, title: 'Women\'s Bible Study',
+          description: 'A time for women to gather, study God\'s Word, and build meaningful relationships.',
+          date: 'Every Tuesday', time: '7:00 PM', location: 'Fellowship Hall',
+          category: 'women', image: '/images/banner/women-banner.jpg',
+          attendees: '30+', features: ['Bible Study', 'Prayer', 'Fellowship', 'Refreshments'],
+          color: '#9C27B0'
+        },
+        {
+          id: 4, title: 'Men\'s Breakfast',
+          description: 'Monthly gathering for men to enjoy breakfast, fellowship, and spiritual encouragement.',
+          date: 'First Saturday', time: '8:00 AM', location: 'Fellowship Hall',
+          category: 'men', image: '/images/banner/men-banner.JPG',
+          attendees: '25+', features: ['Breakfast', 'Fellowship', 'Testimony', 'Prayer'],
+          color: '#FF9800'
+        },
+        {
+          id: 5, title: 'Family Fun Day',
+          description: 'A fun-filled day for the whole family with games, food, and activities for all ages.',
+          date: 'Monthly', time: '2:00 PM', location: 'Church Grounds',
+          category: 'family', image: '/images/banner/children-banner.JPG',
+          attendees: '100+', features: ['Games', 'Food', 'Activities', 'Prizes'],
+          color: '#4CAF50'
+        },
+        {
+          id: 6, title: 'Prayer Meeting',
+          description: 'Join us for a powerful time of prayer and intercession for our church and community.',
+          date: 'Every Wednesday', time: '6:30 PM', location: 'Prayer Room',
+          category: 'prayer', image: '/images/easter/DSC_2261_proper.jpg',
+          attendees: '20+', features: ['Corporate Prayer', 'Testimonies', 'Worship', 'Fellowship'],
+          color: '#F44336'
+        }
+      ];
 
-  const categories = [
-    { id: 'all', name: 'All Events', icon: <EventAvailable />, color: '#6B46C1' },
-    { id: 'worship', name: 'Worship', icon: <Church />, color: '#6B46C1' },
-    { id: 'youth', name: 'Youth', icon: <Group />, color: '#2196F3' },
-    { id: 'women', name: 'Women', icon: <FamilyRestroom />, color: '#9C27B0' },
-    { id: 'men', name: 'Men', icon: <People />, color: '#FF9800' },
-    { id: 'family', name: 'Family', icon: <VolunteerActivism />, color: '#4CAF50' },
-    { id: 'prayer', name: 'Prayer', icon: <DescriptionIcon />, color: '#F44336' }
-  ];
+  const categoryMap = {};
+  events.forEach(e => { if (e.category) categoryMap[e.category.toLowerCase()] = true; });
+  const apiCategories = Object.keys(categoryMap).map(cat => ({
+    id: cat,
+    name: cat.charAt(0).toUpperCase() + cat.slice(1),
+    icon: <EventAvailable />,
+    color: '#6B46C1',
+  }));
+
+  const categories = apiCategories.length > 0
+    ? [{ id: 'all', name: 'All Events', icon: <EventAvailable />, color: '#6B46C1' }, ...apiCategories]
+    : [
+        { id: 'all', name: 'All Events', icon: <EventAvailable />, color: '#6B46C1' },
+        { id: 'worship', name: 'Worship', icon: <Church />, color: '#6B46C1' },
+        { id: 'youth', name: 'Youth', icon: <Group />, color: '#2196F3' },
+        { id: 'women', name: 'Women', icon: <FamilyRestroom />, color: '#9C27B0' },
+        { id: 'men', name: 'Men', icon: <People />, color: '#FF9800' },
+        { id: 'family', name: 'Family', icon: <VolunteerActivism />, color: '#4CAF50' },
+        { id: 'prayer', name: 'Prayer', icon: <DescriptionIcon />, color: '#F44336' }
+      ];
 
   const filteredEvents = selectedCategory === 'all' 
     ? events 
     : events.filter(event => event.category === selectedCategory);
 
-  const stats = content.stats || [
-    { number: '15+', label: 'Monthly Events', icon: <CalendarToday /> },
-    { number: '500+', label: 'Monthly Attendees', icon: <People /> },
-    { number: '7', label: 'Event Categories', icon: <EventAvailable /> },
+  const stats = [
+    { number: `${events.length}+`, label: 'Active Events', icon: <CalendarToday /> },
+    { number: `${categories.length - 1}+`, label: 'Categories', icon: <EventAvailable /> },
+    { number: `${events.reduce((a, e) => a + (parseInt(e.attendees) || 0), 0) || '500'}+`, label: 'Total Attendees', icon: <People /> },
     { number: '100%', label: 'Christ-Centered', icon: <Church /> }
   ];
 

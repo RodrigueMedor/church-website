@@ -25,6 +25,8 @@
     "welcomeSubtitle": "Un Lieu de Culte, de Communion et de Service",
     "joinUs": "Rejoignez-Nous Ce Dimanche",
     "watchLive": "Regarder en Direct",
+    "watchLiveLoading": "Chargement...",
+    "serviceTimesLabel": "Heures des Services",
     "ourCommunity": "Notre Communauté",
     "communityDescription": "Une église accueillante où chacun peut grandir dans la foi et construire des relations significatives.",
     "learnMoreAboutChurch": "En savoir plus sur notre église",
@@ -108,7 +110,9 @@
         "description": "Nous sommes appelés à servir notre communauté et à partager l'amour du Christ avec tout le monde.",
         "features": ["Service Communautaire", "Programmes d'Évangélisation", "Missions Mondiales"]
       }
-    }
+    },
+    "otherLeaders": "Autres Dirigeants de l'Église",
+    "otherLeadersSubtitle": "Rencontrez les diacres, directeurs et bénévoles dévoués qui servent notre famille d'église."
   },
   "about": {
     "welcome": "Bienvenue à",
@@ -178,6 +182,21 @@
     "viewEvents": "Voir les Événements",
     "copyRight": "© {{year}} Première Église Baptiste Haïtienne de Kissimmee. Tous droits réservés."
   },
+  "footer": {
+    "brandName": "Première Église Baptiste Haïtienne de Kissimmee",
+    "brandSubtitle": "Servir Dieu, Servir les Gens, Bâtir la Communauté",
+    "description": "Une église accueillante où chacun peut grandir dans la foi et construire des relations significatives.",
+    "churchLogoAlt": "Logo de l'Église",
+    "quickLinks": "Liens Rapides",
+    "ourMinistries": "Nos Ministères",
+    "contactUs": "Contactez-Nous",
+    "serviceTimes": "Heures des Services",
+    "sundayLabel": "Dimanche :",
+    "wednesdayLabel": "Mercredi :",
+    "copyright": "© {{year}} Première Église Baptiste Haïtienne de Kissimmee. Tous droits réservés.",
+    "privacyPolicy": "Politique de Confidentialité",
+    "termsOfUse": "Conditions d'Utilisation"
+  },
   "common": {
     "worship": "Culte",
     "study": "Étude",
@@ -226,7 +245,8 @@
       "outreach": "Action Sociale",
       "youth": "Jeunesse",
       "children": "Enfants",
-      "harvest": "Moisson"
+      "harvest": "Moisson",
+      "service": "Service"
     },
     "stats": {
       "yearsOfMinistry": "Années de Ministère",
@@ -248,9 +268,13 @@
       "harvestEvent": "La Moisson (Événement de Récolte)",
       "youthGroup": "Soirée Jeunesse",
       "communityOutreach": "Journée d'Action Communautaire",
-      "equipCourse": "Étude Biblique - Tous les Lundi 19h30-21h00 HE",
+      "mensBibleStudy": "Étude Biblique des Hommes",
       "womensFellowship": "Communion des Femmes",
-      "childrensSundaySchool": "École du Dimanche pour Enfants"
+      "childrensSundaySchool": "École du Dimanche pour Enfants",
+      "equipCourse": "Étude Biblique - Tous les Lundi 19h30-21h00 HE",
+      "childrensEvent": "Célébration de Pâques des Enfants",
+      "meetAndGreet": "Rencontre - Accueil des Nouveaux Visiteurs",
+      "serveTeam": "Formation de l'Équipe de Service"
     },
     "descriptions": {
       "sundayWorship": "Rejoignez-nous pour notre culte hebdomadaire avec une musique inspirante, la prière et un message puissant de notre pasteur. Tout le monde est le bienvenu pour expérimenter la présence de Dieu et se connecter avec notre famille d'église.",
@@ -259,8 +283,12 @@
       "youthGroup": "Une soirée dynamique pour les adolescents (13-18 ans) avec des jeux, le culte et un enseignement biblique pertinent. Connectez-vous avec vos pairs et grandissez dans votre parcours de foi.",
       "communityOutreach": "Soyez les mains et les pieds de Jésus en servant notre communauté locale. Diverses opportunités de service disponibles pour tous les âges et capacités.",
       "mensBibleStudy": "Rejoignez d'autres hommes alors que nous étudions la Parole de Dieu et nous encourageons mutuellement dans notre marche avec le Christ. Café et collations fournies.",
+      "womensFellowship": "Un temps de culte, de prière et d'étude biblique conçu spécialement pour les femmes de tous âges et de toutes les étapes de la vie.",
+      "childrensSundaySchool": "Leçons bibliques engageantes et activités pour les enfants de 3 à 12 ans. Aidez vos enfants à construire une fondation solide de foi dans un environnement amusant et sécurisé.",
       "equipCourse": "Rejoignez-nous chaque lundi soir pour une étude biblique approfondie de 19h30 à 21h00 HE. Nous explorons les Écritures ensemble, discutons des applications pratiques pour la vie quotidienne et grandissons dans notre compréhension de la Parole de Dieu. Parfait pour tous ceux qui cherchent à approfondir leur connaissance biblique et à renforcer leur fondement de foi.",
-      "childrensSundaySchool": "Leçons bibliques engageantes et activités pour les enfants de 3 à 12 ans. Aidez vos enfants à construire une fondation solide de foi dans un environnement amusant et sécurisé."
+      "childrensEvent": "Une célébration spéciale de Pâques pour les enfants avec des jeux, des activités manuelles et l'histoire de Pâques. Enfants de 4 à 11 ans bienvenus.",
+      "meetAndGreet": "Les nouveaux visiteurs sont invités à une courte rencontre de bienvenue après le service. Rencontrez les pasteurs, les anciens et les membres de l'équipe pour vous connecter.",
+      "serveTeam": "Apprenez comment vous pouvez vous impliquer et avoir un réel impact. Nous vous aiderons à trouver le poste qui correspond à vos dons et passions."
     },
     "additionalInfo": {
       "description": "Rejoignez-nous pour un temps inspirant de culte et d'enseignement. Cet événement est ouvert à tous les groupes d'âge et comprend :",
@@ -660,7 +688,7 @@
       "title": "Ministère Pont",
       "date": "Début 1er Avril",
       "location": "Aile Éducation",
-      "description": "Connecter les jeunes à Dieu, à l'église et les uns aux autres. Nous servons comme une voie d'accueil pour les nouveaux visiteurs et la communauté environnante en construisant des relations significatives et fournissant un soutien là où c'est le plus nécessaire. \"Accueillez-vous donc les uns les autres, comme Christ vous a accueillis, à la gloire de Dieu.\" — Romains 15:7",
+      "description": "Le Minist\u00e8re Pont est d\u00e9di\u00e9 \u00e0 c\u00e9l\u00e9brer et \u00e0 soutenir les r\u00e9alisations \u00e9ducatives de notre famille d\u2019\u00e9glise. Chaque ann\u00e9e, nous organisons le Programme Annuel de Reconnaissance des \u00c9tudiants pour honorer les \u00e9l\u00e8ves de tous \u00e2ges\u2014de la maternelle et de l\u2019\u00e9cole primaire au coll\u00e8ge, au lyc\u00e9e, \u00e0 l\u2019universit\u00e9, aux programmes professionnels et aux cycles sup\u00e9rieurs\u2014alors qu\u2019ils terminent une autre ann\u00e9e scolaire ou atteignent des \u00e9tapes importantes.\n\nEn plus de reconna\u00eetre les r\u00e9alisations acad\u00e9miques, le minist\u00e8re planifie et coordonne des activit\u00e9s de communion et de divertissement \u00e0 l\u2019\u00e9chelle de l\u2019\u00e9glise qui rassemblent les familles dans un environnement joyeux et centr\u00e9 sur le Christ. \u00c0 travers des \u00e9v\u00e9nements significatifs, des c\u00e9l\u00e9brations et un engagement communautaire, nous encourageons les \u00e9l\u00e8ves \u00e0 poursuivre l\u2019excellence, \u00e0 inspirer l\u2019apprentissage tout au long de la vie, \u00e0 renforcer les relations au sein de l\u2019\u00e9glise et \u00e0 rendre toute la gloire \u00e0 Dieu pour chaque r\u00e9ussite.\n\nNotre mission est d\u2019encourager chaque \u00e9l\u00e8ve \u00e0 grandir acad\u00e9miquement, spirituellement et personnellement tout en leur rappelant que leurs dons, talents et succ\u00e8s sont des b\u00e9n\u00e9dictions de Dieu. Nous nous effor\u00e7ons de cr\u00e9er des exp\u00e9riences m\u00e9morables qui inspirent les g\u00e9n\u00e9rations futures \u00e0 servir Christ fid\u00e8lement et \u00e0 avoir un impact positif sur leurs communaut\u00e9s.\n\n\u00ab\u00a0Instruis l\u2019enfant selon la voie qu\u2019il doit suivre; et quand il sera vieux, il ne s\u2019en d\u00e9tournera pas.\u00a0\u00bb \u2014 Proverbes 22:6",
       "category": "Jeunesse & Communauté"
     }
   },
@@ -680,5 +708,376 @@
       "description": "Connecter les jeunes et la communauté à travers notre ministère Pont et programmes d'action sociale.",
       "body": "Nous sommes engagés à être les mains et les pieds du Christ dans notre communauté à travers notre Ministère Pont. Nous connectons les jeunes à Dieu, à l'église et les uns aux autres, servant comme une voie d'accueil pour les nouveaux visiteurs. À travers des programmes pour les jeunes, des partenariats communautaires et des opportunités de bénévolat, nous avons un impact positif."
     }
+  },
+  "admin": {
+    "loading": "Chargement...",
+    "sidebar": {
+      "dashboard": "Tableau de Bord",
+      "pages": "Pages",
+      "homepage": "Accueil",
+      "about": "À Propos",
+      "ministries": "Ministères",
+      "ministriesCrud": "Gestion Ministères",
+      "events": "Événements",
+      "sermons": "Prédications",
+      "contact": "Contact",
+      "news": "Actualités",
+      "pastors": "Pasteurs",
+      "testimonials": "Témoignages",
+      "heroSlides": "Diapositives Hero",
+      "gallery": "Galerie",
+      "contactMessages": "Messages de Contact",
+      "media": "Médias",
+      "settings": "Paramètres",
+      "logout": "Déconnexion",
+      "admin": "Admin"
+    },
+    "login": {
+      "welcomeBack": "Bon Retour",
+      "subtitle": "Connectez-vous pour gérer le contenu de votre site",
+      "email": "Adresse Email",
+      "password": "Mot de Passe",
+      "signIn": "Connexion",
+      "demo": "Démo: admin@fhbck.org / admin123",
+      "autoFill": "(Auto-remplir)",
+      "errorRequired": "Veuillez entrer l'email et le mot de passe",
+      "errorInvalid": "Identifiants invalides"
+    },
+    "field": {
+      "title": "Titre",
+      "description": "Description"
+    },
+    "gallery": {
+      "title": "Gestion de la Galerie"
+    },
+    "heroSlides": {
+      "title": "Gestion des Diapositives"
+    },
+    "manager": {
+      "ministry": {
+        "name": "Nom",
+        "slug": "Slug URL (ex: jeunesse)",
+        "tagline": "Slogan",
+        "shortDescription": "Brève Description",
+        "longDescription": "Description Détaillée",
+        "imageUrl": "URL de l'Image",
+        "meetingTime": "Heure de Réunion",
+        "meetingLocation": "Lieu de Réunion",
+        "contactEmail": "Email de Contact",
+        "contactPhone": "Téléphone de Contact"
+      },
+      "testimonial": {
+        "name": "Nom",
+        "title": "Titre",
+        "content": "Contenu",
+        "rating": "Note (1-5)"
+      },
+      "pastor": {
+        "name": "Nom",
+        "title": "Titre",
+        "email": "Email"
+      },
+      "heroSlide": {
+        "subtitle": "Sous-titre",
+        "page": "Page (ex: accueil, à propos)",
+        "ctaText": "Texte du Bouton CTA",
+        "ctaLink": "Lien du Bouton CTA",
+        "imageUrl": "URL de l'Image",
+        "order": "Ordre"
+      },
+      "gallery": {
+        "imageUrl": "URL de l'Image",
+        "category": "Catégorie"
+      }
+    },
+    "dashboard": {
+      "title": "Tableau de Bord",
+      "subtitle": "Bienvenue dans le système de gestion de contenu.",
+      "savedPages": "Pages Enregistrées",
+      "mediaFiles": "Fichiers Média",
+      "unreadMessages": "Messages Non Lus",
+      "quickActions": "Actions Rapides",
+      "editPages": "Modifier les Pages",
+      "editEvents": "Modifier les Événements",
+      "mediaLibrary": "Bibliothèque Média",
+      "editHomepage": "Modifier l'Accueil"
+    },
+    "crud": {
+      "add": "Ajouter",
+      "cancel": "Annuler",
+      "update": "Modifier",
+      "create": "Créer",
+      "confirmDelete": "Confirmer la Suppression",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer {{name}} ?",
+      "actions": "Actions",
+      "nameRequired": "Le nom/titre est requis",
+      "deleted": "supprimé avec succès",
+      "failedDelete": "Échec de la suppression",
+      "updated": "mis à jour avec succès",
+      "created": "créé avec succès",
+      "failedSave": "Échec de l'enregistrement",
+      "noItems": "Aucun {{name}} trouvé. Créez-en un pour commencer.",
+      "select": "Sélectionnez...",
+      "yes": "Oui",
+      "no": "Non",
+      "edit": "Modifier {{name}}",
+      "addNew": "Ajouter {{name}}",
+      "delete": "Supprimer"
+    },
+    "pageList": {
+      "title": "Éditeur de Contenu",
+      "search": "Rechercher des pages...",
+      "saved": "Enregistré",
+      "defaults": "Défauts",
+      "editContent": "Modifier le Contenu"
+    },
+    "pageEditor": {
+      "save": "Enregistrer",
+      "reset": "Réinitialiser",
+      "saveChanges": "Enregistrer les Modifications",
+      "savedApi": "Enregistré (API)",
+      "defaults": "Défauts",
+      "resetConfirm": "Réinitialiser aux Défauts ?",
+      "resetMessage": "Cela annulera toutes vos modifications et rétablira les valeurs par défaut.",
+      "noSections": "Cette page n'a pas encore de sections modifiables définies.",
+      "add": "Ajouter {{label}}",
+      "savedSuccess": "Enregistré ! Les modifications sont maintenant en ligne.",
+      "resetSuccess": "Réinitialisé aux valeurs par défaut"
+    },
+    "homepage": {
+      "title": "Contenu de l'Accueil",
+      "addNew": "Ajouter du Contenu",
+      "editContent": "Modifier le Contenu",
+      "key": "Clé",
+      "titleField": "Titre",
+      "description": "Description",
+      "body": "Corps du Contenu",
+      "cancel": "Annuler",
+      "updateContent": "Mettre à Jour",
+      "createContent": "Créer du Contenu",
+      "existing": "Contenu Existant",
+      "type": "Type",
+      "keyHelper": "Un identifiant unique pour ce contenu (ex: accueil-hero)",
+      "selectType": "Sélectionnez le type de contenu",
+      "loading": "Chargement...",
+      "error": "Erreur",
+      "failedLoad": "Échec du chargement du contenu",
+      "updated": "Contenu mis à jour avec succès",
+      "created": "Contenu créé avec succès"
+    },
+    "newsManagement": {
+      "title": "Gestion des Actualités",
+      "add": "Ajouter une Actualité",
+      "noItems": "Pas encore d'articles.",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "editTitle": "Modifier l'Actualité",
+      "addTitle": "Ajouter une Actualité",
+      "confirmDelete": "Confirmer la Suppression",
+      "deleteConfirm": "Supprimer \"{{title}}\" ?",
+      "cancel": "Annuler",
+      "update": "Mettre à Jour",
+      "create": "Créer",
+      "titleRequired": "Le titre est requis",
+      "titleField": "Titre",
+      "excerpt": "Extrait",
+      "content": "Contenu",
+      "imageUrl": "URL de l'Image",
+      "author": "Auteur",
+      "featured": "À la Une",
+      "active": "Actif"
+    },
+    "pastors": {
+      "title": "Gestion des Pasteurs"
+    },
+    "sermonsManager": {
+      "title": "Gestion des Prédications",
+      "add": "Ajouter une Prédication",
+      "noItems": "Pas encore de prédications.",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "editTitle": "Modifier la Prédication",
+      "addTitle": "Ajouter une Prédication",
+      "confirmDelete": "Confirmer la Suppression",
+      "deleteConfirm": "Supprimer \"{{title}}\" ?",
+      "cancel": "Annuler",
+      "update": "Mettre à Jour",
+      "create": "Créer",
+      "titleRequired": "Le titre est requis"
+    },
+    "eventsManager": {
+      "title": "Gestion des Événements",
+      "add": "Ajouter un Événement",
+      "noItems": "Pas encore d'événements.",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "editTitle": "Modifier l'Événement",
+      "addTitle": "Ajouter un Événement",
+      "confirmDelete": "Confirmer la Suppression",
+      "deleteConfirm": "Supprimer \"{{title}}\" ?",
+      "cancel": "Annuler",
+      "update": "Mettre à Jour",
+      "create": "Créer",
+      "titleRequired": "Le titre est requis"
+    },
+    "contactMessages": {
+      "title": "Messages de Contact",
+      "unread": "{{count}} non lu(s)",
+      "noItems": "Pas encore de messages.",
+      "name": "Nom",
+      "email": "Email",
+      "subject": "Sujet",
+      "date": "Date",
+      "actions": "Actions",
+      "view": "Voir",
+      "markRead": "Marquer comme lu",
+      "delete": "Supprimer",
+      "deleteTitle": "Supprimer le Message",
+      "deleteConfirm": "Supprimer le message de \"{{name}}\" ?",
+      "reply": "Répondre",
+      "close": "Fermer",
+      "cancel": "Annuler",
+      "from": "De",
+      "phone": "Téléphone",
+      "message": "Message",
+      "failedRead": "Échec du marquage comme lu",
+      "deleted": "Message supprimé",
+      "failedDelete": "Échec de la suppression"
+    },
+    "testimonials": {
+      "title": "Gestion des Témoignages"
+    },
+    "ministries": {
+      "title": "Gestion des Ministères"
+    },
+    "mediaManager": {
+      "title": "Gestionnaire de Médias",
+      "dragDrop": "Glissez-déposez des images ici, ou cliquez pour sélectionner",
+      "dragActive": "Déposez les fichiers ici...",
+      "supported": "Supporté : JPG, PNG, GIF, WebP, SVG (max 10 Mo)",
+      "noItems": "Aucun média téléchargé pour le moment.",
+      "deleteTitle": "Supprimer le Média",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer \"{{name}}\" ?",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "uploadSuccess": "Téléchargement réussi !",
+      "deleted": "Supprimé avec succès",
+      "urlCopied": "URL copiée dans le presse-papiers !"
+    },
+    "mediaLibrary": {
+      "title": "Bibliothèque de Médias",
+      "files": "{{count}} fichiers",
+      "dragDrop": "Glissez-déposez des images ici, ou cliquez pour sélectionner",
+      "dragActive": "Déposez les fichiers ici...",
+      "supported": "Supporté : JPG, PNG, GIF, WebP (max 2 Mo par image)",
+      "noItems": "Aucune image téléchargée. Déposez des images ci-dessus pour commencer.",
+      "deleteTitle": "Supprimer l'Image",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer \"{{name}}\" ?",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "renameTitle": "Renommer l'Image",
+      "rename": "Renommer",
+      "copyUrl": "Copier l'URL",
+      "close": "Fermer",
+      "urlCopied": "URL de l'image copiée !",
+      "renamed": "Renommé avec succès",
+      "deleted": "Supprimé avec succès",
+      "uploadSuccess": "Téléchargement terminé !",
+      "size": "Taille : {{size}} | Type : {{type}}",
+      "undoWarning": "Cette action est irréversible.",
+      "exceedsLimit": "{{name}} dépasse la limite de 2 Mo. Essayez de le compresser."
+    },
+    "settings": {
+      "title": "Paramètres du Site",
+      "general": "Général",
+      "siteName": "Nom du Site",
+      "siteDescription": "Description du Site",
+      "adminEmail": "Email Admin",
+      "defaultLanguage": "Langue par Défaut",
+      "siteLogo": "Logo du Site",
+      "logoUrl": "URL du Logo",
+      "logoHelper": "Entrez une URL ou un chemin vers votre logo",
+      "save": "Enregistrer les Paramètres",
+      "saved": "Paramètres enregistrés !",
+      "logoPreview": "Aperçu du logo"
+    },
+    "notifications": {
+      "newMessages": "{{count}} nouveau(x) message(s) de contact reçu(s)"
+    }
+  },
+  "giving": {
+    "heroTitle": "Donnez avec Zelle\u00ae",
+    "heroSubtitle": "Soutenez notre ministère et aidez-nous à continuer à servir notre communauté avec l'amour du Christ.",
+    "zelleButton": "Donner avec Zelle",
+    "zelleLearnMore": "En savoir plus sur le don",
+    "impactTitle": "Votre Impact",
+    "communityTitle": "Comment votre don aide",
+    "familiesHelped": "Familles Aidées",
+    "communityPrograms": "Programmes Communautaires",
+    "goesToMission": "Va à la Mission",
+    "yearsOfService": "Années de Service",
+    "howToTitle": "Comment donner avec Zelle\u00ae",
+    "step1Title": "Ouvrez votre application bancaire",
+    "step1Desc": "Connectez-vous à votre application bancaire mobile et accédez à la section Zelle\u00ae.",
+    "step2Title": "Ajoutez notre Église",
+    "step2Desc": "Utilisez notre email ou numéro de téléphone enregistré pour ajouter la Première Église Baptiste Haïtienne de Kissimmee comme destinataire.",
+    "step3Title": "Entrez le montant",
+    "step3Desc": "Entrez le montant que vous souhaitez donner. Chaque contribution, quelle que soit sa taille, fait la différence.",
+    "step4Title": "Envoyez et confirmez",
+    "step4Desc": "Vérifiez les détails et confirmez votre transfert. Vous recevrez une confirmation de votre banque.",
+    "faq1Q": "Mon don est-il déductible d'impôt ?",
+    "faq1A": "Oui ! La Première Église Baptiste Haïtienne de Kissimmee est une organisation à but non lucratif 501(c)(3). Tous les dons sont déductibles d'impôt dans la limite autorisée par la loi.",
+    "faq2Q": "Vais-je recevoir un reçu ?",
+    "faq2A": "Oui, nous vous enverrons un reçu de don par email à des fins fiscales.",
+    "faq3Q": "Zelle est-il sécurisé ?",
+    "faq3A": "Zelle est une plateforme de paiement sécurisée utilisée par les grandes banques aux États-Unis.",
+    "faq4Q": "Puis-je configurer un don récurrent ?",
+    "faq4A": "Oui ! La plupart des applications bancaires vous permettent de configurer des paiements récurrents via Zelle."
+  },
+  "getInvolved": {
+    "heroTitle": "Rejoignez-nous dans l'Œuvre de Dieu",
+    "heroSubtitle": "Il y a de nombreuses façons de s'impliquer et de faire une différence dans notre église et notre communauté.",
+    "serviceAreas": "Domaines de Service",
+    "serviceAreasDesc": "Découvrez comment vous pouvez utiliser vos dons pour servir les autres.",
+    "volunteerForm": "Formulaire de Bénévolat",
+    "formName": "Nom Complet",
+    "formEmail": "Adresse Email",
+    "formPhone": "Numéro de Téléphone",
+    "formArea": "Domaine d'Intérêt",
+    "formMessage": "Pourquoi voulez-vous être bénévole ?",
+    "formSubmit": "Soumettre la Candidature",
+    "formSuccess": "Candidature soumise avec succès !",
+    "teamTitle": "Rejoignez notre Équipe Ministérielle",
+    "teamDesc": "Nous croyons que chaque membre est un ministre. Trouvez votre place pour servir."
+  },
+  "privacy": {
+    "subtitle": "Comment nous protégeons et traitons vos informations",
+    "lastUpdated": "Dernière mise à jour : Janvier 2024"
+  },
+  "terms": {
+    "subtitle": "Directives pour l'utilisation de notre site web",
+    "lastUpdated": "Dernière mise à jour : Janvier 2024",
+    "sectionAcceptance": "Acceptation des Conditions",
+    "sectionAcceptanceText": "En accédant et en utilisant ce site web, vous acceptez de vous conformer aux présentes Conditions d'Utilisation. Si vous n'acceptez pas une partie de ces conditions, veuillez ne pas utiliser notre site web.",
+    "sectionUse": "Utilisation du Contenu",
+    "sectionUseText": "Tout le contenu de ce site web, y compris les textes, images, graphiques et vidéos, est la propriété de la Première Église Baptiste Haïtienne de Kissimmee, sauf indication contraire. Vous ne pouvez pas reproduire, distribuer ou modifier le contenu sans autorisation écrite préalable.",
+    "sectionDonations": "Dons",
+    "sectionDonationsText": "Tous les dons faits via ce site web sont volontaires et non remboursables. Vous recevrez un reçu à des fins fiscales par email. Veuillez consulter votre conseiller fiscal concernant la déductibilité.",
+    "sectionLinks": "Liens Externes",
+    "sectionLinksText": "Notre site web peut contenir des liens vers des sites web tiers. Nous ne sommes pas responsables du contenu ou des pratiques de ces sites externes.",
+    "sectionChanges": "Modifications des Conditions",
+    "sectionChangesText": "Nous nous réservons le droit de modifier ces conditions à tout moment. Les modifications prendront effet immédiatement dès leur publication sur cette page. Votre utilisation continue du site constitue une acceptation des conditions mises à jour.",
+    "sectionContact": "Contact",
+    "sectionContactText": "Pour des questions concernant ces conditions, veuillez nous contacter à <styledEmail>{{email}}</styledEmail> ou appeler le {{phone}}."
+  },
+  "api": {
+    "requestFailed": "Échec de la requête",
+    "sessionExpired": "Session expirée",
+    "uploadFailed": "Échec du téléchargement"
+  },
+  "auth": {
+    "invalidCredentials": "Identifiants invalides",
+    "userNotFound": "Utilisateur non trouvé",
+    "invalidCurrentPassword": "Mot de passe actuel invalide"
   }
 }

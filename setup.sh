@@ -42,12 +42,13 @@ JWT_SECRET=$(openssl rand -base64 32 2>/dev/null || echo "dev-secret-key-change-
 DB_PASSWORD=church_pass
 EOF
         fi
-        docker compose up -d
+        docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
         echo ""
         echo "Services starting..."
         echo "  Frontend:  http://localhost:80"
         echo "  Backend:   http://localhost:8080"
         echo "  API Docs:  http://localhost:8080/api/swagger-ui"
+        echo "  Postgres:  localhost:5432"
         echo ""
         echo "  Default admin login:"
         echo "    Email:    admin@fhbck.org"
@@ -55,15 +56,15 @@ EOF
         ;;
     build)
         echo "Building backend..."
-        docker compose build backend
+        docker compose -f docker-compose.yml -f docker-compose.dev.yml build backend
         echo "Building frontend..."
-        docker compose build frontend
+        docker compose -f docker-compose.yml -f docker-compose.dev.yml build frontend
         ;;
     logs)
-        docker compose logs -f
+        docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f
         ;;
     stop)
-        docker compose down
+        docker compose -f docker-compose.yml -f docker-compose.dev.yml down
         echo "All services stopped."
         ;;
     *)
