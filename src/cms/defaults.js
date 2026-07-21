@@ -159,7 +159,9 @@ export const pageDefaults = {
       'We believe that marriage has one meaning: the joining of one man and one woman in a single exclusive union as stated in the Holy Bible (Gen. 2:18-25) and that sexual intimacy should only occur between a man and a woman married to each other. (1 Cor. 6:18; 7:2-5; Heb. 13:4).',
     ],
     staffData: [
-      { name: 'Rev. JB Fritzner Brouard', role: 'Pastor', bio: 'Pastor Jean Smith has been leading FHBCK since 2010...', fullBio: 'Originally from Haiti, Reverend Brouard pursued theological studies in the United States and began his ministry in Brooklyn.', email: 'pastor@fhbck.org', phone: '(407) 218-0827', experience: '20+ years', image: '/images/staff/pastor-senior.jpg' },
+      { name: 'Rev. JB Fritzner Brouard', role: 'Pastor', bio: 'Lead pastor guiding the church with faithful biblical teaching and vision.', fullBio: 'Originally from Haiti, Reverend Brouard pursued theological studies in the United States and began his ministry in Brooklyn.', email: 'pasteur@fhbck.org', phone: '(407) 123-4567', experience: '20+ years', image: '/images/staff/pastor-senior.jpg' },
+      { name: 'Sr Elsie Alexandre', role: 'Church Administrator', bio: 'Managing church operations and coordinating administrative functions.', fullBio: 'Overseeing daily church operations, coordinating ministries, and supporting the pastoral team.', email: 'admin@fhbck.org', phone: '(407) 123-4567', experience: '12+ years', image: '/images/photo/administrator-church-1.jpg' },
+      { name: 'Deacon Michel Jean Claude', role: 'Head Deacon', bio: 'Faithfully serving the church community with dedication and wisdom.', fullBio: 'Leading the deacon board in serving the church\'s practical needs.', email: 'culte@fhbck.org', phone: '(407) 123-4568', experience: '15+ years', image: '/images/staff/deaconess-joseph.jpg' },
     ],
     otherLeaders: [
       { name: 'Sr Juste Remonde', role: 'Deaconess', bio: 'Leading church logistics by coordinating resources, supporting all church activities, and taking initiative to ensure every event is well organized and runs smoothly.', email: '', image: '/images/staff/kitchen-ministry-leader.jpg' },
