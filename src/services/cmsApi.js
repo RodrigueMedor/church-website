@@ -188,15 +188,19 @@ async function fetchAndBuildPageContent(pageKey) {
     }
 
     if (pageKey === 'about') {
-      // Staff data comes from page-content/about/full (admin-configured) or defaults.
-      // Do NOT override with /api/public/pastors — that endpoint is for the
-      // leadership section only and may return incomplete data.
       const pastors = await CMS_API.fetchPastors();
-      if (pastors.length > 0 && !content.leadership?.seniorPastor?.name) {
+      if (pastors.length > 0) {
         content.leadership = {
           ...content.leadership,
           seniorPastor: pastors[0],
         };
+        content.staffData = pastors.map(p => ({
+          name: p.name,
+          role: p.title,
+          bio: p.bio,
+          image: p.imageUrl,
+          email: p.email,
+        }));
       }
     }
 

@@ -36,10 +36,7 @@ const ProfessionalAboutPage = () => {
         image: s.image || '',
       }))
     : [
-        { name: 'Rev. JB Fritzner Brouard', role: 'Pastor', bio: 'Lead pastor guiding the church with faithful biblical teaching and vision.', fullBio: 'Originally from Haiti, Reverend Brouard pursued theological studies in the United States and began his ministry in Brooklyn.', email: 'pasteur@fhbck.org', phone: '(407) 218-0827', experience: '20+ years', image: '/images/staff/pastor-charles.jpg' },
-        { name: 'Administratrice', role: 'Church Administrator', bio: 'Managing church operations and coordinating administrative functions.', email: 'admin@fhbck.org', phone: '(407) 218-0827', experience: '', image: '/images/staff/deaconess-joseph1.jpg' },
-        { name: 'Deacon Pierre', role: 'Head Deacon', bio: 'Faithfully serving the church community with dedication and wisdom.', email: 'culte@fhbck.org', phone: '(407) 218-0827', experience: '15+ years', image: '/images/staff/deacon-pierre.jpg' },
-        { name: 'Deaconess Joseph', role: 'Deaconess Ministry', bio: 'Leading the deaconess ministry with grace and compassion.', email: 'femmes@fhbck.org', phone: '(407) 218-0827', experience: '12+ years', image: '/images/staff/deaconess-joseph.jpg' },
+        { name: 'Rev. JB Fritzner Brouard', role: 'Pastor', bio: 'Pastor Jean Smith has been leading FHBCK since 2010...', fullBio: 'Originally from Haiti, Reverend Brouard pursued theological studies in the United States and began his ministry in Brooklyn.', email: 'pastor@fhbck.org', phone: '(407) 218-0827', experience: '20+ years', image: '/images/staff/pastor-senior.jpg' },
       ];
 
   const defaultLeaders = pageDefaults.about?.otherLeaders || [];
