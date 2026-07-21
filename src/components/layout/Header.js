@@ -45,6 +45,8 @@ import CMS_API from '../../services/cmsApi';
 const StyledAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'scrolled',
 })(({ theme, scrolled }) => ({
+  zIndex: 1300,
+  position: 'fixed',
   backgroundColor: scrolled
     ? `${alpha(theme.palette.background.paper, 0.88)} !important`
     : 'transparent !important',
