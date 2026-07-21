@@ -32,17 +32,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        List<String> origins = Arrays.stream(corsOrigins.split(","))
+        List<String> parsed = Arrays.stream(corsOrigins.split(","))
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
                 .toList();
 
-        if (origins.isEmpty()) {
-            origins = List.of(
-                    "http://localhost", "http://localhost:*",
-                    "http://localhost:4000", "http://localhost:3000"
-            );
-        }
+        List<String> origins = parsed.isEmpty()
+                ? List.of("http://localhost", "http://localhost:*", "http://localhost:4000", "http://localhost:3000")
+                : parsed;
 
         http
                 .cors(cors -> cors.configurationSource(request -> {
