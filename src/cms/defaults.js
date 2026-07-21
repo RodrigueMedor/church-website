@@ -1,10 +1,6 @@
 export const pageDefaults = {
   homepage: {
-    hero: {
-      welcome: 'Welcome to',
-      title: 'First Haitian Baptist Church of Kissimmee',
-      subtitle: 'We are so glad you are here. Our congregation welcomes everyone to take part in our worship services. Whether you come by yourself or with your family, we offer ministries for every age group.',
-      backgroundImages: [
+    hero: { welcome: '', title: 'First Haitian Baptist Church of Kissimmee', subtitle: '', backgroundImages: [
         '/images/banner/pastor-sermon_1.JPG',
         '/images/banner/DSC_2131.jpg',
         '/images/banner/DSC_2088.jpg',
