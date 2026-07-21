@@ -21,7 +21,7 @@
       "description": "In this message, we explore how true faith is demonstrated through our actions and how we can live out an authentic faith in our daily lives.",
       "bibleText": "Bible Text"
     },
-    "welcome": "Welcome to",
+    "welcome": "We're Glad You're Here",
     "welcomeSubtitle": "A Place of Worship, Fellowship, and Service",
     "joinUs": "Join Us This Sunday",
     "watchLive": "Watch Live",
@@ -1083,5 +1083,17 @@
     "sectionChangesText": "We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting to this page. Your continued use of the site constitutes acceptance of the updated terms.",
     "sectionContact": "Contact",
     "sectionContactText": "For questions about these terms, please contact us at <styledEmail>{{email}}</styledEmail> or call {{phone}}."
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "subtitle": "Sorry, the page you're looking for doesn't exist or has been moved.",
+    "description": "Please check the URL or navigate back to our homepage to find what you need.",
+    "goToHomepage": "Go to Homepage",
+    "aboutUs": "About Us",
+    "events": "Events",
+    "contactUs": "Contact Us",
+    "mapTitle": "Map",
+    "stillCantFind": "Still can't find what you're looking for?",
+    "contactSupport": "Contact Support"
   }
 }

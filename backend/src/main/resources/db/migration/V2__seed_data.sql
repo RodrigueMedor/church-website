@@ -40,8 +40,8 @@ INSERT INTO ministries (name, tagline, description, slug, sort_order, active, he
 -- Seed church settings
 INSERT INTO church_settings (setting_key, setting_value, description) VALUES
     ('church.name', 'First Haitian Baptist Church of Kissimmee', 'Church name'),
-    ('church.address', '1200 E Cypress St, Kissimmee, FL 34744', 'Church address'),
-    ('church.phone', '(407) 555-0123', 'Church phone number'),
+    ('church.address', '900 S.Thacker Av, Kissimmee, FL, United States, 34741', 'Church address'),
+    ('church.phone', '+1 407-218-0827', 'Church phone number'),
     ('church.email', 'info@fhbck.org', 'Church email'),
     ('church.service_time', 'Sundays at 10:00 AM & Wednesdays at 7:00 PM', 'Service times'),
     ('church.social_facebook', 'https://facebook.com/fhbck', 'Facebook URL'),

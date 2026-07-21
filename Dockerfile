@@ -14,7 +14,7 @@ ENV REACT_APP_ADMIN_PASSWORD=$REACT_APP_ADMIN_PASSWORD
 ENV REACT_APP_ADMIN_NAME=$REACT_APP_ADMIN_NAME
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install --legacy-peer-deps
 COPY . .
 RUN npm run build
 

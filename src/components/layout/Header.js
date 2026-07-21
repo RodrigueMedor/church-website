@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import {
   Home,
   Info,
@@ -7,14 +8,14 @@ import {
   Event,
   VolumeUp,
   ContactMail,
-  Menu as MenuIcon,
-  Close as CloseIcon,
   KeyboardArrowDown,
   ChurchOutlined,
   FamilyRestroom,
   EscalatorWarning,
   ManOutlined,
   Favorite,
+  Menu as MenuIcon,
+  Close as CloseIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import {
@@ -33,41 +34,26 @@ import {
   Divider,
   Collapse,
   ListItemIcon,
-  Paper,
   Fade,
   Chip,
 } from '@mui/material';
-import { styled, alpha, keyframes } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
 import LanguageSwitcher from '../common/LanguageSwitcher';
 import ThemeToggle from '../common/ThemeToggle';
 import CMS_API from '../../services/cmsApi';
 
-// ─── Animations ────────────────────────────────────────────────────────────────
-const slideDown = keyframes`
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
-`;
-
-const shimmer = keyframes`
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-`;
-
-// ─── Styled Components ─────────────────────────────────────────────────────────
-const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.background.paper, 0.96),
-  color: theme.palette.text.primary,
-  boxShadow: `0 1px 0 ${alpha(theme.palette.divider, 0.14)}`,
-  transition: 'all 0.35s ease',
-  borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-  backdropFilter: 'saturate(180%) blur(10px)',
-  WebkitBackdropFilter: 'saturate(180%) blur(10px)',
-  '&.scrolled': {
-    backgroundColor: alpha(theme.palette.background.paper, 0.92),
-    boxShadow: `0 4px 24px ${alpha(theme.palette.common.black, 0.10)}`,
-    borderBottom: `1px solid ${alpha(theme.palette.divider, 0.18)}`,
-  },
+const StyledAppBar = styled(AppBar, {
+  shouldForwardProp: (prop) => prop !== 'scrolled',
+})(({ theme, scrolled }) => ({
+  backgroundColor: scrolled
+    ? `${alpha(theme.palette.background.paper, 0.88)} !important`
+    : 'transparent !important',
+  color: `${scrolled ? theme.palette.text.primary : (theme.palette.mode === 'dark' ? theme.palette.text.primary : '#fff')} !important`,
+  boxShadow: scrolled ? `0 8px 32px ${alpha(theme.palette.common.black, 0.08)}` : 'none',
+  borderBottom: scrolled ? `1px solid ${alpha(theme.palette.divider, 0.12)}` : '1px solid transparent',
+  backdropFilter: 'saturate(180%) blur(20px)',
+  WebkitBackdropFilter: 'saturate(180%) blur(20px)',
+  transition: 'background-color 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), border-color 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
 }));
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -76,7 +62,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   gap: theme.spacing(1),
   [theme.breakpoints.up('md')]: {
     minHeight: 80,
-    padding: theme.spacing(0, 3),
+    padding: theme.spacing(0, 4),
   },
 }));
 
@@ -84,103 +70,96 @@ const NavItem = styled(Box)(({ theme }) => ({
   position: 'relative',
 }));
 
-const NavButton = styled(Button)(({ theme }) => ({
-  position: 'relative',
-  padding: theme.spacing(0.75, 1.4),
-  borderRadius: '10px',
-  fontSize: '0.9rem',
-  fontWeight: 500,
-  textTransform: 'none',
-  color: theme.palette.text.primary,
-  letterSpacing: '0.3px',
-  whiteSpace: 'nowrap',
-  minWidth: 'unset',
-  transition: 'all 0.25s ease',
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.primary.main, 0.08),
-    color: theme.palette.primary.main,
-  },
-  '&.active': {
-    color: theme.palette.primary.main,
-    fontWeight: 700,
-    backgroundColor: alpha(theme.palette.primary.main, 0.1),
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      bottom: 5,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '40%',
-      height: '2.5px',
-      backgroundColor: theme.palette.primary.main,
-      borderRadius: '2px',
+const NavButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'scrolled',
+})(({ theme, scrolled }) => {
+  const isDark = theme.palette.mode === 'dark';
+  const navColor = scrolled
+    ? theme.palette.text.primary
+    : isDark
+      ? '#E2E8F0'
+      : '#ffffff';
+  return {
+    position: 'relative',
+    padding: theme.spacing(0.75, 1.6),
+    borderRadius: '12px',
+    fontSize: '0.88rem',
+    fontWeight: 500,
+    textTransform: 'none',
+    color: `${navColor} !important`,
+    letterSpacing: '0.3px',
+    whiteSpace: 'nowrap',
+    minWidth: 'unset',
+    transition: 'all 0.3s ease',
+    '&:hover': {
+      backgroundColor: alpha(scrolled ? theme.palette.primary.main : (isDark ? '#E2E8F0' : '#ffffff'), 0.1),
+      color: `${scrolled ? theme.palette.primary.main : (isDark ? '#E2E8F0' : '#ffffff')} !important`,
     },
-  },
-}));
+    '&.active': {
+      color: `${scrolled ? theme.palette.primary.main : (isDark ? '#E2E8F0' : '#ffffff')} !important`,
+      fontWeight: 700,
+      backgroundColor: alpha(scrolled ? theme.palette.primary.main : (isDark ? '#E2E8F0' : '#ffffff'), 0.1),
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        bottom: 2,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '30%',
+        height: '2.5px',
+        backgroundColor: scrolled ? theme.palette.primary.main : (isDark ? '#E2E8F0' : '#ffffff'),
+        borderRadius: '2px',
+      },
+    },
+  };
+});
 
 const GiveButton = styled(Button)(({ theme }) => ({
-  padding: theme.spacing(0.85, 2.2),
-  borderRadius: '30px',
+  padding: theme.spacing(0.85, 2.4),
+  borderRadius: '12px',
   fontWeight: 700,
   textTransform: 'none',
   fontSize: '0.88rem',
-  letterSpacing: '0.6px',
-  color: '#fff',
-  background: 'linear-gradient(135deg, #2e7d32, #43a047, #1b5e20)',
-  backgroundSize: '200% 200%',
-  boxShadow: `0 4px 16px ${alpha('#2e7d32', 0.35)}`,
+  letterSpacing: '0.4px',
+  color: '#fff !important',
+  background: 'linear-gradient(135deg, #C9A227 0%, #E0C060 100%)',
+  boxShadow: `0 4px 16px ${alpha('#C9A227', 0.3)}`,
   whiteSpace: 'nowrap',
-  transition: 'all 0.3s ease',
-  animation: `${shimmer} 4s ease infinite`,
+  transition: 'all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)',
   '&:hover': {
     transform: 'translateY(-2px)',
-    boxShadow: `0 8px 24px ${alpha('#2e7d32', 0.45)}`,
-    color: '#fff',
+    boxShadow: `0 8px 24px ${alpha('#C9A227', 0.4)}`,
+    color: '#fff !important',
   },
-  '&:active': { transform: 'translateY(0)' },
 }));
 
-const DropdownPaper = styled(Paper)(({ theme }) => ({
+const DropdownPaper = styled(motion.div)(({ theme }) => ({
   position: 'absolute',
-  top: 'calc(100% + 10px)',
+  top: 'calc(100% + 12px)',
   left: '50%',
   transform: 'translateX(-50%)',
-  minWidth: 220,
-  borderRadius: 14,
+  minWidth: 240,
+  borderRadius: 16,
   overflow: 'hidden',
-  border: `1px solid ${alpha(theme.palette.divider, 0.14)}`,
-  boxShadow: `0 16px 48px ${alpha(theme.palette.common.black, 0.15)}`,
-  animation: `${slideDown} 0.2s ease`,
+  border: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
+  boxShadow: `0 20px 60px ${alpha(theme.palette.common.black, 0.15)}`,
+  backgroundColor: theme.palette.background.paper,
   zIndex: 1400,
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: -6,
-    left: '50%',
-    transform: 'translateX(-50%) rotate(45deg)',
-    width: 12,
-    height: 12,
-    backgroundColor: theme.palette.background.paper,
-    border: `1px solid ${alpha(theme.palette.divider, 0.14)}`,
-    borderRight: 'none',
-    borderBottom: 'none',
-    zIndex: 1,
-  },
 }));
 
 const DropdownItem = styled(Button)(({ theme }) => ({
   width: '100%',
   justifyContent: 'flex-start',
-  padding: theme.spacing(1.1, 2.2),
+  padding: theme.spacing(1.2, 2.4),
   borderRadius: 0,
   textTransform: 'none',
   fontSize: '0.88rem',
   fontWeight: 500,
   color: theme.palette.text.primary,
   gap: theme.spacing(1.2),
-  transition: 'all 0.2s ease',
+  transition: 'all 0.25s ease',
   '&:hover': {
-    backgroundColor: alpha(theme.palette.primary.main, 0.08),
+    backgroundColor: alpha(theme.palette.primary.main, 0.06),
     color: theme.palette.primary.main,
     paddingLeft: theme.spacing(3),
   },
@@ -188,45 +167,43 @@ const DropdownItem = styled(Button)(({ theme }) => ({
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
   '& .MuiDrawer-paper': {
-    width: 300,
+    width: 320,
     backgroundColor: theme.palette.background.paper,
     backgroundImage: 'none',
-    boxShadow: '-4px 0 30px rgba(0,0,0,0.12)',
+    boxShadow: `-12px 0 40px ${alpha(theme.palette.common.black, 0.12)}`,
+    border: 'none',
   },
 }));
 
-// ─── Nav Data ──────────────────────────────────────────────────────────────────
 const ministrySubItems = [
   { text: 'header.children', path: '/children-ministry', icon: <ChurchOutlined fontSize="small" />, color: '#4CAF50' },
-  { text: 'header.youth',    path: '/youth-ministry',    icon: <EscalatorWarning fontSize="small" />, color: '#2196F3' },
-  { text: 'header.men',      path: '/men-ministry',      icon: <ManOutlined fontSize="small" />, color: '#FF9800' },
-  { text: 'header.women',    path: '/women-ministry',    icon: <FamilyRestroom fontSize="small" />, color: '#9C27B0' },
+  { text: 'header.youth', path: '/youth-ministry', icon: <EscalatorWarning fontSize="small" />, color: '#2196F3' },
+  { text: 'header.men', path: '/men-ministry', icon: <ManOutlined fontSize="small" />, color: '#FF9800' },
+  { text: 'header.women', path: '/women-ministry', icon: <FamilyRestroom fontSize="small" />, color: '#9C27B0' },
   { text: 'header.youngCouples', path: '/young-couples-ministry', icon: <Favorite fontSize="small" />, color: '#F44336' },
 ];
 
 const navItems = [
-  { text: 'header.home',       path: '/',          icon: <Home fontSize="small" /> },
-  { text: 'header.about',      path: '/about',     icon: <Info fontSize="small" /> },
+  { text: 'header.home', path: '/', icon: <Home fontSize="small" /> },
+  { text: 'header.about', path: '/about', icon: <Info fontSize="small" /> },
   { text: 'header.ministries', path: '/ministries', icon: <Groups fontSize="small" />, subItems: ministrySubItems },
-  { text: 'header.events',     path: '/events',    icon: <Event fontSize="small" /> },
-  { text: 'header.sermons',    path: '/sermons',   icon: <VolumeUp fontSize="small" /> },
-  { text: 'header.contact',    path: '/contact',   icon: <ContactMail fontSize="small" /> },
-  { text: 'header.give',       path: '/giving',    icon: <Favorite fontSize="small" />, isButton: true },
+  { text: 'header.events', path: '/events', icon: <Event fontSize="small" /> },
+  { text: 'header.sermons', path: '/sermons', icon: <VolumeUp fontSize="small" /> },
+  { text: 'header.contact', path: '/contact', icon: <ContactMail fontSize="small" /> },
+  { text: 'header.give', path: '/giving', icon: <Favorite fontSize="small" />, isButton: true },
 ];
 
-// ─── Component ─────────────────────────────────────────────────────────────────
 const Header = () => {
-  const [mobileOpen, setMobileOpen]     = useState(false);
-  const [scrolled, setScrolled]         = useState(false);
-  const [openSubMenu, setOpenSubMenu]   = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [openSubMenu, setOpenSubMenu] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(null);
-  const dropdownRef                     = useRef(null);
-  const [logoUrl, setLogoUrl]           = useState('/images/logo/logo-blog1.png');
-  const { t }                           = useTranslation();
-  const theme                           = useTheme();
-  const location                        = useLocation();
+  const dropdownRef = useRef(null);
+  const [logoUrl, setLogoUrl] = useState('/images/logo/logo-blog1.png');
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const location = useLocation();
 
-  // Fetch settings from API for logo
   useEffect(() => {
     CMS_API.fetchSettings().then(data => {
       if (data) {
@@ -239,14 +216,12 @@ const Header = () => {
     }).catch(() => {});
   }, []);
 
-  // Scroll effect
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -257,13 +232,11 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  // Close mobile drawer on route change
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
   const isActive = (path) =>
     path === '/' ? location.pathname === '/' : location.pathname.startsWith(path);
 
-  // ── Desktop Nav Item ──────────────────────────────────────────────────────
   const renderDesktopItem = (item) => {
     if (item.isButton) {
       return (
@@ -283,6 +256,7 @@ const Header = () => {
       return (
         <NavItem key={item.text} ref={open ? dropdownRef : null}>
           <NavButton
+            scrolled={scrolled}
             className={isActive(item.path) ? 'active' : ''}
             component={RouterLink}
             to={item.path}
@@ -299,38 +273,46 @@ const Header = () => {
           >
             {t(item.text)}
           </NavButton>
-          <Fade in={open}>
-            <DropdownPaper ref={dropdownRef} elevation={0}>
-              <Box sx={{ px: 2, py: 1.5, borderBottom: '1px solid', borderColor: 'divider' }}>
-                <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', letterSpacing: '0.5px', textTransform: 'uppercase', fontSize: '0.7rem' }}>
-                  {t('header.ministries')}
-                </Typography>
-              </Box>
-              {item.subItems.map((sub) => (
-                <DropdownItem
-                  key={sub.text}
-                  component={RouterLink}
-                  to={sub.path}
-                  onClick={() => setDropdownOpen(null)}
-                  startIcon={
-                    <Box sx={{ color: sub.color || (isActive(sub.path) ? 'primary.main' : 'text.secondary') }}>
-                      {sub.icon}
-                    </Box>
-                  }
-                  sx={{
-                    fontWeight: isActive(sub.path) ? 700 : 500,
-                    color: isActive(sub.path) ? (sub.color || 'primary.main') : 'text.primary',
-                    '&:hover': sub.color ? {
-                      color: sub.color,
-                      backgroundColor: `rgba(${parseInt(sub.color.slice(1,3), 16)}, ${parseInt(sub.color.slice(3,5), 16)}, ${parseInt(sub.color.slice(5,7), 16)}, 0.08)`,
-                    } : {},
-                  }}
-                >
-                  {t(sub.text)}
-                </DropdownItem>
-              ))}
-            </DropdownPaper>
-          </Fade>
+          <AnimatePresence>
+            {open && (
+              <DropdownPaper
+                ref={dropdownRef}
+                initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <Box sx={{ px: 2.4, py: 1.5, borderBottom: '1px solid', borderColor: 'divider' }}>
+                  <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', letterSpacing: '0.8px', textTransform: 'uppercase', fontSize: '0.68rem' }}>
+                    {t('header.ministries')}
+                  </Typography>
+                </Box>
+                {item.subItems.map((sub, index) => (
+                  <DropdownItem
+                    key={sub.text}
+                    component={RouterLink}
+                    to={sub.path}
+                    onClick={() => setDropdownOpen(null)}
+                    startIcon={
+                      <Box sx={{ color: sub.color || (isActive(sub.path) ? 'primary.main' : 'text.secondary') }}>
+                        {sub.icon}
+                      </Box>
+                    }
+                    sx={{
+                      fontWeight: isActive(sub.path) ? 700 : 500,
+                      color: isActive(sub.path) ? (sub.color || 'primary.main') : 'text.primary',
+                      '&:hover': sub.color ? {
+                        color: sub.color,
+                        backgroundColor: alpha(sub.color, 0.06),
+                      } : {},
+                    }}
+                  >
+                    {t(sub.text)}
+                  </DropdownItem>
+                ))}
+              </DropdownPaper>
+            )}
+          </AnimatePresence>
         </NavItem>
       );
     }
@@ -338,6 +320,7 @@ const Header = () => {
     return (
       <NavButton
         key={item.text}
+        scrolled={scrolled}
         component={RouterLink}
         to={item.path}
         className={isActive(item.path) ? 'active' : ''}
@@ -347,7 +330,6 @@ const Header = () => {
     );
   };
 
-  // ── Mobile Nav Item ──────────────────────────────────────────────────────
   const renderMobileItem = (item) => (
     <React.Fragment key={item.text}>
       <ListItemButton
@@ -358,17 +340,17 @@ const Header = () => {
           setOpenSubMenu(openSubMenu === item.text ? null : item.text);
         } : undefined}
         sx={{
-          borderRadius: 2,
+          borderRadius: 3,
           mb: 0.5,
-          px: 2,
-          py: 1,
+          px: 2.5,
+          py: 1.2,
           backgroundColor: isActive(item.path) && !item.subItems
-            ? alpha(theme.palette.primary.main, 0.1)
+            ? alpha(theme.palette.primary.main, 0.08)
             : 'transparent',
-          '&:hover': { backgroundColor: alpha(theme.palette.primary.main, 0.07) },
+          '&:hover': { backgroundColor: alpha(theme.palette.primary.main, 0.05) },
         }}
       >
-        <ListItemIcon sx={{ minWidth: 36, color: isActive(item.path) ? 'primary.main' : 'text.secondary' }}>
+        <ListItemIcon sx={{ minWidth: 38, color: isActive(item.path) ? 'primary.main' : 'text.secondary' }}>
           {item.icon}
         </ListItemIcon>
         <ListItemText
@@ -391,57 +373,54 @@ const Header = () => {
         )}
         {item.isButton && (
           <Chip
-            label="❤️"
+            label="Give"
             size="small"
-            sx={{ ml: 1, bgcolor: alpha('#2e7d32', 0.12), color: '#2e7d32', fontWeight: 700, fontSize: '0.75rem' }}
+            sx={{ ml: 1, bgcolor: alpha('#C9A227', 0.12), color: '#C9A227', fontWeight: 700, fontSize: '0.72rem' }}
           />
         )}
       </ListItemButton>
 
-      {item.subItems && (
-        <Collapse in={openSubMenu === item.text} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding sx={{ pl: 1 }}>
-            {item.subItems.map((sub) => (
-              <ListItemButton
-                key={sub.text}
-                component={RouterLink}
-                to={sub.path}
-                sx={{
-                  pl: 5,
-                  borderRadius: 2,
-                  mb: 0.25,
-                  py: 0.75,
-                  backgroundColor: isActive(sub.path)
-                    ? alpha(theme.palette.primary.main, 0.08)
-                    : 'transparent',
-                  '&:hover': { backgroundColor: alpha(theme.palette.primary.main, 0.06) },
+      <Collapse in={openSubMenu === item.text} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding sx={{ pl: 1 }}>
+          {item.subItems?.map((sub) => (
+            <ListItemButton
+              key={sub.text}
+              component={RouterLink}
+              to={sub.path}
+              sx={{
+                pl: 5.5,
+                borderRadius: 2.5,
+                mb: 0.25,
+                py: 0.85,
+                backgroundColor: isActive(sub.path)
+                  ? alpha(theme.palette.primary.main, 0.06)
+                  : 'transparent',
+                '&:hover': { backgroundColor: alpha(theme.palette.primary.main, 0.04) },
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 32, color: sub.color || (isActive(sub.path) ? 'primary.main' : 'text.disabled') }}>
+                {sub.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={t(sub.text)}
+                primaryTypographyProps={{
+                  fontSize: '0.87rem',
+                  fontWeight: isActive(sub.path) ? 700 : 400,
+                  color: isActive(sub.path) ? (sub.color || 'primary.main') : 'text.secondary',
                 }}
-              >
-                <ListItemIcon sx={{ minWidth: 30, color: sub.color || (isActive(sub.path) ? 'primary.main' : 'text.disabled') }}>
-                  {sub.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={t(sub.text)}
-                  primaryTypographyProps={{
-                    fontSize: '0.87rem',
-                    fontWeight: isActive(sub.path) ? 700 : 400,
-                    color: isActive(sub.path) ? (sub.color || 'primary.main') : 'text.secondary',
-                  }}
-                />
-              </ListItemButton>
-            ))}
-          </List>
-        </Collapse>
-      )}
+              />
+            </ListItemButton>
+          ))}
+        </List>
+      </Collapse>
     </React.Fragment>
   );
 
   return (
     <>
-      <StyledAppBar position="fixed" elevation={0} className={scrolled ? 'scrolled' : ''}>
+      <StyledAppBar position="fixed" elevation={0} scrolled={scrolled} color="inherit">
         <Container maxWidth="xl" disableGutters>
           <StyledToolbar>
-            {/* ── Logo ── */}
             <Box
               component={RouterLink}
               to="/"
@@ -449,23 +428,26 @@ const Header = () => {
                 display: 'flex',
                 alignItems: 'center',
                 textDecoration: 'none',
-                gap: 1.4,
+                gap: 1.6,
                 flexShrink: 0,
-                '&:hover .logo-ring': { borderColor: 'primary.main', transform: 'rotate(8deg) scale(1.06)' },
-                '&:hover .brand-name': { color: 'primary.main' },
+                '&:hover .logo-ring': {
+                  borderColor: '#C9A227',
+                  transform: 'rotate(6deg) scale(1.05)',
+                },
+                '&:hover .brand-name': { color: '#C9A227' },
               }}
             >
               <Box
                 className="logo-ring"
                 sx={{
-                  width: 54,
-                  height: 54,
+                  width: 52,
+                  height: 52,
                   borderRadius: '50%',
-                  border: `2px solid ${alpha(theme.palette.primary.main, 0.6)}`,
+                  border: `2.5px solid ${alpha(scrolled ? theme.palette.primary.main : (theme.palette.mode === 'dark' ? '#E2E8F0' : '#ffffff'), 0.6)}`,
                   p: '3px',
                   transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
                   flexShrink: 0,
-                  [theme.breakpoints.up('md')]: { width: 62, height: 62 },
+                  [theme.breakpoints.up('md')]: { width: 58, height: 58 },
                 }}
               >
                 <Box
@@ -485,15 +467,22 @@ const Header = () => {
                 <Typography
                   className="brand-name"
                   sx={{
-                    fontFamily: '"Playfair Display", serif',
-                    fontWeight: 700,
-                    fontSize: { sm: '0.95rem', md: '1.05rem' },
-                    background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 40%, #c9a84c 100%)',
+                    fontFamily: '"Inter", sans-serif',
+                    fontWeight: 800,
+                    fontSize: { sm: '0.92rem', md: '1rem' },
+                    background: scrolled
+                      ? theme.palette.mode === 'dark'
+                        ? 'linear-gradient(135deg, #6BA3D6 0%, #8DBEE6 40%, #D4B445 100%)'
+                        : 'linear-gradient(135deg, #0F4C81 0%, #3A7BB8 40%, #C9A227 100%)'
+                      : theme.palette.mode === 'dark'
+                        ? 'linear-gradient(135deg, #E2E8F0 0%, #D4B445 100%)'
+                        : 'linear-gradient(135deg, #ffffff 0%, #E0C060 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
-                    lineHeight: 1.25,
-                    transition: 'color 0.3s ease',
+                    lineHeight: 1.3,
+                    transition: 'all 0.4s ease',
+                    letterSpacing: '-0.01em',
                   }}
                 >
                   First Haitian Baptist Church
@@ -502,11 +491,12 @@ const Header = () => {
                   variant="caption"
                   sx={{
                     display: 'block',
-                    color: 'text.disabled',
-                    fontSize: '0.7rem',
-                    letterSpacing: '0.8px',
+                    color: scrolled ? 'text.secondary' : alpha(theme.palette.mode === 'dark' ? '#E2E8F0' : '#ffffff', 0.6),
+                    fontSize: '0.68rem',
+                    letterSpacing: '1.5px',
                     textTransform: 'uppercase',
                     fontWeight: 500,
+                    transition: 'color 0.4s ease',
                   }}
                 >
                   Kissimmee, FL
@@ -514,7 +504,6 @@ const Header = () => {
               </Box>
             </Box>
 
-            {/* ── Desktop Nav ── */}
             <Box
               sx={{
                 display: { xs: 'none', md: 'flex' },
@@ -528,71 +517,73 @@ const Header = () => {
               {navItems.map(renderDesktopItem)}
             </Box>
 
-            {/* ── Right Side Actions ── */}
             <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1, flexShrink: 0 }}>
               <ThemeToggle />
               <LanguageSwitcher />
             </Box>
 
-            {/* ── Mobile Right ── */}
             <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1, ml: 'auto' }}>
               <ThemeToggle />
               <LanguageSwitcher />
-              <IconButton
-                aria-label="open drawer"
-                onClick={() => setMobileOpen(!mobileOpen)}
-                sx={{
-                  color: 'text.primary',
-                  borderRadius: '10px',
-                  border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
-                  p: '7px',
-                  transition: 'all 0.25s ease',
-                  '&:hover': {
-                    backgroundColor: alpha(theme.palette.primary.main, 0.08),
-                    color: 'primary.main',
-                    borderColor: 'primary.main',
-                  },
-                }}
-              >
-                {mobileOpen ? <CloseIcon fontSize="small" /> : <MenuIcon fontSize="small" />}
-              </IconButton>
+              <motion.div whileTap={{ scale: 0.9 }}>
+                <IconButton
+                  aria-label="open drawer"
+                  onClick={() => setMobileOpen(!mobileOpen)}
+                  sx={{
+                    color: scrolled ? 'text.primary' : (theme.palette.mode === 'dark' ? '#E2E8F0' : '#fff'),
+                    borderRadius: '12px',
+                    border: `1.5px solid ${alpha(scrolled ? theme.palette.divider : (theme.palette.mode === 'dark' ? '#E2E8F0' : '#ffffff'), 0.2)}`,
+                    p: '8px',
+                    transition: 'all 0.25s ease',
+                    '&:hover': {
+                      backgroundColor: alpha(scrolled ? theme.palette.primary.main : (theme.palette.mode === 'dark' ? '#E2E8F0' : '#ffffff'), 0.1),
+                      borderColor: scrolled ? 'primary.main' : (theme.palette.mode === 'dark' ? '#E2E8F0' : '#ffffff'),
+                    },
+                  }}
+                >
+                  <motion.div
+                    animate={mobileOpen ? { rotate: 90 } : { rotate: 0 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    {mobileOpen ? <CloseIcon fontSize="small" /> : <MenuIcon fontSize="small" />}
+                  </motion.div>
+                </IconButton>
+              </motion.div>
             </Box>
           </StyledToolbar>
         </Container>
       </StyledAppBar>
 
-      {/* ── Mobile Drawer ── */}
       <StyledDrawer
         anchor="right"
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         ModalProps={{ keepMounted: true }}
       >
-        {/* Drawer Header */}
         <Box
           sx={{
-            px: 2.5,
-            pt: 2.5,
+            px: 3,
+            pt: 3,
             pb: 2,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            borderBottom: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
+            borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.4 }}>
             <Box
               component="img"
               src={logoUrl}
               alt="Church Logo"
-              sx={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover' }}
+              sx={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }}
             />
             <Typography
               sx={{
-                fontFamily: '"Playfair Display", serif',
-                fontWeight: 700,
-                fontSize: '0.88rem',
-                background: 'linear-gradient(135deg, #1a365d, #c9a84c)',
+                fontFamily: '"Inter", sans-serif',
+                fontWeight: 800,
+                fontSize: '0.9rem',
+                background: 'linear-gradient(135deg, #0F4C81, #C9A227)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -602,25 +593,25 @@ const Header = () => {
               FHBCK
             </Typography>
           </Box>
-          <IconButton
-            onClick={() => setMobileOpen(false)}
-            size="small"
-            sx={{
-              borderRadius: '8px',
-              border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
-              '&:hover': { backgroundColor: alpha(theme.palette.error.main, 0.08), color: 'error.main' },
-            }}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
+          <motion.div whileTap={{ scale: 0.9 }}>
+            <IconButton
+              onClick={() => setMobileOpen(false)}
+              size="small"
+              sx={{
+                borderRadius: '10px',
+                border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+                '&:hover': { backgroundColor: alpha(theme.palette.error.main, 0.08), color: 'error.main' },
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </motion.div>
         </Box>
 
-        {/* Nav Items */}
-        <List sx={{ px: 1.5, pt: 1.5, pb: 2 }}>
+        <List sx={{ px: 1.5, pt: 2, pb: 2 }}>
           {navItems.map(renderMobileItem)}
         </List>
 
-        {/* Drawer Footer */}
         <Box sx={{ mt: 'auto', px: 2.5, pb: 3 }}>
           <Divider sx={{ mb: 2 }} />
           <GiveButton
@@ -628,15 +619,14 @@ const Header = () => {
             component={RouterLink}
             to="/giving"
             startIcon={<Favorite fontSize="small" />}
-            sx={{ py: 1.2, fontSize: '0.95rem' }}
+            sx={{ py: 1.3, fontSize: '0.95rem', borderRadius: '14px' }}
           >
             {t('header.give')}
           </GiveButton>
         </Box>
       </StyledDrawer>
 
-      {/* Spacer */}
-      <Toolbar sx={{ minHeight: { xs: 72, md: 80 } }} />
+      <Box sx={{ minHeight: { xs: 72, md: 80 } }} />
     </>
   );
 };

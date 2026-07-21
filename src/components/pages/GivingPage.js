@@ -1,929 +1,484 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  Grid,
-  Divider,
-  useTheme,
-  useMediaQuery,
-  Card,
-  CardContent,
-  Avatar,
-  Chip,
-  Fade,
-  Slide,
-  Zoom,
-  Stack,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
+  Box, Container, Typography, Button, Grid, TextField, useTheme, useMediaQuery,
+  Stack, Chip, CircularProgress, Alert, alpha, Divider, Avatar, Card, CardContent, Paper,
 } from '@mui/material';
-import { styled, keyframes } from '@mui/material/styles';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { usePageContent } from '../../cms';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import PeopleIcon from '@mui/icons-material/People';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import StarIcon from '@mui/icons-material/Star';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import SecurityIcon from '@mui/icons-material/Security';
-import PublicIcon from '@mui/icons-material/Public';
-import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
-import QrCodeIcon from '@mui/icons-material/QrCode';
+import { Link as RouterLink } from 'react-router-dom';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { getStripe, isStripeConfigured } from '../../services/stripe/stripeConfig';
+import { createPaymentIntent, confirmDonation } from '../../services/stripe/donationService';
+import {
+  Lock, CheckCircle, Security, Favorite, CreditCard, VolunteerActivism,
+  Church, Groups, Handshake, Shield, ArrowForward, AutoAwesome,
+  TrendingUp, Public, Payments, AccountBalance,
+} from '@mui/icons-material';
+import { FadeIn, SlideUp, StaggerContainer, StaggerItem, SectionLabel, Counter } from '../common/animations';
 
-// Animations
-const fadeInUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+const PRESET_AMOUNTS = [
+  { value: 25, label: '$25', impact: 'Provides meals for a family' },
+  { value: 50, label: '$50', impact: 'Supports a youth program' },
+  { value: 100, label: '$100', impact: 'Funds community outreach' },
+  { value: 250, label: '$250', impact: 'Sponsors a ministry event' },
+  { value: 500, label: '$500', impact: 'Transforms lives through missions' },
+];
 
-const pulse = keyframes`
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-`;
-
-const float = keyframes`
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-`;
-
-// Styled components
-const HeroSection = styled(Box)(({ theme }) => ({
-  minHeight: '80vh',
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  textAlign: 'center',
-  color: theme.palette.common.white,
-  position: 'relative',
-  padding: theme.spacing(15, 2),
-  overflow: 'hidden',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundImage: 'url(/images/easter/offering-photo.jpg)',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundAttachment: 'fixed',
-    backgroundRepeat: 'no-repeat',
-    zIndex: 1,
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%)',
-    zIndex: 2,
-  },
-  '& > *': {
-    position: 'relative',
-    zIndex: 3,
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '0 20px',
-  },
-}));
-
-const StyledCard = styled(Card)(({ theme }) => ({
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-  border: '1px solid',
-  borderColor: theme.palette.divider,
-  borderRadius: 16,
-  position: 'relative',
-  overflow: 'hidden',
-  background: 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '4px',
-    background: 'linear-gradient(90deg, #1a365d, #2c5282, #c9a84c)',
-    transform: 'translateX(-100%)',
-    transition: 'transform 0.6s ease',
-  },
-  '&:hover': {
-    transform: 'translateY(-8px) scale(1.02)',
-    boxShadow: '0 20px 40px -12px rgba(26, 54, 93, 0.25)',
-    borderColor: theme.palette.primary.main,
-    '&::before': {
-      transform: 'translateX(0)',
-    },
-    '& .card-icon': {
-      transform: 'scale(1.1) rotate(5deg)',
-    },
-  },
-}));
-
-const ImpactCard = styled(Box)(({ theme }) => ({
-  textAlign: 'center',
-  padding: theme.spacing(4),
-  borderRadius: 16,
-  background: 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
-  border: '1px solid rgba(26, 54, 93, 0.1)',
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-  position: 'relative',
-  overflow: 'hidden',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'linear-gradient(135deg, rgba(26, 54, 93, 0.05) 0%, rgba(201, 168, 76, 0.05) 100%)',
-    opacity: 0,
-    transition: 'opacity 0.3s ease',
-  },
-  '&:hover': {
-    transform: 'translateY(-8px)',
-    boxShadow: '0 20px 40px -12px rgba(26, 54, 93, 0.15)',
-    '&::before': {
-      opacity: 1,
-    },
-    '& .impact-number': {
-      color: theme.palette.primary.main,
-      transform: 'scale(1.1)',
-    },
-    '& .impact-icon': {
-      transform: 'scale(1.2) rotate(10deg)',
-    },
-  },
-}));
-
-const Section = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(8, 0),
-  [theme.breakpoints.up('md')]: {
-    padding: theme.spacing(10, 0),
-  },
-}));
-
-const SectionTitle = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(6),
-  fontWeight: 700,
-  position: 'relative',
-  display: 'inline-block',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: -12,
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: 80,
-    height: 4,
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: 2,
-  },
-}));
-
-const GivingPage = () => {
-  const { t } = useTranslation();
+const GivingForm = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const navigate = useNavigate();
-  const content = usePageContent('giving');
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const stripe = useStripe();
+  const elements = useElements();
 
-  const impactStats = [
-    {
-      number: '500+',
-      label: t('giving.familiesHelped'),
-      icon: <PeopleIcon className="impact-icon" />,
-      color: '#1a365d',
-    },
-    {
-      number: '50+',
-      label: t('giving.communityPrograms'),
-      icon: <VolunteerActivismIcon className="impact-icon" />,
-      color: '#2c5282',
-    },
-    {
-      number: '100%',
-      label: t('giving.goesToMission'),
-      icon: <TrendingUpIcon className="impact-icon" />,
-      color: '#c9a84c',
-    },
-    {
-      number: '15+',
-      label: t('giving.yearsOfService'),
-      icon: <FavoriteIcon className="impact-icon" />,
-      color: '#1a365d',
-    },
-  ];
+  const [selectedAmount, setSelectedAmount] = useState(100);
+  const [customAmount, setCustomAmount] = useState('');
+  const [isCustom, setIsCustom] = useState(false);
+  const [donorName, setDonorName] = useState('');
+  const [donorEmail, setDonorEmail] = useState('');
+  const [processing, setProcessing] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+  const [step, setStep] = useState(1);
 
-  const testimonials = [
-    {
-      name: t('giving.testimonial1Name', 'Marie Dupont'),
-      role: t('giving.testimonial1Role', 'Church Member'),
-      content: t('giving.testimonial1Content', 'Giving through Zelle has been so convenient. I can give directly from my banking app and know it arrives instantly and securely.'),
-      avatar: 'MD',
-      rating: 5,
-    },
-    {
-      name: t('giving.testimonial2Name', 'Jean Pierre'),
-      role: t('giving.testimonial2Role', 'Volunteer'),
-      content: t('giving.testimonial2Content', 'The Zelle option makes it so easy to support the mission. No fees, instant transfer, and I can give from anywhere using my phone.'),
-      avatar: 'JP',
-      rating: 5,
-    },
-    {
-      name: t('giving.testimonial3Name', 'Sarah Johnson'),
-      role: t('giving.testimonial3Role', 'Community Partner'),
-      content: t('giving.testimonial3Content', 'This church truly makes a difference. Zelle giving is secure and fast - perfect for supporting their amazing work in our community.'),
-      avatar: 'SJ',
-      rating: 5,
-    },
-  ];
+  const effectiveAmount = isCustom ? parseFloat(customAmount) || 0 : selectedAmount;
+  const selectedPreset = PRESET_AMOUNTS.find(a => a.value === selectedAmount);
 
+  const handlePresetClick = (amount) => {
+    setSelectedAmount(amount);
+    setIsCustom(false);
+    setCustomAmount('');
+    setError(null);
+  };
+
+  const handleCustomClick = () => {
+    setIsCustom(true);
+    setSelectedAmount(0);
+    setError(null);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!stripe || !elements) return;
+    if (effectiveAmount < 1) {
+      setError('Please enter a valid amount of at least $1.');
+      return;
+    }
+    setProcessing(true);
+    setError(null);
+    try {
+      const paymentData = await createPaymentIntent({
+        amount: effectiveAmount,
+        currency: 'usd',
+        donorEmail,
+        donorName,
+      });
+      const cardElement = elements.getElement(CardElement);
+      const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
+        paymentData.clientSecret,
+        {
+          payment_method: {
+            card: cardElement,
+            billing_details: {
+              name: donorName || undefined,
+              email: donorEmail || undefined,
+            },
+          },
+        }
+      );
+      if (stripeError) {
+        setError(stripeError.message);
+        setProcessing(false);
+        return;
+      }
+      if (paymentIntent.status === 'succeeded') {
+        await confirmDonation(paymentIntent.id).catch(() => {});
+        setSuccess(true);
+      }
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  if (success) {
+    return (
+      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
+        <Box textAlign="center" py={6}>
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}>
+            <Box sx={{ width: 100, height: 100, borderRadius: '50%', bgcolor: alpha('#4CAF50', 0.1), display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto', mb: 3 }}>
+              <CheckCircle sx={{ fontSize: 56, color: '#4CAF50' }} />
+            </Box>
+          </motion.div>
+          <Typography variant="h4" sx={{ fontWeight: 800, mb: 2, color: 'text.primary' }}>
+            Thank You for Your Generosity!
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'secondary.main', fontWeight: 600, mb: 1 }}>
+            ${effectiveAmount.toFixed(2)} donation received
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+            A confirmation has been sent to <strong>{donorEmail || 'your email'}</strong>.
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 4, fontStyle: 'italic' }}>
+            "Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver." — 2 Corinthians 9:7
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setSuccess(false);
+              setSelectedAmount(100);
+              setCustomAmount('');
+              setIsCustom(false);
+              setDonorName('');
+              setDonorEmail('');
+              setStep(1);
+            }}
+            sx={{ borderRadius: 12, px: 5, py: 1.5, fontWeight: 700, bgcolor: 'primary.main', '&:hover': { bgcolor: 'primary.dark' } }}
+          >
+            Give Again
+          </Button>
+        </Box>
+      </motion.div>
+    );
+  }
 
   return (
-    <Box sx={{ overflowX: 'hidden' }}>
-      {/* Hero Section */}
-      <HeroSection>
-        <Container maxWidth="md" sx={{ px: { xs: 2, sm: 3 } }}>
-          <Box sx={{ maxWidth: '800px', mx: 'auto' }}>
-            <Fade in timeout={1000}>
-              <Box>
-                <Box sx={{ mb: 4 }}>
-                  <VolunteerActivismIcon 
-                    sx={{ 
-                      fontSize: 80, 
-                      color: '#c9a84c',
-                      animation: `${float} 3s ease-in-out infinite`,
-                    }} 
-                  />
-                </Box>
-                <Typography 
-                  variant="h2" 
-                  component="h1" 
-                  sx={{ 
-                    fontWeight: 800, 
-                    mb: 4,
-                    fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem' },
-                    lineHeight: 1.1,
-                    textShadow: '0 4px 8px rgba(0,0,0,0.3)',
-                    letterSpacing: '-0.5px',
-                    background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
-                  {content.heroTitle || t('giving.heroTitle')}
-                </Typography>
-                <Typography 
-                  variant="h5" 
-                  sx={{ 
-                    mb: 3, 
-                    maxWidth: '800px',
-                    margin: '0 auto',
-                    fontWeight: 300,
-                    opacity: 0.95,
-                    textShadow: '0 2px 3px rgba(0,0,0,0.3)',
-                    fontSize: { xs: '1.2rem', sm: '1.5rem' },
-                    lineHeight: 1.6,
-                    fontStyle: 'italic',
-                  }}
-                >
-                  {content.heroSubtitle || t('giving.heroSubtitle')}
-                </Typography>
-              </Box>
-            </Fade>
-            
-            {/* Direct Zelle CTA */}
-            <Box sx={{ mt: 8 }}>
-              <Button 
-                variant="contained"
-                size="large"
-                onClick={() => navigate('/zelle')}
-                sx={{
-                  px: 6,
-                  py: 2,
-                  borderRadius: '50px',
-                  textTransform: 'none',
-                  fontWeight: 700,
-                  fontSize: '1.3rem',
-                  background: 'linear-gradient(135deg, #c9a84c, #f4e4bc)',
-                  color: '#1a365d',
-                  boxShadow: '0 8px 30px rgba(201, 168, 76, 0.4)',
-                  '&:hover': {
-                    transform: 'translateY(-3px)',
-                    boxShadow: '0 12px 35px rgba(201, 168, 76, 0.6)',
-                    background: 'linear-gradient(135deg, #f4e4bc, #c9a84c)',
-                  },
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                <AccountBalanceIcon sx={{ mr: 2, fontSize: 28 }} />
-                {content.zelleButton || t('giving.zelleButton')}
-              </Button>
-              <Typography variant="body2" color="rgba(255, 255, 255, 0.8)" sx={{ mt: 2, textAlign: 'center' }}>
-                 {content.zelleLearnMore || t('giving.zelleLearnMore')}
-              </Typography>
-            </Box>
-
-            {/* Impact Statistics */}
-            <Box sx={{ mt: 8 }}>
-              <Typography variant="h4" sx={{ mb: 4, fontWeight: 600 }}>
-                {content.impactTitle || t('giving.impactTitle')}
-              </Typography>
-              <Grid container spacing={3}>
-                {impactStats.map((stat, index) => (
-                  <Grid item xs={6} md={3} key={index}>
-                    <Slide direction="up" in timeout={1400 + index * 200}>
-                      <StyledCard>
-                        <CardContent sx={{ p: 3, textAlign: 'center' }}>
-                          <Box sx={{ 
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: 60,
-                            height: 60,
-                            borderRadius: '50%',
-                            backgroundColor: 'rgba(26, 54, 93, 0.1)',
-                            mb: 2,
-                          }}>
-                            {stat.icon}
-                          </Box>
-                          <Typography variant="h4" sx={{ fontWeight: 700, color: stat.color, mb: 1 }}>
-                            {stat.number}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {stat.label}
-                          </Typography>
-                        </CardContent>
-                      </StyledCard>
-                    </Slide>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-
-            {/* Community Photos Section */}
-            <Box sx={{ mt: 5, mb: 8 }}>
-              <Container maxWidth="lg">
-                <Typography variant="h4" sx={{ mb: 4, fontWeight: 600, textAlign: 'center' }}>
-                  {content.communityTitle || t('giving.communityTitle')}
-                </Typography>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} md={6}>
-                    <Box sx={{ 
-                      position: 'relative',
-                      overflow: 'hidden',
-                      borderRadius: 2,
-                      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
-                      height: 300,
-                    }}>
-                      <Box
-                        component="img"
-                        src="/images/easter/DSC_2307.jpg"
-                        alt="Church Service"
-                        sx={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          transition: 'transform 0.3s ease',
-                          '&:hover': {
-                            transform: 'scale(1.05)',
-                          },
-                        }}
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Box sx={{ 
-                      position: 'relative',
-                      overflow: 'hidden',
-                      borderRadius: 2,
-                      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
-                      height: 300,
-                    }}>
-                      <Box
-                        component="img"
-                        src="/images/easter/DSC_2306.jpg"
-                        alt="Church Community"
-                        sx={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          transition: 'transform 0.3s ease',
-                          '&:hover': {
-                            transform: 'scale(1.05)',
-                          },
-                        }}
-                      />
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Container>
-            </Box>
+    <form onSubmit={handleSubmit}>
+      <Box sx={{ maxWidth: 540, mx: 'auto' }}>
+        {/* Step 1: Amount */}
+        <Box mb={5}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
+            <Box sx={{ width: 32, height: 32, borderRadius: '50%', bgcolor: step >= 1 ? 'primary.main' : alpha(theme.palette.primary.main, 0.1), color: step >= 1 ? '#fff' : 'primary.main', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.85rem', transition: 'all 0.3s ease' }}>1</Box>
+            <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>Select Amount</Typography>
           </Box>
-        </Container>
-      </HeroSection>
 
-      {/* Enhanced Zelle Giving Section */}
-      <Section sx={{ 
-        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-        borderTop: '1px solid #e2e8f0',
-      }}>
-        <Container maxWidth="md">
-          <Box textAlign="center" mb={6}>
-            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
-              {content.zelleSectionTitle || t('giving.zelleSectionTitle', 'Give Securely with Zelle')}
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '700px', mx: 'auto', mb: 4 }}>
-              {t('giving.zelleDescription', 'Zelle is a payment service built into your banking app. Use your own bank\'s app to give securely and instantly to our church.')}
-            </Typography>
-          </Box>
-          
-          <Slide direction="up" in timeout={1800}>
-            <Box sx={{ 
-              p: { xs: 4, md: 6 },
-              background: 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
-              borderRadius: 4,
-              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
-              border: '1px solid rgba(26, 54, 93, 0.1)',
-              position: 'relative',
-              overflow: 'hidden',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: '4px',
-                background: 'linear-gradient(90deg, #1a365d, #2c5282, #c9a84c)',
-              },
-            }}>
-              {/* Main Content */}
-              <Grid container spacing={3} alignItems="center">
-                <Grid item xs={12} md={6}>
-                  <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-                    <Box sx={{ 
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: 80,
-                      height: 80,
-                      borderRadius: '50%',
-                      backgroundColor: 'linear-gradient(135deg, #1a365d, #2c5282)',
-                      mb: 3,
-                    }}>
-                      <AccountBalanceIcon sx={{ fontSize: 40, color: 'white' }} />
-                    </Box>
-                    
-                    <Typography variant="h4" gutterBottom sx={{ fontWeight: 700, color: '#1a365d' }}>
-                      {t('giving.zelleGivingHeading', 'Zelle Giving')}
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
-                      {t('giving.zelleDescription2', 'Give quickly and securely through Zelle')}<sup>&reg;</sup>{t('giving.zelleDescription2Suffix', ' - the payment service built into your banking app. No fees, instant delivery, and complete security.')}
-                    </Typography>
-                    
-                    <Box sx={{ mb: 4 }}>
-                      {[t('giving.featureFeeFree', 'Fee-free transfers'), t('giving.featureSecurity', 'Bank-level security'), t('giving.featureInstant', 'Instant delivery'), t('giving.featureMobile', 'Mobile & desktop')].map((feature, idx) => (
-                        <Chip 
-                          key={idx}
-                          label={feature}
-                          size="small"
-                          sx={{ 
-                            mr: 1, 
-                            mb: 1,
-                            backgroundColor: 'primary.light',
-                            color: 'primary.contrastText',
-                            fontSize: '0.75rem',
-                            fontWeight: 500,
-                          }}
-                        />
-                      ))}
-                    </Box>
-                  </Box>
-                </Grid>
-                
-                <Grid item xs={12} md={6}>
-                  <Box sx={{ 
-                    p: 3,
-                    backgroundColor: 'linear-gradient(135deg, rgba(26, 54, 93, 0.05) 0%, rgba(201, 168, 76, 0.05) 100%)',
-                    borderRadius: 3,
-                    border: '1px solid rgba(26,54,93,0.1)',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                  }}>
-                    <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, textAlign: 'center' }}>
-                      {t('giving.howToTitle', 'How to Give with Zelle')}
-                    </Typography>
-                    
-                    <Box sx={{ mb: 3 }}>
-                      {[
-                        t('giving.step1', 'Open your banking app and select Zelle'),
-                        t('giving.step2', 'Send to: +1 (407) 218-0827'),
-                        t('giving.step3', 'Enter your donation amount'),
-                        t('giving.step4', 'Complete secure transfer')
-                      ].map((step, index) => (
-                        <Box key={index} sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
-                          <Box sx={{ 
-                            minWidth: 24,
-                            height: 24,
-                            borderRadius: '50%',
-                            backgroundColor: '#1a365d',
-                            color: 'white',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '0.875rem',
-                            fontWeight: 600,
-                            mr: 2,
-                            mt: 0.5,
-                          }}>
-                            {index + 1}
-                          </Box>
-                          <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
-                            {step}
-                          </Typography>
-                        </Box>
-                      ))}
-                    </Box>
-                    
-                    <Box sx={{ 
-                      p: 2,
-                      backgroundColor: 'rgba(26, 54, 93, 0.05)',
-                      borderRadius: 2,
-                      border: '1px dashed rgba(26, 54, 93, 0.2)',
-                      mb: 3,
-                      textAlign: 'center'
-                    }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 600, color: '#1a365d', mb: 1 }}>
-                        {t('giving.zelleRecipient', 'Zelle Recipient')}
-                      </Typography>
-                      <Typography variant="body2" sx={{ fontFamily: 'monospace', color: '#1a365d' }}>
-                        church@fhbckissimmee.org
-                      </Typography>
-                    </Box>
-                    
-                    <Button 
-                      variant="contained"
-                      size="large"
-                      fullWidth
-                      component={RouterLink}
-                      to="/zelle"
-                      sx={{
-                        py: 2,
-                        borderRadius: '50px',
-                        textTransform: 'none',
-                        fontWeight: 600,
-                        fontSize: '1.1rem',
-                        background: 'linear-gradient(135deg, #c9a84c, #f4e4bc)',
-                        color: '#1a365d',
-                        boxShadow: '0 4px 20px rgba(201, 168, 76, 0.3)',
-                        '&:hover': {
-                          transform: 'translateY(-2px)',
-                          boxShadow: '0 8px 25px rgba(201, 168, 76, 0.5)',
-                          background: 'linear-gradient(135deg, #f4e4bc, #c9a84c)',
-                        },
-                        transition: 'all 0.3s ease',
-                      }}
-                    >
-                      {t('giving.openZelleNow', 'Open Zelle Now')}
-                    </Button>
-                    
-                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 2, textAlign: 'center' }}>
-                      {t('giving.zelleAvailability', 'Available in most US banking apps. Check with your bank for Zelle availability.')}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-              
-              {/* Security Badge */}
-              <Box sx={{ 
-                mt: 4,
-                pt: 3,
-                borderTop: '1px solid rgba(26, 54, 93, 0.1)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 2,
-              }}>
-                <SecurityIcon sx={{ color: '#1a365d', fontSize: 20 }} />
-                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
-                  {t('giving.securityBadge', 'Bank-Level Security & Fraud Protection')}
-                </Typography>
-              </Box>
-            </Box>
-          </Slide>
-        </Container>
-      </Section>
-
-      {/* Testimonials Section */}
-      <Section sx={{ 
-        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-        borderTop: '1px solid #e2e8f0',
-      }}>
-        <Container maxWidth="lg">
-          <Box textAlign="center" mb={6}>
-            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
-              {content.testimonialsTitle || t('giving.testimonialsTitle', 'What Our Givers Say')}
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '700px', mx: 'auto' }}>
-              {t('giving.testimonialsSubtitle', 'Hear from members of our community who have experienced the joy of giving and making a difference.')}
-            </Typography>
-          </Box>
-          
-          <Grid container spacing={3}>
-            {testimonials.map((testimonial, index) => (
-              <Grid item xs={12} md={4} key={index}>
-                <Slide direction="up" in timeout={2000 + index * 200}>
-                  <Box sx={{ 
-                    p: 3,
-                    backgroundColor: 'white',
-                    borderRadius: 2,
-                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
-                    },
-                  }}>
-                    <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
-                      <Avatar sx={{ mr: 2, backgroundColor: 'primary.main' }}>
-                        {testimonial.avatar}
-                      </Avatar>
-                      <Box>
-                        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                          {testimonial.name}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {testimonial.role}
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <Box sx={{ mb: 2 }}>
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <StarIcon key={i} sx={{ fontSize: 16, color: '#c9a84c' }} />
-                      ))}
-                    </Box>
-                    <Typography variant="body2" sx={{ 
-                      fontStyle: 'italic',
-                      lineHeight: 1.6,
-                      flexGrow: 1,
-                    }}>
-                      "{testimonial.content}"
-                    </Typography>
-                  </Box>
-                </Slide>
+          <Grid container spacing={1.5} sx={{ mb: 2 }}>
+            {PRESET_AMOUNTS.map((item) => (
+              <Grid item xs={4} sm key={item.value}>
+                <motion.div whileHover={{ y: -3, scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                  <Button
+                    fullWidth
+                    onClick={() => { handlePresetClick(item.value); setStep(2); }}
+                    sx={{
+                      py: 2, borderRadius: 4, flexDirection: 'column', textTransform: 'none',
+                      border: `2px solid ${!isCustom && selectedAmount === item.value ? theme.palette.secondary.main : alpha(theme.palette.divider, 0.3)}`,
+                      bgcolor: !isCustom && selectedAmount === item.value ? alpha(theme.palette.secondary.main, 0.08) : 'background.paper',
+                      color: !isCustom && selectedAmount === item.value ? theme.palette.secondary.dark : 'text.primary',
+                      transition: 'all 0.3s ease',
+                      '&:hover': { borderColor: 'secondary.main', bgcolor: alpha(theme.palette.secondary.main, 0.05) },
+                    }}
+                  >
+                    <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.3 }}>{item.label}</Typography>
+                    <Typography variant="caption" sx={{ fontSize: '0.65rem', color: 'text.secondary', lineHeight: 1.3 }}>{item.impact}</Typography>
+                  </Button>
+                </motion.div>
               </Grid>
             ))}
           </Grid>
-        </Container>
-      </Section>
 
-      {/* Enhanced FAQ Section */}
-      <Section sx={{ backgroundColor: 'background.default' }}>
-        <Container maxWidth="md">
-          <Box textAlign="center" mb={6}>
-            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
-              {content.faqTitle || t('giving.faqTitle', 'Frequently Asked Questions')}
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '700px', mx: 'auto', mb: 4 }}>
-              {t('giving.faqSubtitle', 'Find answers to common questions about giving to our church and how your donations make a difference.')}
-            </Typography>
-          </Box>
-          
-          <Box sx={{ maxWidth: '800px', mx: 'auto' }}>
-            {[
-              {
-                question: t('giving.faq1Q', 'Is my donation tax-deductible?'),
-                answer: t('giving.faq1A', 'Yes, First Haitian Baptist Church of Kissimmee is a registered 501(c)(3) non-profit organization. All donations are tax-deductible to the full extent allowed by law. You will receive an annual tax statement for your records.'),
-                icon: <SecurityIcon />,
-              },
-              {
-                question: t('giving.faq2Q', 'Will I receive a receipt for my donation?'),
-                answer: t('giving.faq2A', 'Yes, you will receive an email receipt immediately after your donation is processed. The receipt will include your donation amount and tax information for your records.'),
-                icon: <CheckCircleIcon />,
-              },
-              {
-                question: t('giving.faq3Q', 'How does Zelle giving work?'),
-                answer: t('giving.faq3A', 'Simply open your banking app, select Zelle, and send money to church@fhbckissimmee.org. The transfer is instant and fee-free. Most major US banks offer Zelle in their mobile apps.'),
-                icon: <AccountBalanceIcon />,
-              },
-              {
-                question: t('giving.faq4Q', 'Is Zelle secure?'),
-                answer: t('giving.faq4A', 'Absolutely! Zelle uses bank-level security and encryption to protect your transactions. It\'s the same trusted technology your bank uses for other transfers, with fraud protection included.'),
-                icon: <SecurityIcon />,
-              },
-            ].map((faq, index) => (
-              <Slide direction="up" in timeout={2200 + index * 100} key={index}>
-                <Accordion sx={{ 
-                  mb: 2,
-                  borderRadius: 2,
-                  '&:before': {
-                    display: 'none',
-                  },
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                  '&.Mui-expanded': {
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                  },
-                }}>
-                  <AccordionSummary 
-                    expandIcon={<ExpandMoreIcon />}
-                    sx={{ 
-                      '& .MuiAccordionSummary-content': {
-                        alignItems: 'center',
-                      }
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
-                      <Box sx={{ 
-                        width: 40, 
-                        height: 40, 
-                        borderRadius: '50%', 
-                        backgroundColor: 'primary.light',
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        color: 'primary.contrastText',
-                        mr: 2,
-                      }}>
-                        {faq.icon}
-                      </Box>
-                    </Box>
-                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                      {faq.question}
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-                      {faq.answer}
-                    </Typography>
-                  </AccordionDetails>
-                </Accordion>
-              </Slide>
-            ))}
-          </Box>
-        </Container>
-      </Section>
-
-      {/* Enhanced Contact Section */}
-      <Section sx={{ 
-        py: { xs: 8, md: 10 },
-        background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
-        color: 'white',
-        position: 'relative',
-        overflow: 'hidden',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: 'url(https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.1,
-        },
-      }}>
-        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
-          <Box sx={{ 
-            p: { xs: 4, md: 6 },
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            borderRadius: 4,
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            transition: 'all 0.3s ease-in-out',
-            '&:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 0.15)',
-              transform: 'translateY(-4px)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-            },
-          }}>
-            <PublicIcon sx={{ fontSize: 60, color: '#c9a84c', mb: 3 }} />
-            <Typography 
-              variant="h4" 
-              component="h2" 
+          <motion.div whileHover={{ y: -2 }}>
+            <Button
+              fullWidth
+              onClick={handleCustomClick}
               sx={{
-                fontWeight: 600,
-                mb: 3,
-                position: 'relative',
-                display: 'inline-block',
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  bottom: -8,
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: '60px',
-                  height: '3px',
-                  backgroundColor: '#c9a84c',
-                }
+                py: 2, borderRadius: 4, textTransform: 'none', mt: 1,
+                border: `2px dashed ${isCustom ? theme.palette.secondary.main : alpha(theme.palette.divider, 0.3)}`,
+                bgcolor: isCustom ? alpha(theme.palette.secondary.main, 0.05) : 'transparent',
+                color: isCustom ? theme.palette.secondary.dark : 'text.secondary',
+                fontWeight: isCustom ? 700 : 500,
+                '&:hover': { borderColor: 'secondary.main', bgcolor: alpha(theme.palette.secondary.main, 0.03) },
               }}
             >
-              {content.ctaTitle || t('giving.ctaTitle', 'Have Questions About Giving?')}
-            </Typography>
-            
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                mb: 3, 
-                maxWidth: '700px', 
-                mx: 'auto', 
-                color: 'rgba(255, 255, 255, 0.9)',
-                fontSize: '1.1rem',
-                lineHeight: 1.8,
-              }}
-            >
-              {t('giving.contactBody', 'Our team is here to help you with any questions you may have about giving to First Haitian Baptist Church of Kissimmee. We\'re happy to assist you in finding the best way to support our mission.')}
-            </Typography>
-            
-            <Stack 
-              direction={{ xs: 'column', sm: 'row' }} 
-              spacing={3} 
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Button 
-                variant="contained" 
-                size="large"
-                component={RouterLink}
-                to="/contact"
-                sx={{
-                  px: 4,
-                  py: 1.5,
-                  borderRadius: '50px',
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  fontSize: '1.1rem',
-                  background: 'linear-gradient(135deg, #c9a84c, #f4e4bc)',
-                  color: '#1a365d',
-                  boxShadow: '0 4px 20px rgba(201, 168, 76, 0.3)',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 8px 25px rgba(201, 168, 76, 0.5)',
-                    background: 'linear-gradient(135deg, #f4e4bc, #c9a84c)',
-                  },
-                }}
-              >
-                {t('giving.contactUsButton', 'Contact Us')}
-              </Button>
-              
-              <Button 
-                variant="outlined" 
-                size="large"
-                sx={{
-                  px: 4,
-                  py: 1.5,
-                  borderRadius: '50px',
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  fontSize: '1.1rem',
-                  borderColor: 'rgba(255, 255, 255, 0.5)',
-                  color: 'white',
-                  '&:hover': {
-                    borderColor: 'white',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  },
-                }}
-              >
-                {t('giving.callButton', 'Call (407) 218-0827')}
-              </Button>
-            </Stack>
-          </Box>
-        </Container>
-      </Section>
+              {isCustom ? 'Custom Amount Selected' : 'Enter Custom Amount'}
+            </Button>
+          </motion.div>
 
+          <AnimatePresence>
+            {isCustom && (
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  placeholder="Enter amount"
+                  value={customAmount}
+                  onChange={(e) => { setCustomAmount(e.target.value); setError(null); }}
+                  inputProps={{ min: 1, step: 0.01 }}
+                  sx={{ mt: 2, '& .MuiOutlinedInput-root': { borderRadius: 4, fontSize: '1.3rem', fontWeight: 700 } }}
+                  InputProps={{
+                    startAdornment: <Typography sx={{ fontWeight: 800, color: 'secondary.main', mr: 1, fontSize: '1.3rem' }}>$</Typography>,
+                  }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Box>
+
+        {/* Step 2: Donor Info */}
+        <Box mb={5}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
+            <Box sx={{ width: 32, height: 32, borderRadius: '50%', bgcolor: step >= 2 ? 'primary.main' : alpha(theme.palette.primary.main, 0.1), color: step >= 2 ? '#fff' : 'primary.main', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.85rem', transition: 'all 0.3s ease' }}>2</Box>
+            <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>Your Information</Typography>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>(optional)</Typography>
+          </Box>
+          <Grid container spacing={2.5}>
+            <Grid item xs={12} sm={6}>
+              <TextField fullWidth placeholder="Full Name" value={donorName} onChange={(e) => setDonorName(e.target.value)} size="medium" sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField fullWidth type="email" placeholder="Email for receipt" value={donorEmail} onChange={(e) => setDonorEmail(e.target.value)} size="medium" sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }} />
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* Step 3: Card Details */}
+        <Box mb={4}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
+            <Box sx={{ width: 32, height: 32, borderRadius: '50%', bgcolor: 'primary.main', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.85rem' }}>3</Box>
+            <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>Card Details</Typography>
+          </Box>
+          <Box sx={{
+            p: 2.5, border: '2px solid', borderColor: alpha(theme.palette.divider, 0.3), borderRadius: 4,
+            bgcolor: 'background.paper', transition: 'all 0.3s ease',
+            '& .StripeElement--focus': { borderColor: theme.palette.secondary.main, boxShadow: `0 0 0 3px ${alpha(theme.palette.secondary.main, 0.1)}` },
+            '& .StripeElement--invalid': { borderColor: theme.palette.error.main },
+          }}>
+            <CardElement
+              options={{
+                style: {
+                  base: { fontSize: '16px', color: theme.palette.text.primary, fontFamily: '"Inter", sans-serif', '::placeholder': { color: theme.palette.text.secondary }, padding: '8px 0' },
+                  invalid: { color: '#EF4444' },
+                },
+              }}
+            />
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8, mt: 1.5 }}>
+            <Lock sx={{ fontSize: 14, color: 'text.secondary' }} />
+            <Typography variant="caption" color="text.secondary">256-bit SSL encrypted &middot; PCI compliant</Typography>
+          </Box>
+        </Box>
+
+        {error && (
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+            <Alert severity="error" sx={{ mb: 3, borderRadius: 3 }}>{error}</Alert>
+          </motion.div>
+        )}
+
+        {/* Submit */}
+        <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            size="large"
+            disabled={!stripe || processing || effectiveAmount < 1}
+            startIcon={processing ? <CircularProgress size={22} color="inherit" /> : <Lock sx={{ fontSize: 20 }} />}
+            sx={{
+              py: 2.2, borderRadius: 4, fontSize: '1.15rem', fontWeight: 800, textTransform: 'none',
+              bgcolor: 'secondary.main', color: '#fff',
+              boxShadow: `0 8px 32px ${alpha(theme.palette.secondary.main, 0.35)}`,
+              '&:hover': { bgcolor: 'secondary.dark', boxShadow: `0 12px 40px ${alpha(theme.palette.secondary.main, 0.45)}`, transform: 'translateY(-2px)' },
+              '&:disabled': { bgcolor: 'action.disabledBackground', color: 'action.disabled', boxShadow: 'none' },
+              transition: 'all 0.3s ease',
+            }}
+          >
+            {processing ? 'Processing...' : `Give $${effectiveAmount.toFixed(2)}`}
+          </Button>
+        </motion.div>
+
+        {/* Trust Badges */}
+        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 3 }}>
+          {[
+            { icon: <Shield sx={{ fontSize: 16 }} />, label: 'Stripe Secured' },
+            { icon: <Lock sx={{ fontSize: 16 }} />, label: 'Encrypted' },
+            { icon: <CheckCircle sx={{ fontSize: 16 }} />, label: 'PCI Compliant' },
+          ].map((badge, i) => (
+            <Stack key={i} direction="row" spacing={0.5} alignItems="center" sx={{ color: 'text.secondary' }}>
+              {badge.icon}
+              <Typography variant="caption" sx={{ fontWeight: 500 }}>{badge.label}</Typography>
+            </Stack>
+          ))}
+        </Stack>
       </Box>
+    </form>
+  );
+};
+
+const GivingPage = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const stripeConfigured = isStripeConfigured();
+
+  const stripeOptions = {
+    appearance: {
+      theme: 'stripe',
+      variables: { colorPrimary: '#C9A227', colorBackground: theme.palette.background.paper, colorText: theme.palette.text.primary, borderRadius: '12px', fontFamily: '"Inter", sans-serif' },
+    },
+  };
+
+  return (
+    <Box sx={{ overflowX: 'hidden' }}>
+      {/* Hero */}
+      <Box sx={{
+        background: 'linear-gradient(135deg, #0A3560 0%, #0F4C81 40%, #C9A227 100%)',
+        color: '#fff', py: { xs: 10, md: 14 }, position: 'relative', overflow: 'hidden',
+      }}>
+        <Box sx={{ position: 'absolute', inset: 0, backgroundImage: 'url(/images/easter/offering-photo.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.1, filter: 'saturate(0.5)' }} />
+        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 80% 20%, rgba(201, 162, 39, 0.2) 0%, transparent 50%)' }} />
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+          <FadeIn>
+            <Box textAlign="center" maxWidth="700px" mx="auto">
+              <SectionLabel sx={{ bgcolor: 'rgba(255,255,255,0.15)', color: '#fff', mb: 3 }}>Give</SectionLabel>
+              <Typography variant="h1" component="h1" sx={{ fontWeight: 800, fontSize: { xs: '2.2rem', md: '3.5rem' }, mb: 2, lineHeight: 1.1 }}>
+                Give Online
+              </Typography>
+              <Typography variant="h6" sx={{ fontWeight: 400, color: 'rgba(255,255,255,0.85)', maxWidth: 550, mx: 'auto', lineHeight: 1.8, mb: 3 }}>
+                Your generous giving supports our ministry and helps us serve our community. Every gift makes a difference.
+              </Typography>
+              <Stack direction="row" spacing={3} justifyContent="center" flexWrap="wrap">
+                {[
+                  { icon: <Lock sx={{ fontSize: 16 }} />, label: 'Secure Payment' },
+                  { icon: <CheckCircle sx={{ fontSize: 16 }} />, label: 'Instant Receipt' },
+                  { icon: <Security sx={{ fontSize: 16 }} />, label: 'Stripe Protected' },
+                ].map((item, i) => (
+                  <Stack key={i} direction="row" spacing={0.8} alignItems="center" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                    {item.icon}
+                    <Typography variant="caption" sx={{ fontWeight: 500, fontSize: '0.78rem' }}>{item.label}</Typography>
+                  </Stack>
+                ))}
+              </Stack>
+            </Box>
+          </FadeIn>
+        </Container>
+      </Box>
+
+      {/* Main: Form + Impact */}
+      <Box sx={{ bgcolor: 'background.default', py: { xs: 8, md: 12 } }}>
+        <Container maxWidth="lg">
+          <Grid container spacing={8} alignItems="flex-start">
+            {/* Form */}
+            <Grid item xs={12} md={7}>
+              <FadeIn>
+                <Card sx={{ borderRadius: 6, border: '1px solid', borderColor: 'divider', boxShadow: `0 4px 24px ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.15 : 0.06)}`, overflow: 'visible' }}>
+                  <CardContent sx={{ p: { xs: 4, md: 5 } }}>
+                    {stripeConfigured ? (
+                      <Elements stripe={getStripe()} options={stripeOptions}>
+                        <GivingForm />
+                      </Elements>
+                    ) : (
+                      <Box textAlign="center" py={6}>
+                        <Box sx={{ width: 80, height: 80, borderRadius: '50%', bgcolor: alpha(theme.palette.primary.main, 0.08), display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto', mb: 3 }}>
+                          <CreditCard sx={{ fontSize: 40, color: 'primary.main' }} />
+                        </Box>
+                        <Typography variant="h5" sx={{ fontWeight: 800, mb: 2, color: 'text.primary' }}>
+                          Online Giving Coming Soon
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 380, mx: 'auto', lineHeight: 1.8 }}>
+                          Credit card giving is being set up. In the meantime, you can give via Zelle — fast, free, and secure.
+                        </Typography>
+                        <Button variant="contained" component={RouterLink} to="/zelle" endIcon={<ArrowForward />}
+                          sx={{ borderRadius: 4, px: 5, py: 1.5, fontWeight: 700, bgcolor: 'secondary.main', color: '#fff', '&:hover': { bgcolor: 'secondary.dark' } }}>
+                          Give via Zelle
+                        </Button>
+                      </Box>
+                    )}
+                  </CardContent>
+                </Card>
+              </FadeIn>
+            </Grid>
+
+            {/* Impact Sidebar */}
+            <Grid item xs={12} md={5}>
+              <FadeIn delay={0.2}>
+                <Stack spacing={4}>
+                  {/* Impact Stats */}
+                  <Card sx={{ borderRadius: 5, border: '1px solid', borderColor: 'divider', overflow: 'hidden' }}>
+                    <Box sx={{ background: 'linear-gradient(135deg, #0F4C81, #0A3560)', p: 4, color: '#fff' }}>
+                      <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>Your Impact</Typography>
+                      <Typography variant="body2" sx={{ opacity: 0.8, color: 'rgba(255,255,255,0.7)' }}>See how your gift transforms lives</Typography>
+                    </Box>
+                    <CardContent sx={{ p: 4 }}>
+                      <Stack spacing={3}>
+                        {[
+                          { icon: <Groups sx={{ color: '#0F4C81' }} />, stat: '500+', label: 'Members Served', color: '#0F4C81' },
+                          { icon: <VolunteerActivism sx={{ color: '#C9A227' }} />, stat: '50', label: 'Outreach Programs', color: '#C9A227', suffix: '+' },
+                          { icon: <Church sx={{ color: '#4CAF50' }} />, stat: '5', label: 'Active Ministries', color: '#4CAF50' },
+                          { icon: <Handshake sx={{ color: '#F57C00' }} />, stat: '1000', label: 'Families Helped', color: '#F57C00', suffix: '+' },
+                        ].map((item, i) => (
+                          <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                            <Avatar sx={{ width: 44, height: 44, bgcolor: alpha(item.color, 0.08), color: item.color }}>
+                              {item.icon}
+                            </Avatar>
+                            <Box>
+                              <Typography variant="h5" sx={{ fontWeight: 800, color: 'text.primary', lineHeight: 1.2 }}>
+                                <Counter end={parseInt(item.stat)} suffix={item.suffix || ''} duration={2} />
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>{item.label}</Typography>
+                            </Box>
+                          </Box>
+                        ))}
+                      </Stack>
+                    </CardContent>
+                  </Card>
+
+                  {/* Why Give */}
+                  <Card sx={{ borderRadius: 5, border: '1px solid', borderColor: 'divider' }}>
+                    <CardContent sx={{ p: 4 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 700, mb: 3, color: 'text.primary' }}>Why Your Gift Matters</Typography>
+                      <Stack spacing={3}>
+                        {[
+                          { icon: <VolunteerActivism sx={{ color: '#0F4C81' }} />, title: 'Support Ministry', desc: 'Fund worship, Bible studies, and spiritual programs.' },
+                          { icon: <Handshake sx={{ color: '#C9A227' }} />, title: 'Serve the Community', desc: 'Help families through our food pantry and outreach.' },
+                          { icon: <CheckCircle sx={{ color: '#4CAF50' }} />, title: '100% Tax Deductible', desc: 'FHBCK is a registered 501(c)(3) organization.' },
+                        ].map((item, i) => (
+                          <Box key={i} sx={{ display: 'flex', gap: 2 }}>
+                            <Avatar sx={{ width: 40, height: 40, bgcolor: alpha(item.icon.props.sx.color, 0.08), color: item.icon.props.sx.color, flexShrink: 0 }}>
+                              {React.cloneElement(item.icon, { sx: { fontSize: 22, color: item.icon.props.sx.color } })}
+                            </Avatar>
+                            <Box>
+                              <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.3 }}>{item.title}</Typography>
+                              <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.6 }}>{item.desc}</Typography>
+                            </Box>
+                          </Box>
+                        ))}
+                      </Stack>
+                    </CardContent>
+                  </Card>
+
+                  {/* Other Ways to Give */}
+                  <Card sx={{ borderRadius: 5, border: '1px solid', borderColor: 'divider', background: `linear-gradient(135deg, ${alpha('#C9A227', 0.04)}, ${alpha('#0F4C81', 0.04)})` }}>
+                    <CardContent sx={{ p: 4, textAlign: 'center' }}>
+                      <AccountBalance sx={{ fontSize: 36, color: 'secondary.main', mb: 1.5 }} />
+                      <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, color: 'text.primary' }}>Other Ways to Give</Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.7 }}>
+                        Prefer to give through your bank? Zelle is fast, free, and secure.
+                      </Typography>
+                      <Button variant="outlined" component={RouterLink} to="/zelle" endIcon={<ArrowForward />}
+                        sx={{ borderRadius: 12, fontWeight: 600, borderColor: alpha(theme.palette.secondary.main, 0.4), color: 'secondary.main', '&:hover': { bgcolor: 'secondary.main', color: '#fff', borderColor: 'secondary.main' } }}>
+                        Give via Zelle
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Stack>
+              </FadeIn>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* Scripture Banner */}
+      <FadeIn>
+        <Box sx={{ py: 8, bgcolor: 'background.paper', textAlign: 'center' }}>
+          <Container maxWidth="md">
+            <AutoAwesome sx={{ fontSize: 36, color: 'secondary.main', mb: 2 }} />
+            <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary', mb: 2, fontStyle: 'italic', lineHeight: 1.8 }}>
+              "Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver."
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'secondary.main', fontWeight: 600 }}>
+              — 2 Corinthians 9:7
+            </Typography>
+          </Container>
+        </Box>
+      </FadeIn>
+    </Box>
   );
 };
 

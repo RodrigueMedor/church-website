@@ -1,6 +1,6 @@
 import i18n from '../i18n';
 
-const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+const API_BASE = process.env.REACT_APP_API_URL ?? '';  // empty = relative (nginx proxies /api/)
 
 class ApiClient {
   constructor() {

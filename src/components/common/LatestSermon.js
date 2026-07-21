@@ -7,7 +7,6 @@ import {
   CardContent, 
   useTheme, 
   useMediaQuery, 
-  CircularProgress,
   Modal,
   IconButton
 } from '@mui/material';
@@ -18,39 +17,76 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PersonIcon from '@mui/icons-material/Person';
 
-// YouTube API Configuration
-const YOUTUBE_API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY || '';
-const CHANNEL_ID = process.env.REACT_APP_YOUTUBE_CHANNEL_ID || '';
-const MAX_RESULTS = 1;
-
-// Format duration from ISO 8601 to HH:MM:SS
-const formatDuration = (duration) => {
-  if (!duration) return '00:00';
-  
-  const match = duration.match(/PT(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?/);
-  if (!match) return '00:00';
-  
-  const hours = match[1] ? parseInt(match[1]) : 0;
-  const minutes = match[2] ? parseInt(match[2]) : 0;
-  const seconds = match[3] ? parseInt(match[3]) : 0;
-  
-  if (hours > 0) {
-    return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  }
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+const decodeHtml = (html) => {
+  if (!html) return '';
+  const txt = document.createElement('textarea');
+  txt.innerHTML = html;
+  return txt.value;
 };
 
-// Format date to French format
 const formatDate = (dateString) => {
+  if (!dateString) return '';
   const options = { day: 'numeric', month: 'long', year: 'numeric' };
-  return new Date(dateString).toLocaleDateString('fr-FR', options);
+  return new Date(dateString).toLocaleDateString('en-US', options);
+};
+
+const extractVideoId = (url) => {
+  if (!url) return null;
+  const match = url.match(/(?:youtube\.com\/(?:embed\/|watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+};
+
+const FALLBACK_SERMON = {
+  id: 'welcome',
+  title: 'Welcome to Our Church Services',
+  speaker: 'FHBCK Ministry',
+  date: new Date().toISOString(),
+  thumbnail: '/images/banner/pastor-sermon_1.JPG',
+  videoUrl: '',
+  description: 'Join us for our weekly church service with inspiring worship, biblical teaching, and warm fellowship. All are welcome in God\'s house.',
+};
+
+const fetchLatestFromYouTube = async () => {
+  const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
+  const CHANNEL_ID = process.env.REACT_APP_YOUTUBE_CHANNEL_ID;
+  if (!API_KEY || API_KEY === 'YOUR_YOUTUBE_API_KEY' || !CHANNEL_ID || CHANNEL_ID === 'YOUR_YOUTUBE_CHANNEL_ID') {
+    return null;
+  }
+  try {
+    const res = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=1&type=video`
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.items || data.items.length === 0) return null;
+    const item = data.items[0];
+    const videoId = item.id.videoId;
+    const detailsRes = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?key=${API_KEY}&id=${videoId}&part=contentDetails,snippet`
+    );
+    let duration = '';
+    if (detailsRes.ok) {
+      const details = await detailsRes.json();
+      duration = details.items?.[0]?.contentDetails?.duration || '';
+    }
+    return {
+      id: videoId,
+      title: decodeHtml(item.snippet.title),
+      speaker: decodeHtml(item.snippet.channelTitle),
+      date: item.snippet.publishedAt,
+      duration,
+      thumbnail: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || '',
+      videoUrl: `https://www.youtube.com/embed/${videoId}`,
+      description: decodeHtml(item.snippet.description || ''),
+    };
+  } catch {
+    return null;
+  }
 };
 
 const LatestSermon = () => {
     const { t } = useTranslation();
     const [sermon, setSermon] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -58,73 +94,20 @@ const LatestSermon = () => {
     const handleOpenModal = () => setModalOpen(true);
     const handleCloseModal = () => setModalOpen(false);
 
-    // Fetch latest sermon from YouTube
     useEffect(() => {
-        const fetchLatestSermon = async () => {
-            try {
-                setLoading(true);
-                // First, get the list of videos
-                const searchResponse = await fetch(
-                    `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}&type=video`
-                );
-                const searchData = await searchResponse.json();
-
-                if (!searchData.items || searchData.items.length === 0) {
-                    throw new Error('No videos found');
-                }
-
-                // Get video details including duration
-                const videoId = searchData.items[0].id.videoId;
-                const detailsResponse = await fetch(
-                    `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&id=${videoId}&part=contentDetails,snippet`
-                );
-                const detailsData = await detailsResponse.json();
-
-                const videoDetails = detailsData.items[0];
-                
-                // Format the sermon data
-                const sermonData = {
-                    id: videoId,
-                    title: videoDetails.snippet.title,
-                    channelTitle: videoDetails.snippet.channelTitle,
-                    publishedAt: videoDetails.snippet.publishedAt,
-                    description: videoDetails.snippet.description,
-                    duration: formatDuration(videoDetails.contentDetails.duration),
-                    thumbnail: videoDetails.snippet.thumbnails.high.url,
-                    videoUrl: `https://www.youtube.com/embed/${videoId}`
-                };
-
-                setSermon(sermonData);
-            } catch (err) {
-                console.error('Error fetching latest sermon:', err);
-                setError('Failed to load the latest sermon. Please try again later.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchLatestSermon();
+        fetchLatestFromYouTube().then(ytSermon => {
+            setSermon(ytSermon || FALLBACK_SERMON);
+        }).catch(() => {
+            setSermon(FALLBACK_SERMON);
+        });
     }, []);
-
-    if (loading) {
-        return (
-            <Box display="flex" justifyContent="center" alignItems="center" minHeight="300px">
-                <CircularProgress />
-            </Box>
-        );
-    }
-
-    if (error) {
-        return (
-            <Box textAlign="center" py={4} color="error.main">
-                {error}
-            </Box>
-        );
-    }
 
     if (!sermon) {
         return null;
     }
+
+    const videoId = extractVideoId(sermon.videoUrl);
+    const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : sermon.videoUrl;
     
     const modalStyle = {
         position: 'relative',
@@ -146,7 +129,7 @@ const LatestSermon = () => {
     const videoContainerStyle = {
         width: '100%',
         position: 'relative',
-        paddingBottom: '56.25%', // 16:9 aspect ratio
+        paddingBottom: '56.25%',
         height: 0,
         overflow: 'hidden',
         '& iframe': {
@@ -187,33 +170,35 @@ const LatestSermon = () => {
                                 objectFit: 'cover'
                             }}
                         />
-                        <Box
-                            className="play-overlay"
-                            sx={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                                opacity: 0.8,
-                                transition: 'opacity 0.3s ease',
-                                '&:hover': {
-                                    opacity: 1,
-                                },
-                            }}
-                        >
-                            <PlayCircleOutlineIcon 
-                                sx={{ 
-                                    fontSize: '5rem', 
-                                    color: 'white',
-                                    filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.5))',
-                                }} 
-                            />
-                        </Box>
+                        {videoId && (
+                            <Box
+                                className="play-overlay"
+                                sx={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                                    opacity: 0.8,
+                                    transition: 'opacity 0.3s ease',
+                                    '&:hover': {
+                                        opacity: 1,
+                                    },
+                                }}
+                            >
+                                <PlayCircleOutlineIcon 
+                                    sx={{ 
+                                        fontSize: '5rem', 
+                                        color: 'white',
+                                        filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.5))',
+                                    }} 
+                                />
+                            </Box>
+                        )}
                     </Box>
             </Box>
             
@@ -235,14 +220,14 @@ const LatestSermon = () => {
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
                         <PersonIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
                         <Typography variant="body2" color="text.secondary">
-                            {sermon.channelTitle}
+                            {sermon.speaker || 'FHBCK'}
                         </Typography>
                     </Box>
                     
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
                         <CalendarTodayIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
                         <Typography variant="body2" color="text.secondary">
-                            {formatDate(sermon.publishedAt)} • {sermon.duration}
+                            {formatDate(sermon.datePreached || sermon.date)}
                         </Typography>
                     </Box>
                     
@@ -255,7 +240,7 @@ const LatestSermon = () => {
                             lineHeight: 1.6
                         }}
                     >
-                        {sermon.description.split('\n')[0]}
+                        {(sermon.description || '').split('\n')[0]}
                     </Typography>
                 </CardContent>
                 
@@ -268,17 +253,18 @@ const LatestSermon = () => {
                     borderColor: 'divider',
                     '& > *': {
                         flex: '1 1 auto',
-                        minWidth: 0, // Prevents flex items from overflowing
+                        minWidth: 0,
                     }
                 }}>
                     <Button 
                         component="a"
-                        href={`https://www.youtube.com/watch?v=${sermon.id}`}
+                        href={videoId ? `https://www.youtube.com/watch?v=${videoId}` : sermon.videoUrl || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
                         variant="contained"
                         color="primary"
                         size={isMobile ? 'medium' : 'large'}
+                        disabled={!videoId && !sermon.videoUrl}
                         sx={{
                             textTransform: 'none',
                             fontWeight: 700,
@@ -410,7 +396,7 @@ const LatestSermon = () => {
                     </IconButton>
                     <Box sx={videoContainerStyle}>
                         <iframe
-                            src={`${sermon.videoUrl}?autoplay=1&rel=0&modestbranding=1`}
+                            src={`${embedUrl}?autoplay=1&rel=0&modestbranding=1`}
                             title={sermon.title}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen

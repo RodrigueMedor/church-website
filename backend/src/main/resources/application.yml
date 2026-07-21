@@ -81,6 +81,9 @@ springdoc:
     path: /api/swagger-ui
     operations-sorter: method
 
+stripe:
+  secret-key: ${STRIPE_SECRET_KEY:}
+
 logging:
   level:
     com.fhbck: INFO

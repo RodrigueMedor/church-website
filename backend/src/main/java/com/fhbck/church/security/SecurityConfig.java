@@ -31,6 +31,7 @@ public class SecurityConfig {
                     config.setAllowCredentials(true);
                     config.setAllowedOriginPatterns(java.util.List.of(
                         "https://fhbck.org", "https://www.fhbck.org",
+                        "http://localhost", "http://localhost:*",
                         "http://localhost:4000", "http://localhost:3000"
                     ));
                     config.setAllowedHeaders(java.util.List.of("Authorization", "Content-Type", "X-Requested-With"));

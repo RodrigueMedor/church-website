@@ -1,45 +1,77 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Container, Typography, Button, useTheme, useMediaQuery, Grid, Card, Avatar, alpha, Fade, Slide, Stack, Divider, Dialog, DialogContent, DialogActions, DialogTitle, IconButton, Chip } from '@mui/material';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import {
+  Box, Container, Typography, Button, useTheme, useMediaQuery, Grid, Card,
+  CardContent, Avatar, alpha, Fade, Stack, IconButton, Chip
+} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { styled, keyframes } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import CloseIcon from '@mui/icons-material/Close';
-import { 
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import {
   Church as ChurchIcon,
   Groups as GroupsIcon,
   VolunteerActivism as VolunteerIcon,
   School as SchoolIcon,
-  CalendarToday,
-  AccessTime,
+  MenuBook as MenuBookIcon,
   LocationOn,
-  Star,
-  TrendingUp,
-  People,
-  Schedule,
   PlayArrow,
-  Schedule as ScheduleIcon
+  FormatQuote,
+  ChevronLeft,
+  ChevronRight,
+  Favorite,
+  ChildCare,
+  Phone,
 } from '@mui/icons-material';
 import EventBoxes from '../common/EventBoxes';
 import LatestSermon from '../common/LatestSermon';
 import NewsSection from '../common/NewsSection';
 import ScrollReveal from '../common/ScrollReveal';
 import { usePageContent } from '../../cms';
+import { pageDefaults } from '../../cms/defaults';
+import CMS_API, { slugToPageKey } from '../../services/cmsApi';
 
-// Animations
-const floatAnimation = keyframes`
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+const iconMap = {
+  Church: <ChurchIcon />,
+  Groups: <GroupsIcon />,
+  VolunteerActivism: <VolunteerIcon />,
+  School: <SchoolIcon />,
+  MenuBook: <MenuBookIcon />,
+  ChildCare: <ChildCare />,
+};
+
+const scrollBounce = keyframes`
+  0%, 100% { transform: translateY(0) translateX(-50%); }
+  50% { transform: translateY(8px) translateX(-50%); }
 `;
 
-const pulseAnimation = keyframes`
+const kenBurnsZoomIn = keyframes`
   0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  100% { transform: scale(1.12); }
 `;
 
-// Styled Components
+const kenBurnsPanLeft = keyframes`
+  0% { transform: scale(1.08) translateX(0); }
+  100% { transform: scale(1.08) translateX(-3%); }
+`;
+
+const kenBurnsPanRight = keyframes`
+  0% { transform: scale(1.08) translateX(0); }
+  100% { transform: scale(1.08) translateX(3%); }
+`;
+
+const kenBurnsPanUp = keyframes`
+  0% { transform: scale(1.08) translateY(0); }
+  100% { transform: scale(1.08) translateY(-3%); }
+`;
+
+const kenBurnsEffects = [kenBurnsZoomIn, kenBurnsPanLeft, kenBurnsPanRight, kenBurnsPanUp];
+
+const progressBar = keyframes`
+  0% { width: 0%; }
+  100% { width: 100%; }
+`;
+
 const HeroSection = styled(Box)(({ theme }) => ({
   minHeight: '100vh',
   width: '100%',
@@ -51,54 +83,25 @@ const HeroSection = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.common.white,
   backgroundColor: '#000',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center 20%',
-  backgroundRepeat: 'no-repeat',
-  backgroundAttachment: 'fixed',
-  padding: theme.spacing(4),
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'linear-gradient(135deg, rgba(15, 36, 64, 0.85) 0%, rgba(26, 54, 93, 0.65) 50%, rgba(15, 36, 64, 0.85) 100%)',
-    zIndex: 1,
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: '100px',
-    background: 'linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 100%)',
-    zIndex: 1,
-    pointerEvents: 'none',
-  },
-  '& > *': {
-    position: 'relative',
-    zIndex: 2,
-  },
+  overflow: 'hidden',
 }));
 
 const Section = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(5, 0),
+  padding: theme.spacing(8, 0),
   [theme.breakpoints.up('md')]: {
-    padding: theme.spacing(6, 0),
+    padding: theme.spacing(10, 0),
   },
 }));
 
-const FeatureCard = styled(Card)(({ theme, index }) => ({
+const ServiceCard = styled(Card)(({ theme }) => ({
   height: '100%',
-  background: 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
-  border: '1px solid rgba(26, 54, 93, 0.1)',
-  borderRadius: 16,
-  padding: theme.spacing(4),
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-  position: 'relative',
+  background: theme.palette.background.paper,
+  borderRadius: 20,
+  border: '1px solid',
+  borderColor: theme.palette.divider,
   overflow: 'hidden',
+  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+  position: 'relative',
   '&::before': {
     content: '""',
     position: 'absolute',
@@ -106,19 +109,33 @@ const FeatureCard = styled(Card)(({ theme, index }) => ({
     left: 0,
     right: 0,
     height: '4px',
-    background: 'linear-gradient(90deg, #1a365d, #2c5282)',
-    transform: 'translateX(-100%)',
-    transition: 'transform 0.6s ease',
+    transition: 'height 0.3s ease',
   },
   '&:hover': {
-    transform: 'translateY(-8px) scale(1.02)',
-    boxShadow: '0 20px 40px -12px rgba(26, 54, 93, 0.25)',
+    transform: 'translateY(-8px)',
+    boxShadow: '0 20px 40px -12px rgba(26, 54, 93, 0.18)',
     '&::before': {
-      transform: 'translateX(0)',
+      height: '6px',
     },
-    '& .feature-icon': {
-      transform: 'scale(1.1) rotate(5deg)',
+    '& .service-icon': {
+      transform: 'scale(1.1)',
     },
+  },
+}));
+
+const TestimonialCard = styled(Box)(({ theme }) => ({
+  background: `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${theme.palette.background.paper} 100%)`,
+  borderRadius: 20,
+  padding: theme.spacing(4),
+  position: 'relative',
+  border: '1px solid',
+  borderColor: theme.palette.divider,
+  minHeight: 220,
+  display: 'flex',
+  flexDirection: 'column',
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    boxShadow: '0 12px 32px -8px rgba(26, 54, 93, 0.12)',
   },
 }));
 
@@ -128,23 +145,43 @@ const ProfessionalHomePage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const content = usePageContent('homepage');
 
-  // Preserve existing slideshow functionality
-  const heroBannerImages = content.hero?.backgroundImages?.length
-    ? content.hero.backgroundImages
+  const heroSlides = content.hero?.slides?.length
+    ? content.hero.slides
     : [
-        `${process.env.PUBLIC_URL}/images/banner/church-building-new.png`,
-        `${process.env.PUBLIC_URL}/images/banner/pastor-sermon_1.JPG`,
-        `${process.env.PUBLIC_URL}/images/banner/DSC_2131.jpg`,
-        `${process.env.PUBLIC_URL}/images/banner/DSC_2088.jpg`,
+        {
+          image: `${process.env.PUBLIC_URL}/images/banner/pastor-sermon_1.JPG`,
+          title: 'First Haitian Baptist Church of Kissimmee',
+          subtitle: 'Join us for a life-changing worship experience every Sunday. All are welcome in God\'s house.',
+          buttonText: 'Plan Your Visit',
+          buttonLink: '/contact',
+          secondaryText: 'Watch Online',
+          secondaryLink: '/sermons',
+        },
+        {
+          image: `${process.env.PUBLIC_URL}/images/banner/DSC_2131.jpg`,
+          title: 'Grow in Faith Together',
+          subtitle: 'Discover ministries for every age and stage of life. There is a place for you and your family.',
+          buttonText: 'Our Ministries',
+          buttonLink: '/ministries',
+        },
+        {
+          image: `${process.env.PUBLIC_URL}/images/banner/DSC_2088.jpg`,
+          title: 'Experience God\'s Love',
+          subtitle: 'Whether it\'s your first time or you\'re looking for a church home, we would love to welcome you.',
+          buttonText: 'Get Directions',
+          buttonLink: 'https://maps.google.com/?q=900+S+Thacker+Ave+Kissimmee+FL+34741',
+        },
       ];
+  const heroBannerImages = heroSlides.map(s => s.image);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const slideTimerRef = useRef(null);
+  const [ministries, setMinistries] = useState([]);
+  const [pastors, setPastors] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const testimonialTimerRef = useRef(null);
 
-  // Video modal state
-  const [videoModalOpen, setVideoModalOpen] = useState(false);
-  const [latestVideo, setLatestVideo] = useState(null);
-  const [loadingVideo, setLoadingVideo] = useState(false);
-
-  // Add scroll effect for header
   useEffect(() => {
     const handleScroll = () => {
       const header = document.getElementById('appBar');
@@ -156,837 +193,1285 @@ const ProfessionalHomePage = () => {
         }
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
-    if (heroBannerImages.length <= 1) return undefined;
+    if (heroSlides.length <= 1) return undefined;
+    slideTimerRef.current = window.setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentBannerIndex((prev) => (prev + 1) % heroSlides.length);
+        setIsTransitioning(false);
+      }, 200);
+    }, 4000);
+    return () => window.clearInterval(slideTimerRef.current);
+  }, [heroSlides.length]);
 
-    const intervalId = window.setInterval(() => {
-      setCurrentBannerIndex((prev) => (prev + 1) % heroBannerImages.length);
-    }, 5000);
-
-    return () => window.clearInterval(intervalId);
-  }, [heroBannerImages.length]);
-
-  // YouTube API Configuration
-  const YOUTUBE_API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY || 'YOUR_YOUTUBE_API_KEY';
-  const CHANNEL_ID = process.env.REACT_APP_YOUTUBE_CHANNEL_ID || 'YOUR_YOUTUBE_CHANNEL_ID';
-
-  // Function to fetch latest video from YouTube
-  const fetchLatestVideo = async () => {
-    if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'YOUR_YOUTUBE_API_KEY') {
-      console.warn('YouTube API key not configured');
-      return null;
+  const goToSlide = useCallback((index) => {
+    window.clearInterval(slideTimerRef.current);
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentBannerIndex(index);
+      setIsTransitioning(false);
+    }, 150);
+    if (heroSlides.length > 1) {
+      slideTimerRef.current = window.setInterval(() => {
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setCurrentBannerIndex((prev) => (prev + 1) % heroSlides.length);
+          setIsTransitioning(false);
+        }, 200);
+      }, 4000);
     }
+  }, [heroSlides.length]);
 
-    if (!CHANNEL_ID || CHANNEL_ID === 'YOUR_YOUTUBE_CHANNEL_ID') {
-      console.warn('YouTube channel ID not configured');
-      return null;
-    }
+  const goToPrev = useCallback(() => {
+    goToSlide((currentBannerIndex - 1 + heroSlides.length) % heroSlides.length);
+  }, [currentBannerIndex, heroSlides.length, goToSlide]);
 
-    try {
-      const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=1&type=video`
-      );
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+  const goToNext = useCallback(() => {
+    goToSlide((currentBannerIndex + 1) % heroSlides.length);
+  }, [currentBannerIndex, heroSlides.length, goToSlide]);
 
-      if (data.items && data.items.length > 0) {
-        const video = data.items[0];
-        return {
-          id: video.id.videoId,
-          title: video.snippet.title,
-          description: video.snippet.description,
-          thumbnail: video.snippet.thumbnails.high.url,
-          videoUrl: `https://www.youtube.com/embed/${video.id.videoId}`
-        };
-      }
-      return null;
-    } catch (error) {
-      console.error('Error fetching latest video:', error);
-      return null;
-    }
-  };
+  useEffect(() => {
+    CMS_API.fetchMinistries().then(data => {
+      if (data && data.length > 0) setMinistries(data.slice(0, 6));
+    }).catch(() => {});
+    CMS_API.fetchPastors().then(data => {
+      if (data && data.length > 0) setPastors(data);
+    }).catch(() => {});
+    CMS_API.fetchTestimonials().then(data => {
+      if (data && data.length > 0) setTestimonials(data);
+    }).catch(() => {});
+  }, []);
 
-  // Handle Watch Live button click
-  const handleWatchLive = async () => {
-    setLoadingVideo(true);
-    try {
-      const video = await fetchLatestVideo();
-      if (video) {
-        setLatestVideo(video);
-        setVideoModalOpen(true);
-      } else {
-        // Fallback to sermons page if no video found
-        window.open('/sermons', '_blank');
-      }
-    } catch (error) {
-      console.error('Error loading video:', error);
-      // Fallback to sermons page
-      window.open('/sermons', '_blank');
-    } finally {
-      setLoadingVideo(false);
-    }
-  };
+  useEffect(() => {
+    if (testimonials.length <= 1) return;
+    testimonialTimerRef.current = setInterval(() => {
+      setCurrentTestimonial(prev => (prev + 1) % testimonials.length);
+    }, 6000);
+    return () => clearInterval(testimonialTimerRef.current);
+  }, [testimonials.length]);
 
-  // Close video modal
-  const handleCloseVideoModal = () => {
-    setVideoModalOpen(false);
-  };
+  const handleNextTestimonial = useCallback(() => {
+    clearInterval(testimonialTimerRef.current);
+    setCurrentTestimonial(prev => (prev + 1) % testimonials.length);
+  }, [testimonials.length]);
 
-  // Get CMS features or fall back to hardcoded defaults
-  const getFeatures = () => {
-    const cmsFeatures = content.features;
-    if (cmsFeatures && cmsFeatures.length > 0) {
-      return cmsFeatures.map((f, i) => {
-        const icons = [<GroupsIcon />, <VolunteerIcon />, <SchoolIcon />];
-        const defaultColors = ['#1a365d', '#2c5282', '#c9a84c'];
-        return {
-          icon: icons[i % icons.length],
-          title: f.title,
-          description: f.description,
-          image: f.image || null,
-          color: f.color && /^#/.test(f.color) ? f.color : defaultColors[i % defaultColors.length],
-        };
-      });
-    }
-    return [
-      {
-        icon: <GroupsIcon />,
-        title: t('home.communityLife.title') || 'Community Life',
-        description: t('home.communityLife.description') || 'Join our warm and welcoming church family where everyone belongs and grows together in faith.',
-        color: '#1a365d'
-      },
-      {
-        icon: <VolunteerIcon />,
-        title: t('home.serviceAndSupport.title') || 'Service & Support',
-        description: t('home.serviceAndSupport.volunteerPrograms') || 'Make a difference through our various outreach programs and volunteer opportunities.',
-        color: '#2c5282'
-      },
-      {
-        icon: <SchoolIcon />,
-        title: t('home.spiritualGrowth.title') || 'Spiritual Growth',
-        description: t('home.spiritualGrowth.description') || 'Deepen your faith through biblical teaching, discipleship, and spiritual development programs.',
-        color: '#c9a84c'
-      }
-    ];
-  };
+  const handlePrevTestimonial = useCallback(() => {
+    clearInterval(testimonialTimerRef.current);
+    setCurrentTestimonial(prev => (prev - 1 + testimonials.length) % testimonials.length);
+  }, [testimonials.length]);
 
-  const features = getFeatures();
+  const pastor = pastors[0] || null;
+  const serviceTimesCards = content.serviceTimesCards || [];
+  const defaultMinistries = pageDefaults.ministries?.ministries || [];
+  const ministeriesFromApi = ministries.length > 0
+    ? ministries.map((m, i) => {
+        const fallback = defaultMinistries[i] || defaultMinistries.find(d => d.title === m.name || d.id === m.id) || {};
+        return { ...fallback, ...m, image: m.imageUrl || m.image || fallback.image || fallback.imageUrl };
+      })
+    : defaultMinistries;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Box component="main" sx={{ flex: 1 }}>
-        {/* Hero Section - PRESERVING EXISTING SLIDESHOW */}
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 1: HERO SLIDESHOW
+        ═══════════════════════════════════════════════════════════════════ */}
         <HeroSection>
-          {heroBannerImages.map((image, index) => (
-            <Box
-              key={image}
-              sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundImage: `url('${image}')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center 20%',
-                backgroundRepeat: 'no-repeat',
-                backgroundAttachment: isMobile ? 'scroll' : 'fixed',
-                opacity: index === currentBannerIndex ? 1 : 0,
-                transition: 'opacity 1.2s ease-in-out',
-                zIndex: 0,
-              }}
-            />
-          ))}
-          <Container maxWidth="md">
-            <Fade in timeout={1000}>
+          {heroSlides.map((slide, index) => {
+            const isActive = index === currentBannerIndex;
+            const animation = kenBurnsEffects[index % kenBurnsEffects.length];
+            return (
+              <Box
+                key={slide.image + index}
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  opacity: isActive ? 1 : 0,
+                  transition: 'opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                  zIndex: isActive ? 1 : 0,
+                  pointerEvents: isActive ? 'auto' : 'none',
+                }}
+              >
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    inset: '-5%',
+                    backgroundImage: `url('${slide.image}')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center 20%',
+                    backgroundRepeat: 'no-repeat',
+                    ...(isActive ? {
+                      animation: `${animation} 8s ease-in-out forwards`,
+                    } : {}),
+                  }}
+                />
+              </Box>
+            );
+          })}
+          <Box sx={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(180deg, rgba(15,36,64,0.7) 0%, rgba(15,36,64,0.45) 40%, rgba(15,36,64,0.75) 100%)',
+            zIndex: 2,
+          }} />
+          <Box sx={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '140px',
+            background: `linear-gradient(to top, ${theme.palette.background.default} 0%, transparent 100%)`,
+            zIndex: 4,
+            pointerEvents: 'none',
+          }} />
+          <Container maxWidth="md" sx={{ position: 'relative', zIndex: 5, pt: 8 }}>
+            <Fade in={!isTransitioning} timeout={600}>
               <Box>
                 <Typography
-                  variant={isMobile ? 'h3' : 'h2'}
+                  variant="body1"
+                  sx={{
+                    fontWeight: 500,
+                    fontSize: { xs: '0.85rem', md: '1rem' },
+                    letterSpacing: '4px',
+                    textTransform: 'uppercase',
+                    color: 'rgba(255,255,255,0.7)',
+                    mb: 2,
+                  }}
+                >
+                  {content.hero?.welcome || t('home.welcome')}
+                </Typography>
+                <Typography
+                  variant="h1"
                   component="h1"
-                  gutterBottom
                   sx={{
                     fontFamily: '"Playfair Display", serif',
                     fontWeight: 700,
                     color: '#fff',
-                    textTransform: 'none',
-                    letterSpacing: '1px',
-                    mb: 2,
-                    textShadow: '0px 2px 4px rgba(0, 0, 0, 0.3)',
-                    [theme.breakpoints.up('md')]: {
-                      fontSize: '4rem',
-                      lineHeight: 1.1,
-                      letterSpacing: '1.5px',
-                      fontWeight: 600
-                    },
-                    '& span': {
-                      display: 'block',
-                      '&:first-child': {
-                        fontSize: '0.8em',
-                        fontWeight: 400,
-                        letterSpacing: '3px',
-                        marginBottom: theme.spacing(1)
-                      },
-                      '&:last-child': {
-                        fontSize: '0.6em',
-                        fontWeight: 300,
-                        letterSpacing: '2px',
-                        marginTop: theme.spacing(1)
-                      }
-                    }
+                    fontSize: { xs: '2.5rem', sm: '3.2rem', md: '4.2rem', lg: '5rem' },
+                    lineHeight: 1.1,
+                    mb: 3,
+                    textShadow: '0px 2px 8px rgba(0,0,0,0.3)',
                   }}
                 >
-                  <span>{content.hero?.welcome || t('home.welcome')}</span>
-                  {content.hero?.title || 'First Haitian Baptist Church of Kissimmee'}
-                  <span>{content.hero?.subtitle || t('home.welcomeSubtitle')}</span>
+                  {heroSlides[currentBannerIndex]?.title || content.hero?.title || 'First Haitian Baptist Church of Kissimmee'}
                 </Typography>
                 <Typography
-                  variant={isMobile ? 'h6' : 'h5'}
-                  component="h2"
-                  gutterBottom
+                  variant="h5"
+                  component="p"
                   sx={{
                     fontWeight: 400,
-                    color: '#fff',
-                    maxWidth: '800px',
-                    mb: 4,
-                    [theme.breakpoints.up('md')]: {
-                      fontSize: '1.5rem',
-                      lineHeight: 1.6
-                    }
+                    color: 'rgba(255,255,255,0.85)',
+                    maxWidth: '680px',
+                    mx: 'auto',
+                    mb: 5,
+                    lineHeight: 1.7,
+                    fontSize: { xs: '1rem', md: '1.2rem' },
                   }}
                 >
-                  {t('home.welcomeSubtitle')}
+                  {heroSlides[currentBannerIndex]?.subtitle || content.hero?.subtitle || t('home.welcomeSubtitle')}
                 </Typography>
-                
-                <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <Button
-                    variant="outlined"
-                    color="inherit"
-                    size="large"
-                    component={RouterLink}
-                    to="/contact"
-                    sx={{
-                      px: 4,
-                      py: 1.5,
-                      fontSize: isMobile ? '1rem' : '1.1rem',
-                      borderWidth: 2,
-                      borderRadius: '50px',
-                      transition: 'all 0.3s ease-in-out',
-                      transform: 'translateY(0)',
-                      '&:hover': {
-                        borderWidth: 2,
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
-                      },
-                      '&:active': {
-                        transform: 'translateY(0)',
-                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-                      },
-                      '&:focus': {
-                        outline: 'none',
-                        boxShadow: '0 0 0 3px rgba(255, 255, 255, 0.3)'
-                      }
-                    }}
-                  >
-                    {t('home.joinUs')}
-                  </Button>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={2}
+                  justifyContent="center"
+                  sx={{ mb: 6 }}
+                >
                   <Button
                     variant="contained"
                     size="large"
-                    onClick={handleWatchLive}
-                    disabled={loadingVideo}
+                    component={RouterLink}
+                    to={heroSlides[currentBannerIndex]?.buttonLink || '/contact'}
+                    endIcon={<ArrowForwardIcon />}
                     sx={{
-                      px: 4,
-                      py: 1.5,
-                      fontSize: isMobile ? '1rem' : '1.1rem',
-                      borderRadius: '50px',
-                      background: 'linear-gradient(135deg, #c9a84c, #f4e4bc)',
-                      color: '#1a365d',
+                      px: 5,
+                      py: 1.8,
+                      fontSize: '1.05rem',
+                      borderRadius: '60px',
+                      bgcolor: '#c9a84c',
+                      color: '#0f2440',
                       fontWeight: 700,
+                      boxShadow: '0 8px 32px rgba(201, 168, 76, 0.4)',
                       '&:hover': {
-                        background: 'linear-gradient(135deg, #f4e4bc, #c9a84c)',
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 8px 25px rgba(201, 168, 76, 0.4)'
+                        bgcolor: '#dbb95c',
+                        transform: 'translateY(-3px)',
+                        boxShadow: '0 12px 40px rgba(201, 168, 76, 0.5)',
                       },
-                      '&:active': {
-                        transform: 'translateY(0)',
-                        boxShadow: 'none'
-                      },
-                      transition: 'all 0.3s ease-in-out',
-                      transform: 'translateY(0)'
                     }}
                   >
-                    {loadingVideo ? t('home.watchLiveLoading', 'Loading...') : t('home.watchLive')}
+                    {heroSlides[currentBannerIndex]?.buttonText || 'Plan Your Visit'}
                   </Button>
-                </Box>
+                  {heroSlides[currentBannerIndex]?.secondaryText && (
+                    <Button
+                      variant="outlined"
+                      size="large"
+                      component={RouterLink}
+                      to={heroSlides[currentBannerIndex]?.secondaryLink || '/sermons'}
+                      startIcon={<PlayArrow />}
+                      sx={{
+                        px: 5,
+                        py: 1.8,
+                        fontSize: '1.05rem',
+                        borderRadius: '60px',
+                        borderWidth: 2,
+                        borderColor: 'rgba(255,255,255,0.4)',
+                        color: '#fff',
+                        fontWeight: 600,
+                        '&:hover': {
+                          borderWidth: 2,
+                          borderColor: '#fff',
+                          bgcolor: 'rgba(255,255,255,0.1)',
+                          transform: 'translateY(-3px)',
+                        },
+                      }}
+                    >
+                      {heroSlides[currentBannerIndex]?.secondaryText}
+                    </Button>
+                  )}
+                </Stack>
               </Box>
             </Fade>
           </Container>
+
+          {heroSlides.length > 1 && (
+            <>
+              <IconButton
+                onClick={goToPrev}
+                aria-label="Previous slide"
+                sx={{
+                  position: 'absolute',
+                  left: { xs: 12, md: 30 },
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 6,
+                  color: '#fff',
+                  bgcolor: 'rgba(255,255,255,0.1)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  width: { xs: 40, md: 50 },
+                  height: { xs: 40, md: 50 },
+                  '&:hover': {
+                    bgcolor: 'rgba(255,255,255,0.25)',
+                    transform: 'translateY(-50%) scale(1.1)',
+                  },
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                <ChevronLeft />
+              </IconButton>
+              <IconButton
+                onClick={goToNext}
+                aria-label="Next slide"
+                sx={{
+                  position: 'absolute',
+                  right: { xs: 12, md: 30 },
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 6,
+                  color: '#fff',
+                  bgcolor: 'rgba(255,255,255,0.1)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  width: { xs: 40, md: 50 },
+                  height: { xs: 40, md: 50 },
+                  '&:hover': {
+                    bgcolor: 'rgba(255,255,255,0.25)',
+                    transform: 'translateY(-50%) scale(1.1)',
+                  },
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                <ChevronRight />
+              </IconButton>
+
+              <Box sx={{
+                position: 'absolute',
+                bottom: { xs: 40, md: 50 },
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1.5,
+                zIndex: 6,
+              }}>
+                {heroSlides.map((_, idx) => (
+                  <Box
+                    key={idx}
+                    onClick={() => goToSlide(idx)}
+                    sx={{
+                      width: idx === currentBannerIndex ? 32 : 10,
+                      height: 10,
+                      borderRadius: 5,
+                      bgcolor: idx === currentBannerIndex ? '#c9a84c' : 'rgba(255,255,255,0.4)',
+                      cursor: 'pointer',
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      '&:hover': {
+                        bgcolor: idx === currentBannerIndex ? '#dbb95c' : 'rgba(255,255,255,0.7)',
+                      },
+                    }}
+                  >
+                    {idx === currentBannerIndex && (
+                      <Box sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        bgcolor: '#fff',
+                        opacity: 0.4,
+                        animation: `${progressBar} 4s linear forwards`,
+                      }} />
+                    )}
+                  </Box>
+                ))}
+              </Box>
+
+              <Box sx={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: 3,
+                bgcolor: 'rgba(255,255,255,0.1)',
+                zIndex: 6,
+              }}>
+                <Box key={currentBannerIndex} sx={{
+                  height: '100%',
+                  bgcolor: '#c9a84c',
+                  animation: `${progressBar} 4s linear forwards`,
+                  borderRadius: '0 2px 2px 0',
+                }} />
+              </Box>
+            </>
+          )}
+
+          <Box sx={{
+            position: 'absolute',
+            bottom: -60,
+            left: '50%',
+            animation: `${scrollBounce} 2s ease-in-out infinite`,
+            zIndex: 5,
+          }}>
+            <IconButton
+              sx={{
+                color: 'rgba(26,54,93,0.4)',
+                bgcolor: 'rgba(255,255,255,0.8)',
+                backdropFilter: 'blur(4px)',
+                '&:hover': { bgcolor: 'rgba(255,255,255,1)', color: 'primary.main' },
+              }}
+              aria-label="Scroll down"
+            >
+              <KeyboardArrowDownIcon />
+            </IconButton>
+          </Box>
         </HeroSection>
 
-        {/* Service Times Bar */}
-        <Box
-          sx={{
-            bgcolor: 'primary.dark',
-            py: { xs: 2.5, md: 3 },
-            borderBottom: '3px solid',
-            borderColor: 'secondary.main',
-            position: 'relative',
-            zIndex: 3,
-          }}
-        >
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 2: WELCOME
+        ═══════════════════════════════════════════════════════════════════ */}
+        <Section sx={{ bgcolor: 'background.default', pt: { xs: 10, md: 12 } }}>
           <Container maxWidth="lg">
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              spacing={{ xs: 2, sm: 4, md: 6 }}
-              justifyContent="center"
-              alignItems="center"
-              divider={!isMobile ? <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.15)' }} /> : undefined}
-            >
-              <Stack direction="row" spacing={1.5} alignItems="center">
-                <Box sx={{ color: 'secondary.main', display: 'flex' }}>
-                  <CalendarToday sx={{ fontSize: '1.3rem' }} />
-                </Box>
-                <Box>
-                  <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
-                    Sunday Worship
-                  </Typography>
-                  <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: '1.05rem' }}>
-                    {content.serviceTimes?.sunday || '9:00 AM & 11:00 AM'}
-                  </Typography>
-                </Box>
-              </Stack>
-              <Stack direction="row" spacing={1.5} alignItems="center">
-                <Box sx={{ color: 'secondary.main', display: 'flex' }}>
-                  <ScheduleIcon sx={{ fontSize: '1.3rem' }} />
-                </Box>
-                <Box>
-                  <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
-                    Wednesday Service
-                  </Typography>
-                  <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: '1.05rem' }}>
-                    {content.serviceTimes?.wednesday || '7:00 PM'}
-                  </Typography>
-                </Box>
-              </Stack>
-              <Stack direction="row" spacing={1.5} alignItems="center">
-                <Box sx={{ color: 'secondary.main', display: 'flex' }}>
-                  <LocationOn sx={{ fontSize: '1.3rem' }} />
-                </Box>
-                <Box>
-                  <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
-                    Location
-                  </Typography>
-                  <Typography sx={{ color: '#fff', fontWeight: 600, fontSize: '0.95rem' }}>
-                    {content.serviceTimes?.location || 'Kissimmee, FL'}
-                  </Typography>
-                </Box>
-              </Stack>
-            </Stack>
-          </Container>
-        </Box>
-
-        {/* Features Section */}
-        <Section sx={{
-          position: 'relative', bgcolor: 'background.paper', overflow: 'hidden',
-          ...(content.communitySection?.image ? {
-            '&::before': {
-              content: '""',
-              position: 'absolute', inset: 0,
-              backgroundImage: `url(${content.communitySection.image})`,
-              backgroundSize: 'cover', backgroundPosition: 'center',
-              opacity: 0.1,
-            }
-          } : {})
-        }}>
-          <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-            <ScrollReveal>
-              <Box textAlign="center" mb={4}>
-                <Typography
-                  variant="h3"
-                  component="h2"
-                  gutterBottom
-                  sx={{
-                    fontWeight: 700,
-                    mb: 2,
-                    color: 'primary.main',
-                    fontSize: { xs: '2rem', md: '2.5rem' },
-                  }}
-                >
-                  {content.communitySection?.title || t('home.ourCommunity') || 'Welcome to Our Church Family'}
-                </Typography>
-                <Typography
-                  sx={{
-                    color: 'text.secondary',
-                    maxWidth: '800px',
-                    mx: 'auto',
-                    lineHeight: 1.6,
-                    mb: 2,
-                    fontSize: '1.1rem',
-                  }}
-                >
-                  {content.communitySection?.description || t('home.communityDescription') || 'We are a diverse community of believers committed to worshiping God, growing together in faith, and serving others with love and compassion.'}
-                </Typography>
-              </Box>
-            </ScrollReveal>
-
-            <Grid container spacing={3}>
-              {features.map((feature, index) => (
-                <Grid item xs={12} md={4} key={index}>
-                  <Slide direction="up" in timeout={800 + index * 200}>
-                    <FeatureCard index={index} elevation={6}>
-                      {feature.image ? (
-                        <Box sx={{
-                          height: 260,
-                          backgroundImage: `url(${feature.image})`,
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                          mx: -4,
-                          mt: -4,
-                          mb: 3,
-                        }} />
-                      ) : (
-                        <Box className="feature-icon" sx={{ 
-                          display: 'flex', 
-                          justifyContent: 'center', 
-                          mb: 3,
-                          transition: 'transform 0.3s ease',
-                        }}>
-                          <Avatar
-                            sx={{
-                              width: 80,
-                              height: 80,
-                              backgroundColor: alpha(feature.color, 0.1),
-                              color: feature.color,
-                            }}
-                          >
-                            {feature.icon}
-                          </Avatar>
-                        </Box>
-                      )}
-                      <Typography variant="h5" sx={{ 
-                        fontWeight: 600, 
-                        mb: 2, 
-                        textAlign: 'center',
-                        color: '#1a365d' 
+            <Grid container spacing={6} alignItems="center">
+              <Grid item xs={12} md={6}>
+                <ScrollReveal>
+                  <Box>
+                    <Chip
+                      label="About Us"
+                      sx={{
+                        mb: 2,
+                        bgcolor: alpha('#c9a84c', 0.1),
+                        color: '#c9a84c',
+                        fontWeight: 600,
+                        fontSize: '0.75rem',
+                        letterSpacing: '1px',
+                        textTransform: 'uppercase',
+                      }}
+                    />
+                    <Typography
+                      variant="h2"
+                      sx={{
+                        fontWeight: 700,
+                        mb: 3,
+                        fontSize: { xs: '2rem', md: '2.8rem' },
+                        lineHeight: 1.15,
+                      }}
+                    >
+                      {content.welcome?.title || 'A Place to Call Home'}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        color: 'text.secondary',
+                        lineHeight: 1.8,
+                        mb: 3,
+                        fontSize: '1.1rem',
+                      }}
+                    >
+                      {content.welcome?.description || 'First Haitian Baptist Church of Kissimmee is a Christ-centered community where faith comes alive. We are a diverse, multicultural congregation united by God\'s love.'}
+                    </Typography>
+                    {content.welcome?.mission && (
+                      <Box sx={{
+                        pl: 3,
+                        borderLeft: '4px solid #c9a84c',
+                        mb: 4,
                       }}>
-                        {feature.title}
-                      </Typography>
-                      <Typography 
-                        variant="body1" 
-                        color="text.secondary" 
-                        sx={{ 
-                          textAlign: 'center',
-                          lineHeight: 1.7,
-                          mb: 3
-                        }}
-                      >
-                        {feature.description}
-                      </Typography>
-                      <Box sx={{ textAlign: 'center' }}>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          component={RouterLink}
-                          to="/about"
-                          endIcon={<ArrowForwardIcon />}
+                        <Typography
+                          variant="body1"
                           sx={{
-                            borderColor: feature.color,
-                            color: feature.color,
-                            textTransform: 'none',
-                            fontWeight: 600,
-                            '&:hover': {
-                              backgroundColor: feature.color,
-                              color: 'white',
-                            },
+                            fontStyle: 'italic',
+                            color: 'text.primary',
+                            fontWeight: 500,
+                            lineHeight: 1.7,
                           }}
                         >
-                          {t('learnMore', 'Learn More')}
-                        </Button>
+                          {content.welcome.mission}
+                        </Typography>
                       </Box>
-                    </FeatureCard>
-                  </Slide>
-                </Grid>
-              ))}
+                    )}
+                    <Button
+                      variant="contained"
+                      component={RouterLink}
+                      to={content.welcome?.buttonLink || '/about'}
+                      endIcon={<ArrowForwardIcon />}
+                      sx={{
+                        px: 4,
+                        py: 1.5,
+                        borderRadius: '50px',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {content.welcome?.buttonText || 'Learn More About Us'}
+                    </Button>
+                  </Box>
+                </ScrollReveal>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ScrollReveal direction="right" delay={0.2}>
+                  <Box sx={{
+                    borderRadius: 4,
+                    overflow: 'hidden',
+                    boxShadow: '0 20px 60px -15px rgba(26, 54, 93, 0.2)',
+                    position: 'relative',
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      bottom: -20,
+                      right: -20,
+                      width: '60%',
+                      height: '60%',
+                      border: '3px solid',
+                      borderColor: 'secondary.main',
+                      borderRadius: 4,
+                      opacity: 0.3,
+                      zIndex: -1,
+                    },
+                  }}>
+                    <Box
+                      component="img"
+                      src={content.welcome?.image || '/images/banner/church-building-new.png'}
+                      alt="FHBCK Church"
+                      sx={{
+                        width: '100%',
+                        height: { xs: 300, md: 420 },
+                        objectFit: 'cover',
+                        display: 'block',
+                      }}
+                    />
+                  </Box>
+                </ScrollReveal>
+              </Grid>
             </Grid>
           </Container>
         </Section>
 
-        {/* Upcoming Events - PRESERVING EXISTING COMPONENT */}
-        <Box sx={{
-          bgcolor: 'background.paper', py: 2, position: 'relative', overflow: 'hidden',
-          ...(content.upcomingGatherings?.image ? {
-            '&::before': {
-              content: '""',
-              position: 'absolute', inset: 0,
-              backgroundImage: `url(${content.upcomingGatherings.image})`,
-              backgroundSize: 'cover', backgroundPosition: 'center',
-              opacity: 0.1,
-            }
-          } : {})
-        }}>
-          <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 3: SERVICE TIMES
+        ═══════════════════════════════════════════════════════════════════ */}
+        <Section sx={{ bgcolor: 'background.default' }}>
+          <Container maxWidth="lg">
             <ScrollReveal>
-              <Box textAlign="center" mb={2}>
-                <Typography
-                  variant="h3"
-                  component="h2"
-                  gutterBottom
+              <Box textAlign="center" mb={6}>
+                <Chip
+                  label="Join Us"
                   sx={{
-                    fontWeight: 700,
-                    mb: 1,
-                    color: 'primary.main',
-                    fontSize: { xs: '1.5rem', md: '2rem' },
+                    mb: 2,
+                    bgcolor: alpha('#1a365d', 0.08),
+                    color: 'text.primary',
+                    fontWeight: 600,
+                    fontSize: '0.75rem',
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
                   }}
-                >
-                  {content.upcomingGatherings?.title || t('upcomingGatherings', 'Join us for our upcoming gatherings and activities')}
+                />
+                <Typography variant="h2" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '2rem', md: '2.8rem' } }}>
+                  Service Times
                 </Typography>
-                <Typography
-                  sx={{
-                    color: 'text.secondary',
-                    maxWidth: '800px',
-                    mx: 'auto',
-                    lineHeight: 1.6,
-                    mb: 1,
-                    fontSize: '1.1rem',
-                  }}
-                >
-                  {content.upcomingGatherings?.subtitle || t('upcomingGatheringsSubtitle', 'Discover our ministries, fellowship opportunities, and community activities designed to help you grow in faith and connect with others.')}
+                <Typography variant="body1" sx={{ color: 'text.secondary', maxWidth: 600, mx: 'auto', lineHeight: 1.7 }}>
+                  We have a variety of services and programs designed to help you connect with God and grow in your faith.
                 </Typography>
               </Box>
             </ScrollReveal>
-
-            <EventBoxes />
-
-            <Box textAlign="center" mt={2}>
+            <Grid container spacing={3}>
+              {serviceTimesCards.map((card, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <ScrollReveal delay={index * 0.1}>
+                    <ServiceCard>
+                      <Box sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: '4px',
+                        bgcolor: card.color || '#1a365d',
+                      }} />
+                      <CardContent sx={{ p: 4, pt: 5 }}>
+                        <Box
+                          className="service-icon"
+                          sx={{
+                            width: 56,
+                            height: 56,
+                            borderRadius: '16px',
+                            bgcolor: alpha(card.color || '#1a365d', 0.1),
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            mb: 3,
+                            transition: 'transform 0.3s ease',
+                            '& .MuiSvgIcon-root': {
+                              color: card.color || '#1a365d',
+                              fontSize: '1.6rem',
+                            },
+                          }}
+                        >
+                          {iconMap[card.icon] || <ChurchIcon />}
+                        </Box>
+                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, fontSize: '1.15rem' }}>
+                          {card.title}
+                        </Typography>
+                        <Typography variant="body2" sx={{
+                          color: card.color || '#c9a84c',
+                          fontWeight: 700,
+                          fontSize: '0.95rem',
+                          mb: 1.5,
+                        }}>
+                          {card.time}
+                        </Typography>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.7 }}>
+                          {card.description}
+                        </Typography>
+                      </CardContent>
+                    </ServiceCard>
+                  </ScrollReveal>
+                </Grid>
+              ))}
+            </Grid>
+            <Box textAlign="center" mt={5}>
               <Button
                 variant="outlined"
-                color="primary"
-                size="large"
                 component={RouterLink}
                 to="/events"
                 endIcon={<ArrowForwardIcon />}
                 sx={{
                   px: 4,
-                  py: 1.5,
-                  borderRadius: '30px',
+                  py: 1.4,
+                  borderRadius: '50px',
                   textTransform: 'none',
                   fontWeight: 600,
+                  borderColor: 'rgba(26, 54, 93, 0.2)',
                   '&:hover': {
-                    backgroundColor: 'primary.main',
-                    color: 'primary.contrastText',
-                  }
+                    borderColor: 'primary.main',
+                    bgcolor: 'primary.main',
+                    color: '#fff',
+                  },
                 }}
               >
-                {t('viewAllEvents', 'View All Events')}
+                View Full Schedule
               </Button>
             </Box>
           </Container>
-        </Box>
+        </Section>
 
-        {/* Latest News - PRESERVING EXISTING COMPONENT */}
-        <Box sx={{
-          bgcolor: 'background.paper', py: 2, position: 'relative', overflow: 'hidden',
-          ...(content.latestNews?.image ? {
-            '&::before': {
-              content: '""',
-              position: 'absolute', inset: 0,
-              backgroundImage: `url(${content.latestNews.image})`,
-              backgroundSize: 'cover', backgroundPosition: 'center',
-              opacity: 0.1,
-            }
-          } : {})
-        }}>
-          <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 4: MINISTRIES
+        ═══════════════════════════════════════════════════════════════════ */}
+        <Section sx={{ bgcolor: 'background.paper' }}>
+          <Container maxWidth="lg">
             <ScrollReveal>
-              <Box textAlign="center" mb={2}>
-                <Typography
-                  variant="h3"
-                  component="h2"
-                  gutterBottom
+              <Box textAlign="center" mb={6}>
+                <Chip
+                  label="Our Ministries"
                   sx={{
+                    mb: 2,
+                    bgcolor: alpha('#c9a84c', 0.1),
+                    color: '#c9a84c',
+                    fontWeight: 600,
+                    fontSize: '0.75rem',
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
+                  }}
+                />
+                <Typography variant="h2" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '2rem', md: '2.8rem' } }}>
+                  Get Involved
+                </Typography>
+                <Typography variant="body1" sx={{ color: 'text.secondary', maxWidth: 600, mx: 'auto', lineHeight: 1.7 }}>
+                  Discover a ministry that fits your passion and gifts. There's a place for everyone at FHBCK.
+                </Typography>
+              </Box>
+            </ScrollReveal>
+            <Grid container spacing={3}>
+              {ministeriesFromApi.map((ministry, index) => (
+                <Grid item xs={12} sm={6} md={4} key={ministry.id || index}>
+                  <ScrollReveal delay={index * 0.1}>
+                    <Card sx={{
+                      height: '100%',
+                      overflow: 'hidden',
+                      borderRadius: 4,
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      '&:hover': {
+                        transform: 'translateY(-8px)',
+                        boxShadow: '0 20px 40px -12px rgba(26, 54, 93, 0.18)',
+                        '& .ministry-img': {
+                          transform: 'scale(1.08)',
+                        },
+                      },
+                    }}>
+                      <Box sx={{ position: 'relative', height: 200, overflow: 'hidden' }}>
+                        <Box
+                          className="ministry-img"
+                          sx={{
+                            width: '100%',
+                            height: '100%',
+                            backgroundImage: `url(${ministry.imageUrl || ministry.image})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                          }}
+                        />
+                        <Box sx={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(to top, rgba(15,36,64,0.7) 0%, transparent 60%)',
+                        }} />
+                        <Typography sx={{
+                          position: 'absolute',
+                          bottom: 16,
+                          left: 20,
+                          right: 20,
+                          color: '#fff',
+                          fontWeight: 700,
+                          fontSize: '1.15rem',
+                          fontFamily: '"Playfair Display", serif',
+                        }}>
+                          {ministry.name || ministry.title}
+                        </Typography>
+                      </Box>
+                      <CardContent sx={{ p: 3 }}>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.7, mb: 2, minHeight: 48 }}>
+                          {ministry.tagline || ministry.description || ''}
+                        </Typography>
+                        <Button
+                          component={RouterLink}
+                          to={`/${slugToPageKey[ministry.slug] || ministry.slug || ministry.link || 'ministries'}`}
+                          size="small"
+                          endIcon={<ArrowForwardIcon sx={{ fontSize: '0.85rem' }} />}
+                          sx={{
+                            textTransform: 'none',
+                            fontWeight: 600,
+                            color: 'primary.main',
+                            p: 0,
+                            '&:hover': { bgcolor: 'transparent', color: 'secondary.main' },
+                          }}
+                        >
+                          Learn More
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </ScrollReveal>
+                </Grid>
+              ))}
+            </Grid>
+            <Box textAlign="center" mt={5}>
+              <Button
+                variant="outlined"
+                component={RouterLink}
+                to="/ministries"
+                endIcon={<ArrowForwardIcon />}
+                sx={{
+                  px: 4,
+                  py: 1.4,
+                  borderRadius: '50px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  borderColor: 'rgba(26, 54, 93, 0.2)',
+                  '&:hover': {
+                    borderColor: 'primary.main',
+                    bgcolor: 'primary.main',
+                    color: '#fff',
+                  },
+                }}
+              >
+                View All Ministries
+              </Button>
+            </Box>
+          </Container>
+        </Section>
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 5: UPCOMING EVENTS
+        ═══════════════════════════════════════════════════════════════════ */}
+        <Section sx={{ bgcolor: 'background.default' }}>
+          <Container maxWidth="lg">
+            <ScrollReveal>
+              <Box textAlign="center" mb={5}>
+                <Chip
+                  label="Events"
+                  sx={{
+                    mb: 2,
+                    bgcolor: alpha('#1a365d', 0.08),
+                    color: 'text.primary',
+                    fontWeight: 600,
+                    fontSize: '0.75rem',
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
+                  }}
+                />
+                <Typography variant="h2" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '2rem', md: '2.8rem' } }}>
+                  {content.upcomingGatherings?.title || 'Upcoming Events'}
+                </Typography>
+                <Typography variant="body1" sx={{ color: 'text.secondary', maxWidth: 600, mx: 'auto', lineHeight: 1.7 }}>
+                  {content.upcomingGatherings?.subtitle || 'Join us for our upcoming gatherings and activities.'}
+                </Typography>
+              </Box>
+            </ScrollReveal>
+            <EventBoxes />
+            <Box textAlign="center" mt={4}>
+              <Button
+                variant="outlined"
+                component={RouterLink}
+                to="/events"
+                endIcon={<ArrowForwardIcon />}
+                sx={{
+                  px: 4,
+                  py: 1.4,
+                  borderRadius: '50px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  borderColor: 'rgba(26, 54, 93, 0.2)',
+                  '&:hover': {
+                    borderColor: 'primary.main',
+                    bgcolor: 'primary.main',
+                    color: '#fff',
+                  },
+                }}
+              >
+                View All Events
+              </Button>
+            </Box>
+          </Container>
+        </Section>
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 6: LATEST SERMONS
+        ═══════════════════════════════════════════════════════════════════ */}
+        <Section sx={{ bgcolor: 'background.paper' }}>
+          <Container maxWidth="lg">
+            <ScrollReveal>
+              <Box textAlign="center" mb={5}>
+                <Chip
+                  label="Sermons"
+                  sx={{
+                    mb: 2,
+                    bgcolor: alpha('#c9a84c', 0.1),
+                    color: '#c9a84c',
+                    fontWeight: 600,
+                    fontSize: '0.75rem',
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
+                  }}
+                />
+                <Typography variant="h2" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '2rem', md: '2.8rem' } }}>
+                  {content.latestSermons?.title || 'Recent Messages'}
+                </Typography>
+                <Typography variant="body1" sx={{ color: 'text.secondary', maxWidth: 600, mx: 'auto', lineHeight: 1.7 }}>
+                  {content.latestSermons?.subtitle || 'Watch or listen to our latest sermons and be encouraged in your faith journey.'}
+                </Typography>
+              </Box>
+            </ScrollReveal>
+            <ScrollReveal>
+              <LatestSermon />
+            </ScrollReveal>
+            <Box textAlign="center" mt={4}>
+              <Button
+                variant="outlined"
+                component={RouterLink}
+                to="/sermons"
+                endIcon={<ArrowForwardIcon />}
+                sx={{
+                  px: 4,
+                  py: 1.4,
+                  borderRadius: '50px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  borderColor: 'rgba(26, 54, 93, 0.2)',
+                  '&:hover': {
+                    borderColor: 'primary.main',
+                    bgcolor: 'primary.main',
+                    color: '#fff',
+                  },
+                }}
+              >
+                View All Sermons
+              </Button>
+            </Box>
+          </Container>
+        </Section>
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 7: MEET OUR PASTOR
+        ═══════════════════════════════════════════════════════════════════ */}
+        {pastor && (
+          <Section sx={{ bgcolor: 'background.default' }}>
+            <Container maxWidth="lg">
+              <Grid container spacing={6} alignItems="center">
+                <Grid item xs={12} md={5}>
+                  <ScrollReveal>
+                    <Box sx={{
+                      borderRadius: 4,
+                      overflow: 'hidden',
+                      boxShadow: '0 20px 60px -15px rgba(26, 54, 93, 0.2)',
+                      position: 'relative',
+                      '&::after': {
+                        content: '""',
+                        position: 'absolute',
+                        top: -20,
+                        left: -20,
+                        width: '50%',
+                        height: '50%',
+                        border: '3px solid',
+                        borderColor: 'secondary.main',
+                        borderRadius: 4,
+                        opacity: 0.3,
+                        zIndex: -1,
+                      },
+                    }}>
+                      <Box
+                        component="img"
+                        src={pastor.imageUrl || pastor.image || '/images/staff/pastor-fritzner-brouard.jpg'}
+                        alt={pastor.name}
+                        sx={{
+                          width: '100%',
+                          height: { xs: 350, md: 450 },
+                          objectFit: 'cover',
+                          objectPosition: 'top center',
+                          display: 'block',
+                        }}
+                      />
+                    </Box>
+                  </ScrollReveal>
+                </Grid>
+                <Grid item xs={12} md={7}>
+                  <ScrollReveal direction="right" delay={0.2}>
+                    <Box>
+                      <Chip
+                        label="Our Leadership"
+                        sx={{
+                          mb: 2,
+                          bgcolor: alpha('#c9a84c', 0.1),
+                          color: '#c9a84c',
+                          fontWeight: 600,
+                          fontSize: '0.75rem',
+                          letterSpacing: '1px',
+                          textTransform: 'uppercase',
+                        }}
+                      />
+                      <Typography variant="h2" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '2rem', md: '2.8rem' } }}>
+                        {content.meetPastor?.title || 'Meet Our Pastor'}
+                      </Typography>
+                      <Typography variant="h5" sx={{ color: 'secondary.main', fontWeight: 600, mb: 3 }}>
+                        {pastor.title || 'Senior Pastor'}
+                      </Typography>
+                      <Typography variant="h4" sx={{ fontWeight: 600, mb: 2, fontSize: { xs: '1.3rem', md: '1.6rem' } }}>
+                        {pastor.name}
+                      </Typography>
+                      <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.8, mb: 4 }}>
+                        {pastor.bio || content.meetPastor?.subtitle || 'Leading with faith, wisdom, and a heart for God\'s people.'}
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        component={RouterLink}
+                        to="/about"
+                        endIcon={<ArrowForwardIcon />}
+                        sx={{
+                          px: 4,
+                          py: 1.5,
+                          borderRadius: '50px',
+                          fontWeight: 600,
+                        }}
+                      >
+                        Meet Our Leadership
+                      </Button>
+                    </Box>
+                  </ScrollReveal>
+                </Grid>
+              </Grid>
+            </Container>
+          </Section>
+        )}
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 8: PLAN YOUR VISIT
+        ═══════════════════════════════════════════════════════════════════ */}
+        <Section sx={{
+          background: 'linear-gradient(135deg, #0f2440 0%, #1a365d 50%, #2c5282 100%)',
+          color: '#fff',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+          <Box sx={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: 'url(/images/banner/pastor-sermon_1.JPG)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: 0.06,
+            filter: 'saturate(0.5)',
+          }} />
+          <Box sx={{
+            position: 'absolute',
+            top: '-30%',
+            right: '-10%',
+            width: 500,
+            height: 500,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }} />
+          <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
+            <ScrollReveal>
+              <Typography variant="h2" sx={{
+                fontWeight: 700,
+                mb: 3,
+                fontSize: { xs: '2rem', md: '2.8rem' },
+                fontFamily: '"Playfair Display", serif',
+              }}>
+                {content.planYourVisit?.title || 'Plan Your Visit'}
+              </Typography>
+              <Typography variant="body1" sx={{
+                mb: 4,
+                maxWidth: 600,
+                mx: 'auto',
+                lineHeight: 1.8,
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: '1.1rem',
+              }}>
+                {content.planYourVisit?.description || 'We would love to welcome you and your family to our church. Whether this is your first time or you\'re looking for a new church home, we have a place for you.'}
+              </Typography>
+              <Box sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 1,
+                mb: 4,
+                bgcolor: 'rgba(255,255,255,0.1)',
+                px: 3,
+                py: 1.5,
+                borderRadius: '12px',
+                backdropFilter: 'blur(4px)',
+              }}>
+                <LocationOn sx={{ color: 'secondary.main' }} />
+                <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                  {content.planYourVisit?.address || '900 S Thacker Ave, Kissimmee, FL 34741'}
+                </Typography>
+              </Box>
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                spacing={2}
+                justifyContent="center"
+              >
+                <Button
+                  variant="contained"
+                  size="large"
+                  href={content.planYourVisit?.buttonLink || 'https://maps.google.com/?q=900+S+Thacker+Ave+Kissimmee+FL+34741'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={<LocationOn />}
+                  sx={{
+                    px: 4,
+                    py: 1.8,
+                    borderRadius: '50px',
+                    bgcolor: '#c9a84c',
+                    color: '#0f2440',
                     fontWeight: 700,
-                    mb: 1,
-                    color: 'primary.main',
-                    fontSize: { xs: '1.5rem', md: '2rem' },
+                    fontSize: '1rem',
+                    boxShadow: '0 8px 32px rgba(201,168,76,0.4)',
+                    '&:hover': {
+                      bgcolor: '#dbb95c',
+                      transform: 'translateY(-3px)',
+                      boxShadow: '0 12px 40px rgba(201,168,76,0.5)',
+                    },
                   }}
                 >
-                  {content.latestNews?.title || t('home.latestNews', 'Latest News & Updates')}
+                  {content.planYourVisit?.buttonText || 'Get Directions'}
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  component={RouterLink}
+                  to={content.planYourVisit?.contactLink || '/contact'}
+                  startIcon={<Phone />}
+                  sx={{
+                    px: 4,
+                    py: 1.8,
+                    borderRadius: '50px',
+                    borderWidth: 2,
+                    borderColor: 'rgba(255,255,255,0.3)',
+                    color: '#fff',
+                    fontWeight: 600,
+                    fontSize: '1rem',
+                    '&:hover': {
+                      borderWidth: 2,
+                      borderColor: '#fff',
+                      bgcolor: 'rgba(255,255,255,0.1)',
+                      transform: 'translateY(-3px)',
+                    },
+                  }}
+                >
+                  {content.planYourVisit?.contactText || 'Contact Us'}
+                </Button>
+              </Stack>
+            </ScrollReveal>
+          </Container>
+        </Section>
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 9: TESTIMONIALS
+        ═══════════════════════════════════════════════════════════════════ */}
+        {testimonials.length > 0 && (
+          <Section sx={{ bgcolor: 'background.default' }}>
+            <Container maxWidth="md">
+              <ScrollReveal>
+                <Box textAlign="center" mb={5}>
+                  <Chip
+                    label="Testimonials"
+                    sx={{
+                      mb: 2,
+                      bgcolor: alpha('#c9a84c', 0.1),
+                      color: '#c9a84c',
+                      fontWeight: 600,
+                      fontSize: '0.75rem',
+                      letterSpacing: '1px',
+                      textTransform: 'uppercase',
+                    }}
+                  />
+                  <Typography variant="h2" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '2rem', md: '2.8rem' } }}>
+                    {content.testimonials?.title || 'What Our Members Say'}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: 'text.secondary', maxWidth: 500, mx: 'auto', lineHeight: 1.7 }}>
+                    {content.testimonials?.subtitle || 'Hear from the people who call FHBCK home.'}
+                  </Typography>
+                </Box>
+              </ScrollReveal>
+              <Box sx={{ position: 'relative' }}>
+                <Fade in key={currentTestimonial} timeout={500}>
+                  <TestimonialCard>
+                    <FormatQuote sx={{
+                      fontSize: 48,
+                      color: alpha('#c9a84c', 0.2),
+                      position: 'absolute',
+                      top: 16,
+                      left: 20,
+                    }} />
+                    <Typography variant="body1" sx={{
+                      fontStyle: 'italic',
+                      lineHeight: 1.8,
+                      mb: 3,
+                      fontSize: '1.1rem',
+                      color: 'text.primary',
+                      position: 'relative',
+                      zIndex: 1,
+                      pt: 2,
+                    }}>
+                      "{testimonials[currentTestimonial]?.content || testimonials[currentTestimonial]?.text || ''}"
+                    </Typography>
+                    <Box sx={{ mt: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <Avatar sx={{
+                        width: 48,
+                        height: 48,
+                        bgcolor: 'primary.main',
+                        fontWeight: 700,
+                        fontSize: '1.1rem',
+                      }}>
+                        {(testimonials[currentTestimonial]?.name || 'M')[0]}
+                      </Avatar>
+                      <Box>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                          {testimonials[currentTestimonial]?.name || ''}
+                        </Typography>
+                        {testimonials[currentTestimonial]?.title && (
+                          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                            {testimonials[currentTestimonial].title}
+                          </Typography>
+                        )}
+                      </Box>
+                    </Box>
+                  </TestimonialCard>
+                </Fade>
+                {testimonials.length > 1 && (
+                  <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: 1,
+                    mt: 3,
+                  }}>
+                    <IconButton
+                      onClick={handlePrevTestimonial}
+                      size="small"
+                      sx={{
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        '&:hover': { bgcolor: 'primary.main', color: '#fff', borderColor: 'primary.main' },
+                      }}
+                    >
+                      <ChevronLeft fontSize="small" />
+                    </IconButton>
+                    {testimonials.map((_, idx) => (
+                      <Box
+                        key={idx}
+                        onClick={() => { clearInterval(testimonialTimerRef.current); setCurrentTestimonial(idx); }}
+                        sx={{
+                          width: idx === currentTestimonial ? 24 : 8,
+                          height: 8,
+                          borderRadius: 4,
+                          bgcolor: idx === currentTestimonial ? 'primary.main' : 'divider',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                        }}
+                      />
+                    ))}
+                    <IconButton
+                      onClick={handleNextTestimonial}
+                      size="small"
+                      sx={{
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        '&:hover': { bgcolor: 'primary.main', color: '#fff', borderColor: 'primary.main' },
+                      }}
+                    >
+                      <ChevronRight fontSize="small" />
+                    </IconButton>
+                  </Box>
+                )}
+              </Box>
+            </Container>
+          </Section>
+        )}
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 10: GIVE ONLINE
+        ═══════════════════════════════════════════════════════════════════ */}
+        <Section sx={{
+          background: 'linear-gradient(135deg, #1a365d 0%, #0f2440 100%)',
+          color: '#fff',
+          textAlign: 'center',
+        }}>
+          <Container maxWidth="md">
+            <ScrollReveal>
+              <Box sx={{
+                width: 72,
+                height: 72,
+                borderRadius: '50%',
+                bgcolor: alpha('#c9a84c', 0.15),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mx: 'auto',
+                mb: 3,
+              }}>
+                <Favorite sx={{ fontSize: 36, color: '#c9a84c' }} />
+              </Box>
+              <Typography variant="h2" sx={{
+                fontWeight: 700,
+                mb: 3,
+                fontSize: { xs: '2rem', md: '2.8rem' },
+                fontFamily: '"Playfair Display", serif',
+              }}>
+                {content.giveOnline?.title || 'Give Online'}
+              </Typography>
+              <Typography variant="body1" sx={{
+                mb: 4,
+                maxWidth: 550,
+                mx: 'auto',
+                lineHeight: 1.8,
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: '1.1rem',
+              }}>
+                {content.giveOnline?.description || 'Your generous giving supports our ministry and helps us serve our community. Every gift makes a difference.'}
+              </Typography>
+              <Button
+                variant="contained"
+                size="large"
+                component={RouterLink}
+                to={content.giveOnline?.buttonLink || '/giving'}
+                sx={{
+                  px: 6,
+                  py: 2,
+                  borderRadius: '60px',
+                  bgcolor: '#c9a84c',
+                  color: '#0f2440',
+                  fontWeight: 700,
+                  fontSize: '1.1rem',
+                  boxShadow: '0 8px 32px rgba(201,168,76,0.4)',
+                  '&:hover': {
+                    bgcolor: '#dbb95c',
+                    transform: 'translateY(-3px)',
+                    boxShadow: '0 12px 40px rgba(201,168,76,0.5)',
+                  },
+                }}
+              >
+                {content.giveOnline?.buttonText || 'Give Now'}
+              </Button>
+            </ScrollReveal>
+          </Container>
+        </Section>
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 11: NEWS
+        ═══════════════════════════════════════════════════════════════════ */}
+        <Section sx={{ bgcolor: 'background.default' }}>
+          <Container maxWidth="lg">
+            <ScrollReveal>
+              <Box textAlign="center" mb={5}>
+                <Chip
+                  label="News"
+                  sx={{
+                    mb: 2,
+                    bgcolor: alpha('#1a365d', 0.08),
+                    color: 'text.primary',
+                    fontWeight: 600,
+                    fontSize: '0.75rem',
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
+                  }}
+                />
+                <Typography variant="h2" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '2rem', md: '2.8rem' } }}>
+                  {content.latestNews?.title || 'Latest News & Updates'}
                 </Typography>
                 {content.latestNews?.subtitle && (
-                  <Typography
-                    sx={{
-                      color: 'text.secondary',
-                      maxWidth: '800px',
-                      mx: 'auto',
-                      lineHeight: 1.6,
-                      mb: 2,
-                      fontSize: '1.1rem',
-                    }}
-                  >
+                  <Typography variant="body1" sx={{ color: 'text.secondary', maxWidth: 600, mx: 'auto', lineHeight: 1.7 }}>
                     {content.latestNews.subtitle}
                   </Typography>
                 )}
               </Box>
             </ScrollReveal>
             <ScrollReveal>
-              <Box textAlign="center">
-                <NewsSection />
-              </Box>
+              <NewsSection />
             </ScrollReveal>
           </Container>
-        </Box>
-
-        {/* Call to Action */}
-        <Box
-          sx={{
-            py: { xs: 5, md: 6 },
-            background: 'linear-gradient(135deg, #0f2440 0%, #1a365d 50%, #2c5282 100%)',
-            color: 'white',
-            position: 'relative',
-            overflow: 'hidden',
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: 'url(/images/banner/pastor-sermon_1.JPG)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              opacity: 0.08,
-              filter: 'saturate(0.5)',
-            },
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              top: '-50%',
-              right: '-20%',
-              width: '600px',
-              height: '600px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(201, 168, 76, 0.08) 0%, transparent 70%)',
-              pointerEvents: 'none',
-            },
-          }}
-        >
-          <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2 }}>
-            <Slide direction="up" in timeout={1000}>
-              <Box textAlign="center">
-                <Typography
-                  variant="h3"
-                  component="h2"
-                  sx={{
-                    fontWeight: 700,
-                    mb: 2,
-                    fontSize: { xs: '2rem', md: '2.5rem' },
-                    fontFamily: '"Playfair Display", serif',
-                  }}
-                >
-                  {content.cta?.title || t('joinUsThisSunday', 'Join Us This Sunday')}
-                </Typography>
-                <Typography
-                  sx={{
-                    mb: 3,
-                    maxWidth: '600px',
-                    mx: 'auto',
-                    lineHeight: 1.7,
-                    color: 'rgba(255,255,255,0.8)',
-                    fontSize: '1.1rem',
-                  }}
-                >
-                  {content.cta?.description || t('joinUsDescription', 'Experience God\'s presence, connect with our community, and grow in your faith. We\'d love to see you at our worship service!')}
-                </Typography>
-
-                <Stack
-                  direction="row"
-                  spacing={2}
-                  justifyContent="center"
-                  sx={{ mb: 3 }}
-                >
-                  <Chip
-                    icon={<AccessTime sx={{ fontSize: '0.9rem !important' }} />}
-                    label={`Sundays: ${content.serviceTimes?.sunday || '9:00 AM & 11:00 AM'}`}
-                    sx={{
-                      bgcolor: 'rgba(255,255,255,0.1)',
-                      color: 'rgba(255,255,255,0.9)',
-                      fontWeight: 500,
-                      px: 1,
-                      '& .MuiChip-icon': { color: 'secondary.main' },
-                    }}
-                  />
-                  <Chip
-                    icon={<AccessTime sx={{ fontSize: '0.9rem !important' }} />}
-                    label={`Wednesdays: ${content.serviceTimes?.wednesday || '7:00 PM'}`}
-                    sx={{
-                      bgcolor: 'rgba(255,255,255,0.1)',
-                      color: 'rgba(255,255,255,0.9)',
-                      fontWeight: 500,
-                      px: 1,
-                      '& .MuiChip-icon': { color: 'secondary.main' },
-                    }}
-                  />
-                </Stack>
-
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  spacing={2}
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    component={RouterLink}
-                    to="/contact"
-                    sx={{
-                      px: 4,
-                      py: 1.8,
-                      borderColor: 'rgba(255,255,255,0.4)',
-                      color: 'white',
-                      fontWeight: 600,
-                      fontSize: '1rem',
-                      borderRadius: '50px',
-                      '&:hover': {
-                        borderColor: 'white',
-                        backgroundColor: 'rgba(255,255,255,0.1)',
-                        transform: 'translateY(-2px)',
-                      },
-                    }}
-                  >
-                    <LocationOn sx={{ mr: 1, fontSize: '1.2rem' }} />
-                    {t('getDirections', 'Get Directions')}
-                  </Button>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    component={RouterLink}
-                    to="/events"
-                    endIcon={<ArrowForwardIcon />}
-                    sx={{
-                      px: 4,
-                      py: 1.8,
-                      background: 'linear-gradient(135deg, #c9a84c, #f4e4bc)',
-                      color: '#1a365d',
-                      fontWeight: 700,
-                      fontSize: '1rem',
-                      borderRadius: '50px',
-                      boxShadow: '0 4px 20px rgba(201, 168, 76, 0.35)',
-                      '&:hover': {
-                        background: 'linear-gradient(135deg, #dbb95c, #f4e4bc)',
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 8px 30px rgba(201, 168, 76, 0.5)',
-                      },
-                    }}
-                  >
-                    {t('viewServiceTimes', 'View Service Times')}
-                  </Button>
-                </Stack>
-              </Box>
-            </Slide>
-          </Container>
-        </Box>
+        </Section>
       </Box>
-
-      {/* Video Modal */}
-      <Dialog
-        open={videoModalOpen}
-        onClose={handleCloseVideoModal}
-        maxWidth="md"
-        fullWidth
-        PaperProps={{
-          sx: {
-            borderRadius: 4,
-            overflow: 'hidden',
-            maxHeight: '90vh',
-          }
-        }}
-      >
-        {latestVideo && (
-          <>
-            <DialogTitle
-              sx={{
-                p: 3,
-                background: 'linear-gradient(135deg, #1a365d 0%, #2c5282 100%)',
-                color: 'white',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <Box>
-                <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                  {t('latestSermon', 'Latest Sermon')}
-                </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  {latestVideo.title}
-                </Typography>
-              </Box>
-              <IconButton onClick={handleCloseVideoModal} sx={{ color: 'white' }}>
-                <CloseIcon />
-              </IconButton>
-            </DialogTitle>
-            
-            <DialogContent sx={{ p: 0 }}>
-              <Box sx={{ position: 'relative', paddingTop: '56.25%', backgroundColor: '#000' }}>
-                <iframe
-                  src={latestVideo.videoUrl}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    border: 'none',
-                  }}
-                  allowFullScreen
-                  title={latestVideo.title}
-                />
-              </Box>
-            </DialogContent>
-            
-            <DialogActions sx={{ p: 3 }}>
-              <Button
-                variant="outlined"
-                onClick={handleCloseVideoModal}
-                sx={{
-                  borderColor: '#1a365d',
-                  color: '#1a365d',
-                  '&:hover': {
-                    backgroundColor: '#1a365d',
-                    color: 'white',
-                  },
-                }}
-              >
-                {t('close', 'Close')}
-              </Button>
-              <Button
-                variant="contained"
-                component={RouterLink}
-                to="/sermons"
-                sx={{
-                  backgroundColor: '#1a365d',
-                  '&:hover': {
-                    backgroundColor: '#2c5282',
-                  },
-                }}
-              >
-                {t('watchMoreSermons', 'Watch More Sermons')}
-              </Button>
-            </DialogActions>
-          </>
-        )}
-      </Dialog>
     </Box>
   );
 };

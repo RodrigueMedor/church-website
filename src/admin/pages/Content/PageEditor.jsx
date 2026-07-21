@@ -22,11 +22,35 @@ const sectionDefinitions = {
       { key: 'title', label: 'Title' },
       { key: 'subtitle', label: 'Subtitle' },
       { key: 'backgroundImages', label: 'Background Images (one per line)', type: 'array' },
+      { key: 'slides', label: 'Slides (per-slide content)', type: 'array', itemLabel: 'title', fields: [
+        { key: 'image', label: 'Image URL' },
+        { key: 'title', label: 'Slide Title' },
+        { key: 'subtitle', label: 'Slide Subtitle', multiline: true },
+        { key: 'buttonText', label: 'Button Text' },
+        { key: 'buttonLink', label: 'Button Link' },
+        { key: 'secondaryText', label: 'Secondary Button Text (optional)' },
+        { key: 'secondaryLink', label: 'Secondary Button Link (optional)' },
+      ]},
     ]},
-    { key: 'serviceTimes', label: 'Service Times', type: 'object', fields: [
+    { key: 'welcome', label: 'Welcome Section', type: 'object', fields: [
+      { key: 'title', label: 'Title' },
+      { key: 'description', label: 'Description', multiline: true },
+      { key: 'mission', label: 'Mission Statement', multiline: true },
+      { key: 'image', label: 'Image URL' },
+      { key: 'buttonText', label: 'Button Text' },
+      { key: 'buttonLink', label: 'Button Link' },
+    ]},
+    { key: 'serviceTimes', label: 'Service Times (Bar)', type: 'object', fields: [
       { key: 'sunday', label: 'Sunday' },
       { key: 'wednesday', label: 'Wednesday' },
       { key: 'location', label: 'Location' },
+    ]},
+    { key: 'serviceTimesCards', label: 'Service Times Cards', type: 'array', itemLabel: 'title', fields: [
+      { key: 'title', label: 'Title' },
+      { key: 'time', label: 'Time' },
+      { key: 'description', label: 'Description', multiline: true },
+      { key: 'icon', label: 'Icon (Church, School, MenuBook, etc.)' },
+      { key: 'color', label: 'Color (hex)' },
     ]},
     { key: 'features', label: 'Features', type: 'array', itemLabel: 'title', fields: [
       { key: 'title', label: 'Title' },
@@ -39,10 +63,37 @@ const sectionDefinitions = {
       { key: 'description', label: 'Description', multiline: true },
       { key: 'image', label: 'Background Image URL' },
     ]},
-    { key: 'upcomingGatherings', label: 'Upcoming Gatherings Section', type: 'object', fields: [
+    { key: 'upcomingGatherings', label: 'Upcoming Events Section', type: 'object', fields: [
       { key: 'title', label: 'Title' },
       { key: 'subtitle', label: 'Subtitle', multiline: true },
       { key: 'image', label: 'Background Image URL' },
+    ]},
+    { key: 'latestSermons', label: 'Latest Sermons Section', type: 'object', fields: [
+      { key: 'title', label: 'Title' },
+      { key: 'subtitle', label: 'Subtitle', multiline: true },
+    ]},
+    { key: 'meetPastor', label: 'Meet Our Pastor Section', type: 'object', fields: [
+      { key: 'title', label: 'Title' },
+      { key: 'subtitle', label: 'Subtitle', multiline: true },
+    ]},
+    { key: 'planYourVisit', label: 'Plan Your Visit Section', type: 'object', fields: [
+      { key: 'title', label: 'Title' },
+      { key: 'description', label: 'Description', multiline: true },
+      { key: 'address', label: 'Address' },
+      { key: 'buttonText', label: 'Button Text' },
+      { key: 'buttonLink', label: 'Button Link (Google Maps URL)' },
+      { key: 'contactText', label: 'Contact Button Text' },
+      { key: 'contactLink', label: 'Contact Button Link' },
+    ]},
+    { key: 'testimonials', label: 'Testimonials Section', type: 'object', fields: [
+      { key: 'title', label: 'Title' },
+      { key: 'subtitle', label: 'Subtitle', multiline: true },
+    ]},
+    { key: 'giveOnline', label: 'Give Online Section', type: 'object', fields: [
+      { key: 'title', label: 'Title' },
+      { key: 'description', label: 'Description', multiline: true },
+      { key: 'buttonText', label: 'Button Text' },
+      { key: 'buttonLink', label: 'Button Link' },
     ]},
     { key: 'latestNews', label: 'Latest News Section', type: 'object', fields: [
       { key: 'title', label: 'Title' },

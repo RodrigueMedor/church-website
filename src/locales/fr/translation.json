@@ -21,7 +21,7 @@
       "description": "Dans ce message, nous explorons comment la foi véritable se manifeste à travers nos actions et comment nous pouvons vivre une foi authentique dans notre vie quotidienne.",
       "bibleText": "Texte biblique"
     },
-    "welcome": "Bienvenue à",
+    "welcome": "Nous Sommes Heureux de Vous Accueillir",
     "welcomeSubtitle": "Un Lieu de Culte, de Communion et de Service",
     "joinUs": "Rejoignez-Nous Ce Dimanche",
     "watchLive": "Regarder en Direct",
@@ -115,7 +115,7 @@
     "otherLeadersSubtitle": "Rencontrez les diacres, directeurs et bénévoles dévoués qui servent notre famille d'église."
   },
   "about": {
-    "welcome": "Bienvenue à",
+    "welcome": "Nous Sommes Heureux de Vous Accueillir",
     "welcomeSubtitle": "Un Lieu de Culte, de Communion et de Service",
     "ourHistory": "Notre Histoire",
     "ourHistoryTagline": "« Une maison de prière pour toutes les nations »",
@@ -1079,5 +1079,17 @@
     "invalidCredentials": "Identifiants invalides",
     "userNotFound": "Utilisateur non trouvé",
     "invalidCurrentPassword": "Mot de passe actuel invalide"
+  },
+  "notFound": {
+    "title": "Page Non Trouvée",
+    "subtitle": "Désolé, la page que vous recherchez n'existe pas ou a été déplacée.",
+    "description": "Veuillez vérifier l'URL ou revenir à la page d'accueil pour trouver ce que vous cherchez.",
+    "goToHomepage": "Retour à l'Accueil",
+    "aboutUs": "À Propos",
+    "events": "Événements",
+    "contactUs": "Contactez-Nous",
+    "mapTitle": "Carte",
+    "stillCantFind": "Vous ne trouvez toujours pas ce que vous cherchez ?",
+    "contactSupport": "Contactez le Support"
   }
 }
