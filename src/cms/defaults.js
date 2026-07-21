@@ -75,7 +75,7 @@ export const pageDefaults = {
       image: '/images/banner/church-building-new.png',
     },
     upcomingGatherings: {
-      title: 'Join Us for Upcoming Events',
+      title: 'Join us for our upcoming gatherings and activities',
       subtitle: 'Discover our ministries, fellowship opportunities, and community activities designed to help you grow in faith and connect with others.',
       image: '/images/banner/DSC_2088.jpg',
     },
@@ -226,12 +226,12 @@ export const pageDefaults = {
     tagline: 'Explore Our Ministries',
     scripture: '1 Peter 4:10',
     ministries: [
-      { id: 1, title: 'Children\'s Ministry', subtitle: 'Nurturing Young Faith', description: 'Nurturing the faith of our children through engaging programs and biblical teaching.', color: '#4CAF50', image: '/images/banner/children-banner.JPG', meetingTime: 'Sunday 9:30 AM', link: '/children-ministry', stats: { members: '50+', ageRange: 'Ages 4-12', activities: '40+' }, features: ['Sunday School', 'Vacation Bible School', 'Children\'s Church', 'Fun Activities'] },
-      { id: 2, title: 'Youth Ministry', subtitle: 'Empowering Tomorrow\'s Leaders', description: 'Empowering young people to grow in faith, build community, and make a difference.', color: '#2196F3', image: '/images/banner/youth-banner.jpg', meetingTime: 'Saturday 6:00 PM', link: '/youth-ministry', stats: { members: '30+', ageRange: 'Ages 13-18', activities: '25+' }, features: ['Youth Group', 'Bible Study', 'Retreats', 'Community Service'] },
-      { id: 3, title: 'Women\'s Ministry', subtitle: 'Sisterhood in Faith', description: 'Connecting women through fellowship, prayer, and spiritual growth opportunities.', color: '#9C27B0', image: '/images/banner/women-banner.jpg', meetingTime: 'Tuesday 7:00 PM', link: '/women-ministry', stats: { members: '80+', ageRange: 'Ages 18+', activities: '30+' }, features: ['Bible Study', 'Prayer Group', 'Fellowship Events', 'Missions'] },
-      { id: 4, title: 'Men\'s Ministry', subtitle: 'Building Godly Men', description: 'Building men of faith through fellowship, service, and biblical teaching.', color: '#FF9800', image: '/images/banner/men-banner.JPG', meetingTime: 'Wednesday 7:00 PM', link: '/men-ministry', stats: { members: '60+', ageRange: 'Ages 18+', activities: '20+' }, features: ['Bible Study', 'Fellowship', 'Service Projects', 'Mentorship'] },
-      { id: 5, title: 'Young Couples Ministry', subtitle: 'Strengthening Marriages', description: 'Strengthening marriages and building Christ-centered homes together.', color: '#f44336', image: '/images/banner/ycm-banner.jpg', meetingTime: 'Friday 7:30 PM', link: '/young-couples-ministry', stats: { members: '25+', ageRange: 'Young Couples', activities: '15+' }, features: ['Date Nights', 'Workshops', 'Small Groups', 'Retreats'] },
-      { id: 6, title: 'Worship & Music Ministry', subtitle: 'Leading People to His Presence', description: 'Leading the congregation in heartfelt worship through music, song, and creative arts to glorify God.', color: '#C9A84C', image: '/images/banner/banner-sermont.jpg', meetingTime: 'Wednesdays at 7:00 PM & Sundays at 9:00 AM', link: '/worship-ministry', stats: { members: '40+', ageRange: 'Ages 14+', activities: '20+' }, features: ['Choir', 'Praise Team', 'Instrumental', 'Sound & Media'] },
+      { id: 1, title: 'Children\'s Ministry', subtitle: 'Nurturing faith in our youngest hearts', description: 'Our Children\'s Ministry is dedicated to teaching children about God\'s love through engaging lessons, fun activities, and meaningful relationships.', color: '#4CAF50', image: '/images/banner/children-banner.JPG', meetingTime: 'Sunday 9:30 AM', link: '/children-ministry', stats: { members: '50+', ageRange: 'Ages 4-12', activities: '40+' }, features: ['Sunday School', 'Vacation Bible School', 'Children\'s Church', 'Fun Activities'] },
+      { id: 2, title: 'Youth Ministry', subtitle: 'Empowering the next generation', description: 'The Youth Ministry provides a safe and welcoming environment for teenagers to grow in their faith, build lasting friendships, and discover their purpose in Christ.', color: '#2196F3', image: '/images/banner/youth-banner.jpg', meetingTime: 'Saturday 6:00 PM', link: '/youth-ministry', stats: { members: '30+', ageRange: 'Ages 13-18', activities: '25+' }, features: ['Youth Group', 'Bible Study', 'Retreats', 'Community Service'] },
+      { id: 3, title: 'Women\'s Ministry', subtitle: 'Sisters in faith, united in love', description: 'The Women\'s Ministry gathers women of all ages to grow in their relationship with God, support one another, and serve our community with grace and compassion.', color: '#9C27B0', image: '/images/banner/women-banner.jpg', meetingTime: 'Tuesday 7:00 PM', link: '/women-ministry', stats: { members: '80+', ageRange: 'Ages 18+', activities: '30+' }, features: ['Bible Study', 'Prayer Group', 'Fellowship Events', 'Missions'] },
+      { id: 4, title: 'Men\'s Ministry', subtitle: 'Strength in brotherhood, faith in action', description: 'The Men\'s Ministry challenges men to grow as leaders in their families, church, and community through faith, fellowship, and service.', color: '#FF9800', image: '/images/banner/men-banner.JPG', meetingTime: 'Wednesday 7:00 PM', link: '/men-ministry', stats: { members: '60+', ageRange: 'Ages 18+', activities: '20+' }, features: ['Bible Study', 'Fellowship', 'Service Projects', 'Mentorship'] },
+      { id: 5, title: 'Young Couples Ministry', subtitle: 'Building marriages on a foundation of faith', description: 'The Young Couples Ministry supports married and engaged couples in building strong, Christ-centered relationships through fellowship, mentorship, and biblical teaching.', color: '#f44336', image: '/images/banner/ycm-banner.jpg', meetingTime: 'Friday 7:30 PM', link: '/young-couples-ministry', stats: { members: '25+', ageRange: 'Young Couples', activities: '15+' }, features: ['Date Nights', 'Workshops', 'Small Groups', 'Retreats'] },
+      { id: 6, title: 'Worship & Music Ministry', subtitle: 'Lifting hearts in praise', description: 'The Worship & Music Ministry leads our congregation in heartfelt worship, creating an atmosphere where people can encounter God through music and song.', color: '#C9A84C', image: '/images/banner/banner-sermont.jpg', meetingTime: 'Wednesdays at 7:00 PM & Sundays at 9:00 AM', link: '/worship-ministry', stats: { members: '40+', ageRange: 'Ages 14+', activities: '20+' }, features: ['Choir', 'Praise Team', 'Instrumental', 'Sound & Media'] },
     ],
   },
 
@@ -435,8 +435,8 @@ export const pageDefaults = {
     meetingLocation: '',
     contactEmail: '',
     leaders: [
-      { name: 'Marie Joseph', role: "Children's Director", description: 'Leading children\'s ministry with love and dedication.', image: '/images/staff/deaconess-joseph.jpg', avatar: 'MJ', experience: '8 years', email: 'marie.joseph@fhbck.org' },
-      { name: 'Pierre Noel', role: 'Assistant Director', description: 'Helping children grow in faith through engaging programs.', image: '/images/easter/pastor-bible-study.jpg', avatar: 'PN', experience: '5 years', email: 'pierre.noel@fhbck.org' },
+      { name: 'St Martin Thafney', role: "Children's Ministry Leader", description: 'Leading the Young Couples Ministry, Children\'s Ministry, and Children\'s Choir with faith, love, worship, and Christ-centered care.', image: '/images/staff/kids-ministry-responsible.jpg', avatar: 'MJ', experience: '8 years', email: '' },
+      { name: 'Saintelus Mihaka/ Derilus Jammema', role: "Children's Ministry Leaders", description: 'Leading the Children\'s Ministry with love, faith, and care, helping children grow in Christ through worship, Bible teaching, and fellowship.', image: '/images/staff/children-responsible.jpg', avatar: 'PN', experience: '5 years', email: '' },
     ],
     cta: { title: 'Ready to Join Our Family?', description: 'We\'d love to have your children join our growing family! Sign up today and watch them grow in faith while making new friends.', buttonText: 'Register Your Child', buttonLink: '/contact' },
     activities: [
@@ -465,8 +465,8 @@ export const pageDefaults = {
     meetingLocation: '',
     contactEmail: '',
     leaders: [
-      { name: 'David Pierre', role: 'Youth Director', description: 'Passionate about guiding youth in faith.', image: '/images/staff/pastor-charles.jpg', avatar: 'DP', experience: '10 years', email: 'david.pierre@fhbck.org' },
-      { name: 'Sarah Jean', role: 'Assistant Youth Director', description: 'Dedicated to youth mentorship and growth.', image: '/images/easter/worship-team.jpg', avatar: 'SJ', experience: '6 years', email: 'sarah.jean@fhbck.org' },
+      { name: 'Georges Djenika', role: 'Youth Ministry Leader', description: 'Leading the Youth Ministry with faith, guidance, and encouragement, helping young people grow in Christ through worship, discipleship, and fellowship.', image: '/images/staff/youth-leader.jpg', avatar: 'DP', experience: '5+ years', email: '' },
+      { name: 'Leonard Vladimir', role: 'Youth Ministry Leader', description: 'Leading the Youth Ministry with faith, guidance, and encouragement, helping young people grow in Christ through worship, discipleship, and fellowship.', image: '/images/staff/youth-leader-2.jpg', avatar: 'SJ', experience: '6 years', email: '' },
     ],
     cta: { title: 'Ready to Join the Youth Movement?', description: 'Come be a part of something amazing! Our youth group is always open to new members. Bring a friend and experience the love of Christ in a fun, supportive environment.', buttonText: 'Join Youth Group', buttonLink: '/contact' },
     activities: [
@@ -495,8 +495,8 @@ export const pageDefaults = {
     meetingLocation: '',
     contactEmail: '',
     leaders: [
-      { name: 'Rose-Marie Louis', role: "Women's Director", description: 'Leading women in faith and fellowship.', image: '/images/easter/worship-photo.jpg', avatar: 'RL', experience: '15 years', email: 'rose.louis@fhbck.org' },
-      { name: 'Esther Michel', role: 'Assistant Director', description: 'Coordinating events and outreach.', image: '/images/easter/music-photo.jpg', avatar: 'EM', experience: '10 years', email: 'esther.michel@fhbck.org' },
+      { name: 'Juste Remonde', role: "Women's Ministry Leader", description: 'Leads the Women\'s Ministry, encouraging spiritual growth, fellowship, and Christ-centered service among women.', image: '/images/staff/kitchen-ministry-leader.jpg', avatar: 'RL', experience: '15 years', email: '' },
+      { name: 'St Laurent Ketly', role: "Women's Ministry Leader", description: 'Leads the Women\'s Ministry, encouraging spiritual growth, fellowship, and Christ-centered service among women.', image: '/images/staff/spiritual-mentor.jpg', avatar: 'EM', experience: '10 years', email: '' },
     ],
     cta: { title: 'Join Our Sisterhood!', description: 'Experience the power of women united in faith. Whether you\'re looking for deep Bible study, meaningful friendships, or opportunities to serve, you\'ll find your place here.', buttonText: 'Join Women\'s Ministry', buttonLink: '/contact' },
     activities: [
@@ -525,8 +525,8 @@ export const pageDefaults = {
     meetingLocation: '',
     contactEmail: '',
     leaders: [
-      { name: 'Jean-Pierre Adam', role: "Men's Director", description: 'Leading men in spiritual growth.', image: '/images/staff/deacon-pierre.jpg', avatar: 'JA', experience: '12 years', email: 'jp.adam@fhbck.org' },
-      { name: 'Marc Antoine', role: 'Assistant Director', description: 'Coordinating fellowship and service.', image: '/images/easter/DSC_2182.jpg', avatar: 'MA', experience: '8 years', email: 'marc.antoine@fhbck.org' },
+      { name: 'Deacon Michel Jean Claude', role: 'Men Ministry Leader', description: 'Leading the deaconess ministry with grace and compassion.', image: '/images/staff/deaconess-joseph.jpg', avatar: 'JA', experience: '12 years', email: '' },
+      { name: 'Pierre Enas', role: 'Men\'s Ministry Leader', description: 'Leading the Men\'s Ministry and Deacons with faith, service, leadership, and dedication, encouraging spiritual growth and supporting the mission of the church.', image: '/images/photo/deacon-member-hoe.jpg', avatar: 'MA', experience: '8 years', email: '' },
     ],
     cta: { title: 'Join the Brotherhood!', description: 'Step into your calling as a man of God. Our men\'s ministry provides the support, teaching, and fellowship you need to grow in faith and lead with integrity.', buttonText: 'Join Men\'s Ministry', buttonLink: '/contact' },
     activities: [
@@ -555,8 +555,8 @@ export const pageDefaults = {
     meetingLocation: '',
     contactEmail: '',
     leaders: [
-      { name: 'Daniel & Maria', role: 'Couples Directors', description: 'Passionate about strengthening marriages.', image: '/images/easter/DSC_2302.jpg', avatar: 'DM', experience: '8 years', email: 'daniel.maria@fhbck.org' },
-      { name: 'James & Ruth', role: 'Assistant Directors', description: 'Supporting couples in their journey.', image: '/images/easter/DSC_2306.jpg', avatar: 'JR', experience: '6 years', email: 'james.ruth@fhbck.org' },
+      { name: 'Derisma Jean Gracia', role: 'YCM President', description: 'Leads the Young Couples Ministry, fostering spiritual growth, fellowship, and strong Christ-centered marriages.', image: '/images/staff/deacons.jpg', avatar: 'DM', experience: '8 years', email: '' },
+      { name: 'St Martin Thafney', role: 'Assistant Directors', description: 'Leads the Young Couples Ministry, fostering spiritual growth, fellowship, and strong Christ-centered marriages.', image: '/images/staff/kids-ministry-responsible.jpg', avatar: 'JR', experience: '6 years', email: '' },
     ],
     cta: { title: 'Strengthen Your Marriage!', description: 'Whether you\'re newly engaged or married for years, our young couples ministry provides the tools, support, and community you need to build a strong, Christ-centered marriage.', buttonText: 'Join Our Group', buttonLink: '/contact' },
     activities: [
