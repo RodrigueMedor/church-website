@@ -36,10 +36,10 @@ const ProfessionalAboutPage = () => {
         image: s.image || '',
       }))
     : [
-        { name: t('about.staff.pastor.name'), role: t('about.staff.pastor.role'), bio: t('about.staff.pastor.bio'), fullBio: t('about.staff.pastor.fullBio'), email: 'pasteur@fhbck.org', phone: '(407) 123-4567', experience: '20+ years', image: '/images/staff/pastor-charles.jpg' },
-        { name: t('about.staff.deacon.name'), role: t('about.staff.deacon.role'), bio: t('about.staff.deacon.bio'), email: 'culte@fhbck.org', phone: '(407) 123-4568', experience: '15+ years', image: '/images/staff/deacon-pierre.jpg' },
-        { name: t('about.staff.deaconess.name'), role: t('about.staff.deaconess.role'), bio: t('about.staff.deaconess.bio'), email: 'femmes@fhbck.org', phone: '(407) 123-4569', experience: '12+ years', image: '/images/staff/deaconess-joseph.jpg' },
-        { name: t('about.staff.administrator.name'), role: t('about.staff.administrator.role'), bio: t('about.staff.administrator.bio'), email: 'admin@fhbck.org', phone: '(407) 123-4567', experience: '', image: '/images/staff/deaconess-joseph1.jpg' },
+        { name: 'Rev. JB Fritzner Brouard', role: 'Pastor', bio: 'Lead pastor guiding the church with faithful biblical teaching and vision.', fullBio: 'Originally from Haiti, Reverend Brouard pursued theological studies in the United States and began his ministry in Brooklyn.', email: 'pasteur@fhbck.org', phone: '(407) 218-0827', experience: '20+ years', image: '/images/staff/pastor-charles.jpg' },
+        { name: 'Administratrice', role: 'Church Administrator', bio: 'Managing church operations and coordinating administrative functions.', email: 'admin@fhbck.org', phone: '(407) 218-0827', experience: '', image: '/images/staff/deaconess-joseph1.jpg' },
+        { name: 'Deacon Pierre', role: 'Head Deacon', bio: 'Faithfully serving the church community with dedication and wisdom.', email: 'culte@fhbck.org', phone: '(407) 218-0827', experience: '15+ years', image: '/images/staff/deacon-pierre.jpg' },
+        { name: 'Deaconess Joseph', role: 'Deaconess Ministry', bio: 'Leading the deaconess ministry with grace and compassion.', email: 'femmes@fhbck.org', phone: '(407) 218-0827', experience: '12+ years', image: '/images/staff/deaconess-joseph.jpg' },
       ];
 
   const defaultLeaders = pageDefaults.about?.otherLeaders || [];
