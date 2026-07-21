@@ -5,3 +5,7 @@ services:
 
   frontend:
     image: ghcr.io/${GITHUB_REPOSITORY:-rodriguemedor/church-website}/frontend:latest
+    volumes:
+      - ./nginx/default.prod.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "80:80"
