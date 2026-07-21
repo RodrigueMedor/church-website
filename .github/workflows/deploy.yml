@@ -38,12 +38,13 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_FRONTEND }}:${{ github.sha }},${{ env.REGISTRY }}/${{ env.IMAGE_FRONTEND }}:latest
           build-args: |
-            REACT_APP_API_URL=https://${{ secrets.DOMAIN }}
+            REACT_APP_API_URL=
             REACT_APP_YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}
             REACT_APP_YOUTUBE_CHANNEL_ID=${{ secrets.YOUTUBE_CHANNEL_ID }}
             REACT_APP_ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
             REACT_APP_ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
             REACT_APP_ADMIN_NAME=${{ secrets.ADMIN_NAME }}
+            REACT_APP_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.2.0
@@ -67,13 +68,18 @@ jobs:
             systemctl stop nginx 2>/dev/null || true
             docker stop $(docker ps -q --filter "name=nginx") 2>/dev/null || true
 
-            # Create .env with production secrets on first deploy
-            touch .env
-            grep -q '^JWT_SECRET=' .env 2>/dev/null || \
-              echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-            grep -q '^DB_PASSWORD=' .env 2>/dev/null || \
-              echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            # Write all production secrets to .env (overwrite to ensure freshness)
+            printf '%s\n' \
+              "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
+              "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
+              "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" \
+              "MAIL_HOST=${{ secrets.MAIL_HOST }}" \
+              "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" \
+              "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" \
+              "MAIL_NOTIFY_TO=${{ secrets.MAIL_NOTIFY_TO }}" \
+              > .env
 
+            docker compose --env-file .env -f docker-compose.yml -f docker-compose.prod.yml down
             docker compose --env-file .env -f docker-compose.yml -f docker-compose.prod.yml pull
             docker compose --env-file .env -f docker-compose.yml -f docker-compose.prod.yml up -d --remove-orphans
             docker image prune -f

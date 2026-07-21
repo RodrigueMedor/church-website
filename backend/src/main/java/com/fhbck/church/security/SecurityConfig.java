@@ -1,6 +1,7 @@
 package com.fhbck.church.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -23,20 +27,31 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @Value("${app.cors.allowed-origins:}")
+    private String corsOrigins;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        List<String> origins = Arrays.stream(corsOrigins.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList();
+
+        if (origins.isEmpty()) {
+            origins = List.of(
+                    "http://localhost", "http://localhost:*",
+                    "http://localhost:4000", "http://localhost:3000"
+            );
+        }
+
         http
                 .cors(cors -> cors.configurationSource(request -> {
                     var config = new CorsConfiguration();
                     config.setAllowCredentials(true);
-                    config.setAllowedOriginPatterns(java.util.List.of(
-                        "https://fhbck.org", "https://www.fhbck.org",
-                        "http://localhost", "http://localhost:*",
-                        "http://localhost:4000", "http://localhost:3000"
-                    ));
-                    config.setAllowedHeaders(java.util.List.of("Authorization", "Content-Type", "X-Requested-With"));
-                    config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-                    config.setExposedHeaders(java.util.List.of("Authorization", "Content-Disposition"));
+                    config.setAllowedOriginPatterns(origins);
+                    config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+                    config.setExposedHeaders(List.of("Authorization", "Content-Disposition"));
                     return config;
                 }))
                 .csrf(csrf -> csrf.disable())

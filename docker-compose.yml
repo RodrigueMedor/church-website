@@ -35,7 +35,7 @@ services:
       MAIL_PASSWORD: ${MAIL_PASSWORD:-}
       MAIL_NOTIFY_TO: ${MAIL_NOTIFY_TO:-info@fhbck.org}
       UPLOAD_DIR: /app/uploads
-      CORS_ORIGINS: https://fhbck.org,https://www.fhbck.org
+      CORS_ORIGINS: http://fhbck.org,http://www.fhbck.org,https://fhbck.org,https://www.fhbck.org
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
     volumes:
       - uploads_data:/app/uploads
